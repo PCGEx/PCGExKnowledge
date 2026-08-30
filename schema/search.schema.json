@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/search.schema.json",
+  "title": "PCGExKnowledge search surface",
+  "description": "The flat search surface across every plugin. Match queries against name, aliases, presets, purpose and situation; fetch full detail from the owning plugin file when kind is node, or send the reader to url when kind is concept.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "plugin", "kind"],
+    "properties": {
+      "id": { "type": "string", "description": "Node rows: the C++ settings class name, the key into the plugin file's nodes map. Concept rows: the documentation path slug." },
+      "name": { "type": "string", "description": "Display name as the palette or the page shows it." },
+      "category": { "type": "string", "description": "Palette category prefix (Path, Cluster, Filter, ...), when the display name carries one. Node rows only." },
+      "plugin": { "type": "string" },
+      "kind": { "enum": ["node", "concept"] },
+      "classification": { "type": "string", "description": "node / provider / instanced_factory / factory_data / shared_struct / asset. Node rows only." },
+      "aliases": { "type": "array", "items": { "type": "string" }, "description": "Alternative palette names this node is findable under." },
+      "presets": { "type": "array", "items": { "type": "string" }, "description": "Preconfigured palette entries of this node." },
+      "purpose": { "type": "string", "description": "One flattened sentence: what this is for." },
+      "situation": { "type": "string", "description": "The kind of problem that calls for it. Node rows only." },
+      "url": { "type": "string", "description": "The live documentation page." }
+    }
+  }
+}

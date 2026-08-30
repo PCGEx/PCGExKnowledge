@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/plugin.schema.json",
+  "title": "PCGExKnowledge plugin file",
+  "description": "Full knowledge entries for one plugin. To resolve any id appearing anywhere in the bundle (a search hit, an inherits pointer, a see reference, a variant class): check each plugin file's nodes map, then its aliases map. That is the only resolution path, and every emitted id resolves through it. References may cross files: sibling plugins inherit from bases documented in PCGExtendedToolkit.json.",
+  "type": "object",
+  "required": ["plugin", "aliases", "enums", "nodes"],
+  "properties": {
+    "plugin": { "type": "string" },
+    "version": { "type": "string", "description": "The plugin's .uplugin VersionName at render time." },
+    "aliases": {
+      "type": "object",
+      "description": "Variant classes (nodes documented as one family) and covered helper classes, mapped to the id of the entry documenting them.",
+      "additionalProperties": { "type": "string" }
+    },
+    "enums": {
+      "type": "object",
+      "description": "Every enum referenced by this file's settings, keyed by C++ enum name. Hidden values are omitted.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["values"],
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "display_name"],
+              "properties": {
+                "name": { "type": "string" },
+                "display_name": { "type": "string" },
+                "tooltip": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "nodes": {
+      "type": "object",
+      "description": "Entries keyed by id (the C++ settings class name).",
+      "additionalProperties": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["id", "name", "plugin", "module", "classification", "purpose", "situation", "mechanism", "source"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "description": "Display name as the palette or the page shows it. For a variant family, the family name." },
+        "category": { "type": "string", "description": "Palette category prefix, when the display name carries one." },
+        "plugin": { "type": "string" },
+        "module": { "type": "string", "description": "The C++ module the source header lives in." },
+        "classification": { "type": "string", "description": "node / provider / instanced_factory / factory_data / shared_struct / asset." },
+        "palette_aliases": { "type": "array", "items": { "type": "string" } },
+        "presets": { "type": "array", "items": { "type": "string" }, "description": "Preconfigured palette entries of this node." },
+        "variants": {
+          "type": "array",
+          "description": "Sibling nodes documented by this one entry. Their ids appear in the file's aliases map.",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "summary": { "type": "string" }
+            }
+          }
+        },
+        "covers": { "type": "array", "items": { "type": "string" }, "description": "Helper classes from the same header, documented here. Their ids appear in the file's aliases map." },
+        "purpose": { "type": "string", "description": "What it is for. Verbatim card prose; **Bold Name** marks a node reference." },
+        "situation": { "type": "string", "description": "One sentence naming the kind of problem this node answers." },
+        "mechanism": {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": { "type": "string", "description": "What the element actually does to N points / M inputs; predicts output shape and count." },
+            "steps": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "off_label": {
+          "type": "array",
+          "description": "Verified unconventional uses, each grounded in a code path.",
+          "items": {
+            "type": "object",
+            "required": ["claim", "grounded_in"],
+            "properties": { "claim": { "type": "string" }, "grounded_in": { "type": "string" } }
+          }
+        },
+        "pins": {
+          "type": "object",
+          "description": "The verified pin contract, including conditional pins.",
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label", "required"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "note": { "type": "string" },
+                  "required": { "enum": ["always", "optional", "conditional"] },
+                  "condition": { "type": "string", "description": "Present when required is conditional." }
+                }
+              }
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["label"],
+                "properties": {
+                  "label": { "type": "string" },
+                  "note": { "type": "string" },
+                  "condition": { "type": "string", "description": "Present when the pin is mode-dependent." }
+                }
+              }
+            },
+            "dynamic": { "type": ["string", "null"], "description": "How dynamic pin sets behave, when the node has them." }
+          }
+        },
+        "settings": {
+          "type": "object",
+          "description": "The node's own editable properties, keyed by C++ property name, plus any inherited property the documentation keyed content to (marked with `from`). Everything else inherited is reached through `inherits`.",
+          "additionalProperties": { "$ref": "#/$defs/setting" }
+        },
+        "inherits": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Documented ancestor ids, nearest first. Fetch them for the shared settings surface."
+        },
+        "hints": {
+          "type": "array",
+          "description": "Failure modes and warnings, anchored to the mechanic they concern.",
+          "items": {
+            "type": "object",
+            "required": ["style", "text"],
+            "properties": {
+              "style": { "enum": ["info", "warning", "danger", "success"] },
+              "text": { "type": "string" },
+              "anchor": { "type": "string", "description": "whats_it_for / mechanism / pins, or a property name." }
+            }
+          }
+        },
+        "addenda": {
+          "type": "array",
+          "description": "Operator-supplied durable knowledge no header derivation can reach (console variables, cross-module context, workflow notes).",
+          "items": { "type": "object" }
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path"],
+            "properties": { "path": { "type": "string" }, "url": { "type": "string" } }
+          }
+        },
+        "url": { "type": "string", "description": "The live documentation page." },
+        "source": {
+          "type": "object",
+          "required": ["file", "hash"],
+          "properties": {
+            "file": { "type": "string", "description": "Header path relative to its plugin's Source root." },
+            "hash": { "type": "string", "description": "Content hash of the header + cpp pair the card was authored against." },
+            "stale": { "type": "boolean", "description": "True when the source has changed since authoring. Absent means current." }
+          }
+        }
+      }
+    },
+    "setting": {
+      "type": "object",
+      "required": ["display", "type"],
+      "properties": {
+        "display": { "type": "string", "description": "The label the details panel shows." },
+        "type": { "type": "string", "description": "C++ property type." },
+        "from": { "type": "string", "description": "Declaring class, present only on inherited properties promoted into this entry." },
+        "tooltip": { "type": "string" },
+        "default": { "type": "string", "description": "Raw C++ initializer text. Enum defaults resolve through the file's enums table." },
+        "enum": { "type": "string", "description": "Key into the file's enums table." },
+        "overridable": { "type": "boolean", "description": "Exposed as a PCG graph override pin." },
+        "edit_condition": { "type": "string" },
+        "edit_condition_hides": { "type": "boolean", "description": "The condition hides the setting rather than disabling it." },
+        "advanced": { "type": "boolean" },
+        "see": { "type": "string", "description": "Id of the entry documenting this struct-typed settings block." },
+        "fields": {
+          "type": "array",
+          "description": "Inline fields of a struct-typed setting that has no entry of its own.",
+          "items": {
+            "type": "object",
+            "required": ["name", "display", "type"],
+            "properties": {
+              "name": { "type": "string" },
+              "display": { "type": "string" },
+              "type": { "type": "string" },
+              "tooltip": { "type": "string" },
+              "default": { "type": "string" },
+              "enum": { "type": "string" }
+            }
+          }
+        },
+        "inlined_in_panel": { "type": "boolean", "description": "The struct's fields appear directly in the panel rather than as a collapsible group (ShowOnlyInnerProperties)." },
+        "semantics": { "type": "string", "description": "Authored: interaction, consequence, unit or space the tooltip does not carry. Absence means the tooltip suffices." },
+        "trap": { "type": "string", "description": "Authored: the way this setting surprises people." },
+        "interacts_with": { "type": "array", "items": { "type": "string" }, "description": "Property names this one changes meaning with." }
+      }
+    }
+  }
+}

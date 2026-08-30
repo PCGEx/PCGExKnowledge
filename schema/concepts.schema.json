@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/concepts.schema.json",
+  "title": "PCGExKnowledge concept pointers",
+  "description": "Pointers into the concept documentation, extracted mechanically: the page's own description (frontmatter, or its opening sentence), its section outline, and its live URL. The prose itself lives on the site.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "title", "plugin", "path"],
+    "properties": {
+      "id": { "type": "string", "description": "Documentation path slug, unique per book." },
+      "title": { "type": "string" },
+      "plugin": { "type": "string", "description": "The plugin whose book owns the page." },
+      "path": { "type": "string", "description": "Page path in the book repository." },
+      "description": { "type": "string" },
+      "outline": { "type": "array", "items": { "type": "string" }, "description": "The page's H2 headings, in order." },
+      "url": { "type": "string", "description": "The live documentation page." }
+    }
+  }
+}

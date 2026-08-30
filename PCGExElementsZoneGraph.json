@@ -1,0 +1,642 @@
+{
+  "plugin": "PCGExElementsZoneGraph",
+  "version": "1.1",
+  "aliases": {},
+  "enums": {
+    "EPCGExZGAutoRadiusMode": {
+      "values": [
+        {
+          "name": "Disabled",
+          "display_name": "Disabled"
+        },
+        {
+          "name": "WidestLane",
+          "display_name": "Widest Lane",
+          "tooltip": "Per-road: each road's own widest lane width."
+        },
+        {
+          "name": "HalfProfile",
+          "display_name": "Half Profile",
+          "tooltip": "Per-road: each road's own profile half-width."
+        },
+        {
+          "name": "MaxWidestLane",
+          "display_name": "Max Widest Lane",
+          "tooltip": "Aggregate: max widest-lane across all roads, applied uniformly to the polygon."
+        },
+        {
+          "name": "MaxHalfProfile",
+          "display_name": "Max Half Profile",
+          "tooltip": "Aggregate: max half-profile across all roads, applied uniformly to the polygon."
+        },
+        {
+          "name": "ConvexFit",
+          "display_name": "Convex Fit",
+          "tooltip": "Per-road radius geometrically fitted to clear neighboring roads' profile strips."
+        }
+      ]
+    },
+    "EPCGExZGBitmaskMode": {
+      "values": [
+        {
+          "name": "None",
+          "display_name": "None",
+          "tooltip": "No connection restrictions."
+        },
+        {
+          "name": "Raw",
+          "display_name": "Raw Bitmask",
+          "tooltip": "Read int32 attribute from edges, interpret directly as EZoneShapeLaneConnectionRestrictions bitmask."
+        },
+        {
+          "name": "ValueMap",
+          "display_name": "Value Map",
+          "tooltip": "Read int32 attribute from edges, look up in TMap to get bitmask."
+        }
+      ]
+    },
+    "EPCGExZGMergeGuardCombine": {
+      "values": [
+        {
+          "name": "All",
+          "display_name": "All (AND)",
+          "tooltip": "A seam must pass every enabled geometric guard."
+        },
+        {
+          "name": "Any",
+          "display_name": "Any (OR)",
+          "tooltip": "A seam passes if at least one enabled geometric guard passes."
+        }
+      ]
+    },
+    "EPCGExZGMergeMatch": {
+      "values": [
+        {
+          "name": "Equal",
+          "display_name": "==",
+          "tooltip": "Adjacent merge-group ids must be strictly equal."
+        },
+        {
+          "name": "NotEqual",
+          "display_name": "!=",
+          "tooltip": "Adjacent merge-group ids must differ."
+        },
+        {
+          "name": "Near",
+          "display_name": "~=",
+          "tooltip": "Adjacent merge-group ids must be within Tolerance of each other."
+        },
+        {
+          "name": "NotNear",
+          "display_name": "!~=",
+          "tooltip": "Adjacent merge-group ids must differ by more than Tolerance."
+        }
+      ]
+    },
+    "EPCGExZGOrientationMode": {
+      "values": [
+        {
+          "name": "SortDirection",
+          "display_name": "Sort Direction",
+          "tooltip": "Use the Direction Settings sorting rules to determine road orientation."
+        },
+        {
+          "name": "DepthFirst",
+          "display_name": "Traffic Flow (Legacy)",
+          "tooltip": "Deprecated alias for Traffic Flow -- kept for backward compatibility with saved assets."
+        },
+        {
+          "name": "GlobalDirection",
+          "display_name": "Global Direction",
+          "tooltip": "Orient all roads to flow along a global direction vector."
+        },
+        {
+          "name": "TrafficFlow",
+          "display_name": "Traffic Flow",
+          "tooltip": "Propagate orientation from leaf nodes inward. Produces consistent lane direction at intersections and along loops. Isolated loops use the Orientation Direction vector as a CW/CCW hint."
+        }
+      ]
+    },
+    "EPCGExZGRadiusOverridePolicy": {
+      "values": [
+        {
+          "name": "Replace",
+          "display_name": "Replace",
+          "tooltip": "Auto value replaces the manual/attribute radius."
+        },
+        {
+          "name": "Min",
+          "display_name": "Use as Min",
+          "tooltip": "radius = max(manual, auto). Auto acts as a floor."
+        },
+        {
+          "name": "Max",
+          "display_name": "Use as Max",
+          "tooltip": "radius = min(manual, auto). Auto acts as a ceiling."
+        },
+        {
+          "name": "Offset",
+          "display_name": "Additive",
+          "tooltip": "radius = auto + manual. Manual is a uniform additive buffer."
+        }
+      ]
+    },
+    "EPCGExZGTangentLengthMode": {
+      "values": [
+        {
+          "name": "Default",
+          "display_name": "Default",
+          "tooltip": "Don't set tangent length -- ZoneGraph handles it."
+        },
+        {
+          "name": "Manual",
+          "display_name": "Manual",
+          "tooltip": "Use a constant or per-point attribute value."
+        },
+        {
+          "name": "Auto",
+          "display_name": "Auto",
+          "tooltip": "Average distance to chain neighbors, divided by 3."
+        },
+        {
+          "name": "CatmullRom",
+          "display_name": "Catmull-Rom",
+          "tooltip": "|P_next - P_prev| * 0.5."
+        }
+      ]
+    },
+    "EPCGExZoneGraphConstantsMode": {
+      "values": [
+        {
+          "name": "PerProfile",
+          "display_name": "Per Profile",
+          "tooltip": "One attribute set per lane profile. Rows are lanes; profile-level values are written to the @Data domain, matching the metadata on Cluster to Zone Graph path outputs."
+        },
+        {
+          "name": "Merged",
+          "display_name": "Merged",
+          "tooltip": "A single attribute set with one row per lane across all profiles; profile-level values are repeated as regular columns."
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "UPCGExClusterToZoneGraphSettings": {
+      "id": "UPCGExClusterToZoneGraphSettings",
+      "name": "Cluster to Zone Graph",
+      "plugin": "PCGExElementsZoneGraph",
+      "module": "PCGExElementsZoneGraph",
+      "classification": "node",
+      "purpose": "Turns a cluster into Zone Graph data the engine's navigation can use. A cluster already says which points connect; what Zone Graph wants is lanes with direction, profiles and tags, and this is the translation between the two. It is the bridge node of the plugin, and everything else in the book leads to it.",
+      "situation": "A road, path or corridor network built as a cluster that now has to exist as navigable Zone Graph.",
+      "mechanism": {
+        "text": "Every edge becomes a lane and every Vtx becomes a point where lanes meet. `Direction Settings` decide which way each lane runs, which Zone Graph needs and a cluster does not carry: an edge joins two Vtx without preferring an end. The polygon and road settings decide what each lane is made of, and merging can join lanes that continue through a junction so a straight run does not become a chain of stubs."
+      },
+      "settings": {
+        "DirectionSettings": {
+          "display": "Direction Settings",
+          "type": "FPCGExEdgeDirectionSettings",
+          "tooltip": "Defines the direction in which points will be ordered to form the final paths.",
+          "overridable": true,
+          "see": "FPCGExEdgeDirectionSettings",
+          "semantics": "Where each lane's direction comes from, and the setting with no equivalent on the cluster side. A cluster's edges are undirected, so this is doing more than reading a property: it is deciding something the source data never expressed."
+        },
+        "OrientationMode": {
+          "display": "Orientation Mode",
+          "type": "EPCGExZGOrientationMode",
+          "tooltip": "How road orientation is determined. Affects lane profile alignment at intersections.",
+          "default": "EPCGExZGOrientationMode::TrafficFlow",
+          "enum": "EPCGExZGOrientationMode",
+          "semantics": "How a lane's cross-section is turned about its own length, which decides which way is up on sloped or banked runs. It is separate from the lane's direction, so a lane can run the right way and still be rolled the wrong way."
+        },
+        "bInvertOrientation": {
+          "display": "Invert Orientation",
+          "type": "bool",
+          "tooltip": "Flip all road orientations.",
+          "default": "false",
+          "edit_condition": "OrientationMode != EPCGExZGOrientationMode::SortDirection",
+          "edit_condition_hides": true
+        },
+        "OrientationDirection": {
+          "display": "Orientation Direction",
+          "type": "FVector",
+          "tooltip": "Global direction vector used to orient roads. In GlobalDirection mode, each road aligns with this vector. In TrafficFlow mode, used as a CW/CCW hint for isolated loops with no leaf connections.",
+          "default": "FVector::ForwardVector",
+          "edit_condition": "OrientationMode == EPCGExZGOrientationMode::GlobalDirection || OrientationMode == EPCGExZGOrientationMode::TrafficFlow",
+          "edit_condition_hides": true
+        },
+        "bEnableFlipFilters": {
+          "display": "Enable Flip Filters",
+          "type": "bool",
+          "tooltip": "Enable the use of filters to define whether a road direction should be flipped or not (reversing the auto-computed direction).",
+          "default": "false"
+        },
+        "PolygonSettings": {
+          "display": "Polygon Settings",
+          "type": "FPCGExZGPolygonSettings",
+          "tooltip": "Polygon intersection settings.",
+          "fields": [
+            {
+              "name": "PolygonRadius",
+              "display": "Polygon Radius",
+              "type": "double",
+              "default": "100"
+            },
+            {
+              "name": "PolygonRadiusAttribute",
+              "display": "Radius (Attr)",
+              "type": "FName",
+              "tooltip": "Per-point polygon radius override. Read from: Points. Attribute type: double.",
+              "default": "FName(\"PolygonRadius\")"
+            },
+            {
+              "name": "AutoRadiusMode",
+              "display": "Auto Radius Mode",
+              "type": "EPCGExZGAutoRadiusMode",
+              "tooltip": "Auto-compute polygon radius from connected road lane profiles.",
+              "default": "EPCGExZGAutoRadiusMode::Disabled",
+              "enum": "EPCGExZGAutoRadiusMode"
+            },
+            {
+              "name": "AutoRadiusPolicy",
+              "display": "Auto Radius Policy",
+              "type": "EPCGExZGRadiusOverridePolicy",
+              "tooltip": "How the auto-computed value combines with the manual / attribute polygon radius.",
+              "default": "EPCGExZGRadiusOverridePolicy::Replace",
+              "enum": "EPCGExZGRadiusOverridePolicy"
+            },
+            {
+              "name": "ConvexFitSettings",
+              "display": "Convex Fit",
+              "type": "FPCGExZGConvexFitSettings",
+              "tooltip": "Convex Fit refinement parameters (acute-angle clamp and fallback for unconstrained roads)."
+            },
+            {
+              "name": "PolygonRoutingType",
+              "display": "Polygon Routing Type",
+              "type": "EZoneShapePolygonRoutingType",
+              "default": "EZoneShapePolygonRoutingType::Arcs"
+            },
+            {
+              "name": "PolygonRoutingTypeAttribute",
+              "display": "Polygon Routing (Attr)",
+              "type": "FName",
+              "tooltip": "Per-point polygon routing override. Read from: Points. Attribute type: int32. Values: 0=Bezier, 1=Arcs.",
+              "default": "FName(\"PolygonRoutingType\")"
+            },
+            {
+              "name": "PolygonPointType",
+              "display": "Polygon Point Type",
+              "type": "FZoneShapePointType",
+              "default": "FZoneShapePointType::LaneProfile"
+            },
+            {
+              "name": "PolygonPointTypeAttribute",
+              "display": "Polygon Point Type (Attr)",
+              "type": "FName",
+              "tooltip": "Per-point polygon shape point type override. Read from: Points. Attribute type: int32. Values: 0=Sharp, 1=Bezier, 2=AutoBezier, 3=LaneProfile.",
+              "default": "FName(\"PolygonPointType\")"
+            },
+            {
+              "name": "AdditionalIntersectionTags",
+              "display": "Additional Intersection Tags",
+              "type": "FZoneGraphTagMask",
+              "tooltip": "Default intersection tags applied to all polygons.",
+              "default": "FZoneGraphTagMask::None"
+            },
+            {
+              "name": "IntersectionTagsMode",
+              "display": "Intersection Tags Mode",
+              "type": "EPCGExZGBitmaskMode",
+              "tooltip": "How additional intersection tags are sourced from attributes.",
+              "default": "EPCGExZGBitmaskMode::None",
+              "enum": "EPCGExZGBitmaskMode"
+            },
+            {
+              "name": "IntersectionTagsAttribute",
+              "display": "Intersection Tags Attribute",
+              "type": "FName",
+              "tooltip": "Attribute name for intersection tag values. Read from: Points. Attribute type: int32.",
+              "default": "FName(\"IntersectionTags\")"
+            },
+            {
+              "name": "IntersectionTagsValueMap",
+              "display": "Intersection Tags Value Map",
+              "type": "TMap<int32, FZoneGraphTagMask>",
+              "tooltip": "Maps integer attribute values to intersection tag masks."
+            },
+            {
+              "name": "InnerTurnRadiusPrimary",
+              "display": "Primary Turn Radius",
+              "type": "FPCGExInputShorthandNameFloat",
+              "tooltip": "Inner turn radius for polygon arc routing. Read from: Edges (nearest edge to polygon connection).",
+              "default": "FPCGExInputShorthandNameFloat(FName(\"InnerTurnRadius\"), 100.0f, false)"
+            },
+            {
+              "name": "InnerTurnRadiusSecondary",
+              "display": "Secondary Turn Radius",
+              "type": "FPCGExInputShorthandNameFloat",
+              "tooltip": "Separate inner turn radius for the end polygon connection. When disabled, Primary value is used for both.",
+              "default": "FPCGExInputShorthandNameFloat(FName(\"InnerTurnRadius\"), 100.0f, false)"
+            },
+            {
+              "name": "RollPrimary",
+              "display": "Primary Roll",
+              "type": "FPCGExInputShorthandNameFloat",
+              "tooltip": "Roll angle (degrees) applied to polygon connection points. Read from: Edges (nearest edge to polygon connection).",
+              "default": "FPCGExInputShorthandNameFloat(FName(\"Roll\"), 0.0f, false)"
+            },
+            {
+              "name": "RollSecondary",
+              "display": "Secondary Roll",
+              "type": "FPCGExInputShorthandNameFloat",
+              "tooltip": "Separate roll for the end polygon connection. When disabled, Primary value is used for both.",
+              "default": "FPCGExInputShorthandNameFloat(FName(\"Roll\"), 0.0f, false)"
+            },
+            {
+              "name": "ConnectionRestrictionMode",
+              "display": "Connection Restriction Mode",
+              "type": "EPCGExZGBitmaskMode",
+              "tooltip": "How lane connection restrictions are sourced.",
+              "default": "EPCGExZGBitmaskMode::None",
+              "enum": "EPCGExZGBitmaskMode"
+            },
+            {
+              "name": "ConnectionRestrictionsAttribute",
+              "display": "Connection Restrictions Attribute",
+              "type": "FName",
+              "tooltip": "Attribute name for connection restriction values. Read from: Edges.",
+              "default": "FName(\"ConnectionRestrictions\")"
+            },
+            {
+              "name": "ConnectionRestrictionsValueMap",
+              "display": "Connection Restrictions Value Map",
+              "type": "TMap<int32, FPCGExZGConnectionRestrictionFlags>",
+              "tooltip": "Maps integer attribute values to connection restriction flags."
+            }
+          ]
+        },
+        "RoadSettings": {
+          "display": "Road Settings",
+          "type": "FPCGExZGRoadSettings",
+          "tooltip": "Road spline settings.",
+          "fields": [
+            {
+              "name": "RoadPointType",
+              "display": "Road Point Type",
+              "type": "FZoneShapePointType",
+              "default": "FZoneShapePointType::AutoBezier"
+            },
+            {
+              "name": "RoadPointTypeAttribute",
+              "display": "Road Point Type (Attr)",
+              "type": "FName",
+              "tooltip": "Per-edge road shape point type override. Read from: Points. Attribute type: int32. Values: 0=Sharp, 1=Bezier, 2=AutoBezier, 3=LaneProfile.",
+              "default": "FName(\"RoadPointType\")"
+            },
+            {
+              "name": "RoadTangentLengthMode",
+              "display": "Tangent Length Mode",
+              "type": "EPCGExZGTangentLengthMode",
+              "tooltip": "How road tangent lengths are determined. Controls bezier curve tightness.",
+              "default": "EPCGExZGTangentLengthMode::Default",
+              "enum": "EPCGExZGTangentLengthMode"
+            },
+            {
+              "name": "TangentLength",
+              "display": "Length",
+              "type": "FPCGExInputShorthandNameDoubleAbs",
+              "tooltip": "Tangent length value -- constant or per-point attribute.",
+              "default": "FPCGExInputShorthandNameDoubleAbs(FName(\"TangentLength\"), 100.0, false)"
+            },
+            {
+              "name": "TangentLengthScale",
+              "display": "Scale",
+              "type": "double",
+              "tooltip": "Scale multiplier applied to all tangent lengths (manual or computed).",
+              "default": "1.0"
+            },
+            {
+              "name": "bClampTangentLengthToShortNeighbor",
+              "display": "Clamp Tangent to Short Neighbor",
+              "type": "bool",
+              "tooltip": "When enabled (Auto/CatmullRom only), clamp the computed tangent length so it never exceeds 1/3 of the shorter neighbor segment. Prevents bezier control overshoot at points adjacent to polygon-boundary crossings, where one neighbor is the short trim segment and the other is a long road segment. Leave disabled to keep the original averaged-length behavior.",
+              "default": "false"
+            },
+            {
+              "name": "EndpointTrimBuffer",
+              "display": "Endpoint Trim Buffer",
+              "type": "double",
+              "tooltip": "After trimming, remove road points closer than this distance to the polygon boundary.",
+              "default": "0"
+            },
+            {
+              "name": "LaneProfile",
+              "display": "Lane Profile",
+              "type": "FZoneLaneProfileRef"
+            },
+            {
+              "name": "LaneProfileAttribute",
+              "display": "Lane Profile (Attr)",
+              "type": "FName",
+              "tooltip": "Lane profile override. Read from: Edges (majority vote). Attribute type: FName. Must match a registered lane profile name in ZoneGraph settings.",
+              "default": "FName(\"LaneProfile\")"
+            }
+          ]
+        },
+        "MergeSettings": {
+          "display": "Merge Settings",
+          "type": "FPCGExZGMergeSettings",
+          "tooltip": "Merge adjacent polygons that pass the Merge Conditions filter. Fuses two polygons joined by a single road into one, dissolving the road between them.",
+          "edit_condition": "bEnableMerge",
+          "fields": [
+            {
+              "name": "MergeGroupAttribute",
+              "display": "Merge Group",
+              "type": "FName",
+              "tooltip": "Per-node int32 merge-group id. 0 = never merge (either endpoint). How two adjacent non-zero ids must relate is set by Match. Read from: Points (vtx).",
+              "default": "FName(\"MergeGroup\")"
+            },
+            {
+              "name": "MergeGroupMatch",
+              "display": "Match",
+              "type": "EPCGExZGMergeMatch",
+              "tooltip": "How the two adjacent group ids must relate for the pair to merge.",
+              "default": "EPCGExZGMergeMatch::Equal",
+              "enum": "EPCGExZGMergeMatch"
+            },
+            {
+              "name": "MergeGroupTolerance",
+              "display": "Merge Group Tolerance",
+              "type": "int32",
+              "tooltip": "Tolerance (in id units) for the ~= / !~= group match.",
+              "default": "1"
+            },
+            {
+              "name": "GuardCombine",
+              "display": "Guard Combine",
+              "type": "EPCGExZGMergeGuardCombine",
+              "tooltip": "How the enabled geometric guards combine when deciding whether a seam may contract.",
+              "default": "EPCGExZGMergeGuardCombine::All",
+              "enum": "EPCGExZGMergeGuardCombine"
+            },
+            {
+              "name": "MaxFaceGap",
+              "display": "Max Face Gap",
+              "type": "double",
+              "tooltip": "Guard: signed gap between the two facing connection faces (uu) must be at or below this. Positive = road remains between them; 0 = touching; negative = require overlap.",
+              "default": "0.0"
+            },
+            {
+              "name": "MaxSeamAngle",
+              "display": "Max Seam Angle",
+              "type": "double",
+              "tooltip": "Guard: the two arms must be near-collinear -- their misalignment angle (degrees) must be at or below this. 0 = perfectly inline.",
+              "default": "30.0"
+            },
+            {
+              "name": "bGuardSingleEdge",
+              "display": "Guard Single Edge",
+              "type": "bool",
+              "tooltip": "Guard: only contract single-edge seams (the road between the two polygons is one cluster edge, with no pass-through nodes).",
+              "default": "false"
+            },
+            {
+              "name": "MaxArms",
+              "display": "Max Arms",
+              "type": "int32",
+              "tooltip": "Guard: only contract when both polygon nodes have at most this many OTHER arms -- cluster degree excluding the road being merged away. Prevents dissolving busy junctions.",
+              "default": "4"
+            }
+          ],
+          "semantics": "How lanes passing through a junction without branching are joined, while merging is enabled above. Without merging every edge becomes its own lane, which is correct and produces far more lanes than the geometry needs."
+        },
+        "bOutputPolygonPaths": {
+          "display": "Output Polygon Paths",
+          "type": "bool",
+          "tooltip": "Output polygon shapes as closed PCG paths.",
+          "default": "false"
+        },
+        "bOutputRoadPaths": {
+          "display": "Output Road Paths",
+          "type": "bool",
+          "tooltip": "Output road splines as PCG paths with tangent attributes.",
+          "default": "false"
+        },
+        "ArriveName": {
+          "display": "Arrive Name",
+          "type": "FName",
+          "tooltip": "Name of the 'FVector' attribute the incoming tangent is written to on each road path point.",
+          "default": "\"ArriveTangent\"",
+          "overridable": true,
+          "edit_condition": "bOutputRoadPaths",
+          "edit_condition_hides": true
+        },
+        "LeaveName": {
+          "display": "Leave Name",
+          "type": "FName",
+          "tooltip": "Name of the 'FVector' attribute the outgoing tangent is written to on each road path point.",
+          "default": "\"LeaveTangent\"",
+          "overridable": true,
+          "edit_condition": "bOutputRoadPaths",
+          "edit_condition_hides": true
+        },
+        "CommaSeparatedComponentTags": {
+          "display": "Comma Separated Component Tags",
+          "type": "FString",
+          "tooltip": "Comma separated tags",
+          "default": "TEXT(\"PCGExZoneGraph\")",
+          "overridable": true,
+          "advanced": true
+        },
+        "PostProcessFunctionNames": {
+          "display": "Post Process Function Names",
+          "type": "TArray<FName>",
+          "tooltip": "Specify a list of functions to be called on the target actor after dynamic mesh creation. Functions need to be parameter-less and with \"CallInEditor\" flag enabled.",
+          "advanced": true
+        },
+        "AttachmentRules": {
+          "display": "Attachment Rules",
+          "type": "FPCGExAttachmentRules",
+          "advanced": true,
+          "see": "FPCGExAttachmentRules"
+        }
+      },
+      "inherits": [
+        "UPCGExClustersProcessorSettings",
+        "UPCGExPointsProcessorSettings",
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "anchor": "DirectionSettings",
+          "style": "info",
+          "text": "Lanes are directional and cluster edges are not, so this is where a one-way network is decided. A network meant to run both ways needs that expressed here rather than assumed from the cluster."
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-zonegraph/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph"
+        },
+        {
+          "path": "node-library/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/zone-graph/node-library"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/zone-graph/node-library/cluster-to-zone-graph",
+      "source": {
+        "file": "PCGExElementsZoneGraph/Public/Graph/PCGExClusterToZoneGraph.h",
+        "hash": "b70361077bdef519308ae113d60e904e45829dd1"
+      }
+    },
+    "UPCGExGetZoneGraphConstantsSettings": {
+      "id": "UPCGExGetZoneGraphConstantsSettings",
+      "name": "Get Zone Graph Constants",
+      "plugin": "PCGExElementsZoneGraph",
+      "module": "PCGExElementsZoneGraph",
+      "classification": "node",
+      "purpose": "Lists what the project's Zone Graph settings actually define, as data. Lane profiles and tags are configured in project settings and referenced by name everywhere else, so a graph that has to pick one is otherwise typing a string and hoping. This makes the real list available to be read, matched against or picked from.",
+      "situation": "A graph choosing a lane profile or tag, where the names should come from the project rather than being typed.",
+      "mechanism": {
+        "text": "The project's Zone Graph settings are read and emitted as attribute sets, with `Mode` deciding whether that is the profiles or the tags. The result is data rather than configuration, so it can be filtered, matched or picked from like anything else. Nothing is written back: this reads the project settings and never changes them."
+      },
+      "settings": {
+        "Mode": {
+          "display": "Mode",
+          "type": "EPCGExZoneGraphConstantsMode",
+          "tooltip": "How lane profile data is laid out across output attribute sets.",
+          "default": "EPCGExZoneGraphConstantsMode::PerProfile",
+          "enum": "EPCGExZoneGraphConstantsMode",
+          "overridable": true,
+          "semantics": "Which of the two lists is emitted. They are separate outputs rather than one combined set, so a graph needing both places two of these nodes."
+        }
+      },
+      "inherits": [
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "anchor": "whats_it_for",
+          "style": "info",
+          "text": "The values come from project settings, so what this node emits changes when the project changes rather than when the graph does. A graph matching against a hard-coded name will silently stop matching if the project renames it; matching against this output will not."
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-zonegraph/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph"
+        },
+        {
+          "path": "node-library/cluster-to-zone-graph.md",
+          "url": "https://pcgex.gitbook.io/pcgex/zone-graph/node-library/cluster-to-zone-graph"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/zone-graph/node-library/get-zone-graph-constants",
+      "source": {
+        "file": "PCGExElementsZoneGraph/Public/PCGExGetZoneGraphConstants.h",
+        "hash": "2c63216a621685f311b5968e73c48320789b96c5"
+      }
+    }
+  }
+}

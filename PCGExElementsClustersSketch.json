@@ -1,0 +1,652 @@
+{
+  "plugin": "PCGExElementsClustersSketch",
+  "version": "0.1",
+  "aliases": {
+    "FPCGExClusterSketchCollectionEntry": "UPCGExClusterSketchCollection"
+  },
+  "enums": {
+    "EPCGExAttributeFilter": {
+      "values": [
+        {
+          "name": "All",
+          "display_name": "All",
+          "tooltip": "All elements"
+        },
+        {
+          "name": "Exclude",
+          "display_name": "Exclude",
+          "tooltip": "Discard listed elements, keep the others"
+        },
+        {
+          "name": "Include",
+          "display_name": "Include",
+          "tooltip": "Keep listed elements, discard the others"
+        }
+      ]
+    },
+    "EPCGExClusterSketchSource": {
+      "values": [
+        {
+          "name": "CollectionMap",
+          "display_name": "Collection Map",
+          "tooltip": "Resolve each target's sketch from a staged pick, through a Collection Map. Requires points staged by a distribution node."
+        },
+        {
+          "name": "Asset",
+          "display_name": "Asset",
+          "tooltip": "Resolve each target's sketch from a direct asset reference -- a constant, or a per-point path attribute."
+        }
+      ]
+    },
+    "EPCGExInputValueType": {
+      "values": [
+        {
+          "name": "Constant",
+          "display_name": "Constant",
+          "tooltip": "Use a constant, user-defined value."
+        },
+        {
+          "name": "Attribute",
+          "display_name": "Attribute",
+          "tooltip": "Read the value from the input data."
+        }
+      ]
+    },
+    "EPCGExPropertyOutputMode": {
+      "values": [
+        {
+          "name": "AllFound",
+          "display_name": "All Found",
+          "tooltip": "Output every property the source carries. Output attribute names match property names."
+        },
+        {
+          "name": "Explicit",
+          "display_name": "Explicit",
+          "tooltip": "Use the Property Output Settings to pick which properties to output and rename them."
+        }
+      ]
+    },
+    "EPCGExSketchActorSource": {
+      "values": [
+        {
+          "name": "Selector",
+          "display_name": "Actor Selector",
+          "tooltip": "Find actors in the level with the standard PCG actor selector."
+        },
+        {
+          "name": "Input",
+          "display_name": "Input References",
+          "tooltip": "Read actor references from an input pin -- an attribute set or point data."
+        }
+      ]
+    },
+    "EPCGExStringMatchMode": {
+      "values": [
+        {
+          "name": "Equals",
+          "display_name": "Equals",
+          "tooltip": "The tested value is the query, ignoring case."
+        },
+        {
+          "name": "Contains",
+          "display_name": "Contains",
+          "tooltip": "The tested value contains the query anywhere in it, ignoring case."
+        },
+        {
+          "name": "StartsWith",
+          "display_name": "Starts with",
+          "tooltip": "The tested value begins with the query, ignoring case."
+        },
+        {
+          "name": "EndsWith",
+          "display_name": "Ends with",
+          "tooltip": "The tested value ends with the query, ignoring case."
+        },
+        {
+          "name": "Matches",
+          "display_name": "Matches",
+          "tooltip": "Wildcard matching. Supports * or ? as wildcards."
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "UPCGExClusterSketchCollection": {
+      "id": "UPCGExClusterSketchCollection",
+      "name": "Collection | Cluster Sketch",
+      "plugin": "PCGExElementsClustersSketch",
+      "module": "PCGExElementsClustersSketch",
+      "classification": "asset",
+      "covers": [
+        "FPCGExClusterSketchCollectionEntry"
+      ],
+      "purpose": "A collection whose entries are Cluster Sketch assets, so hand-authored clusters distribute with the same weighted machinery as any other staged asset. An entry names a sketch, or flips to a sub-collection of any type; a distribution node picks one per point, and Staging : Load Sketch prints what was picked.",
+      "situation": "Hand-authored structural pieces have to be picked per point, weighted and categorized like a library of meshes.",
+      "mechanism": {
+        "text": "Entries travel the distribute and swap pipeline unmodified through the same type-blind transport as every other collection, so weighted picks, category filtering, collection maps and sub-collection recursion all behave as standard. What is sketch-specific is the staging bounds: a rebuild measures each entry from the sketch model itself, resolving lattice-bound vertices through the sketch's snap provider, with the assets a sketch references loaded first so nested dependencies resolve before measuring. A staged pick therefore fits and justifies like any other asset, with nothing spawnable behind it until Load Sketch prints."
+      },
+      "off_label": [
+        {
+          "claim": "Sketch entries host inside Omni collections next to meshes, actors and levels: dragging sketch assets into an Omni grid resolves them to this entry type, and a sketch pick that reaches a non-sketch consumer flows past it untouched.",
+          "grounded_in": "The editor type registry's DetectSourceAsset routes UPCGExClusterSketch assets to this entry type, and Staging : Load Sketch treats non-sketch picks as expected rather than failed"
+        }
+      ],
+      "settings": {
+        "Entries": {
+          "display": "Entries",
+          "type": "TArray<FPCGExClusterSketchCollectionEntry>",
+          "see": "FPCGExClusterSketchCollectionEntry",
+          "semantics": "The only type-specific field is Sketch; entries carry no descriptor block and the collection no type-level globals, because the sketch asset itself is the whole payload."
+        }
+      },
+      "inherits": [
+        "UPCGExAssetCollection"
+      ],
+      "hints": [
+        {
+          "style": "info",
+          "text": "A staged sketch pick produces a cluster at execute time, through Staging : Load Sketch; there is no mesh or actor behind the entry.",
+          "anchor": "whats_it_for"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-cluster-sketch/printing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/printing"
+        },
+        {
+          "path": "node-library/staging-load-sketch.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/cluster-sketch-collection",
+      "source": {
+        "file": "PCGExElementsClustersSketch/Public/Collections/PCGExClusterSketchCollection.h",
+        "hash": "260a84f22ea5777d25119986a5c16089fc7c8ceb"
+      }
+    },
+    "UPCGExGetSketchDataSettings": {
+      "id": "UPCGExGetSketchDataSettings",
+      "name": "Get Sketch Data",
+      "plugin": "PCGExElementsClustersSketch",
+      "module": "PCGExElementsClustersSketch",
+      "classification": "node",
+      "purpose": "Reads PCGEx Cluster Sketch components off actors and prints each one as a cluster, placed by the component's world transform, so the output matches 1:1 what is authored and visible in the level. Sketches carrying sites also emit them as plain points on their own pin, ready to seed Find Cells.",
+      "situation": "Sketches were authored on actors in the level, and a graph needs them as clusters exactly where they sit.",
+      "mechanism": {
+        "text": "Actors are found, their sketch components collected, and each component's sketch in force (inline payload, own asset, or class default) is snapshotted on the game thread so the print runs off-thread against a stable copy. Each snapshot then prints one Vtx / Edges pair through the shared sketch print path, transformed by its component's world transform; the only thing this node adds over the asset's own print is discovery and placement.",
+        "steps": [
+          "Find actors: the standard PCG actor selector, or actor references read from the References pin.",
+          "Collect their Cluster Sketch components, narrowed by the Component Selector; components PCG itself spawned are skipped by default.",
+          "Snapshot each component's sketch and basis on the game thread.",
+          "Print one cluster per snapshot, writing authored sketch properties as attributes and the source actor as a @Data attribute.",
+          "Print sites as plain points on the Sites pin, independent of whether the cluster itself printed."
+        ]
+      },
+      "off_label": [
+        {
+          "claim": "A sketch holding only sites still emits its Sites data, so a component can serve purely as an authored seed cloud with no printable cluster behind it.",
+          "grounded_in": "FPCGExClusterSketchPrint prints sites synchronously before the cluster compile and the node stages SiteIOs even when the Vtx output is rolled back with EIOInit::NoInit"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "References",
+            "note": "Actor references to read sketch components from, an attribute set or point data alike.",
+            "required": "conditional",
+            "condition": "when Actor Source is Input References"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Vtx",
+            "note": "Point data representing vertices."
+          },
+          {
+            "label": "Edges",
+            "note": "Point data representing edges."
+          },
+          {
+            "label": "Sites",
+            "note": "Authored sketch sites as plain points, no cluster tags; feed Find Cells' Seeds input.",
+            "condition": "emitted only for sketches that have sites"
+          },
+          {
+            "label": "Map",
+            "note": "External resources referenced by written properties, e.g. the Collection Map of Collection Entry picks.",
+            "condition": "emitted in All Found mode, or in Explicit mode when its Output Map toggle is on"
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "ActorSource": {
+          "display": "Actor Source",
+          "type": "EPCGExSketchActorSource",
+          "tooltip": "Where the actors come from.",
+          "default": "EPCGExSketchActorSource::Selector",
+          "enum": "EPCGExSketchActorSource"
+        },
+        "ActorSelector": {
+          "display": "Actor Selector",
+          "type": "FPCGActorSelectorSettings",
+          "tooltip": "Standard PCG actor selection.",
+          "edit_condition": "ActorSource == EPCGExSketchActorSource::Selector",
+          "edit_condition_hides": true,
+          "inlined_in_panel": true
+        },
+        "ActorReferenceAttribute": {
+          "display": "Actor Reference Attribute",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Attribute holding the actor reference, read from the References pin. Works on an attribute set or point data alike -- both are read through the same accessor.",
+          "overridable": true,
+          "edit_condition": "ActorSource == EPCGExSketchActorSource::Input",
+          "edit_condition_hides": true
+        },
+        "ComponentSelector": {
+          "display": "Component Selector",
+          "type": "FPCGComponentSelectorSettings",
+          "tooltip": "Narrows which components on the found actors are considered.",
+          "inlined_in_panel": true
+        },
+        "bIgnorePCGGeneratedComponents": {
+          "display": "Ignore PCG Generated Components",
+          "type": "bool",
+          "tooltip": "Skip components PCG itself spawned, mirroring the engine getters.",
+          "default": "true",
+          "advanced": true
+        },
+        "GraphBuilderDetails": {
+          "display": "Cluster Output Settings",
+          "type": "FPCGExGraphBuilderDetails",
+          "tooltip": "Cluster (Vtx + Edges) output settings.",
+          "overridable": true,
+          "see": "FPCGExGraphBuilderDetails"
+        },
+        "ActorReferenceAttributeName": {
+          "display": "Actor Reference",
+          "type": "FName",
+          "tooltip": "Name of the '@Data' FSoftObjectPath attribute the source actor is written to.",
+          "default": "FName(\"ActorReference\")",
+          "overridable": true,
+          "edit_condition": "bWriteActorReference",
+          "semantics": "Written on the Vtx data and the site points; the Edges never carry it."
+        },
+        "PropertyOutputMode": {
+          "display": "Property Output Mode",
+          "type": "EPCGExPropertyOutputMode",
+          "tooltip": "How printed sketch properties are selected.",
+          "default": "EPCGExPropertyOutputMode::AllFound",
+          "enum": "EPCGExPropertyOutputMode"
+        },
+        "PropertyOutputSettings": {
+          "display": "Property Output Settings",
+          "type": "FPCGExPropertyOutputSettings",
+          "tooltip": "Explicit selection (and renaming) of the authored properties to print.",
+          "overridable": true,
+          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
+          "edit_condition_hides": true,
+          "see": "FPCGExPropertyOutputSettings",
+          "inlined_in_panel": true
+        },
+        "bOutputMap": {
+          "display": "Output Map",
+          "type": "bool",
+          "tooltip": "Emit the \"Map\" attribute set describing external resources referenced by written properties. Always emitted in AllFound mode (the toggle is hidden there).",
+          "default": "false",
+          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
+          "edit_condition_hides": true,
+          "advanced": true
+        },
+        "bQuiet": {
+          "display": "Quiet",
+          "type": "bool",
+          "tooltip": "Quiet the warnings for actors with no sketch component, and for sketch model issues.",
+          "default": "false",
+          "semantics": "Changes reporting, never output: the print still emits the valid subset of the sketch either way."
+        }
+      },
+      "inherits": [
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "style": "info",
+          "text": "Placement is the component's world transform; nothing here targets points. To print sketch assets onto staged points, use Staging : Load Sketch.",
+          "anchor": "whats_it_for"
+        },
+        {
+          "style": "warning",
+          "text": "A sketch that draws things a cluster cannot represent prints the valid subset: isolated vertices, self-loops, duplicate edges and collocated vertices are dropped with a warning naming the sketch cleanup that fixes them.",
+          "anchor": "mechanism"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-cluster-sketch/printing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/printing"
+        },
+        {
+          "path": "working-with-cluster-sketch/sites.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/sites"
+        },
+        {
+          "path": "working-with-cluster-sketch/authoring.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/authoring"
+        },
+        {
+          "path": "node-library/staging-load-sketch.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/get-sketch-data",
+      "source": {
+        "file": "PCGExElementsClustersSketch/Public/Elements/PCGExGetSketchData.h",
+        "hash": "b774676320450e385f5f87816c31abe26a4b3ed5"
+      }
+    },
+    "UPCGExStagingLoadSketchSettings": {
+      "id": "UPCGExStagingLoadSketchSettings",
+      "name": "Staging : Load Sketch",
+      "category": "Staging",
+      "plugin": "PCGExElementsClustersSketch",
+      "module": "PCGExElementsClustersSketch",
+      "classification": "node",
+      "purpose": "Prints Cluster Sketch assets onto target points, one cluster per target, inheriting each target's transform. The sketch is resolved per target: from a staged pick through a Collection Map, which is how sketches ride the same weighted distribution as any other staged asset, or from a direct asset reference, constant or per-point. Sites, when the sketch has any, are duplicated per target as plain points on their own pin.",
+      "situation": "A library of hand-authored pieces has to distribute over points like any other staged asset.",
+      "mechanism": {
+        "text": "Each target resolves to a sketch, each distinct sketch is printed once into a shared root cluster, and the root is duplicated onto every target referencing it, so a hundred targets sharing one asset cost one print. Duplicates inherit the target's transform through the Transform Details, and per-target variation comes only from the two Forwarding controls, both of which also apply to the duplicated site points.",
+        "steps": [
+          "Resolve each target's sketch: the staged pick through the Map pin, or the direct reference.",
+          "Print each distinct sketch once, deduplicated across all inputs.",
+          "Duplicate the root cluster per target, with transform, tags and forwarded attributes applied.",
+          "Duplicate the root's site points per target the same way."
+        ]
+      },
+      "off_label": [
+        {
+          "claim": "The node can sit inline on a mixed Omni stream and claim only its own entries: a pick that resolves to a mesh or an actor flows past without an error, which is the point of mixed hosting.",
+          "grounded_in": "ResolveSketch deliberately does not count non-sketch entries as failures; the header comment names Omni mixed hosting as the reason"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Targets",
+            "note": "The points to print sketches onto.",
+            "required": "always"
+          },
+          {
+            "label": "Map",
+            "note": "Collection map information from staging nodes, used to resolve staged picks.",
+            "required": "conditional",
+            "condition": "when Source is Collection Map"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Vtx",
+            "note": "Point data representing vertices."
+          },
+          {
+            "label": "Edges",
+            "note": "Point data representing edges."
+          },
+          {
+            "label": "Sites",
+            "note": "Authored sketch sites as plain points, duplicated per target; feed Find Cells' Seeds input.",
+            "condition": "emitted only for sketches that have sites"
+          },
+          {
+            "label": "Map",
+            "note": "External resources referenced by written properties, e.g. the Collection Map of Collection Entry picks.",
+            "condition": "emitted in All Found mode, or in Explicit mode when its Output Map toggle is on"
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Source": {
+          "display": "Source",
+          "type": "EPCGExClusterSketchSource",
+          "tooltip": "Where each target's sketch comes from.",
+          "default": "EPCGExClusterSketchSource::CollectionMap",
+          "enum": "EPCGExClusterSketchSource",
+          "semantics": "The two modes fail differently when nothing resolves: Collection Map stages empty outputs and warns with a count, Asset raises an error. A missing staging hash attribute in Collection Map mode is an error in both cases, since it means the targets were never staged with Collection Map output.",
+          "interacts_with": [
+            "StagingLayer",
+            "Sketch"
+          ]
+        },
+        "StagingLayer": {
+          "display": "Staging Layer",
+          "type": "FName",
+          "tooltip": "Staging layer this node reads staged picks from. None = default layer (PCGEx/CollectionEntry); otherwise the layer name is appended (PCGEx/CollectionEntry/<layer>).",
+          "default": "NAME_None",
+          "overridable": true,
+          "edit_condition": "Source == EPCGExClusterSketchSource::CollectionMap",
+          "edit_condition_hides": true,
+          "advanced": true
+        },
+        "PropertyOutputMode": {
+          "display": "Property Output Mode",
+          "type": "EPCGExPropertyOutputMode",
+          "tooltip": "How printed sketch properties are selected.",
+          "default": "EPCGExPropertyOutputMode::AllFound",
+          "enum": "EPCGExPropertyOutputMode"
+        },
+        "PropertyOutputSettings": {
+          "display": "Property Output Settings",
+          "type": "FPCGExPropertyOutputSettings",
+          "tooltip": "Explicit selection (and renaming) of the authored properties to print.",
+          "overridable": true,
+          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
+          "edit_condition_hides": true,
+          "see": "FPCGExPropertyOutputSettings",
+          "inlined_in_panel": true
+        },
+        "bOutputMap": {
+          "display": "Output Map",
+          "type": "bool",
+          "tooltip": "Emit the \"Map\" attribute set describing external resources referenced by written properties. Always emitted in AllFound mode (the toggle is hidden there).",
+          "default": "false",
+          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
+          "edit_condition_hides": true,
+          "advanced": true
+        },
+        "Sketch": {
+          "display": "Cluster Sketch",
+          "type": "FPCGExInputShorthandNameSoftObjectPath",
+          "tooltip": "Cluster Sketch to print. Constant, or a per-point attribute path.",
+          "default": "FPCGExInputShorthandNameSoftObjectPath(FName(\"Sketch\"))",
+          "overridable": true,
+          "edit_condition": "Source == EPCGExClusterSketchSource::Asset",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FName",
+              "tooltip": "Attribute name to read from when Input is set to Attribute.",
+              "default": "NAME_None"
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "FSoftObjectPath"
+            }
+          ]
+        },
+        "TransformDetails": {
+          "display": "Transform Details",
+          "type": "FPCGExTransformDetails",
+          "tooltip": "How each printed cluster inherits its target point's transform.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "ScaleToFit",
+              "display": "Scale To Fit",
+              "type": "FPCGExScaleToFitDetails",
+              "tooltip": "How to scale objects to fit within target bounds."
+            },
+            {
+              "name": "Justification",
+              "display": "Justification",
+              "type": "FPCGExJustificationDetails",
+              "tooltip": "How to align objects within target bounds after scaling."
+            },
+            {
+              "name": "bInheritScale",
+              "display": "Inherit Scale",
+              "type": "bool",
+              "tooltip": "Multiply result scale by the target point's scale.",
+              "default": "false"
+            },
+            {
+              "name": "bInheritRotation",
+              "display": "Inherit Rotation",
+              "type": "bool",
+              "tooltip": "Rotate result by the target point's rotation.",
+              "default": "false"
+            },
+            {
+              "name": "bIgnoreBounds",
+              "display": "Ignore Bounds",
+              "type": "bool",
+              "tooltip": "Skip bounds calculations and use position only. Disables scale-to-fit and justification.",
+              "default": "false"
+            }
+          ]
+        },
+        "GraphBuilderDetails": {
+          "display": "Cluster Output Settings",
+          "type": "FPCGExGraphBuilderDetails",
+          "tooltip": "Cluster (Vtx + Edges) output settings.",
+          "overridable": true,
+          "see": "FPCGExGraphBuilderDetails"
+        },
+        "TargetsAttributesToClusterTags": {
+          "display": "Targets Attributes To Cluster Tags",
+          "type": "FPCGExAttributeToTagDetails",
+          "tooltip": "Which target attributes to promote to tags on the printed clusters.",
+          "overridable": true,
+          "see": "FPCGExAttributeToTagDetails"
+        },
+        "TargetsForwarding": {
+          "display": "Targets Forwarding",
+          "type": "FPCGExForwardDetails",
+          "tooltip": "Which target attributes to forward onto the printed Vtx data. A forwarded name equal to an authored sketch attribute REPLACES it on that duplicate -- forwarding recreates the attribute.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "FilterMode",
+              "display": "Filter Mode",
+              "type": "EPCGExAttributeFilter",
+              "tooltip": "How the names are processed.",
+              "default": "EPCGExAttributeFilter::All",
+              "enum": "EPCGExAttributeFilter"
+            },
+            {
+              "name": "Matches",
+              "display": "Matches",
+              "type": "TMap<FString, EPCGExStringMatchMode>",
+              "tooltip": "List of matches that will be checked. Any success is a pass."
+            },
+            {
+              "name": "CommaSeparatedNames",
+              "display": "Comma Separated Names",
+              "type": "FString",
+              "tooltip": "A list of names separated by a comma, for easy overrides. The limitation is that they all use the same shared filter mode."
+            },
+            {
+              "name": "CommaSeparatedNameFilter",
+              "display": "Comma Separated Name Filter",
+              "type": "EPCGExStringMatchMode",
+              "tooltip": "Unique filter mode applied to comma separated names",
+              "default": "EPCGExStringMatchMode::Equals",
+              "enum": "EPCGExStringMatchMode"
+            },
+            {
+              "name": "bPreservePCGExData",
+              "display": "Preserve PCG Ex Data",
+              "type": "bool",
+              "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
+              "default": "true"
+            },
+            {
+              "name": "bEnabled",
+              "display": "Enabled",
+              "type": "bool",
+              "tooltip": "Is forwarding enabled.",
+              "default": "false"
+            },
+            {
+              "name": "bPreserveAttributesDefaultValue",
+              "display": "Preserve Attributes Default Value",
+              "type": "bool",
+              "tooltip": "If enabled, will preserve the initial attribute default value.",
+              "default": "false"
+            }
+          ],
+          "semantics": "Forwarding lands on the Vtx and the duplicated site points alike."
+        },
+        "bQuiet": {
+          "display": "Quiet",
+          "type": "bool",
+          "tooltip": "Quiet the warnings for targets with no/invalid sketch, and for sketch model issues.",
+          "default": "false"
+        }
+      },
+      "inherits": [
+        "UPCGExPointsProcessorSettings",
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "style": "warning",
+          "text": "A sketch that draws things a cluster cannot represent prints the valid subset: isolated vertices, self-loops, duplicate edges and collocated vertices are dropped with a warning naming the sketch cleanup that fixes them.",
+          "anchor": "mechanism"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-cluster-sketch/printing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/printing"
+        },
+        {
+          "path": "working-with-cluster-sketch/sites.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/sites"
+        },
+        {
+          "path": "node-library/cluster-sketch-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/cluster-sketch-collection"
+        },
+        {
+          "path": "node-library/get-sketch-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/get-sketch-data"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch",
+      "source": {
+        "file": "PCGExElementsClustersSketch/Public/Elements/PCGExStagingLoadSketch.h",
+        "hash": "60c465b99efa47bf085263e74796f195a623d43f"
+      }
+    }
+  }
+}

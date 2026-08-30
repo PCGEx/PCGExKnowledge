@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/manifest.schema.json",
+  "title": "PCGExKnowledge manifest",
+  "type": "object",
+  "required": ["bundle_schema", "generated", "plugins"],
+  "properties": {
+    "bundle_schema": {
+      "type": "string",
+      "description": "Semver of the bundle FORMAT. Content freshness is `generated` plus per-plugin versions.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generated": { "type": "string", "format": "date" },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["plugin", "file", "nodes", "concepts"],
+        "properties": {
+          "plugin": { "type": "string" },
+          "version": { "type": "string", "description": "The plugin's .uplugin VersionName at render time." },
+          "file": { "type": "string", "description": "The plugin's full-entry file at the repo root. Iterate these rather than hardcoding filenames." },
+          "nodes": { "type": "integer" },
+          "concepts": { "type": "integer" },
+          "stale": { "type": "integer", "description": "Entries whose source changed after their card was authored. Absent means zero." }
+        }
+      }
+    }
+  }
+}
