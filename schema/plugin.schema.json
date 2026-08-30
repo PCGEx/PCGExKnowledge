@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/plugin.schema.json",
   "title": "PCGExKnowledge plugin file",
-  "description": "Full knowledge entries for one plugin. To resolve any id appearing anywhere in the bundle (a search hit, an inherits pointer, a see reference, a variant class): check each plugin file's nodes map, then its aliases map. That is the only resolution path, and every emitted id resolves through it. References may cross files: sibling plugins inherit from bases documented in PCGExtendedToolkit.json.",
+  "description": "Full knowledge entries for one plugin. To resolve any id appearing anywhere in the bundle (a search hit, an inherits pointer, a see reference, a variant class): check each plugin file's entries map, then its aliases map. That is the only resolution path, and every emitted id resolves through it. References may cross files: sibling plugins inherit from bases documented in PCGExtendedToolkit.json.",
   "type": "object",
-  "required": ["plugin", "aliases", "enums", "nodes"],
+  "required": ["plugin", "aliases", "enums", "entries"],
   "properties": {
     "plugin": { "type": "string" },
     "version": { "type": "string", "description": "The plugin's .uplugin VersionName at render time." },
@@ -35,9 +35,9 @@
         }
       }
     },
-    "nodes": {
+    "entries": {
       "type": "object",
-      "description": "Entries keyed by id (the C++ settings class name).",
+      "description": "Entries keyed by id (the C++ settings class name). Not every entry is a placeable PCG node: classification carries the real taxonomy.",
       "additionalProperties": { "$ref": "#/$defs/entry" }
     }
   },
@@ -51,7 +51,7 @@
         "category": { "type": "string", "description": "Palette category prefix, when the display name carries one." },
         "plugin": { "type": "string" },
         "module": { "type": "string", "description": "The C++ module the source header lives in." },
-        "classification": { "type": "string", "description": "node / provider / instanced_factory / factory_data / shared_struct / asset." },
+        "classification": { "type": "string", "description": "node / provider / instanced_factory / factory_data / shared_struct / asset / blueprint_node. Only node and provider are placeable in a PCG graph; blueprint_node is a Blueprint graph node (collection accessors), never a PCG palette node." },
         "palette_aliases": { "type": "array", "items": { "type": "string" } },
         "presets": { "type": "array", "items": { "type": "string" }, "description": "Preconfigured palette entries of this node." },
         "variants": {

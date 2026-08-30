@@ -110,7 +110,7 @@
       ]
     }
   },
-  "nodes": {
+  "entries": {
     "UPCGExClusterSketchCollection": {
       "id": "UPCGExClusterSketchCollection",
       "name": "Collection | Cluster Sketch",

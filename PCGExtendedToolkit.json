@@ -6438,7 +6438,7 @@
       ]
     }
   },
-  "nodes": {
+  "entries": {
     "APCGExSocketActor": {
       "id": "APCGExSocketActor",
       "name": "Socket Actor",
@@ -10860,7 +10860,7 @@
       "name": "Get Collection Member",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Reads any authorable field of the collection asset itself into a Blueprint graph, addressed by name. Right-click the node and use Pick Member to choose a field; the pick writes the path and stamps the Value pin with the field's exact type. This is the collection-scoped read of the member family, so it takes no entry index and never reaches into the entries array.",
       "situation": "A staging pipeline or editor utility needs a value that lives on the collection rather than on one of its rows.",
       "mechanism": {
@@ -10923,7 +10923,7 @@
       "name": "Get Entry Member",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Reads any authorable field of one collection entry into a Blueprint graph, addressed by raw index and field name. Right-click the node and use Pick Member to choose a field; the pick writes the path and stamps the Value pin with the field's exact type. Weight, category, tags, the baked staging data, per-entry fitting and grammar are all reachable this way, which covers most of what a staging pipeline reads while it walks entries.",
       "situation": "A pipeline hook has an entry index in hand and needs that row's authored value before deciding what to write back.",
       "mechanism": {
@@ -11002,7 +11002,7 @@
       "name": "Get Entry Property",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Reads a declared property of one entry, resolved the way the rest of the collection system resolves it. The entry's own enabled override comes first, then its category's row, then the collection's declared default. The Value output is a wildcard you type yourself, by connecting it or by picking a type from its right-click menu, and the stored value is converted to that type. This is the property half of the Blueprint surface, so it reads the custom data a collection declares instead of the fields of the entry struct.",
       "situation": "A pipeline or editor utility needs the value a given entry resolves for a declared property, without caring which tier supplies it.",
       "mechanism": {
@@ -11076,7 +11076,7 @@
       "name": "Set Collection Member",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Writes one reflected member of the collection asset itself from Blueprint. Right-click the node and pick a member: the pick fills the Member pin and stamps New Value to that member's exact reflected type, containers included. What it reaches is the collection object's own editable members, a different surface from the entry rows Set Entry Member addresses and from the declared properties Set Entry Property overrides.",
       "situation": "A staging pipeline or editor utility needs to set a collection-wide value, the same edit an author would make in the collection's details panel, without opening every collection by hand.",
       "mechanism": {
@@ -11154,7 +11154,7 @@
       "name": "Set Entry Member",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Writes one reflected member of a single collection entry, addressed by its raw index. Right-click the node and pick a member: the pick fills the Member pin and stamps New Value to that member's exact reflected type. The roster is the entry struct the collection's type declares, its top-level fields plus one level into struct members, which is a different surface from the declared properties Set Entry Property overrides on the same entry.",
       "situation": "A staging pipeline hook holds an entry index and needs to write a field of that entry, the same edit an author would make in the collection's grid.",
       "mechanism": {
@@ -11246,7 +11246,7 @@
       "name": "Set Entry Property",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Writes one of the collection's declared properties onto a single entry, addressed by its raw index, and enables that entry's own override for it. The effect is the edit an author makes in the grid: ticking the entry override and typing a value, so that entry stops answering with its category row or the collection default. New Value and Readback are a locked wildcard pair, which is how the node reports what the property actually stored after conversion.",
       "situation": "A staging pipeline computes a per-entry value and needs it stored as that entry's own override rather than left to the collection default.",
       "mechanism": {
@@ -11332,7 +11332,7 @@
       "name": "Switch on Collection Type",
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollectionsUncooked",
-      "classification": "node",
+      "classification": "blueprint_node",
       "purpose": "Branches Blueprint execution on which kind of collection it was handed, and hands that collection back already cast. Every registered collection type contributes an exec output paired with a typed collection output, and a Default branch catches everything else. Logic written once against a generic collection can then do type-specific work without a chain of cast nodes.",
       "situation": "One staging pipeline is assigned to collections of several types and needs a different branch per type.",
       "mechanism": {
@@ -15093,17 +15093,14 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The items that were placed, moved and rotated into their bins."
           },
           {
             "label": "Bins",
-            "required": "always",
             "note": "The bins that came in, carrying statistics about what ended up in them."
           },
           {
             "label": "Discarded",
-            "required": "always",
             "note": "Items that found no legal placement, whether for lack of room or because a constraint refused every candidate."
           }
         ],
@@ -15580,17 +15577,14 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The items that were placed, moved to their positions inside a bin."
           },
           {
             "label": "Bins",
-            "required": "always",
             "note": "The bins that came in, carrying statistics about what ended up in them."
           },
           {
             "label": "Discarded",
-            "required": "always",
             "note": "Items that fitted in no bin. They are reported rather than forced, so an over-subscribed set does not silently overlap."
           }
         ],
@@ -21080,7 +21074,6 @@
         "outputs": [
           {
             "label": "Mesh",
-            "required": "optional",
             "note": "The dynamic mesh, triangulated from whatever the fill rule left solid."
           }
         ],
@@ -26065,7 +26058,6 @@
         "outputs": [
           {
             "label": "Shape Builder",
-            "required": "always",
             "note": "The form definition, read by **Create Shapes**."
           }
         ],
@@ -26248,7 +26240,6 @@
         "outputs": [
           {
             "label": "Shape Builder",
-            "required": "always",
             "note": "The form definition, read by **Create Shapes**."
           }
         ],
@@ -26432,7 +26423,6 @@
         "outputs": [
           {
             "label": "Shape Builder",
-            "required": "always",
             "note": "The form definition, read by **Create Shapes**."
           }
         ],
@@ -26647,7 +26637,6 @@
         "outputs": [
           {
             "label": "Shape Builder",
-            "required": "always",
             "note": "The form definition, read by **Create Shapes**."
           }
         ],
@@ -26891,7 +26880,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The generated shapes. These are new points, not the seeds."
           }
         ],
@@ -31663,7 +31651,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The datasets that survived. Removal is whole-dataset, so no partial data reaches this pin."
           }
         ],
@@ -42156,7 +42143,6 @@
         "outputs": [
           {
             "label": "Texture Data",
-            "required": "always",
             "note": "The loaded texture data, ready for **Sample : Texture**."
           }
         ],
@@ -45931,7 +45917,6 @@
         "outputs": [
           {
             "label": "Sampler",
-            "required": "always",
             "note": "The sampling definition, read by **Cluster : Sample Neighbors**."
           }
         ],
@@ -45999,7 +45984,6 @@
         "outputs": [
           {
             "label": "Sampler",
-            "required": "always",
             "note": "The sampling definition, read by **Cluster : Sample Neighbors**."
           }
         ],
@@ -46143,7 +46127,6 @@
         "outputs": [
           {
             "label": "Sampler",
-            "required": "always",
             "note": "The sampling definition, read by **Cluster : Sample Neighbors**. Several on one pin each run their own pass."
           }
         ],
@@ -62723,12 +62706,10 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The paths, carrying what their contents summed to."
           },
           {
             "label": "Discarded",
-            "required": "always",
             "note": "Paths that enclosed no points although targets were present. Whether a path arrives here or on the main pin is what Output Mode decides."
           }
         ],
@@ -63091,7 +63072,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs, Blending and Apply Sampling."
           }
         ],
@@ -63585,7 +63565,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs, Blending and Apply Sampling."
           }
         ],
@@ -64226,7 +64205,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs, Blending and Apply Sampling."
           }
         ],
@@ -64830,7 +64808,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs and Apply Sampling."
           }
         ],
@@ -65456,7 +65433,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs and Apply Sampling."
           }
         ],
@@ -65845,7 +65821,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same datasets, carrying whatever counts were enabled, plus any tags."
           }
         ],
@@ -66128,7 +66103,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying whatever was enabled in Outputs and Apply Sampling."
           }
         ],
@@ -66588,7 +66562,6 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The same points, carrying an attribute per texture parameter that resolved."
           }
         ],
@@ -68843,13 +68816,12 @@
         "outputs": [
           {
             "label": "Out",
-            "required": "always",
             "note": "The surviving points, or in Write Result mode every point carrying its overlap count."
           },
           {
             "label": "Discarded",
-            "required": "conditional, only when the discard output is enabled",
-            "note": "The points that were pruned away. The setting describes it as authoring-time only, so it is a graph-building aid rather than part of a shipping route."
+            "note": "The points that were pruned away. The setting describes it as authoring-time only, so it is a graph-building aid rather than part of a shipping route.",
+            "condition": "only when the discard output is enabled"
           }
         ],
         "dynamic": null
@@ -69217,7 +69189,6 @@
         "outputs": [
           {
             "label": "Shape Builder",
-            "required": "always",
             "note": "The form definition, read by **Create Shapes**. Several builders on one pin produce several shapes per seed rather than a choice between them."
           }
         ],
@@ -75109,7 +75080,6 @@
         "outputs": [
           {
             "label": "Texture Param",
-            "required": "always",
             "note": "The parameter definition, read by every node that resolves textures off a material. **Get Texture Data** and **Sample : Texture** declare the pin required outright, so neither runs without one. **Sample : Line Trace** declares it only while its render-material output and that output's texture extraction are both on, and does not show the pin at all otherwise."
           }
         ],
@@ -75308,7 +75278,6 @@
         "outputs": [
           {
             "label": "Mesh",
-            "required": "optional",
             "note": "The dynamic mesh built from the cluster's enclosed loops."
           }
         ],
@@ -75367,7 +75336,6 @@
         "outputs": [
           {
             "label": "Mesh",
-            "required": "optional",
             "note": "The dynamic mesh, filled from the path outline."
           }
         ],
@@ -75435,7 +75403,6 @@
         "outputs": [
           {
             "label": "Mesh",
-            "required": "optional",
             "note": "The dynamic mesh, one per input dataset."
           }
         ],
@@ -76877,8 +76844,7 @@
         {
           "anchor": "whats_it_for",
           "style": "danger",
-          "title": "A spatial filter on an attribute set reads the world origin",
-          "text": "An attribute set has no positions, so each row reaches the filter stack as a default point at the world origin with default bounds. Attribute-reading filters are unaffected, but a spatial filter (Distance, the Inclusion family, Raycast) still runs and answers for a stack of coincident points at 0,0,0. Nothing is logged, and the uniform verdict reads as the filter having no effect."
+          "text": "**A spatial filter on an attribute set reads the world origin.** An attribute set has no positions, so each row reaches the filter stack as a default point at the world origin with default bounds. Attribute-reading filters are unaffected, but a spatial filter (Distance, the Inclusion family, Raycast) still runs and answers for a stack of coincident points at 0,0,0. Nothing is logged, and the uniform verdict reads as the filter having no effect."
         }
       ],
       "related": [
@@ -77753,7 +77719,6 @@
         "outputs": [
           {
             "label": "Vtx Property",
-            "required": "always",
             "note": "The property definition, read by **Cluster : Vtx Properties**."
           }
         ],

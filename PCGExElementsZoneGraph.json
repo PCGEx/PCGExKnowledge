@@ -180,7 +180,7 @@
       ]
     }
   },
-  "nodes": {
+  "entries": {
     "UPCGExClusterToZoneGraphSettings": {
       "id": "UPCGExClusterToZoneGraphSettings",
       "name": "Cluster to Zone Graph",

@@ -1,33 +1,33 @@
 {
-  "bundle_schema": "1.0.0",
+  "bundle_schema": "2.0.0",
   "generated": "2026-08-30",
   "plugins": [
     {
       "plugin": "PCGExElementsClustersSketch",
       "version": "0.1",
       "file": "PCGExElementsClustersSketch.json",
-      "nodes": 3,
+      "entries": 3,
       "concepts": 6
     },
     {
       "plugin": "PCGExElementsValency",
       "version": "0.4",
       "file": "PCGExElementsValency.json",
-      "nodes": 108,
+      "entries": 108,
       "concepts": 67
     },
     {
       "plugin": "PCGExElementsZoneGraph",
       "version": "1.1",
       "file": "PCGExElementsZoneGraph.json",
-      "nodes": 2,
+      "entries": 2,
       "concepts": 12
     },
     {
       "plugin": "PCGExtendedToolkit",
       "version": "0.78",
       "file": "PCGExtendedToolkit.json",
-      "nodes": 486,
+      "entries": 486,
       "concepts": 37
     }
   ]

@@ -1351,7 +1351,7 @@
       ]
     }
   },
-  "nodes": {
+  "entries": {
     "FPCGExConnectorConstraint": {
       "id": "FPCGExConnectorConstraint",
       "name": "Connector Constraints",
