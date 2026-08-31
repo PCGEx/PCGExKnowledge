@@ -2,7 +2,7 @@
 
 The PCGEx node knowledge base as raw, queryable JSON: one entry per documented node across [PCGEx (PCG Extended Toolkit)](https://github.com/Nebukam/PCGExtendedToolkit) and its sibling plugins, plus pointers into the concept documentation. It is rendered from the same verified card store that produces the [PCGEx GitBook](https://pcgex.gitbook.io/pcgex), so every purpose statement, pin contract, settings note and trap in here was authored against plugin source and ships with the hash of the source it describes.
 
-The primary consumer is the [PCGExAssistant](https://github.com/PCGEx/PCGExAssistant) companion plugin, which vendors this repository as its `Knowledge/` submodule and serves it to AI agents inside the Unreal editor. The data is published here, separately, so you can build your own tooling on it: an MCP server, a search index, a cheat sheet generator, whatever you need. Nothing in this repository is hand-edited; corrections happen in the card store and arrive with the next render.
+The primary consumer is the [PCGExAssistant](https://pcgex.gitbook.io/pcgex/essentials/tools/assistant) companion plugin, which vendors this repository as its `Knowledge/` submodule and serves it to AI agents inside the Unreal editor. The data is published here, separately, so you can build your own tooling on it: an MCP server, a search index, a cheat sheet generator, whatever you need. Nothing in this repository is hand-edited; corrections happen in the card store and arrive with the next render.
 
 ## Files
 
