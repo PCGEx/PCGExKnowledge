@@ -12,7 +12,7 @@
     "name": "Constraints",
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
-    "purpose": "Authored relationships the editor maintains between elements while you work: Along, Length, and how to attach one.",
+    "purpose": "A constraint is an authored relationship between sketch elements that the editor keeps true while you edit: hold this vertex on that line, keep this edge at that length.",
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/constraints"
   },
   {
@@ -36,12 +36,12 @@
     "name": "Sites",
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
-    "purpose": "Free-placed cell markers with their own data layer, printed as plain points to seed Find Cells.",
+    "purpose": "A cluster drawn as walls and corridors implies rooms, and Find Cells is the PCGEx node that extracts them: it takes seed points and outputs the enclosed cells they land in.",
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/sites"
   },
   {
     "id": "working-with-cluster-sketch/working-with-cluster-sketch",
-    "name": "Cluster Sketches",
+    "name": "Overview",
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "Authoring clusters by hand the way a spline component authors a curve: place vertices, connect them, annotate them, and print the result into a graph.",
@@ -124,7 +124,7 @@
     "name": "Capturing Scenes",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels to PCG data.",
+    "purpose": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels or actor subtrees to PCG data.",
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/capturing-scenes"
   },
   {
@@ -311,6 +311,14 @@
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks"
   },
   {
+    "id": "working-with-pcgex/tips-and-tricks/collections-of-anything",
+    "name": "Collections of Anything",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "purpose": "Staging assets nothing spawns, materials, textures, particle systems, sound cues, as Generic entries of an Omni Collection.",
+    "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks/collections-of-anything"
+  },
+  {
     "id": "working-with-pcgex/tips-and-tricks/vanilla-pcg",
     "name": "Vanilla PCG",
     "plugin": "PCGExtendedToolkit",
@@ -396,6 +404,14 @@
     "kind": "concept",
     "purpose": "A cage marks a position in your authoring layout and declares what may sit there.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages"
+  },
+  {
+    "id": "working-with-valency/authoring/cages/assembly-cages",
+    "name": "Assembly Cages",
+    "plugin": "PCGExElementsValency",
+    "kind": "concept",
+    "purpose": "A Valency Assembly Cage says: everything attached to this cage is one module.",
+    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/assembly-cages"
   },
   {
     "id": "working-with-valency/authoring/cages/footprints",
@@ -570,7 +586,7 @@
     "name": "Grammar",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A grammar replaces that decision with an authored one.",
+    "purpose": "What a grammar replaces, what it buys over a growth strategy, and the two ideas that make one readable: descriptors and edge scope.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar"
   },
   {
@@ -586,8 +602,16 @@
     "name": "Branching",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Three node types shape control flow across a grammar, and their names are the least reliable in the plugin.",
+    "purpose": "Branch, Choice and Merge: which one actually chooses, which one waits, and how rule state behaves when control flow forks.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/branching"
+  },
+  {
+    "id": "working-with-valency/generating/grammar/data-bindings",
+    "name": "Data Bindings",
+    "plugin": "PCGExElementsValency",
+    "kind": "concept",
+    "purpose": "A grammar asset is one recipe, and every building it grows follows it with the same numbers.",
+    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/data-bindings"
   },
   {
     "id": "working-with-valency/generating/grammar/grammar-nodes",
@@ -602,7 +626,7 @@
     "name": "Joining and Pruning",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Every other grammar node extends the structure.",
+    "purpose": "Join and Prune: the nodes that work on what a grammar already built, one closing gaps between branches and one taking back what led nowhere.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/joining-and-pruning"
   },
   {
@@ -610,7 +634,7 @@
     "name": "Narrowing the Frontier",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Everything a Filter can do is a narrowing, and there are five of them.",
+    "purpose": "The Filter node: five independent narrowings behind one word, the order they run in, and the two that look alike and anchor at opposite ends.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/narrowing-the-frontier"
   },
   {
@@ -626,7 +650,7 @@
     "name": "Regions and Rules",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A rule is a preference or a requirement applied to placement.",
+    "purpose": "Regions, and the biases and constraints they carry: where a rule applies, how nesting resolves, and the two-stage draw rules actually steer.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/regions-and-rules"
   },
   {
@@ -634,7 +658,7 @@
     "name": "Sequencing",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Where branching.md decides which paths run, these four decide when.",
+    "purpose": "Sequence, Repeat, Optional and Yield: doing things in order, doing them several times, and the node that quietly rewires the loop it sits in.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/sequencing"
   },
   {
@@ -650,7 +674,7 @@
     "name": "Targets",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Most of a grammar builds outward without caring where it ends up.",
+    "purpose": "Seek and Route: two nodes that build toward somewhere, one by feeling its way and one by solving first, and how a grammar says what to aim at.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/targets"
   },
   {
@@ -818,7 +842,7 @@
     "name": "Biases",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A bias reshapes a draw.",
+    "purpose": "Every way to reshape which module gets picked, how the two families differ, and how several biases compose into one number.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/biases"
   },
   {
@@ -826,7 +850,7 @@
     "name": "Debugging",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Most Valency failures are quiet.",
+    "purpose": "Where Valency tells you what went wrong, what the common failures look like from the outside, and which page fixes each one.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/debugging"
   },
   {
@@ -972,6 +996,16 @@
     "kind": "concept",
     "purpose": "A road's shape between its points is a bezier, and the tangent length at each point is what decides how tightly it turns.",
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/tangent-control"
+  },
+  {
+    "id": "APCGExAssemblyRootActor",
+    "name": "Assembly Root",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "asset",
+    "purpose": "A placeable marker that declares an arrangement.",
+    "situation": "A kit piece is assembled from several placed actors in a level and needs to become one row that a single pick places as a unit.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/assembly-root"
   },
   {
     "id": "APCGExSocketActor",
@@ -1436,6 +1470,17 @@
     "purpose": "The metric sibling of Bias : Depth Preference.",
     "situation": "A library of mixed-size pieces where counting attachments no longer describes how far the run has got.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/biases/bias-distance-preference"
+  },
+  {
+    "id": "FPCGExGrammarBias_ModuleDescriptor",
+    "name": "Bias : Module Descriptor",
+    "category": "Bias",
+    "plugin": "PCGExElementsValency",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Leans the draw toward modules a descriptor names, using the same descriptor a placing node takes.",
+    "situation": "Wanting more of a family of modules somewhere without forbidding the rest, when a tag on its own does not describe the family.",
+    "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/biases/bias-module-descriptor"
   },
   {
     "id": "FPCGExGrammarBias_PityCounter",
@@ -3543,7 +3588,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "instanced_factory",
-    "purpose": "The exporter that runs when a PCG Data Asset Collection captures a level and nothing else is assigned.",
+    "purpose": "The exporter that runs when a PCG Data Asset Collection captures a level, or an actor's attached subtree, and nothing else is assigned.",
     "situation": "A level was dressed by hand, and the capture has to keep its meshes, its configured actors and its nested level instances apart.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter-default"
   },
@@ -5419,8 +5464,8 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "asset",
-    "purpose": "A weighted list of PCG data assets, where a row can also be a level.",
-    "situation": "A level was dressed by hand, and it needs to become one row that a single pick can place.",
+    "purpose": "A weighted list of PCG data assets, where a row can also be a level, or one actor placed in a level.",
+    "situation": "A level was dressed by hand, or an arrangement was built under one actor, and it needs to become one row that a single pick can place.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection"
   },
   {

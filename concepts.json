@@ -11,6 +11,8 @@
       "The gesture set",
       "Snapping",
       "Placement guides",
+      "Surface snapping",
+      "The transform gizmo",
       "Crossings stay crossings",
       "Cleanups and validation"
     ],
@@ -21,7 +23,7 @@
     "title": "Constraints",
     "plugin": "PCGExElementsClustersSketch",
     "path": "working-with-cluster-sketch/constraints.md",
-    "description": "Authored relationships the editor maintains between elements while you work: Along, Length, and how to attach one.",
+    "description": "A constraint is an authored relationship between sketch elements that the editor keeps true while you edit: hold this vertex on that line, keep this edge at that length.",
     "outline": [
       "Attaching one",
       "Along",
@@ -65,7 +67,7 @@
     "title": "Sites",
     "plugin": "PCGExElementsClustersSketch",
     "path": "working-with-cluster-sketch/sites.md",
-    "description": "Free-placed cell markers with their own data layer, printed as plain points to seed Find Cells.",
+    "description": "A cluster drawn as walls and corridors implies rooms, and Find Cells is the PCGEx node that extracts them: it takes seed points and outputs the enclosed cells they land in.",
     "outline": [
       "The Sites edit layer",
       "Site data",
@@ -76,12 +78,12 @@
   },
   {
     "id": "working-with-cluster-sketch/working-with-cluster-sketch",
-    "title": "Cluster Sketches",
+    "title": "Overview",
     "plugin": "PCGExElementsClustersSketch",
     "path": "working-with-cluster-sketch/working-with-cluster-sketch.md",
     "description": "Authoring clusters by hand the way a spline component authors a curve: place vertices, connect them, annotate them, and print the result into a graph.",
     "outline": [
-      "Beta",
+      "Stable Beta",
       "A model, printed on demand",
       "What a sketch holds",
       "Related"
@@ -228,7 +230,7 @@
     "title": "Capturing Scenes",
     "plugin": "PCGExtendedToolkit",
     "path": "working-with-pcgex/asset-staging/capturing-scenes.md",
-    "description": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels to PCG data.",
+    "description": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels or actor subtrees to PCG data.",
     "outline": [
       "Actors that remember their settings",
       "Harvesting a level",
@@ -589,6 +591,23 @@
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks"
   },
   {
+    "id": "working-with-pcgex/tips-and-tricks/collections-of-anything",
+    "title": "Collections of Anything",
+    "plugin": "PCGExtendedToolkit",
+    "path": "working-with-pcgex/tips-and-tricks/collections-of-anything.md",
+    "description": "Staging assets nothing spawns, materials, textures, particle systems, sound cues, as Generic entries of an Omni Collection.",
+    "outline": [
+      "The entry is the pick, the path is the payload",
+      "An empty Asset slot still picks",
+      "Bounds",
+      "Specialising the picker",
+      "Fallback: typed collections",
+      "An entry without an override writes the collection default",
+      "Where an actor collection already does it"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks/collections-of-anything"
+  },
+  {
     "id": "working-with-pcgex/tips-and-tricks/vanilla-pcg",
     "title": "Vanilla PCG",
     "plugin": "PCGExtendedToolkit",
@@ -755,6 +774,23 @@
       "Reach"
     ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages"
+  },
+  {
+    "id": "working-with-valency/authoring/cages/assembly-cages",
+    "title": "Assembly Cages",
+    "plugin": "PCGExElementsValency",
+    "path": "working-with-valency/authoring/cages/assembly-cages.md",
+    "description": "A Valency Assembly Cage says: everything attached to this cage is one module.",
+    "outline": [
+      "One module from the subtree",
+      "Against a Module Cage",
+      "Against an ordinary cage",
+      "Creating one",
+      "Spawning it",
+      "The cage must be reachable when the library stages",
+      "When to reach for one"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/assembly-cages"
   },
   {
     "id": "working-with-valency/authoring/cages/footprints",
@@ -1075,7 +1111,7 @@
     "title": "Grammar",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/README.md",
-    "description": "A grammar replaces that decision with an authored one.",
+    "description": "What a grammar replaces, what it buys over a growth strategy, and the two ideas that make one readable: descriptors and edge scope.",
     "outline": [
       "A grammar is a growth strategy",
       "What it buys",
@@ -1085,6 +1121,7 @@
       "What each step sees",
       "Two different things are called scope",
       "Rules reshape and refuse",
+      "Values can come from the points",
       "Overriding properties per node"
     ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar"
@@ -1110,7 +1147,7 @@
     "title": "Branching",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/branching.md",
-    "description": "Three node types shape control flow across a grammar, and their names are the least reliable in the plugin.",
+    "description": "Branch, Choice and Merge: which one actually chooses, which one waits, and how rule state behaves when control flow forks.",
     "outline": [
       "Branch runs every arm",
       "An arm dealt nothing",
@@ -1120,6 +1157,22 @@
       "Rule state across a fork"
     ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/branching"
+  },
+  {
+    "id": "working-with-valency/generating/grammar/data-bindings",
+    "title": "Data Bindings",
+    "plugin": "PCGExElementsValency",
+    "path": "working-with-valency/generating/grammar/data-bindings.md",
+    "description": "A grammar asset is one recipe, and every building it grows follows it with the same numbers.",
+    "outline": [
+      "The row is the one PCGEx uses everywhere",
+      "Which seed a value follows",
+      "When the attribute is missing",
+      "A bound value is checked where it is read, and some are corrected",
+      "What it costs",
+      "Grammars saved before bindings existed"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/data-bindings"
   },
   {
     "id": "working-with-valency/generating/grammar/grammar-nodes",
@@ -1137,7 +1190,7 @@
     "title": "Joining and Pruning",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/joining-and-pruning.md",
-    "description": "Every other grammar node extends the structure.",
+    "description": "Join and Prune: the nodes that work on what a grammar already built, one closing gaps between branches and one taking back what led nowhere.",
     "outline": [
       "Join spans two open connectors",
       "Both Ends In Scope and Cross Branch Only cancel out",
@@ -1155,7 +1208,7 @@
     "title": "Narrowing the Frontier",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/narrowing-the-frontier.md",
-    "description": "Everything a Filter can do is a narrowing, and there are five of them.",
+    "description": "The Filter node: five independent narrowings behind one word, the order they run in, and the two that look alike and anchor at opposite ends.",
     "outline": [
       "Where it starts from",
       "The five narrowings",
@@ -1188,7 +1241,7 @@
     "title": "Regions and Rules",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/regions-and-rules.md",
-    "description": "A rule is a preference or a requirement applied to placement.",
+    "description": "Regions, and the biases and constraints they carry: where a rule applies, how nesting resolves, and the two-stage draw rules actually steer.",
     "outline": [
       "Where a rule lives",
       "Region state is fresh, inline state persists",
@@ -1205,7 +1258,7 @@
     "title": "Sequencing",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/sequencing.md",
-    "description": "Where branching.md decides which paths run, these four decide when.",
+    "description": "Sequence, Repeat, Optional and Yield: doing things in order, doing them several times, and the node that quietly rewires the loop it sits in.",
     "outline": [
       "Sequence finishes each step before the next begins",
       "Sequence steps default to the whole frontier",
@@ -1237,7 +1290,7 @@
     "title": "Targets",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/generating/grammar/targets.md",
-    "description": "Most of a grammar builds outward without caring where it ends up.",
+    "description": "Seek and Route: two nodes that build toward somewhere, one by feeling its way and one by solving first, and how a grammar says what to aim at.",
     "outline": [
       "A target is a live connector",
       "A target-fed node waits for its contributions",
@@ -1535,7 +1588,7 @@
     "title": "Biases",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/systems/biases.md",
-    "description": "A bias reshapes a draw.",
+    "description": "Every way to reshape which module gets picked, how the two families differ, and how several biases compose into one number.",
     "outline": [
       "Two families",
       "Bias nodes",
@@ -1553,7 +1606,7 @@
     "title": "Debugging",
     "plugin": "PCGExElementsValency",
     "path": "working-with-valency/systems/debugging.md",
-    "description": "Most Valency failures are quiet.",
+    "description": "Where Valency tells you what went wrong, what the common failures look like from the outside, and which page fixes each one.",
     "outline": [
       "Diagnostics land on the node",
       "The Output Log",

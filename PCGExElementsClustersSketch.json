@@ -120,10 +120,10 @@
       "covers": [
         "FPCGExClusterSketchCollectionEntry"
       ],
-      "purpose": "A collection whose entries are Cluster Sketch assets, so hand-authored clusters distribute with the same weighted machinery as any other staged asset. An entry names a sketch, or flips to a sub-collection of any type; a distribution node picks one per point, and Staging : Load Sketch prints what was picked.",
+      "purpose": "A collection whose entries are Cluster Sketch assets, so hand-authored clusters distribute with the same weighted machinery as any other staged asset. An entry names a sketch, or flips to a sub-collection of any type; a distribution node picks one per point, and Staging : Load Sketch prints what was picked. A level export fills rows too: a Cluster Sketch component met in a captured level or actor subtree becomes a point on the export's Sketches pin, backed by a row in the shared sketch collection the host maintains, referencing the component's asset or holding an export-owned copy of its inline sketch.",
       "situation": "Hand-authored structural pieces have to be picked per point, weighted and categorized like a library of meshes.",
       "mechanism": {
-        "text": "Entries travel the distribute and swap pipeline unmodified through the same type-blind transport as every other collection, so weighted picks, category filtering, collection maps and sub-collection recursion all behave as standard. What is sketch-specific is the staging bounds: a rebuild measures each entry from the sketch model itself, resolving lattice-bound vertices through the sketch's snap provider, with the assets a sketch references loaded first so nested dependencies resolve before measuring. A staged pick therefore fits and justifies like any other asset, with nothing spawnable behind it until Load Sketch prints."
+        "text": "Entries travel the distribute and swap pipeline unmodified through the same type-blind transport as every other collection, so weighted picks, category filtering, collection maps and sub-collection recursion all behave as standard. What is sketch-specific is the staging bounds: a rebuild measures each entry from the sketch model itself, resolving lattice-bound vertices through the sketch's snap provider, with the assets a sketch references loaded first so nested dependencies resolve before measuring. A staged pick therefore fits and justifies like any other asset, with nothing spawnable behind it until Load Sketch prints. An inline row measures its export-owned copy the same way, and Load Sketch prints the copy as it would an asset."
       },
       "off_label": [
         {
@@ -136,7 +136,7 @@
           "display": "Entries",
           "type": "TArray<FPCGExClusterSketchCollectionEntry>",
           "see": "FPCGExClusterSketchCollectionEntry",
-          "semantics": "The only type-specific field is Sketch; entries carry no descriptor block and the collection no type-level globals, because the sketch asset itself is the whole payload."
+          "semantics": "The only type-specific field a hand-authored row exposes is Sketch; entries carry no descriptor block and the collection no type-level globals, because the sketch itself is the whole payload. Source is read-only: a row you add references an asset, and only a level export produces Inline rows, whose copy is not exposed for editing. The copy is not edited in the collection: the component is where the sketch is authored, and re-exporting refreshes the row."
         }
       },
       "inherits": [
@@ -147,6 +147,11 @@
           "style": "info",
           "text": "A staged sketch pick produces a cluster at execute time, through Staging : Load Sketch; there is no mesh or actor behind the entry.",
           "anchor": "whats_it_for"
+        },
+        {
+          "style": "info",
+          "text": "An inline row is identified by a checksum of its content, the way a mesh row is by its mesh and component settings. Components carrying identical inline sketches collapse into one shared row, and editing a component changes the checksum, so a re-export replaces the row instead of adding one.",
+          "anchor": "Entries"
         }
       ],
       "related": [
@@ -162,7 +167,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/cluster-sketch-collection",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Collections/PCGExClusterSketchCollection.h",
-        "hash": "260a84f22ea5777d25119986a5c16089fc7c8ceb"
+        "hash": "d2db5290206384443f3fb18230fb64bf0a476165"
       }
     },
     "UPCGExGetSketchDataSettings": {
@@ -645,7 +650,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExStagingLoadSketch.h",
-        "hash": "60c465b99efa47bf085263e74796f195a623d43f"
+        "hash": "e352ced80d1ccf5b6e846efdb6c1b64efc553172"
       }
     }
   }

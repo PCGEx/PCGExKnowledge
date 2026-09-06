@@ -87,6 +87,7 @@
     "FPCGExValueHashFilterConfig": "UPCGExValueHashFilterProviderSettings",
     "FPCGExVolumeFilterConfig": "UPCGExVolumeFilterProviderSettings",
     "FPCGExVoronoiSitesOutputDetails": "UPCGExBuildVoronoiGraph2DSettings",
+    "IPCGExAssemblyRoot": "APCGExAssemblyRootActor",
     "UPCGExActionFactoryData": "UPCGExActionProviderSettings",
     "UPCGExActionWriteValuesFactory": "UPCGExActionWriteValuesProviderSettings",
     "UPCGExActorContentFilter": "UPCGExDefaultActorContentFilter",
@@ -1999,6 +2000,11 @@
           "name": "Level",
           "display_name": "Level",
           "tooltip": "Export a level to an embedded PCGDataAsset"
+        },
+        {
+          "name": "Actor",
+          "display_name": "Actor",
+          "tooltip": "Export an actor's attached subtree, as if it were a level, to an embedded PCGDataAsset. Points are relative to the actor."
         }
       ]
     },
@@ -6439,6 +6445,70 @@
     }
   },
   "entries": {
+    "APCGExAssemblyRootActor": {
+      "id": "APCGExAssemblyRootActor",
+      "name": "Assembly Root",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExCollections",
+      "classification": "asset",
+      "covers": [
+        "IPCGExAssemblyRoot"
+      ],
+      "purpose": "A placeable marker that declares an arrangement. Attach actors under it in a level, point a **PCG Data Asset Collection** row at it with Source set to Actor, and rebuilding staging exports everything attached below it as if that subtree were a level of its own, with every point expressed relative to the marker. The marker authors nothing and spawns nothing: it has no mesh, no collision, and only an editor billboard to grab it by. Any actor can serve as an Actor row's source, so what the marker adds is intent the tooling can read: the export machinery treats one it meets inside an arrangement as a grouping pivot that is never an entry, and Valency cages read the same interface. The interface behind it is what a C++ actor implements to bound the descent or supply its own frame.",
+      "situation": "A kit piece is assembled from several placed actors in a level and needs to become one row that a single pick places as a unit.",
+      "mechanism": {
+        "text": "The marker's transform is the frame: every point in the exported asset is that actor's world transform measured from the marker, scale included, so the arrangement carries no trace of where it stood. Content is the attached subtree: an actor attached to the marker is content, and so is everything attached to that actor, with the marker itself left out of the result. What each content actor becomes follows the ordinary export rules of the row's **Level Data Exporter**, meshes as staged points, plain actors as an embedded Actor Collection carrying their deltas, and a socket provider under the marker becomes a socket of the row in the same frame. Met inside an export, whether attached under another marker or standing in a level exported whole, a marker contributes nothing and is skipped while its children keep exporting as ordinary content of the outer frame."
+      },
+      "off_label": [
+        {
+          "claim": "Standing in a level that a Level row exports whole, the marker vanishes from the result while its attached actors export as ordinary level content, so it doubles as an outliner grouping pivot that leaves no entry behind.",
+          "grounded_in": "FPCGExLevelExportSource::FromWorld lists every persistent-level actor; UPCGExDefaultLevelDataExporter's claim pass skips any IPCGExAssemblyRoot implementer that UPCGExActorContentFilter::IsInfrastructureActor rejects, and the marker is constructed hidden in game, which that predicate rejects."
+        }
+      ],
+      "hints": [
+        {
+          "style": "warning",
+          "text": "Markers do not nest. A marker attached under another one is skipped, and its subtree flattens into the outer arrangement in the outer frame. One arrangement per row, one marker per arrangement.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "The class is Blueprintable, so a subclass can carry its own components or editor visuals. Deciding what counts as content and which frame the points are expressed in are C++ overrides of the interface; a Blueprint subclass inherits the defaults, every attached descendant and the actor's own transform.",
+          "anchor": "whats_it_for"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/asset-staging/capturing-scenes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/capturing-scenes"
+        },
+        {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection"
+        },
+        {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/level-data-exporter.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter"
+        },
+        {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/level-export-handlers.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-export-handlers"
+        },
+        {
+          "path": "node-library/staging/common-settings/socket-provider.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/socket-provider"
+        },
+        {
+          "path": "node-library/staging/staging-load-pcgdata.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-pcgdata"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/assembly-root",
+      "source": {
+        "file": "PCGExCollections/Public/PCGExAssemblyRootActor.h",
+        "hash": "ab108167ac0322f81ab522a280c70c97051c30a6"
+      }
+    },
     "APCGExSocketActor": {
       "id": "APCGExSocketActor",
       "name": "Socket Actor",
@@ -7175,7 +7245,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-artifacts-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "119ad20feaf1d80a047d62df966b5245b50116c0"
+        "hash": "ab65cd41e01163867851b4cbcd675bb4b21fc3dd"
       }
     },
     "FPCGExCellConstraintsDetails": {
@@ -7441,7 +7511,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-constraints-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "119ad20feaf1d80a047d62df966b5245b50116c0"
+        "hash": "ab65cd41e01163867851b4cbcd675bb4b21fc3dd"
       }
     },
     "FPCGExCellGrowthDetails": {
@@ -7552,7 +7622,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-growth-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "119ad20feaf1d80a047d62df966b5245b50116c0"
+        "hash": "ab65cd41e01163867851b4cbcd675bb4b21fc3dd"
       }
     },
     "FPCGExCellSeedMutationDetails": {
@@ -7700,7 +7770,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-seed-mutation-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "119ad20feaf1d80a047d62df966b5245b50116c0"
+        "hash": "ab65cd41e01163867851b4cbcd675bb4b21fc3dd"
       }
     },
     "FPCGExCollisionDetails": {
@@ -9399,7 +9469,7 @@
         "bQuietUnmatchedTargetWarning": {
           "display": "└─ Quiet Unmatched Warning",
           "type": "bool",
-          "tooltip": "If enabled, will throw a warning when there is no valid target matches.",
+          "tooltip": "If enabled, suppresses the warning thrown when an input has no valid target match.",
           "default": "true",
           "edit_condition": "!bSplitUnmatched && Usage != EPCGExMatchingDetailsUsage::Filter",
           "edit_condition_hides": true,
@@ -9496,7 +9566,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/matching-details",
       "source": {
         "file": "PCGExMatching/Public/Details/PCGExMatchingDetails.h",
-        "hash": "efe3b36c85ccc0514f605ccd54cde25edf9042dd"
+        "hash": "5f908d4da9450e7a6711995c4ec2928ec0db81f0"
       }
     },
     "FPCGExNodeSelectionDetails": {
@@ -10346,8 +10416,7 @@
           "tooltip": "If enabled, sampling direction will be inverted.",
           "default": "false",
           "overridable": true,
-          "semantics": "The mirror for the whole composited field, applied after **Size** has set the length so the two do not fight. Each tensor carries an **Invert** of its own inside **Sampling Mutations**, acting on that tensor alone before the field is built, and the two stack.",
-          "trap": "It rewrites the reported rotation as well as the direction, and the expression building that rotation uses the Y component twice and never reads Z, so what comes out describes no orientation the field gave. It reaches a reader through **Tensors Transform** and **Tensors : Extrude** in their `Absolute` and `Relative` modes, both of which ship on `Align`, which reads the direction.",
+          "semantics": "The mirror for the whole composited field, applied after **Size** has set the length so the two do not fight. Each tensor carries an **Invert** of its own inside **Sampling Mutations**, acting on that tensor alone before the field is built, and the two stack. It inverts the reported rotation as well as the direction, which is what separates it from a negative **Uniform Scale**.",
           "interacts_with": [
             "UniformScale",
             "bNormalize"
@@ -10477,7 +10546,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/common-settings/tensor-sampling-settings",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensorHandler.h",
-        "hash": "744b2ee0b645d1f9f038a7869b123614eab80e80"
+        "hash": "212207b3e89bc2cdd642f324cc9a220d3763cc16"
       }
     },
     "FPCGExTensorSamplingMutationsDetails": {
@@ -10508,8 +10577,7 @@
           "type": "bool",
           "tooltip": "If enabled, perform a dot product with the direction of the input transform and the resuting sample. If that dot product is < 0, the sampled direction and size is reversed.",
           "default": "false",
-          "semantics": "The comparison is made against the direction as **Invert** and **Scale** have already left it, not against the raw reading, so a scale that flattens an axis can decide the outcome. This is the only entry in the block that rewrites the reported rotation as well as the direction, and it does so only on the points where the test came out negative, so one tensor can hand back two kinds of rotation across one dataset.",
-          "trap": "The rotation it substitutes is not the sampled rotation turned round. The expression building it uses the Y component twice and never reads Z, so what comes out describes no orientation the field gave and is generally not unit length. It reaches a reader through **Tensors Transform** and **Tensors : Extrude** in their `Absolute` and `Relative` modes, both of which ship on `Align`, which reads the direction.",
+          "semantics": "The comparison is made against the direction as **Invert** and **Scale** have already left it, not against the raw reading, so a scale that flattens an axis can decide the outcome. This is the only entry in the block that rewrites the reported rotation as well as the direction, and it does so only on the points where the test came out negative, so one tensor can hand back two kinds of rotation across one dataset. The rotation it substitutes is the inverse of the sampled one.",
           "interacts_with": [
             "bInvert",
             "Scale",
@@ -10577,7 +10645,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/common-settings/tensor-sampling-mutations-details",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensor.h",
-        "hash": "b9bc9e4aa8438cff882e1e43de68f1a4c17b211a"
+        "hash": "b26f1b7461fef1b3c2c1205cafd0d8d0c5ad2bc3"
       }
     },
     "FPCGExTopologyDetails": {
@@ -11609,10 +11677,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "asset",
-      "purpose": "A weighted list of actor classes for staging to pick from. An entry can go past the class reference and record a placed actor: give it a level and an actor name, and the rebuild captures that actor's property delta, which Staging : Spawn Actors re-applies so the spawned actor comes out configured the way the placed one was. Source actors carrying a PCGEx property collection component hand their declared properties to the collection in the same pass, so one capture supplies both how an entry spawns and what data it carries. The capture is driven from the collection editor: Add Selected Actors turns a viewport selection into entries bound back to the actors they came from, and the toolbar's cleanup actions prune the entries whose source has since gone.",
+      "purpose": "A weighted list of actor classes for staging to pick from. An entry can go past the class reference and record a placed actor: point it at that actor, and the rebuild captures its property delta, which Staging : Spawn Actors re-applies so the spawned actor comes out configured the way the placed one was. Source actors carrying a PCGEx property collection component hand their declared properties to the collection in the same pass, so one capture supplies both how an entry spawns and what data it carries. The capture is driven from the collection editor: Add Selected Actors turns a viewport selection into entries bound back to the actors they came from, and the toolbar's cleanup actions prune the entries whose source has since gone.",
       "situation": "A handful of actors were dressed by hand in a level, and they now have to become a pickable library that spawns them configured the same way.",
       "mechanism": {
-        "text": "The asset holds one flat list of entries, each referencing an actor class or another collection as a sub-collection. A staging rebuild bakes every class-referencing entry: it spawns a throwaway actor in the editor to measure bounds, turns any socket components that actor carries into managed sockets, and notes whether the class defaults hold a PCG component. An entry that also names a delta source records the placed actor's difference from its class defaults, plus the asset paths that difference references, which is what keeps those assets reachable through a cook. All of that is editor work: a rebuild outside the editor bakes empty bounds and logs an error. Downstream, a pick resolves to the entry and the spawn node loads the class and re-applies the delta."
+        "text": "The asset holds one flat list of entries, each referencing an actor class or another collection as a sub-collection. A staging rebuild bakes every class-referencing entry: it spawns a throwaway actor in the editor to measure bounds, turns any socket components that actor carries into managed sockets, and notes whether the class defaults hold a PCG component. An entry that also names a delta source actor records that actor's difference from its class defaults, plus the asset paths that difference references, which is what keeps those assets reachable through a cook. A delta source that cannot be reached at rebuild time leaves the delta the entry already holds in place, with a warning. All of that is editor work: a rebuild outside the editor bakes empty bounds and logs an error. Downstream, a pick resolves to the entry and the spawn node loads the class and re-applies the delta."
       },
       "settings": {
         "BoundsEvaluator": {
@@ -11737,20 +11805,17 @@
               "default": "nullptr"
             },
             {
-              "name": "DeltaSourceLevel",
-              "display": "Delta Source Level",
-              "type": "TSoftObjectPtr<UWorld>",
-              "tooltip": "Optional: reference a specific level to capture property deltas from a placed actor. The actor's class must match the Actor class ref. During UpdateStaging, the property delta is computed from that instance vs its CDO."
-            },
-            {
-              "name": "DeltaSourceActorName",
-              "display": "Delta Source Actor Name",
-              "type": "FName",
-              "tooltip": "Name of the actor within the level to capture delta from."
+              "name": "DeltaSourceActor",
+              "display": "Delta Source Actor",
+              "type": "TSoftObjectPtr<AActor>",
+              "tooltip": "Optional: a placed actor to capture the property delta from (its class must match Actor). During UpdateStaging the delta is computed from that instance vs its CDO. Its level must not be World Partition: a closed partitioned level cannot be read."
             }
           ],
-          "semantics": "The collection editor's own actions author this list rather than the array widget. Add Selected Actors and the actor-name search mint entries keyed on their delta source, so re-running either over the same actors updates the existing rows instead of appending duplicates. Remove Missing drops entries whose source actor is gone from the level currently open and leaves entries pointing at other levels alone; Cleanup drops entries whose source level no longer exists, whose delta reference is half-filled, and that name neither an actor class nor a sub-collection.",
-          "trap": "An entry with a weight but no actor class and no sub-collection stays in the pick pool and produces nothing at spawn. Do Not Ignore Invalid Entries is the toggle that refuses it instead."
+          "semantics": "The collection editor's own actions author this list rather than the array widget. Add Selected Actors and the actor-name search mint entries keyed on their delta source actor, so re-running either over the same actors updates the existing rows instead of appending duplicates. Remove Missing drops entries whose source actor is gone from the level currently open and leaves entries pointing at other levels alone; Cleanup drops entries whose source actor's level no longer exists, and entries that name neither an actor class nor a sub-collection. Delta Source Actor is one reference to a placed actor, stored as its path. The row's use-selected button fills it from the viewport selection and sets Actor to that actor's class when the two differ; the browse button opens the actor's level when another one is current, then selects and frames it. At rebuild, a live actor is read directly and a closed level is loaded on demand, except a World Partition level, which loads with no actors and is refused: the entry then keeps its previous delta and warns. The found actor must be of the entry's Actor class, or the delta is skipped with a warning; an entry with no class takes the found actor's class and its delta in the same pass.",
+          "trap": "An entry with a weight but no actor class and no sub-collection stays in the pick pool and produces nothing at spawn. Do Not Ignore Invalid Entries is the toggle that refuses it instead.",
+          "interacts_with": [
+            "BoundsEvaluator"
+          ]
         },
         "SchemaMergePolicy": {
           "display": "Schema Merge Policy",
@@ -11813,7 +11878,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/actor-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExActorCollection.h",
-        "hash": "2c775807c21a284b6aa9c4929b01986cf371f1fc"
+        "hash": "15d21e4364905e8b7536f4273f467ede0996663a"
       }
     },
     "UPCGExAdjacencyStateFactoryProviderSettings": {
@@ -12000,7 +12065,7 @@
         "FPCGExAssetCollectionEntry",
         "FPCGExAssetStagingData"
       ],
-      "purpose": "The abstract base every collection type inherits, and the page for the settings that are identical on every one of them. It never appears in the new-asset menu; what it carries is the shared surface: collection tags, the declared properties and category override rows entries resolve against, the collection-wide rules that can overrule per-entry fitting and grammar, how a sub-collection entry reports its size, and the staging pipelines that run on rebuild. Each type's own page describes the asset its entries point at and what a rebuild bakes out of it; what these shared settings mean is stated here and holds across the family.",
+      "purpose": "The abstract base every collection type inherits, and the page for the settings that are identical on every one of them. It never appears in the new-asset menu; what it carries is the shared surface: collection tags, the declared properties and category override rows entries resolve against, the collection-wide rules that can overrule per-entry fitting and grammar, how a sub-collection entry reports its size, the footprint and picker class of Generic entries, and the staging pipelines that run on rebuild. Each type's own page describes the asset its entries point at and what a rebuild bakes out of it; what these shared settings mean is stated here and holds across the family.",
       "situation": "Reading any collection type's page and needing to know what its Collection Properties, Category Overrides, Global rules or Subcollection Bounds Mode do, since those are the same on all of them.",
       "mechanism": {
         "text": "A collection is a data asset holding a list of weighted entries, and this base owns the half of that asset that is not about any particular kind of content. Nothing on it loads an asset: a staging rebuild bakes each entry's asset path, bounds and sockets into the entry, and every stage before spawning reads those baked values. An entry whose weight is 0 is dropped from the pool outright, and a pick landing on a sub-collection entry descends into the child and rolls again on the child's own weights, however the top-level pick was decided. The asset carries a persistent identity, minted when it is created and re-minted on duplicate or on paste, which is what lets a recorded pick name this collection and no other. Each entry carries one of its own, so an outside reference to a single row keeps resolving as the list is reordered and rows come and go around it."
@@ -12376,6 +12441,24 @@
             "bDoNotIgnoreInvalidEntries"
           ]
         },
+        "DefaultStagingBounds": {
+          "display": "Default Staging Bounds",
+          "type": "FBox",
+          "tooltip": "Staged bounds for entry types with no asset to measure (Generic entries). Tune per entry with the staging bounds modifier.",
+          "default": "FBox(FVector(-50.0), FVector(50.0))",
+          "advanced": true,
+          "semantics": "Sits in the advanced rows of Settings, beside Subcollection Bounds Mode, and defaults to a one metre cube centred on the origin, -50 to 50 on every axis. It is copied into a Generic entry's staged bounds on every rebuild, whether or not the entry's Asset slot is filled, and nothing is loaded to compute it. Only Generic entries read it: an empty Mesh, Actor, Level or PCG data slot still stages an empty box, and an entry with authored staging keeps its authored bounds. The entry's own Bounds Staging Modifier applies on top, so a footprint that differs from the default is a modifier on the row.",
+          "interacts_with": [
+            "GenericAllowedClass"
+          ]
+        },
+        "GenericAllowedClass": {
+          "display": "Generic Allowed Class",
+          "type": "TSubclassOf<UObject>",
+          "tooltip": "Narrows the asset picker of Generic entries to this class and its subclasses. None = any asset. Picker only: existing entries are never validated against it.",
+          "advanced": true,
+          "semantics": "Editor-only, never cooked, in the advanced rows of Settings. It filters every place a Generic entry's Asset picker appears, the grid tile, the grid detail pane and the Entries tab, and nothing else: Content Browser drops are not filtered by it, and an entry already referencing an asset outside the class is neither flagged nor cleared. Changing it refreshes the pickers of the open editor on the next tick."
+        },
         "CollectionProperties": {
           "display": "Collection Properties",
           "type": "FPCGExPropertySchemaCollection",
@@ -12476,7 +12559,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "3d7a610351aaace64e9e133f4c17b103afc32360"
+        "hash": "794aed93216046aebba5ce2c30569fd6b15690e2"
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -13050,7 +13133,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingDistribute.h",
-        "hash": "edb07919d8b2a271be76c8d0078330579bf86eec"
+        "hash": "d267c23f387c2ac246e42798421e9f77464cdf43"
       }
     },
     "UPCGExAttributeCheckFilterProviderSettings": {
@@ -13240,7 +13323,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/attribute-hash",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExAttributeHash.h",
-        "hash": "8b846f59d49d51743af5577493eabd09a1c46fc9"
+        "hash": "3f9835716975c6c2c86743945a6227cb4a4aadbf"
       }
     },
     "UPCGExAttributeRemapSettings": {
@@ -13318,7 +13401,7 @@
           "overridable": true,
           "see": "FPCGExComponentRemapRule",
           "semantics": "Governs the first component and every component with no override of its own. Its `Clamp Input` bounds the automatic range rather than the values: the numbers that reach the curve are the raw input, so a clamp narrows what `In Min` and `In Max` resolve to and nothing else. `Clamp Output` does bound the written value.",
-          "trap": "`Use Absolute Range` and `Preserve Sign` do not compose as their names suggest. With both off, the input is still folded to its absolute value before remapping, so negative values come out positive.",
+          "trap": "`Preserve Sign` only does anything together with `Use Absolute Range`: the input is folded to its absolute value before remapping and its sign is put back afterwards. On its own it changes nothing, and with both off the raw value is remapped, sign included.",
           "interacts_with": [
             "Component2RemapOverride"
           ]
@@ -13378,7 +13461,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/modify/attribute-remap",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExAttributeRemap.h",
-        "hash": "dd032a56210c6c1554da6c66f1ba50294fdaa4ad"
+        "hash": "201e9d52062bb8264ac4f21211d17b3c0105ed6e"
       }
     },
     "UPCGExAttributeRollingSettings": {
@@ -15531,7 +15614,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/bin-packing-3d-q4realbpp",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Layout/PCGExBinPacking3D.h",
-        "hash": "5e7b9e0f1933625a3deaa54e93c75b60d3d3c318"
+        "hash": "7b5df7aaeb5f6e3fadbdf7cac4960fd2169cabe1"
       }
     },
     "UPCGExBinPackingSettings": {
@@ -15766,7 +15849,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/bin-packing",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Layout/PCGExBinPacking.h",
-        "hash": "b3bfd5d4b8b30b11c820d13edb1fbb533496f280"
+        "hash": "cfc1235e21b3e33a6b6fd3c7e927deee25125800"
       }
     },
     "UPCGExBitmaskCollection": {
@@ -16315,7 +16398,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/blending/uber-blend",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExBlendAttributes.h",
-        "hash": "c946acf1c7ac5d19a4ffe7847fa89b8d44ac906e"
+        "hash": "5a116fd6d66d709beeb49682aadf8bc2e9625be7"
       }
     },
     "UPCGExBlendOpFactory": {
@@ -17696,13 +17779,12 @@
         "Branches": {
           "display": "Branches",
           "type": "TArray<FPCGExBranchOnDataPin>",
-          "tooltip": "User-defined branch conditions and output pins.",
-          "overridable": true,
+          "tooltip": "User-defined branch conditions and output pins. Not overridable: pins are built in-editor from InternalBranches, which a runtime override cannot refresh.",
           "edit_condition": "SelectionMode == EPCGExControlFlowSelectionMode::UserDefined",
           "edit_condition_hides": true,
           "see": "FPCGExBranchOnDataPin",
           "semantics": "Order is precedence, since testing stops at the first branch that passes. Each entry owns the pin it feeds, so two entries sharing a Label collapse into one pin.",
-          "trap": "The pin set and the comparisons the element runs are both taken from a copy of this list that is rebuilt only when a property changes in the details panel. Overriding Branches at execution time therefore changes nothing.",
+          "trap": "Not overridable: the pin set and the comparisons the element runs are both taken from a copy of this list rebuilt when a property changes in the details panel, and a runtime value cannot refresh it.",
           "interacts_with": [
             "SelectionMode"
           ]
@@ -17711,7 +17793,7 @@
           "display": "Enum Picker",
           "type": "FPCGExEnumSelector",
           "tooltip": "Determines which Enum be used. Enum selection is ignored here, it's only using the class value internally.",
-          "edit_condition": "SelectionMode != EPCGExControlFlowSelectionMode::UserDefined && EnumSource == EPCGExEnumConstantSourceType::Selector",
+          "edit_condition": "SelectionMode != EPCGExControlFlowSelectionMode::UserDefined",
           "edit_condition_hides": true,
           "fields": [
             {
@@ -17770,7 +17852,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/branch-on-data",
       "source": {
         "file": "PCGExFoundations/Public/Elements/ControlFlow/PCGExBranchOnDataAttribute.h",
-        "hash": "164b0649ab4fc36cafd01f817eff00dc24db9f20"
+        "hash": "f0c4099d7f679fd3aa7a9bd76b38a5f15c47fb60"
       }
     },
     "UPCGExBreakClustersToPathsSettings": {
@@ -19746,7 +19828,7 @@
           },
           {
             "label": "Discarded",
-            "note": "Intended for the points the selection dropped.",
+            "note": "The points the selection dropped.",
             "condition": "when Output Discarded Points is on"
           }
         ],
@@ -19767,7 +19849,7 @@
           "tooltip": "Whether to output discard points to their own dataset",
           "default": "false",
           "overridable": true,
-          "semantics": "It adds the Discarded output pin. Where every point was discarded and nothing was picked, the whole dataset is forwarded down that pin intact, which is the one path through this setting that behaves as the label reads."
+          "semantics": "It adds the Discarded output pin, and the points the selection dropped leave through it as a dataset of their own, in their original order. Where nothing was picked and Invert is off, the whole input is forwarded down that pin intact."
         },
         "bAllowEmptyOutputs": {
           "display": "Allow Empty Outputs",
@@ -19781,13 +19863,6 @@
       "inherits": [
         "UPCGExPointsProcessorSettings",
         "UPCGExSettings"
-      ],
-      "hints": [
-        {
-          "style": "danger",
-          "text": "Output Discarded Points is broken for any selection that picked something. The discarded points are written over the start of the kept output instead of into the new dataset, so Out comes back holding the discarded points followed by whatever picked points ran past their count, and the Discarded pin receives an empty dataset. Only the all-discarded case routes correctly. Until this is fixed, take the remainder with a second Cherry Pick Points carrying the same pickers and Invert on.",
-          "anchor": "bOutputDiscardedPoints"
-        }
       ],
       "related": [
         {
@@ -19806,7 +19881,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/pickers/cherry-pick-points",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExCherryPickPoints.h",
-        "hash": "0b2f73d910810d809e86777d547c70913aa01cb8"
+        "hash": "5a83b2074d87f8632355f2c25754b6a68e28c250"
       }
     },
     "UPCGExClipper2BooleanSettings": {
@@ -22310,7 +22385,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-diffuse",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Elements/PCGExClusterDiffuse.h",
-        "hash": "6d79a4069fab50845976eb7aafb6c99b86af5045"
+        "hash": "911c4c55aa5b8ad8fc3e7d60b9f1bf378aa0bd1d"
       }
     },
     "UPCGExClusterDiffusionSettings": {
@@ -22736,7 +22811,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Elements/PCGExFloodFillClusters.h",
-        "hash": "58acb515cd797536c40a788067115fdb6c9a9baa"
+        "hash": "d1a1362f73a4ef9ebc3544a0adc9c517852b98c9"
       }
     },
     "UPCGExClusterFilterFactoryData": {
@@ -22818,7 +22893,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition/cluster-filter-definition",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExClusterFilter.h",
-        "hash": "19e980f0de85c77c4784436eebe4a0afc83c5eae"
+        "hash": "a2e7e5f171fe5b5793d43641ba7d745136473dba"
       }
     },
     "UPCGExClustersProcessorSettings": {
@@ -23921,7 +23996,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/enum-constant",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Constants/PCGExConstantEnum.h",
-        "hash": "a96397d95de721c7bb3992b96231399644417578"
+        "hash": "470d1c97ef48ce7da3c788ece1067420a5ae3414"
       }
     },
     "UPCGExConstantFilterProviderSettings": {
@@ -24109,8 +24184,7 @@
           "display": "Attribute Name Map",
           "type": "TMap<FName, FName>",
           "default": "{}",
-          "semantics": "One row per constant in the list, filled in when the palette entry is placed. The keys are fixed and the values are the names the attributes are written under.",
-          "trap": "A renamed value becomes the label of the pin the data is staged on as well as the attribute's name, while the pin the node declares keeps the constant's original name. Rename a row and that constant's output has no pin to arrive on."
+          "semantics": "One row per constant in the list, filled in when the palette entry is placed. The keys are fixed and the values are the names the attributes are written under. Renaming a row changes the attribute's name alone: the data still lands on the pin carrying the constant's original name."
         }
       },
       "inherits": [
@@ -24133,7 +24207,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/constant",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Constants/PCGExConstants.h",
-        "hash": "1e5903b3353d88d7ab808429e6509fa4485b034d"
+        "hash": "bf7497f69269ffa31f3986089c016e1b2e8372f5"
       }
     },
     "UPCGExCopyAttributesSettings": {
@@ -24504,7 +24578,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/transform/cluster-copy-to-points",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExCopyClustersToPoints.h",
-        "hash": "e933cec105e6c91341daeaff8f4ed3d6847f0f34"
+        "hash": "ac020bee8e6b95e14edb55a31ca0eea8eb69bc3e"
       }
     },
     "UPCGExCopyTagsSettings": {
@@ -25026,7 +25100,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/copy-to-path",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExCopyToPaths.h",
-        "hash": "f7f127a9f04c82782e0ad927f399a58970a96a1c"
+        "hash": "58e633c11ad4154190ff4679860e3922c08e6f3d"
       }
     },
     "UPCGExCopyToPointsSettings": {
@@ -25382,7 +25456,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-attributes",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchAttrToAttr.h",
-        "hash": "949004bf784c97a59562f44659d616caabd72f48"
+        "hash": "fe8749406dd86ed7b305da63ab0472bb78a061bb"
       }
     },
     "UPCGExCreateMatchByIndexSettings": {
@@ -25480,7 +25554,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-by-index",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchByIndex.h",
-        "hash": "75783136520d775bf622df4acaa31be647a48073"
+        "hash": "1adf52f36fe050de16ebdb322f574568233e3fdd"
       }
     },
     "UPCGExCreateMatchCopyTagsSettings": {
@@ -25574,7 +25648,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-copy-tags",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchCopyTags.h",
-        "hash": "9fe782de42406fba3f8bab584dbacdecb9bc65a7"
+        "hash": "033b13203b7da09ca40427e08242ac633b537f61"
       }
     },
     "UPCGExCreateMatchOverlapSettings": {
@@ -25692,7 +25766,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-overlap",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchOverlap.h",
-        "hash": "019a354a9ffcae193185182f5a251ce117dea77f"
+        "hash": "9adf30d44b554560c7605353e423e7ac107a36f4"
       }
     },
     "UPCGExCreateMatchRandomSettings": {
@@ -25796,7 +25870,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-random",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchRandom.h",
-        "hash": "0467312bb4de8d555991683da0f0af4c027387c2"
+        "hash": "316d1e2b81da0dd8b143e3b8df26af0ad19da299"
       }
     },
     "UPCGExCreateMatchSharedTagSettings": {
@@ -25901,7 +25975,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-shared-tag",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchSharedTag.h",
-        "hash": "5569560855c03aff3b11a99e1d67c1565eb9f504"
+        "hash": "113a2eaa1f489d02c2219b6e92bf41623c5029f0"
       }
     },
     "UPCGExCreateMatchTagToAttrSettings": {
@@ -26035,7 +26109,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-tags-attributes",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchTagToAttr.h",
-        "hash": "281f6ee72315ce959a3c3cf9e11485978e80f9f1"
+        "hash": "ac46f3314232419e36d4584c5e1549cdb7784deb"
       }
     },
     "UPCGExCreateShapeCircleSettings": {
@@ -26217,7 +26291,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-circle",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeCircle.h",
-        "hash": "497c4591c0832a512d6e78a0557f223a242ee231"
+        "hash": "e4f09b3c12b2c139deebfde12d7501feedeb7075"
       }
     },
     "UPCGExCreateShapeFiblatSettings": {
@@ -26844,7 +26918,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-polygon",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapePolygon.h",
-        "hash": "9b4c307a3edbfaadd343d67c657919e27752a83e"
+        "hash": "3a5f817422f94d846a26910179991185b6b6ce58"
       }
     },
     "UPCGExCreateShapesSettings": {
@@ -31409,10 +31483,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "instanced_factory",
-      "purpose": "The exporter that runs when a PCG Data Asset Collection captures a level and nothing else is assigned. It reads the level once and splits what it finds three ways: mesh components become one point each, actors become one point each carrying their class and the differences from its defaults, and nested level instances become one point each pointing at the world they reference. Which actors count, which of them are mesh containers, and what an actor's bounds are, are three separate objects assigned on it, so most of what a project wants to change here is a setting rather than a subclass. Classification and a post-export step are the two C++ overrides for the rest.",
+      "purpose": "The exporter that runs when a PCG Data Asset Collection captures a level, or an actor's attached subtree, and nothing else is assigned. It reads the source once and sorts what it finds by kind: mesh components become one point each, actors become one point each carrying their class and the differences from its defaults, nested level instances become one point each pointing at the world they reference, and any kind another module has registered an export handler for, cluster sketch components among them, lands on that handler's own pin with its own collection behind it. Which actors count, which of them are mesh containers, and what an actor's bounds are, are separate objects assigned on it, so most of what a project wants to change here is a setting rather than a subclass. Classification and a post-export step are the two C++ overrides for the rest.",
       "situation": "A level was dressed by hand, and the capture has to keep its meshes, its configured actors and its nested level instances apart.",
       "mechanism": {
-        "text": "One run reads the world's persistent level and sorts every actor the content filter admits into three kinds: nested level instances, mesh containers, and everything else. Each kind becomes its own point dataset on the generated asset, Meshes, Actors and Levels: one point per mesh component and one per instance of an instanced component, one point per actor, one point per level instance. Mesh points sit at their component's transform and carry the mesh's own bounds; actor and level points sit at the actor's transform and carry what the bounds evaluator returns. Identical things collapse into one entry whose weight is how many points stand behind it: meshes match on mesh asset and component settings, actors on class and captured configuration, levels on the world they reference. A level where nothing is admitted produces no data, and the row stages nothing."
+        "text": "One run reads the actors its source hands it, a whole persistent level or one actor's attached subtree, offers each admitted actor to the registered handlers first, and sorts what none of them claims into the built-in kinds: nested level instances, mesh containers, and everything else. Each kind becomes its own point dataset on the generated asset, Meshes, Actors and Levels, plus one pin per handler. Mesh points sit at their component's transform with the mesh's own bounds; actor and level points sit at the actor's transform with what the bounds evaluator returns; all in the source's frame, the world origin for a level and the root's transform for a subtree. Identical things collapse into one entry weighted by how many points stand behind it: meshes match on mesh asset and component settings, actors on class and captured configuration, levels on the world they reference."
       },
       "off_label": [
         {
@@ -31426,7 +31500,7 @@
           "type": "TObjectPtr<UPCGExActorContentFilter>",
           "tooltip": "Actor content filter. Defaults to UPCGExDefaultActorContentFilter.",
           "default": "Cast<UPCGExActorContentFilter>(\n\t\tObjectInitializer.CreateDefaultSubobject(this, TEXT(\"ContentFilter\"),\n\t\t                                         UPCGExActorContentFilter::StaticClass(), FilterClass, false, false))",
-          "semantics": "Membership only: it decides which actors reach the export, never which kind they come out as. Two rejections happen before it is consulted and nothing assigned here admits them back: actors tagged `StaticIgnore`, and socket-provider actors that ask to be stripped from content scans, so a socket marker that opts out never becomes a point. The shipped one rejects infrastructure first (hidden, editor-only and main-world-only actors, level script actors, Info actors, brushes that are not volumes, navigation data, and registered system actor classes), then narrows what is left by its own tag and class lists.",
+          "semantics": "Membership only: it decides which actors reach the export, never which kind they come out as. Two rejections happen before it is consulted and nothing assigned here admits them back: actors tagged `StaticIgnore`, and socket-provider actors that ask to be stripped from content scans, so a socket marker that opts out never becomes a point. The shipped one rejects infrastructure first (hidden, editor-only and main-world-only actors, level script actors, Info actors, brushes that are not volumes, navigation data, and registered system actor classes), then narrows what is left by its own tag and class lists. For an Actor row the subtree walk runs ahead of it, so the filter only ever sees actors the root admitted. A source where nothing is admitted produces no data, and the row stages nothing.",
           "interacts_with": [
             "MeshClassificator"
           ]
@@ -31454,12 +31528,13 @@
           "type": "bool",
           "tooltip": "When true, the exporter builds embedded mesh/actor collections and writes collection entry hashes instead of raw metadata.",
           "default": "true",
-          "semantics": "On, an actor collection is built inline from the actor entries and the actor points get their pick hashes here, while the mesh and nested-level entries are reported to the collection, which pools them across rows and writes those hashes afterwards. Off, no entries are built and no hashes are written: mesh points carry a `Mesh` asset path, actor points an `ActorClass` path, level points a `LevelAsset` path, and none of that is something the staging routes resolve. `ActorName` is written either way. Material capture, property deltas and the schema policy all hang off this being on.",
+          "semantics": "On, an actor collection is built inline from the actor entries and the actor points get their pick hashes here, while the mesh, nested-level and other shared-slot entries are reported to the collection, which pools them across rows and writes those hashes afterwards. Off, no entries are built and no hashes are written: mesh points carry a `Mesh` asset path, actor points an `ActorClass` path, level points a `LevelAsset` path, a handler's points whatever raw attributes it writes, and none of that is something the staging routes resolve. `ActorName` is written either way. Material capture, property deltas and the schema policy all hang off this being on.",
           "trap": "Off, a level-sourced row still stages successfully. It stages an asset whose points carry asset paths instead of picks, so the failure surfaces downstream, where a spawn route finds nothing to resolve.",
           "interacts_with": [
             "bCaptureMaterialOverrides",
             "bCapturePropertyDeltas",
-            "SchemaMergePolicy"
+            "SchemaMergePolicy",
+            "bUseRegisteredHandlers"
           ]
         },
         "bCaptureMaterialOverrides": {
@@ -31496,6 +31571,16 @@
             "bCapturePropertyDeltas"
           ]
         },
+        "bUseRegisteredHandlers": {
+          "display": "Use Registered Handlers",
+          "type": "bool",
+          "tooltip": "Run every export handler registered by other modules (e.g. cluster sketches). Off keeps only the built-in Mesh / Actor / Level handlers.",
+          "default": "true",
+          "semantics": "On, handlers other modules registered take part in both passes: one may claim an actor ahead of the built-in classification, and every one of them harvests its own kind of component from the export root and from mesh containers, onto its own pin and into its own collection slot. Off keeps the built-in Mesh, Actor and Level handlers only, so a level dressed with cluster sketch components exports them nowhere and nothing warns about it.",
+          "interacts_with": [
+            "bGenerateCollections"
+          ]
+        },
         "ValueTagMode": {
           "display": "Value Tag Mode",
           "type": "EPCGExValueTagMode",
@@ -31522,7 +31607,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "## An actor is one kind or the other\n\nAn actor treated as a mesh container contributes only mesh points, so its class and its configuration are recorded nowhere. An actor treated as an actor contributes one point at its own transform and no mesh points, even when it owns mesh components. Nothing in the level comes out as both.",
+          "text": "## An actor is one kind or the other\n\nAn actor treated as a mesh container contributes only mesh points, so its class and its configuration are recorded nowhere. An actor treated as an actor contributes one point at its own transform and no mesh points, even when it owns mesh components. Classification is single, and a registered handler harvesting its own kind of component from the root or from a mesh container is the one way an actor feeds more than one pin.",
           "anchor": "mechanism"
         }
       ],
@@ -31536,6 +31621,10 @@
           "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter"
         },
         {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/level-export-handlers.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-export-handlers"
+        },
+        {
           "path": "node-library/staging/collections/pcg-data-asset-collection/README.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection"
         },
@@ -31547,7 +31636,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter-default",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExDefaultLevelDataExporter.h",
-        "hash": "301268d0e7066b8b9356096e18fae5aaa289d2f6"
+        "hash": "85008fb9b8cd16b1622487e19052562d73db2e5d"
       }
     },
     "UPCGExDestroyActorSettings": {
@@ -36129,7 +36218,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-attribute-accumulation",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlAttributeAccumulation.h",
-        "hash": "a52752f4e8e2949e456d1424b3825000aed83f5e"
+        "hash": "9bc7b55ee99979c0eeafd185033372d85976483d"
       }
     },
     "UPCGExFillControlsAttributeThresholdProviderSettings": {
@@ -36580,8 +36669,8 @@
       ],
       "hints": [
         {
-          "style": "warning",
-          "text": "So that a filter can tell which way the fill is travelling, the edge is rebuilt before it is handed over with its start set to the Vtx being spread from. That start does not resolve back to a real Vtx, so every filter that reads the two endpoints answers here on a different Vtx than the same filter answers on anywhere else: **Edge Filter : Length**, **Num Vtx**, **Edge Direction**, **Endpoints Check**, **Endpoints Compare (Numeric)**, **Endpoints Compare (String)** and **Endpoints Regex**. Filters reading the edge point's own attributes, point filters included, are unaffected.",
+          "style": "info",
+          "text": "So that a filter can tell which way the fill is travelling, the edge is handed over oriented along the step: its start is the Vtx being spread from and its end is the candidate, whichever way round the cluster stores it. **Edge Direction** and any other filter reading the two endpoints answer on that orientation.",
           "anchor": "pins"
         },
         {
@@ -36619,7 +36708,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-edge-filters",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlEdgeFilters.h",
-        "hash": "f0cb4ecaf2ed38c8e4f32bf25e5158b81b1a6175"
+        "hash": "b94c4c7b0c3d3d24b00db623a797cd4b82cbd639"
       }
     },
     "UPCGExFillControlsFactoryProviderSettings": {
@@ -36968,7 +37057,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-heuristics-scoring",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlHxScoring.h",
-        "hash": "70890eda46543ff229e89a29c76276f9ac0df495"
+        "hash": "80ed24b17660b912900c15811688dce8ec3c5e8d"
       }
     },
     "UPCGExFillControlsHeuristicsThresholdProviderSettings": {
@@ -37209,7 +37298,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-keep-direction",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlKeepDirection.h",
-        "hash": "acaf9160efb3953f76417eb0849459aeffc5edbc"
+        "hash": "6f295c4186877de723195ff1dc48ee9a5a819bee"
       }
     },
     "UPCGExFillControlsLengthProviderSettings": {
@@ -37577,7 +37666,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition/point-filter-definition",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExPointFilter.h",
-        "hash": "d9a3fceedddc715656d6e1241b8139b07b8ec9f4"
+        "hash": "3f5c14e1dbb50e87d218dc8c33405e83b2980c6b"
       }
     },
     "UPCGExFilterGroupProviderSettings": {
@@ -42510,7 +42599,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/pathfinding-edges/goal-picker-index-attribute",
       "source": {
         "file": "PCGExElementsPathfinding/Public/GoalPickers/PCGExGoalPickerAttribute.h",
-        "hash": "af958702c79febe554c2478d59976b4ed34a17d3"
+        "hash": "ae7a8f60e604ba12a7b98732498ef9c5603fb221"
       }
     },
     "UPCGExGoalPickerRandom": {
@@ -42801,8 +42890,8 @@
           "anchor": "mechanism"
         },
         {
-          "style": "warning",
-          "text": "**Weight Factor** accepts zero and negative values. At zero the heuristic stops contributing under **Weighted Average** and **Weighted Sum**, and the other four modes divide each score by its own weight, so a zero there produces a combined number the consumer cannot rank. A negative weight sends the whole contribution below zero, which every mode carries through unchanged.",
+          "style": "info",
+          "text": "**Weight Factor** is held at or above 0.001, in the panel and again when the factory is built, so a heuristic cannot be zeroed or negated through it. Muting one means taking it off the pin, and the four modes that divide a score back out by its weight always have a positive number to divide by.",
           "anchor": "mechanism"
         },
         {
@@ -42851,7 +42940,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/heuristics/heuristics-definition",
       "source": {
         "file": "PCGExHeuristics/Public/Core/PCGExHeuristicsFactoryProvider.h",
-        "hash": "962b8f5cbe699cea82c5586bfcc9f78f233ff208"
+        "hash": "07768135347c530af011e3b528224bd878c00277"
       }
     },
     "UPCGExHeuristicsGradientProviderSettings": {
@@ -43613,7 +43702,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/edge-filters/edge-filter-edge-direction",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Edges/PCGExIsoEdgeDirectionFilter.h",
-        "hash": "dc1559436ec946b7ceb93d395716bead548755de"
+        "hash": "463c577ca3b68dba60c1c03e140c9d4ec14e54b2"
       }
     },
     "UPCGExIterationsSettings": {
@@ -43662,8 +43751,7 @@
           "tooltip": "Number of dataset to generate",
           "default": "0",
           "overridable": true,
-          "semantics": "The number of entries emitted, and so the number of loop passes. It defaults to zero, which emits nothing at all.",
-          "trap": "With Output Utils on and a count of exactly one, Progress divides by zero and the emitted value is not a number."
+          "semantics": "The number of entries emitted, and so the number of loop passes. It defaults to zero, which emits nothing at all."
         },
         "bOutputUtils": {
           "display": "Output Utils",
@@ -43671,9 +43759,8 @@
           "tooltip": "Output per-iteration params with useful values. Less optimized than the non-value version",
           "default": "false",
           "overridable": true,
-          "edit_condition": "Type = EPCGExIterationDataType::Params",
-          "semantics": "Replaces the shared empty object with one attribute set per iteration, each holding Iteration, NumIterations, Progress and OneMinusProgress. Progress runs from zero on the first entry to one on the last.",
-          "trap": "It is honoured only when Type is Attribute Set. Its edit condition is malformed, so the checkbox stays enabled under the other types while the element ignores it.",
+          "edit_condition": "Type == EPCGExIterationDataType::Params",
+          "semantics": "Replaces the shared empty object with one attribute set per iteration, each holding Iteration, NumIterations, Progress and OneMinusProgress. Progress runs from zero on the first entry to one on the last. It is honoured only when Type is Attribute Set, and the panel hides it under the other types.",
           "interacts_with": [
             "Type",
             "Iterations"
@@ -43707,7 +43794,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/iterations",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Utils/PCGExIterations.h",
-        "hash": "d78da1c2e57ec5a4fd6a2a675db3a0df9202127f"
+        "hash": "b2c9ca8eeb6f00893631421d69b8637453d57806"
       }
     },
     "UPCGExLaplacianRelax": {
@@ -43869,15 +43956,20 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "instanced_factory",
-      "purpose": "Level export is a replaceable step, and this is the class that replaces it. One exporter instance sits on a PCG Data Asset Collection and serves every level-sourced row on it, so what a subclass decides here is what capture means for that whole collection: which actors count, what shape the data comes out in, what runs alongside. A subclass declares its own settings, and they appear in the collection's details panel underneath the exporter field. The class is abstract, so something always stands in it: the shipped Default Level Data Exporter when nothing else is assigned.",
+      "purpose": "Level export is a replaceable step, and this is the class that replaces it. One exporter instance sits on a PCG Data Asset Collection and serves every Level and Actor row on it, so what a subclass decides here is what capture means for that whole collection: which actors count, what shape the data comes out in, what runs alongside. A subclass declares its own settings, and they appear in the collection's details panel underneath the exporter field. The class is abstract, so something always stands in it: the shipped Default Level Data Exporter when nothing else is assigned.",
       "situation": "A project needs its levels captured on its own terms, and the shipped exporter's rules are not those terms.",
       "mechanism": {
-        "text": "Rebuilding staging hands the exporter one loaded world and one empty PCG data asset, and expects tagged data on that asset in return. The row then stages what came back: the produced asset's path becomes the row's staged path, and the combined bounds of its spatial data become the row's bounds. An export that reports failure leaves the row staging nothing. There are two entry points into the same job: the simple one, which is what a Blueprint subclass overrides, and the full one, a C++ override that additionally reports which meshes and which nested level instances the level contributed. Those contributions are what lets the collection pool that storage across its rows, write the pick hashes and build the Collection Map afterwards, none of which the exporter does itself."
+        "text": "Rebuilding staging hands the exporter an export source and one empty PCG data asset, and expects tagged data on that asset in return. The source is a loaded world, the actors to consider and the frame the output is expressed in: the whole persistent level at the world origin for a Level row, or the root's attached descendants relative to the root for an Actor row, the root itself never exported. The row stages what came back, the asset's path and the combined bounds of its spatial data; a failed export leaves it staging nothing. Two entry points do the same job: the simple one, which a Blueprint subclass overrides and receives the world alone, and the full one, a C++ override that receives the source and also reports which meshes and nested level instances were contributed, so the collection can pool storage across rows, write the pick hashes and build the Collection Map afterwards."
       },
       "hints": [
         {
           "style": "warning",
-          "text": "## A Blueprint exporter cannot produce picks\n\nBlueprint reaches the simple entry point only. A subclass written there still runs and its asset still stages, but the mesh and level points come out carrying raw asset paths, with no pick hashes and no Collection Map for the staging routes to resolve against. Reporting contributions is a C++ override of the full entry point.",
+          "text": "## A Blueprint exporter cannot produce picks, and never sees a subtree\n\nBlueprint reaches the simple entry point only. A subclass written there still runs and its asset still stages, but the mesh and level points come out carrying raw asset paths, with no pick hashes and no Collection Map for the staging routes to resolve against. The simple entry point also receives the whole world and nothing else, so an Actor row exported through a Blueprint exporter captures the entire level at the world origin. Reporting contributions, and honouring a subtree, are C++ overrides of the full entry point.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "## For C++ overrides\n\nThe full entry point takes an export source, the world plus the actors to consider plus the frame. An override iterates the source's actor list and passes every transform it writes through the source's frame conversion, or a subtree stops being a level; the default exporter does both. A subtree source is built from the root's attached descendants. A root actor implementing `IPCGExAssemblyRoot` bounds that descent with its own prune predicate and can supply the frame; a root without it exports every descendant relative to its actor transform.",
           "anchor": "mechanism"
         },
         {
@@ -43903,7 +43995,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExLevelDataExporter.h",
-        "hash": "d59f11988d661061c2bafa04e5aa5b36d003edf7"
+        "hash": "62628a75a8835152750e38dd81bf9712f1db026f"
       }
     },
     "UPCGExLloydRelax2DSettings": {
@@ -44181,7 +44273,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-rule",
       "source": {
         "file": "PCGExMatching/Public/Core/PCGExMatchRuleFactoryProvider.h",
-        "hash": "0f1b517cb3ba747098401e6fa18e52cea8ae06f3"
+        "hash": "5d0c08b93c515381df26d6d7b474ffc426034b9e"
       }
     },
     "UPCGExMeanFilterProviderSettings": {
@@ -47179,7 +47271,7 @@
               "name": "RidgeOffset",
               "display": "Ridge Offset",
               "type": "double",
-              "tooltip": "Ridge offset for ridged variant",
+              "tooltip": "Ridge offset for the ridged and hybrid variants",
               "default": "1.0"
             },
             {
@@ -47223,7 +47315,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-fbm",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseFBM.h",
-        "hash": "9d6ddbae9be9ce3b32c855ee0b341dd3dde510b0"
+        "hash": "dd17ae1a94e76693b3e6ad495812c71f34b54e1b"
       }
     },
     "UPCGExNoise3DFlowProviderSettings": {
@@ -50366,7 +50458,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/transform/path-offset",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExOffsetPath.h",
-        "hash": "aa8557639cc0091cf295c2077ef8608ba18ab2e1"
+        "hash": "f2aa5add524581f47413f3ae3a557abc05a7203a"
       }
     },
     "UPCGExOmniCollection": {
@@ -50378,7 +50470,7 @@
       "covers": [
         "FPCGExOmniCollectionEntry"
       ],
-      "purpose": "Holds entries of every registered type in one weighted list. Mesh, skinned mesh, actor, level and PCG data asset rows sit side by side in one pool, along with any entry type a plugin registers. The entry type is a property of each row, picked when the row is created, so the asset itself carries no single type. Existing typed collections fold in through the merge action, which is also the route for converting one collection.",
+      "purpose": "Holds entries of every registered type in one weighted list. Mesh, skinned mesh, actor, level, PCG data asset and Generic rows sit side by side in one pool, along with any entry type a plugin registers. A Generic row holds any asset nothing spawns, and exists only here: no typed collection hosts it. The entry type is a property of each row, picked when the row is created, so the asset itself carries no single type. Existing typed collections fold in through the merge action, which is also the route for converting one collection.",
       "situation": "One weighted library has to draw across asset kinds, or a set of single-type collections needs folding into one pool.",
       "mechanism": {
         "text": "Each row wraps one entry payload of a concrete type, so adding an entry starts by choosing that type, and a row's settings are the ones its own type declares. A row whose payload is unset is tolerated: it keeps its place in the list and contributes nothing to picking or staging. Collection-level settings that a typed collection carries as plain properties arrive here as **Type Globals** blocks, at most one per entry type, and an entry whose type has no block reads its own local values. Those blocks, and the **Type Machinery** states for types that need cross-entry state, are installed automatically as new entry types appear, seeded from the matching typed collection's defaults, and re-checked at the start of every staging rebuild."
@@ -50395,7 +50487,7 @@
           "type": "TArray<FPCGExOmniCollectionEntry>",
           "tooltip": "Entries Array",
           "see": "FPCGExOmniCollectionEntry",
-          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints to actor rows, level assets to level rows and PCG data assets to data asset rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
+          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first, Generic among the choices; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints to actor rows, level assets to level rows, PCG data assets to data asset rows and anything no other type claims to Generic rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset; a Blueprint whose parent is not an actor falls through to a Generic row referencing the Blueprint asset itself.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
           "interacts_with": [
             "TypeGlobals",
             "TypeStates"
@@ -50405,7 +50497,7 @@
           "display": "Type Globals",
           "type": "TArray<FInstancedStruct>",
           "tooltip": "Per-type collection-level globals blocks. One block per entry type at most (first struct match wins); entries whose type has no block fall back to entry-local settings. NOTE: raw FInstancedStruct copies are SHALLOW for Instanced subobjects -- cross-asset copies must DuplicateObject them into the destination asset.",
-          "semantics": "A block is installed with the first entry of its type and seeded from that type's collection defaults, so it starts out matching a freshly created collection of that type rather than empty. Only types that declare collection-level settings get one, which among the shipped types means mesh, skinned mesh, actor, level and PCG data asset.\n\nMerging brings each source's block along. When two merged sources disagree over a type's block, the block is dropped and both sources' entries keep their exact values baked into their own rows. When the disagreement is with a block already on this collection, that block stays and only the incoming entries are baked.",
+          "semantics": "A block is installed with the first entry of its type and seeded from that type's collection defaults, so it starts out matching a freshly created collection of that type rather than empty. Only types that declare collection-level settings get one, which among the shipped types means mesh, skinned mesh, actor, level and PCG data asset. Generic rows declare none, and read Default Staging Bounds and Generic Allowed Class from the collection's own settings instead.\n\nMerging brings each source's block along. When two merged sources disagree over a type's block, the block is dropped and both sources' entries keep their exact values baked into their own rows. When the disagreement is with a block already on this collection, that block stays and only the incoming entries are baked.",
           "trap": "A block already on this collection wins a merge conflict, and its collection-wide rules still apply to the entries the merge just baked. A block set to overrule its type's entry-local values silently overrides the values the merge preserved.",
           "interacts_with": [
             "Entries",
@@ -50450,7 +50542,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/omni-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExOmniCollection.h",
-        "hash": "42a62c34fd05cd939ef0075bc2007f0e5ccb519c"
+        "hash": "b2f08c928f6929bcfae96bde44f5f0e61c6b00b5"
       }
     },
     "UPCGExOrientAverage": {
@@ -52172,7 +52264,7 @@
           "default": "false",
           "overridable": true,
           "semantics": "Reads a boolean per Vtx and ends a growth on arrival at a flagged one, keeping that Vtx as the path's last point.",
-          "trap": "A name the Vtx data does not carry silently disables the limit. Nothing is logged and the growth runs to its other limits instead.",
+          "trap": "A name the Vtx data does not carry is an error: the node logs a missing-attribute message and that cluster is skipped.",
           "interacts_with": [
             "bInvertGrowthStop"
           ]
@@ -52199,7 +52291,7 @@
           "default": "false",
           "overridable": true,
           "semantics": "Refuses flagged Vtx as candidates, so a growth routes around them, and a growth boxed in by them stops. A flagged Vtx can still be the Vtx a seed resolves to, which is what lets a seed sit on a barrier and grow away from it.",
-          "trap": "A name the Vtx data does not carry silently disables the limit, the same way the growth stop does.",
+          "trap": "A name the Vtx data does not carry is an error, the same way it is for the growth stop: the cluster is skipped with a missing-attribute message.",
           "interacts_with": [
             "bInvertNoGrowth"
           ]
@@ -52364,7 +52456,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/pathfinding-grow-paths",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingGrowPaths.h",
-        "hash": "55e0c2e4ffa1697e4789bda61e9d9392918f086c"
+        "hash": "c45a1e890b5231d74a83a9ac8df7cd0cd8aef557"
       }
     },
     "UPCGExPathfindingNavmeshSettings": {
@@ -53161,7 +53253,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/navmesh/pathfinding-plot-navmesh",
       "source": {
         "file": "PCGExElementsPathfindingNavmesh/Public/Elements/PCGExPathfindingPlotNavmesh.h",
-        "hash": "09caba89495f44237947ddece0a143fd4effb2a7"
+        "hash": "f84a31c85b812e05d13f8231bc0499b707cf1163"
       }
     },
     "UPCGExPathHatchSettings": {
@@ -55018,7 +55110,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-solidify",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathSolidify.h",
-        "hash": "1d0e7e16030a625b90b046968d401b95f111faa6"
+        "hash": "aa8b82aedf1778c6f07b4e914157186609b66970"
       }
     },
     "UPCGExPathSplineMeshSettings": {
@@ -56979,19 +57071,19 @@
       "covers": [
         "UPCGExPCGDataTypeState"
       ],
-      "purpose": "A weighted list of PCG data assets, where a row can also be a level. Rebuilding staging exports a level-sourced row into a generated PCG data asset: mesh actors become staged points, plain actors become an embedded Actor Collection carrying their property deltas, nested level instances become staged level picks, and the generated asset carries its own Collection Map so all three resolve. One pick then places the whole arrangement, spawned back through Staging : Load PCGData. External Storage decides whether everything generated lives inside the collection asset or as separate assets in a content folder you name.",
-      "situation": "A level was dressed by hand, and it needs to become one row that a single pick can place.",
+      "purpose": "A weighted list of PCG data assets, where a row can also be a level, or one actor placed in a level. Rebuilding staging exports such a row into a generated PCG data asset: mesh actors become staged points, plain actors become an embedded Actor Collection carrying their property deltas, nested level instances become staged level picks, any kind another module registered an export handler for lands on its own pin with its own collection, and the generated asset carries its own Collection Map so every one of them resolves. One pick then places the whole arrangement, spawned back through Staging : Load PCGData. External Storage decides whether everything generated lives inside the collection asset or as separate assets in a content folder you name.",
+      "situation": "A level was dressed by hand, or an arrangement was built under one actor, and it needs to become one row that a single pick can place.",
       "mechanism": {
-        "text": "A row is either a reference or a recording. Rows filled by hand or dropped in from the Content Browser arrive set to the source matching what was dropped, and every row's staged bounds are the combined bounds of all spatial data in the asset it resolves to. Rebuilding staging re-resolves every row, and level-sourced rows are re-exported from scratch each time, then merged: mesh and nested-level storage is pooled into two collection-level lists shared by every row, actor storage stays on the row, and each row's generated asset gets its own Collection Map covering all three. What a row stages is the Source question; where the generated assets live is the External Storage question."
+        "text": "A row is either a reference or a recording. Rows filled by hand or dropped in from the Content Browser arrive set to the source matching what was dropped, and every row's staged bounds are the combined bounds of all spatial data in the asset it resolves to. Rebuilding staging re-resolves every row, and exported rows, Level and Actor alike, are re-exported from scratch each time, then merged. Storage is keyed by slot: the mesh and nested-level slots, and any handler's shared slot, are pooled at collection level and shared by every row, per-row slots such as the actor collection stay on the row, and each row's generated asset gets its own Collection Map covering every slot. What a row stages is the Source question; where the generated assets live is the External Storage question."
       },
       "off_label": [
         {
           "claim": "In external mode the shared mesh collection is an ordinary Mesh Collection asset you can open. Tags and categories authored on its rows survive re-exports, so a captured level's meshes can be labelled once and matched by tag downstream. Property overrides on the same rows are re-derived from the source actors on every export and do not survive.",
-          "grounded_in": "CompactShared's preserved pass copies Tags, Category and EntryId onto the merged entry and deliberately skips PropertyOverrides; ExternalizeSharedAndActorCollectionsFor renames the shared collection out as a standalone asset."
+          "grounded_in": "CompactSharedFor's preserved pass copies Tags, Category and EntryId onto the merged entry and deliberately skips PropertyOverrides; ExternalizeSlotCollectionsFor renames each shared slot's collection out as a standalone asset."
         },
         {
           "claim": "Point one row at a level and turn External Storage on, and the shared mesh collection that falls out is a deduplicated inventory of every mesh that level used, authored without typing a mesh list.",
-          "grounded_in": "CompactSharedMeshFor merges the entry's captured mesh contributions into a UPCGExMeshCollection, which ExternalizeSharedAndActorCollectionsFor writes to the export folder."
+          "grounded_in": "CompactSharedFor merges the entry's captured mesh contributions into the Meshes slot's UPCGExMeshCollection, which ExternalizeSlotCollectionsFor writes to the export folder."
         }
       ],
       "settings": {
@@ -57010,8 +57102,8 @@
           "type": "TObjectPtr<UPCGExPCGDataTypeState>",
           "tooltip": "Owned machinery state (per-type processor seam, Phase C1): external-storage settings (bUseExternalAssets / ExportFolder) plus the shared/external collection storage the PCGDataAsset machinery operates on. Always present (default subobject); the same state class an Omni host instantiates per present PCGData entry type. Shared subobjects it references stay outered to THIS collection (host package), exactly like on an Omni host.",
           "default": "CreateDefaultSubobject<UPCGExPCGDataTypeState>(TEXT(\"MachineryState\"))",
-          "semantics": "Off, everything the export generates lives inside the collection asset: the two shared collections, and per row a generated data asset and an actor collection. On, with an export folder set, those same objects are renamed out into standalone assets in that folder and the collection keeps soft references to them. Names are built from the collection's own identifier, so they survive rebuilds and a re-export overwrites the same files instead of minting new ones. Saving the collection in the editor saves those packages alongside it. Turning it back off pulls every one of them back inside the collection and clears the references; the files they lived in are left on disk.",
-          "trap": "Per-row asset names carry the row's position in the list, so reordering rows re-points them at each other's files. The two shared collections are named from the collection alone and are unaffected.",
+          "semantics": "Off, everything the export generates lives inside the collection asset: one collection per shared slot, meshes and levels among them, and per row a generated data asset and one collection per per-row slot, the actor collection among them. On, with an export folder set, those same objects are renamed out into standalone assets in that folder and the collection keeps soft references to them. Names are built from the collection's own identifier, so they survive rebuilds and a re-export overwrites the same files instead of minting new ones. Saving the collection in the editor saves those packages alongside it. Turning it back off pulls every one of them back inside the collection and clears the references; the files they lived in are left on disk.",
+          "trap": "Per-row asset names carry the row's position in the list, so reordering rows re-points them at each other's files. Shared-slot collections are named from the collection and the slot alone and are unaffected.",
           "interacts_with": [
             "Entries"
           ]
@@ -57139,9 +57231,15 @@
               "display": "Level",
               "type": "TSoftObjectPtr<UWorld>",
               "tooltip": "Level reference (used when Source == Level)"
+            },
+            {
+              "name": "SourceActor",
+              "display": "Source Actor",
+              "type": "TSoftObjectPtr<AActor>",
+              "tooltip": "Root actor whose attached subtree is exported (used when Source == Actor). Its level must not be World Partition: a closed partitioned level cannot be read."
             }
           ],
-          "semantics": "Source decides what a row stages, and the two modes have little in common. Data Asset points at a finished PCG data asset and generates nothing: the row stages that asset's path and the combined bounds of its spatial data. Level points at a world, and every staging rebuild loads it, hands it to the exporter, and replaces the row's generated asset with a fresh one, so the row stages the generated asset instead. Level mode also scans the world's persistent level for socket-provider actors and bakes what it finds as managed sockets on the row. Switching a row from Level back to Data Asset discards its generated asset and everything captured from the level. A row flagged as a sub-collection ignores Source and accepts a collection of any type, not only another PCGDataAsset Collection.",
+          "semantics": "Source decides what a row stages, and the modes have little in common. Data Asset points at a finished PCG data asset and generates nothing: the row stages that asset's path and the combined bounds of its spatial data. Level points at a world, and every staging rebuild loads it, hands its persistent level to the exporter, and replaces the row's generated asset with a fresh one, so the row stages the generated asset instead. Actor points at one actor placed in a level and exports everything attached under it as if that subtree were a level of its own: the actor itself is never exported, and every point comes out relative to the actor's full transform, scale included, so the arrangement carries no trace of where it stood. Both exporting modes also scan the exported actors for socket-provider actors and bake what they find as managed sockets on the row, in the same frame as the points. An Actor row reports no source level of its own, so tooling that reads levels out of a collection's rows treats its host level as a container and never as content. Switching a row back to Data Asset discards its generated asset and everything captured with it. A row flagged as a sub-collection ignores Source and accepts a collection of any type, not only another PCGDataAsset Collection.",
           "trap": "The Source tooltip says the default is Data Asset. The code default is Level, so a row added by hand starts pointing at a world.",
           "interacts_with": [
             "LevelExporter",
@@ -57155,7 +57253,22 @@
       "hints": [
         {
           "style": "warning",
-          "text": "Level-sourced rows only stage in a host that runs the export machinery. This collection does, and so does an **Omni Collection**. Anywhere else the row is skipped with a warning and stages nothing, and a generated asset that arrived with a copied row is discarded rather than carried over.",
+          "text": "Level and Actor rows only stage in a host that runs the export machinery. This collection does, and so does an **Omni Collection**. Anywhere else the row is skipped with a warning and stages nothing, and a generated asset that arrived with a copied row is discarded rather than carried over.",
+          "anchor": "Entries"
+        },
+        {
+          "style": "warning",
+          "text": "## An unreachable actor keeps the last export\n\nWhen an Actor row's actor cannot be resolved at rebuild time, the row keeps its previous export, sockets included, and logs a warning naming why. A closed level is the usual reason, and the stale export is the better outcome there. A deleted or renamed actor produces the same result, so the row goes on staging an arrangement its source no longer matches until the reference is repaired. A row that never exported stages nothing.",
+          "anchor": "Entries"
+        },
+        {
+          "style": "warning",
+          "text": "## World Partition levels cannot be read closed\n\nAn actor in a World Partition level resolves only while that level is open in the editor: loading a partitioned level on demand yields no actors, so the rebuild refuses it and falls back to the previous export. Actors in any other level, One File Per Actor or not, are loaded on demand the way Level rows load their world.",
+          "anchor": "Entries"
+        },
+        {
+          "style": "info",
+          "text": "Saving the actor's level marks an Actor row stale the way saving its world marks a Level row. An actor saved to its own file under One File Per Actor is reported against its level, so it counts too.",
           "anchor": "Entries"
         },
         {
@@ -57182,14 +57295,22 @@
           "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter"
         },
         {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/level-export-handlers.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-export-handlers"
+        },
+        {
           "path": "node-library/staging/collections/pcg-data-asset-collection/level-data-exporter-default.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter-default"
+        },
+        {
+          "path": "node-library/staging/collections/pcg-data-asset-collection/assembly-root.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/assembly-root"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExPCGDataAssetCollection.h",
-        "hash": "ca874ca5f1ff4f283c7b9b19af03ef45b4ebc80f"
+        "hash": "65a2b0e153bb53ee41b07b0d3bb8ecb7dce1e4f0"
       }
     },
     "UPCGExPCGDataAssetLoaderSettings": {
@@ -59143,7 +59264,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-closest",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeClosest.h",
-        "hash": "1aa5da0d731ac3c774a519cb644c96ef91bf9ee0"
+        "hash": "1b52d5de38baf1b5365289915d78853a4cfea9a1"
       }
     },
     "UPCGExProbeDBSCANProviderSettings": {
@@ -59398,7 +59519,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-direction",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeDirection.h",
-        "hash": "c7e4c86954150d1c7c8c6839c7bf25c7f36c3c01"
+        "hash": "3156efe0215013cddc258687fade531e0c2122b6"
       }
     },
     "UPCGExProbeFactoryProviderSettings": {
@@ -59932,7 +60053,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-index",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeIndex.h",
-        "hash": "0131790f2e23d0649ea4fa638accd74526548c8f"
+        "hash": "803a30fa3ff88fb96f9c76580bcd43d580097e3d"
       }
     },
     "UPCGExProbeKNNProviderSettings": {
@@ -60272,7 +60393,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-numeric-compare",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeNumericCompare.h",
-        "hash": "199dd95b74d07ed497422c3b8fac15eb39e36190"
+        "hash": "b6ab272a15ffe0d671d32275b948e1c5fddc51b6"
       }
     },
     "UPCGExProbeRNGProviderSettings": {
@@ -63019,7 +63140,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-inside-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleInsidePath.h",
-        "hash": "2b618930f990e15b0e80fdef3173fc5dfc1b9fb4"
+        "hash": "7b3f73156694010a9e27bf8cd91c3f28731c8bf2"
       }
     },
     "UPCGExSampleNearestBoundsSettings": {
@@ -64148,7 +64269,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestPath.h",
-        "hash": "582b70c90f47715e7413d6b55200563815b9a447"
+        "hash": "b458629668932d298b24e0a76b43de64de871a54"
       }
     },
     "UPCGExSampleNearestPointSettings": {
@@ -65394,7 +65515,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-spline",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestSpline.h",
-        "hash": "3426dfab89378005fae0ba4ee6619d4f973f87c1"
+        "hash": "c8ba651c209c1e2e0bfb0003ed60e73c8c825723"
       }
     },
     "UPCGExSampleNearestSurfaceSettings": {
@@ -65730,7 +65851,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-surface",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestSurface.h",
-        "hash": "9238312c6f287c69fa9714eddafd4b07f34f2758"
+        "hash": "266c26c2b216641af70d79902ffe3ef072f369ce"
       }
     },
     "UPCGExSampleNeighborsSettings": {
@@ -67122,7 +67243,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/algorithms/search-bidirectional",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Search/PCGExSearchBidirectional.h",
-        "hash": "2aa7a702df8c80a24345811285e4eb5b42c65801"
+        "hash": "ca0efeabe8f0db2c43b5385ef1d62cacc4e354f2"
       }
     },
     "UPCGExSearchDijkstra": {
@@ -69756,7 +69877,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-shrink",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathShrink.h",
-        "hash": "2abfd8db86e17654cf4d811a971fea010b2da0e6"
+        "hash": "d7a62ac0c64cc6f3ee32e7f4aeecbea557da0432"
       }
     },
     "UPCGExSimplifyClustersSettings": {
@@ -71648,7 +71769,7 @@
       "purpose": "Routes staged points by what their pick resolved to. The staging spawn nodes already ignore entries that are not their type, so this node exists for the explicit version: splitting one mixed staged dataset into a stream per collection type, or keeping and dropping types by name. It also splits along a second seam: Entry Shape mode separates picks that resolved to a direct asset from picks that resolved to a sub-collection.",
       "situation": "An Omni Collection staged one mixed dataset, and the meshes must reach the mesh spawner while the actors reach Staging : Spawn Actors.",
       "mechanism": {
-        "text": "Each point's pick hash is resolved against the Collection Map, and the resolved entry's own type id decides the route; the hosting collection's type is never consulted, so an Omni Collection's rows route by what each row holds. The type roster comes from the collection type registry, so collection types registered by other plugins appear as routes on their own. Points that fail to resolve count as invalid and follow the Include Invalid setting."
+        "text": "Each point's pick hash is resolved against the Collection Map, and the resolved entry's own type id decides the route; the hosting collection's type is never consulted, so an Omni Collection's rows route by what each row holds. The type roster comes from the collection type registry, so collection types registered by other plugins appear as routes on their own. Points that fail to resolve count as invalid and follow the Include Invalid setting. The node's type list is refreshed whenever the node is edited, so a node saved before a type existed has no row for it and treats that type's points as unknown: they follow Include Invalid in Include and Exclude, and go with the discards in Pin Per Type, until any edit to the node refreshes the list. Graphs older than the Generic entry meet this on their first Generic pick."
       },
       "off_label": [
         {
@@ -71682,7 +71803,7 @@
           },
           {
             "label": "One pin per enabled type",
-            "note": "Labels come from the registry: Mesh, Actor, Level, and any custom types.",
+            "note": "Labels come from the registry: Mesh, Actor, Level, Generic, and any custom types.",
             "condition": "Pin Per Type mode"
           },
           {
@@ -72237,7 +72358,7 @@
       },
       "off_label": [
         {
-          "claim": "Enable only the asset path output and the node becomes the exit from the Collection Map ecosystem: it writes the same `AssetPath` soft-path attribute that Staging : Distribute writes in Point Attributes mode and Staging : Fitting reads in Mesh Attribute source, so resolvable picks can be handed to anything that only understands a path, without re-staging.",
+          "claim": "Enable only the asset path output and the node becomes the exit from the Collection Map ecosystem: it writes the same `AssetPath` soft-path attribute that Staging : Distribute writes in Point Attributes mode and Staging : Fitting reads in Mesh Attribute source, so resolvable picks can be handed to anything that only understands a path, without re-staging. For a Generic entry it is the exit: no spawn node consumes that type, and the entry's Asset is its staged path, so this output carries it as-is.",
           "grounded_in": "the AssetPath field getter reading Entry->Staging.Path into a soft-path attribute defaulting to AssetPath, the same default carried by UPCGExStagingDistributeSettings::AssetPathAttributeName and UPCGExStagingFittingSettings::AssetPathAttributeName"
         },
         {
@@ -72970,7 +73091,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-swap",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSwap.h",
-        "hash": "2f5114b12afc8f4cbdfb6267213e9d468804b121"
+        "hash": "e10c6c5b32f70f6ead995eea945ae32b0947317a"
       }
     },
     "UPCGExStateFactoryProviderSettings": {
@@ -73364,7 +73485,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-nearest-string",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExStringCompareNearestFilter.h",
-        "hash": "e898a55594ebc882b9653deb0684515987fd11a7"
+        "hash": "68ecefd87a872deb40ff2860e619a74952d7d600"
       }
     },
     "UPCGExStringRegexFilterProviderSettings": {
@@ -74589,13 +74710,13 @@
           "anchor": "whats_it_for"
         },
         {
-          "style": "warning",
-          "text": "Setting a tensor's **Tensor Weight** to zero to mute it is safe while another tensor still answers at that position. Where every tensor answering sits at zero, the shares cannot be worked out and the reading comes back as not-a-number, which reaches the consumer as a position or a rotation made of them.",
+          "style": "info",
+          "text": "Setting a tensor's **Tensor Weight** to zero to mute it is safe while another tensor still answers at that position. Where every tensor answering sits at zero, the shares are abandoned and each of them counts equally, so the muting only holds while something carrying weight is also in reach.",
           "anchor": "mechanism"
         },
         {
-          "style": "warning",
-          "text": "Only this sampler and **Adaptive RK** report a rotation that describes the field. **Six Points** and **RK4** build theirs by multiplying their stage rotations together, and **Six Points** then shrinks the result to a sixth of unit length, so neither is an orientation for the position asked about. Every consumer reading the sampled direction is unaffected; the one reading the rotation is **Tensors Transform** in its `Absolute` and `Relative` modes.",
+          "style": "info",
+          "text": "Only this sampler and **Adaptive RK** report the field's rotation at the position asked about. **RK4** and **Six Points** blend the rotations of their several readings into one, so what they report is an average over the places they read. Every consumer reading the sampled direction is unaffected; the one reading the rotation is **Tensors Transform** in its `Absolute` and `Relative` modes.",
           "anchor": "mechanism"
         }
       ],
@@ -74632,7 +74753,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/samplers/tensor-sampler-default",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensorSampler.h",
-        "hash": "dc19d86ab5aa9615f8f7236b5947316764e68978"
+        "hash": "28f7bfe0e32beb082e2c4cc8466bd0edac23c01b"
       }
     },
     "UPCGExTensorSamplerAdaptive": {
@@ -74714,8 +74835,8 @@
       ],
       "hints": [
         {
-          "style": "warning",
-          "text": "Two of the values handed back are accumulated across the four stages rather than measured once. The rotation is the four stages' rotations multiplied together, which describes no orientation, and it reaches **Tensors Transform** and **Tensors : Extrude** only in their `Absolute` and `Relative` modes; both ship on `Align`, which reads the direction. The source count behind **Tensors Transform**'s optional **Effectors Pings** attribute is the total across all four readings, so it runs at roughly four times the figure one reading would report.",
+          "style": "info",
+          "text": "Two of the values handed back are accumulated across the four stages rather than measured once. The rotation is the four stages' rotations blended in the same one, two, two, one proportion as the directions, so it is an average over the places the stages read rather than the field's rotation at the probe; it reaches **Tensors Transform** and **Tensors : Extrude** only in their `Absolute` and `Relative` modes, and both ship on `Align`, which reads the direction. The source count behind **Tensors Transform**'s optional **Effectors Pings** attribute is the total across all four readings, so it runs at roughly four times the figure one reading would report.",
           "anchor": "mechanism"
         },
         {
@@ -74758,7 +74879,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/samplers/tensor-sampler-rk4",
       "source": {
         "file": "PCGExElementsTensors/Public/Samplers/PCGExTensorSamplerRK4.h",
-        "hash": "1a8b9db90d5fcdff65e8d673bf264cad7e09f6a0"
+        "hash": "ef4ce7d01b291ede60d7a8658882202cae439629"
       }
     },
     "UPCGExTensorSamplerSixPoints": {
@@ -74777,8 +74898,8 @@
       ],
       "hints": [
         {
-          "style": "warning",
-          "text": "Two of the values handed back are accumulated across the six readings rather than measured once. The rotation is the six rotations multiplied together and then shrunk to a sixth of unit length, so it describes no orientation, and it reaches **Tensors Transform** and **Tensors : Extrude** only in their `Absolute` and `Relative` modes; both ship on `Align`, which reads the direction. The source count behind **Tensors Transform**'s optional **Effectors Pings** attribute is the total across all six readings, so it runs at roughly six times the figure one reading would report.",
+          "style": "info",
+          "text": "Two of the values handed back are accumulated across the six readings rather than measured once. The rotation is a running average of the six readings' rotations, so it describes the field around the probe rather than at it; it reaches **Tensors Transform** and **Tensors : Extrude** only in their `Absolute` and `Relative` modes, and both ship on `Align`, which reads the direction. The source count behind **Tensors Transform**'s optional **Effectors Pings** attribute is the total across all six readings, so it runs at roughly six times the figure one reading would report.",
           "anchor": "mechanism"
         },
         {
@@ -74816,7 +74937,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/samplers/tensor-sampler-six-points",
       "source": {
         "file": "PCGExElementsTensors/Public/Samplers/PCGExTensorSamplerSixPoints.h",
-        "hash": "eb88ec7f23dbab29be1b2115bf75856278f35a1c"
+        "hash": "f83afe66ba85c1ca8f5a0bd5e9cf097796f4dac7"
       }
     },
     "UPCGExTensorsTransformSettings": {
@@ -74922,11 +75043,11 @@
         "Iterations": {
           "display": "Iterations",
           "type": "int32",
-          "tooltip": "Number of iterations to apply tensor transforms.",
+          "tooltip": "Number of iterations to apply tensor transforms. 0 leaves points untouched.",
           "default": "1",
           "overridable": true,
           "semantics": "Each iteration is a fresh read at the point's new position, so raising it bends the walk with the field where a single long step would run straight. Step length is set in the sampling block, not here.",
-          "trap": "One pass always runs. A value of 0 or below still applies a single step, and both report flags then come out false for every point that moved.",
+          "trap": "At 0 nothing moves and the field is never read, yet every point then reports **Max Iterations Reached** as true and **Gracefully Stopped** as false, since zero steps taken is exactly the zero that was asked for.",
           "interacts_with": [
             "TensorHandlerDetails"
           ]
@@ -74966,8 +75087,7 @@
           "default": "FName(\"TraveledDistance\")",
           "overridable": true,
           "edit_condition": "bWriteTraveledDistance",
-          "semantics": "Summed over the positions the point was read at, in world units, and along the walk rather than end to end, so a point that curled back on itself still reports the whole journey.",
-          "trap": "The last step applied is never counted, because the distance is accumulated at the start of each iteration and nothing closes the sum afterwards. At one iteration the value is always 0, and at more it is short by the length of the final step."
+          "semantics": "Summed over the walk, in world units, along the route rather than end to end, so a point that curled back on itself still reports the whole journey. The final step is included."
         },
         "GracefullyStoppedAttributeName": {
           "display": "Gracefully Stopped",
@@ -75058,7 +75178,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/transform/tensors-transform",
       "source": {
         "file": "PCGExElementsTensors/Public/Elements/PCGExTensorsTransform.h",
-        "hash": "01dbd06d115751345ee374df24072a799ff8d538"
+        "hash": "896c253b288722ed34c81db454d63e36c7e775d7"
       }
     },
     "UPCGExTexParamProviderSettings": {
@@ -75178,7 +75298,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/textures/texture-param",
       "source": {
         "file": "PCGExElementsSampling/Public/Core/PCGExTexParamFactoryProvider.h",
-        "hash": "e8bb566a0bb3744f7774045a997c2c106b6346a0"
+        "hash": "32d27c72e5afbfb4294e0b0847d5f1fb3a9199ba"
       }
     },
     "UPCGExTimeFilterProviderSettings": {
@@ -76302,11 +76422,10 @@
         "NumBranches": {
           "display": "Num Branches",
           "type": "int32",
-          "tooltip": "Number of branch filter groups to evaluate.",
+          "tooltip": "Number of branch filter groups to evaluate. Not overridable: pins and labels are built in-editor and cannot follow a runtime override.",
           "default": "3",
-          "overridable": true,
           "semantics": "Adds or removes a matching filter input and numbered output. The two label arrays behind the pins are rebuilt only when the value is changed in the details panel.",
-          "trap": "Overriding this at execution time changes nothing about the pins, which were fixed when the graph compiled, and a value above the number the panel last built has no label to read."
+          "trap": "Not overridable: the pins and their labels are built in the editor, so a runtime value has nothing to rebuild. Should the count and the label arrays ever disagree, the element runs the smaller of the two."
         },
         "AsyncChunkSize": {
           "display": "Async Chunk Size",
@@ -76358,7 +76477,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/uber-branch",
       "source": {
         "file": "PCGExFoundations/Public/Elements/ControlFlow/PCGExUberBranch.h",
-        "hash": "4c359a718e613e10b6a3ed6b02769b8d2e6277d3"
+        "hash": "0a92359e171f0710c16247993854b8ceee55b646"
       }
     },
     "UPCGExUberFilterCascadeSettings": {
@@ -78364,7 +78483,7 @@
           "overridable": true,
           "edit_condition": "bWaitForMissingActors",
           "edit_condition_hides": true,
-          "semantics": "Seconds, clamped to thirty. Its edit condition also governs the component timeout below, so hiding this one hides that one too."
+          "semantics": "Seconds, clamped to thirty."
         },
         "bWaitForMissingComponents": {
           "display": "Wait For Missing Components",
@@ -78383,10 +78502,9 @@
           "tooltip": "Time after which the search is considered a fail.",
           "default": "1",
           "overridable": true,
-          "edit_condition": "bWaitForMissingActors",
+          "edit_condition": "bWaitForMissingComponents",
           "edit_condition_hides": true,
-          "semantics": "Seconds, clamped to thirty, applied to the component search.",
-          "trap": "Its edit condition names the actor toggle rather than the component one, so this field appears and disappears with Wait For Missing Actors while governing the component wait."
+          "semantics": "Seconds, clamped to thirty, applied to the component search."
         },
         "GenerateOnLoadAction": {
           "display": "Grab GenerateOnLoad",
@@ -78527,7 +78645,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/wait-for-pcg-data",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExWaitForPCGData.h",
-        "hash": "d94d3557c38c5fd4e2c7693444e9a8e0a948fcec"
+        "hash": "251085301e19ddfdf66b1745e44f3a5fe8d4eeef"
       }
     },
     "UPCGExWithinRangeFilterProviderSettings": {

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/PCGEx/PCGExKnowledge/schema/concepts.schema.json",
-  "title": "PCGExKnowledge concept pointers",
-  "description": "Pointers into the concept documentation, extracted mechanically: the page's own description (frontmatter, or its opening sentence), its section outline, and its live URL. The prose itself lives on the site.",
+  "title": "PCGExKnowledge concept pages",
+  "description": "Concept documentation pages, extracted mechanically: the page's own description (frontmatter, or its opening sentence), its section outline, its live URL and, since bundle_schema 2.1.0, its prose as plain markdown.",
   "type": "array",
   "items": {
     "type": "object",
@@ -14,7 +14,8 @@
       "path": { "type": "string", "description": "Page path in the book repository." },
       "description": { "type": "string" },
       "outline": { "type": "array", "items": { "type": "string" }, "description": "The page's H2 headings, in order." },
-      "url": { "type": "string", "description": "The live documentation page." }
+      "url": { "type": "string", "description": "The live documentation page." },
+      "body": { "type": "string", "description": "The page prose as markdown, GitBook syntax flattened: **Bold Name** references a node entry by display name, [Title](concept:<id>) references another concept page, hints are blockquotes opening with a bold label (Note, Warning, Danger, Tip), figures are reduced to their alt text. Absent when the page has no prose of its own." }
     }
   }
 }

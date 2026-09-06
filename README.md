@@ -9,14 +9,14 @@ The primary consumer is the [PCGExAssistant](https://pcgex.gitbook.io/pcgex/esse
 | File | Contents |
 | --- | --- |
 | `manifest.json` | Format version, generation date, and the per-plugin file list with node and concept counts. Iterate `plugins[].file` rather than hardcoding filenames. |
-| `search.json` | The flat search surface, all plugins in one array. Rows are `kind: "entry"` or `kind: "concept"`. Load only this to answer "which node or concept fits". |
-| `concepts.json` | Concept-page pointers: title, description, section outline, and the live documentation URL. Extracted from the books mechanically. |
+| `search.json` | The flat search surface, all plugins in one array. Rows are `kind: "entry"` or `kind: "concept"`; concept rows also carry the page's `outline`. Load only this to answer "which node or concept fits". |
+| `concepts.json` | Concept pages: title, description, section outline, the live documentation URL and, since 2.1.0, the page prose as markdown (`body`). Extracted from the books mechanically. |
 | `<Plugin>.json` | Full entries for one plugin, keyed by id, with the plugin's alias map and enum table. Load lazily when a search hit needs detail. |
 | `schema/` | JSON Schemas for each of the above. |
 
 ## The id scheme
 
-An entry's id is its C++ class name, `UPCGExBevelPathSettings` for **Path : Bevel**. That choice is deliberate: the same name is what Unreal reflection reports for the installed plugin and what the engine's PCG tooling needs to place a node in a graph, so the id joins documentation, live editor state, and actuation without a mapping table.
+An entry's id is its C++ class name, `UPCGExBevelPathSettings` for **Path : Bevel**. That choice is deliberate: the same name is what Unreal reflection reports for the installed plugin and what the PCGExAssistant's `CreateNode` takes to place a node in a graph, so the id joins documentation, live editor state, and actuation without a mapping table.
 
 Not every entry is a placeable PCG node, which is why the container says `entries`: the corpus also documents assets (collections), shared settings surfaces, factories and a handful of Blueprint nodes. The `classification` field carries the real taxonomy (`node`, `provider`, `instanced_factory`, `factory_data`, `shared_struct`, `asset`, `blueprint_node`), and only `node` and `provider` belong in a PCG graph. `blueprint_node` marks the collection accessor helpers that live in Blueprint graphs; never try to place one in a PCG graph.
 
@@ -31,6 +31,7 @@ References may cross files: sibling plugins inherit from bases documented in `PC
 ## Conventions
 
 - **Prose is verbatim from the documentation cards**, light markdown included. A `**Bold Name**` inside any text field is a reference to another node by display name, the same convention the books use for cross-linking.
+- **Concept bodies are the page prose with GitBook syntax flattened**: mentions become `**Bold Name**` for node pages and `[Title](concept:<id>)` for concept pages (the id resolves in `concepts.json`), hints become blockquotes opening with a bold label (Note, Warning, Danger, Tip), figures are reduced to their alt text, and HTML tables ship as written. A page with no prose of its own has no `body`.
 - **Defaults are raw C++ initializer text** (`EPCGExBevelMode::Radius`, `FVector(0, 0, -100)`). Enum defaults resolve through the plugin file's `enums` table, which carries display names and per-value tooltips.
 - **`settings` entries merge two layers**: mechanical facts from the source index (type, tooltip, default, edit condition, PCG overridability) and authored semantics where the tooltip was not enough (`semantics`, `trap`, `interacts_with`). A setting with no `semantics` is one whose tooltip suffices.
 - **`source`** on every entry names the header the card was authored against and its content hash at authoring time. `stale: true` means the source has changed since; the manifest counts these per plugin.
