@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExElementsValency",
-  "version": "0.6",
+  "version": "0.7",
   "aliases": {
     "UPCGExProbeFactoryValency": "UPCGExProbeValencyProviderSettings",
     "UPCGExValencyBiasFactoryData": "UPCGExCreateValencyBiasSettings",
@@ -2310,7 +2310,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/constraints/connector-spiral",
       "source": {
         "file": "PCGExValencyConnectors/Public/Constraints/PCGExConstraint_Spiral.h",
-        "hash": "94575b7250fff730b9ff74d12016bbc47b3c6038"
+        "hash": "ceca2f7cb4541b67cb1841f081ebde72204c4723"
       }
     },
     "FPCGExConnectorConstraint_SurfaceOffset": {
@@ -5982,7 +5982,7 @@
         "ClosingDescriptor": {
           "display": "Closing Descriptor",
           "type": "FPCGExModuleDescriptor",
-          "tooltip": "Modules the closing join draws from, REPLACING the rule set's closing pool. Leave untouched to use that pool. A module named here closes whether or not it carries a Bridge Only connector, the same contract a Join's descriptor has. The node's own Descriptor stays the CORRIDOR pool.",
+          "tooltip": "Modules the closing join draws from, REPLACING the rule set's closing pool. Leave untouched to use that pool. A module named here closes whether or not it carries a Bridge Only connector, the same contract a Join's descriptor has. The node's own Descriptor stays the CORRIDOR pool; a Route also confines its close to that pool, a Seek does not.",
           "fields": [
             {
               "name": "ModuleNames",
@@ -6092,7 +6092,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/corridor",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_BeginRegion": {
@@ -6146,7 +6146,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/begin-region",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Branch": {
@@ -6188,7 +6188,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/branch",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Bridge": {
@@ -6430,7 +6430,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/join",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Choice": {
@@ -6469,7 +6469,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/choice",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_EndRegion": {
@@ -6509,7 +6509,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/end-region",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Fill": {
@@ -6656,7 +6656,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/fill",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Gate": {
@@ -6795,7 +6795,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/filter",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_GraphInput": {
@@ -6834,7 +6834,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-input",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_GraphOutput": {
@@ -6873,7 +6873,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-output",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Growth": {
@@ -7099,7 +7099,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/growth",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Merge": {
@@ -7137,7 +7137,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/merge",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Module": {
@@ -7183,7 +7183,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/module",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Optional": {
@@ -7252,7 +7252,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/optional",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_PlacementBase": {
@@ -7319,7 +7319,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/module-descriptor",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Prune": {
@@ -7613,7 +7613,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/prune",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Repeat": {
@@ -7725,7 +7725,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/repeat",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Route": {
@@ -8175,7 +8175,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/route",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Seed": {
@@ -8187,7 +8187,7 @@
       "purpose": "The only entry point a grammar has. Execution starts at a Seed node and nowhere else, nothing is inferred from connectivity, and a grammar with no Seed node does not compile. It adopts a pre-placed seed module matching its descriptor and grows its subtree from there.",
       "situation": "Every grammar. There is no graph without one.",
       "mechanism": {
-        "text": "Seed points arriving on the growth node are matched to Seed roots before growth starts, and each adopted point becomes the root of that node subtree. A grammar may carry several Seed nodes, and which one a given point runs is decided by the weights here unless a per-point override names one."
+        "text": "Seed points arriving on the growth node are matched to Seed roots before growth starts, and each adopted point becomes the root of that node subtree. A grammar may carry several Seed nodes. A root whose descriptor rejects the point's module is out, a point name read through the grammar's **Seed Name Attribute** keeps only the roots carrying that Name, and `Weight` draws among whatever is left."
       },
       "settings": {
         "Weight": {
@@ -8224,7 +8224,17 @@
               "default": "0"
             }
           ],
-          "semantics": "Relative odds when several Seed roots compete for one seed point, so it only matters in a grammar with more than one entry point. A per-point Seed Root Override on the growth node pins a point to a root by name and bypasses the draw entirely."
+          "semantics": "Relative odds when several Seed roots compete for one seed point, so it only matters in a grammar with more than one entry point. It is read for the seed point being assigned, so an attribute makes the odds differ point by point, and a value below zero counts as zero; when every competitor weighs zero the draw is uniform. A seed name narrows the competitors before this draw rather than bypassing it, so roots sharing one Name still draw among themselves."
+        },
+        "bClaimByName": {
+          "display": "Claim By Name",
+          "type": "bool",
+          "tooltip": "Only claim seed points whose name (the grammar's Seed Name Attribute) equals this node's Name. Off: a point whose name matches no Seed is still eligible for this one.",
+          "default": "false",
+          "semantics": "Off, this Seed is open to every point its descriptor accepts, except a point whose name picks out other roots. On, it takes only points whose name equals this node's Name, and a point with no name or an unmatched one never lands here. It needs the grammar to read seed names: with matching off it claims no point at all, which the compile reports as a warning, and a run in which it claimed nothing is reported on the node.",
+          "interacts_with": [
+            "Weight"
+          ]
         }
       },
       "inherits": [
@@ -8259,7 +8269,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/seed",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Seek": {
@@ -8635,7 +8645,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/seek",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Sequence": {
@@ -8666,7 +8676,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/sequence",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_SpawnBase": {
@@ -8785,7 +8795,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/multi-spawn",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Subgraph": {
@@ -8845,7 +8855,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarNodePayload_Yield": {
@@ -8876,7 +8886,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/yield",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "fd5918c716fb913a0a3e38369e0fa73902fa17d9"
+        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
       }
     },
     "FPCGExGrammarRuleBase": {
@@ -9053,7 +9063,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/filters",
       "source": {
         "file": "PCGExValencyFoundations/Public/Filters/PCGExValencyFilterCommon.h",
-        "hash": "97cb56afba00f23f1acc62606bf84153e4574528"
+        "hash": "913a66a2f9375297d807bd8b876452725df80cbf"
       }
     },
     "UPCGExAffinityMapAsset": {
@@ -9428,7 +9438,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyBias.h",
-        "hash": "940033bf5c52e058a8705b47a65e24cdf87c70cf"
+        "hash": "a624b7fdf336df7abe94814df0ab0db96b1f4e9a"
       }
     },
     "UPCGExCreateValencyChannelBiasSettings": {
@@ -9534,7 +9544,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias-channel",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyChannelBias.h",
-        "hash": "c4526bc58f10bc759cff24f4e26660da2d36f7ed"
+        "hash": "2ca20a1ec330b4920bcac7322e0f4b76d295c283"
       }
     },
     "UPCGExGrammarGraphNodeBase": {
@@ -9624,7 +9634,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes",
       "source": {
         "file": "PCGExElementsValencyEditor/Public/GrammarGraph/PCGExGrammarGraphNode.h",
-        "hash": "1f5539d33c167c0ce2b3c7ca743dd14bd754c005"
+        "hash": "88c60acd5c4dcbf7cf100fbd31ed8aa6eee7a63c"
       }
     },
     "UPCGExGrammarGrowthFactory": {
@@ -9636,7 +9646,7 @@
       "purpose": "Replaces the growth strategy with a **Structural Grammar**: an authored graph that says what to place, in what order, and under what conditions. It sits in the same details-panel slot as **BFS Growth**, **DFS Growth** and **Random Growth**, and it takes that slot over completely, so a grammar never runs alongside a strategy. Everything else about a growth run is unchanged: the same modules, the same budgets, the same spatial conditions, the same output.",
       "situation": "The structure has a recipe, and expressing that recipe as connector rules and a frontier ordering would be indirect at best.",
       "mechanism": {
-        "text": "The grammar graph is the growth loop. Execution enters at a Seed node and follows the wires, and each placement node it reaches asks the library for a module by connector requirement and tag rather than by name, so one grammar runs against any library that satisfies its descriptors. Which seed point runs which Seed root is resolved before growth starts, and a run that cannot satisfy a placement undoes work and retries within the scope you allow it."
+        "text": "The grammar graph is the growth loop. Execution enters at a Seed node and follows the wires, and each placement node it reaches asks the library for a module by connector requirement and tag rather than by name, so one grammar runs against any library that satisfies its descriptors. Which seed point runs which Seed root is resolved before growth starts: roots whose descriptor rejects the point's module drop out, a name read through the grammar's **Seed Name Attribute** narrows what is left, and the Seed weights draw among the survivors. After that, a run that cannot satisfy a placement undoes work and retries within the scope you allow it."
       },
       "off_label": [
         {
@@ -9720,41 +9730,6 @@
           "edit_condition": "ExecutionMode == EPCGExGrammarExecutionMode::Sequential",
           "edit_condition_hides": true,
           "semantics": "Sequential only, and on by default. It carries open connectors forward, so a later seed can expand from what an earlier one left open. That is also the only way a bridge can span two seeds in this mode."
-        },
-        "SeedRootOverride": {
-          "display": "Seed Root Override",
-          "type": "FPCGExInputShorthandSelectorName",
-          "tooltip": "Per-point override pinning a seed to a grammar Seed root by name. Anything that doesn't match a root falls back to a deterministic random pick.",
-          "fields": [
-            {
-              "name": "Input",
-              "display": "Input",
-              "type": "EPCGExInputValueType",
-              "tooltip": "Whether to use the constant value or read from an attribute.",
-              "default": "EPCGExInputValueType::Constant",
-              "enum": "EPCGExInputValueType"
-            },
-            {
-              "name": "bCleanupAttribute",
-              "display": "Cleanup Attribute",
-              "type": "bool",
-              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
-              "default": "true"
-            },
-            {
-              "name": "Attribute",
-              "display": "Attribute",
-              "type": "FPCGAttributePropertyInputSelector",
-              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
-            },
-            {
-              "name": "Constant",
-              "display": "Constant",
-              "type": "FName",
-              "default": "NAME_None"
-            }
-          ],
-          "semantics": "A per-point name pinning that seed to a grammar Seed root, for the case where the input points already know what they are. Anything that matches no root falls back to the ordinary deterministic pick, so a partial column of names is valid and only the named points are pinned."
         }
       },
       "inherits": [
@@ -9765,6 +9740,16 @@
           "style": "info",
           "text": "The pattern and bridge settings above this section still apply. A grammar replaces the frontier ordering, not the rest of the strategy contract.",
           "anchor": "GrammarAsset"
+        },
+        {
+          "style": "info",
+          "text": "Grammar node and rule values set to Attribute are resolved here, once per input and before the run. A `@Data` selector becomes that input's constant, and any other selector is read per seed point and followed down that seed's subtree. An attribute the input does not carry falls back to the authored constant, with a warning on the node that owned the value, and a grammar with nothing bound skips the step entirely.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "warning",
+          "text": "A seed point that no Seed root accepts stays placed and grows nothing. After a run that had seed points, a Seed with **Claim By Name** on that claimed none of them is named in a run warning, so a name column with a typo shows up on the node rather than as structure that never appeared.",
+          "anchor": "mechanism"
         }
       ],
       "related": [
@@ -9779,13 +9764,16 @@
         {
           "path": "working-with-valency/generating/grammar/placing-modules.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/placing-modules"
+        },
+        {
+          "path": "working-with-valency/generating/grammar/data-bindings.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/data-bindings"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/strategies/grammar-growth",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrowthGrammar.h",
-        "hash": "3cf38dd5385d65133f507ca834c63a89410042f9",
-        "stale": true
+        "hash": "1d9105ed45ec5e6ab6d80587d86ccb0f530e44e1"
       }
     },
     "UPCGExGrammarSpawnNodeBase": {
@@ -9922,7 +9910,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/placing-nodes",
       "source": {
         "file": "PCGExElementsValencyEditor/Public/GrammarGraph/PCGExGrammarGraphNode.h",
-        "hash": "1f5539d33c167c0ce2b3c7ca743dd14bd754c005"
+        "hash": "88c60acd5c4dcbf7cf100fbd31ed8aa6eee7a63c"
       }
     },
     "UPCGExProbeValencyProviderSettings": {
@@ -10024,7 +10012,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/probe-orbital",
       "source": {
         "file": "PCGExElementsValency/Public/Probes/PCGExProbeValency.h",
-        "hash": "2861c7f432c45cb3e4e399664339784ba961aa4e"
+        "hash": "e795b35bcc55fc28667ddba251159ad7e55f62db"
       }
     },
     "UPCGExStructuralGrammarAsset": {
@@ -10036,7 +10024,7 @@
       "purpose": "The asset a grammar-driven growth runs. It holds a graph of instructions rather than a set of rules to satisfy, so it says what to place, in what order and under what conditions, and it is edited in its own graph editor rather than in a details panel. **Grammar Growth** is what points a growth node at one.",
       "situation": "A structure that has a recipe, where the order things get built in is part of the design.",
       "mechanism": {
-        "text": "The graph is compiled once per execution, before any point is grown, and the compile is where authoring errors surface. Execution enters at a Seed node and follows the wires: nothing is inferred from connectivity, and a grammar with no Seed node does not compile. What the asset itself carries beyond the graph is the vocabulary the graph draws on, a connector set for its dropdowns, a property schema its placement nodes can override, and any sub-grammars it owns."
+        "text": "The graph is compiled once per execution, before any point is grown, and the compile is where authoring errors surface. Execution enters at a Seed node and follows the wires: nothing is inferred from connectivity, and a grammar with no Seed node does not compile. What the asset itself carries beyond the graph is the vocabulary the graph draws on, a connector set for its dropdowns, a property schema its placement nodes can override, and any sub-grammars it owns. The compile also records every node or rule value left on Attribute, and warns about one whose selector is empty, which then runs on its authored constant."
       },
       "settings": {
         "FriendlyName": {
@@ -10062,6 +10050,22 @@
           "type": "TObjectPtr<UPCGExValencyConnectorSet>",
           "tooltip": "Connector set defining available connector types for dropdown population",
           "semantics": "It populates the connector type dropdowns while authoring and nothing more, so it is a convenience for the editor rather than a binding on the run. The set the growth actually uses comes from the bonding rules the node was given."
+        },
+        "SeedNameAttribute": {
+          "display": "Seed Name Attribute",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Name or String seed point attribute holding the Seed node that should claim it; a @Data selector names one Seed per input. Only the top-level grammar's attribute is read.",
+          "edit_condition": "bMatchSeedNames",
+          "semantics": "Its checkbox switches seed-name matching on for every growth that runs this grammar. On, each seed point is read for the name of the Seed node that should claim it, from a Name or String attribute, and a `@Data` selector names one Seed for every point of an input. The name is applied after the descriptor test, so it chooses among the Seed roots that already accept the point's module: a name matching one or more roots keeps only those, which then draw among themselves by `Weight`, and a name no root carries, or no name at all, leaves the point to every root that does not have **Claim By Name** on. Only the top-level grammar's setting is read; a subgraph's is ignored.",
+          "trap": "The selector has to name an attribute. A point property turns matching off without a word, and an attribute of any type other than Name or String reads every point as unnamed, with a run warning on the growth saying so."
+        },
+        "bCleanupSeedNameAttribute": {
+          "display": "Cleanup Seed Name Attribute",
+          "type": "bool",
+          "tooltip": "Strip SeedNameAttribute from the output when the Grow node cleans up consumable attributes.",
+          "default": "true",
+          "edit_condition": "bMatchSeedNames",
+          "semantics": "Acted on only when the growth node's own `Cleanup Consumable Attributes` is on, which then deletes the name attribute from the output like any other consumed input. Turn it off to keep the names on the grown points."
         },
         "GrammarProperties": {
           "display": "Grammar Properties",
@@ -10119,13 +10123,16 @@
         {
           "path": "node-library/grow/strategies/grammar-growth.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/strategies/grammar-growth"
+        },
+        {
+          "path": "working-with-valency/generating/grammar/data-bindings.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/data-bindings"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExStructuralGrammar.h",
-        "hash": "4309821a55e957540d501ccf07a21cb9cf543710",
-        "stale": true
+        "hash": "2f10fca7437d5bcf51be32877d3505a5cb9b910f"
       }
     },
     "UPCGExValencyAssetStagingSettings": {
@@ -10284,7 +10291,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/output/valency-staging",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyAssetStaging.h",
-        "hash": "4d69cfbe55d2382a4505bcad36934cf81573fd78"
+        "hash": "9595773be1b0ab3fad6aa4d151e1b62f66675d81"
       }
     },
     "UPCGExValencyBacktrackingSolverFactory": {
@@ -10350,7 +10357,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve/backtracking-solver",
       "source": {
         "file": "PCGExValencySolvers/Public/PCGExBacktrackingSolver.h",
-        "hash": "698ddcebc24b796d764af3351491ae89c7c0870c"
+        "hash": "ed3ca2e32cdffc5a1da74b84decbacb8259d7cd6"
       }
     },
     "UPCGExValencyBondingClusterGrowthSettings": {
@@ -10743,7 +10750,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-cluster",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingClusterGrowth.h",
-        "hash": "bd36c636f6b3bd9728fb9fbc9e1ec53bced825c4"
+        "hash": "e87992ac790525c0715011ed360ee71ea96e126e"
       }
     },
     "UPCGExValencyBondingGenerativeSettings": {
@@ -11171,7 +11178,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-points",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingGenerative.h",
-        "hash": "aeaf7ed4eb171e7ff939f1ebaa6f69bab6b7c0e6"
+        "hash": "c8f3e806e79469267cf84231f4aca9ec4411acd3"
       }
     },
     "UPCGExValencyBondingRules": {
@@ -11335,7 +11342,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bonding-rules-asset",
       "source": {
         "file": "PCGExValencyFoundations/Public/PCGExBondingRules.h",
-        "hash": "1aeb648b8890d6faac0a459d26125c7004bd4e2c"
+        "hash": "9eeb6de0da55380bb3cebe89de6e22f2b7fda176"
       }
     },
     "UPCGExValencyBondingSettings": {
@@ -11659,7 +11666,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve",
       "source": {
         "file": "PCGExValencySolvers/Public/Elements/PCGExValencyBonding.h",
-        "hash": "c5c2ea897b44b1b977aa4a068b8d994fa252976d"
+        "hash": "86ce69c7df12f07b63550f09c3acbe8366583e4d"
       }
     },
     "UPCGExValencyConnectorFilterProviderSettings": {
@@ -11807,7 +11814,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/filters/filter-connectors",
       "source": {
         "file": "PCGExValencyFoundations/Public/Filters/PCGExValencyConnectorFilter.h",
-        "hash": "30dd6719c378626c2a8cf0aecd181fe37b5779e9"
+        "hash": "25de9d96077970d7629211c6355e53b8584627e0"
       }
     },
     "UPCGExValencyConnectorSet": {
@@ -11906,7 +11913,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/connector-set",
       "source": {
         "file": "PCGExValencyConnectors/Public/PCGExConnectorSet.h",
-        "hash": "3dd31bed4051db9752d19a2734d79de2d47ca2ee"
+        "hash": "49615f7b181928098ded2d954949a8608623ba36"
       }
     },
     "UPCGExValencyConstraintSolverFactory": {
@@ -11963,7 +11970,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve/constraint-solver",
       "source": {
         "file": "PCGExValencySolvers/Public/PCGExConstraintSolver.h",
-        "hash": "68d0fc0478bcd37dde64350ec96f7feb122e928a"
+        "hash": "ecaf21376aaed0bb698471033bd88790045dc684"
       }
     },
     "UPCGExValencyEntropySolver": {
@@ -12014,7 +12021,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve/entropy-solver",
       "source": {
         "file": "PCGExValencySolvers/Public/PCGExEntropySolver.h",
-        "hash": "01e71b3dcb0816e23cec04b0c22923fd0806cd65"
+        "hash": "7fea40a861d502c46f2cd709328a551ed430380c"
       }
     },
     "UPCGExValencyFindBridgesSettings": {
@@ -12268,7 +12275,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-find-bridges",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyFindBridges.h",
-        "hash": "7b89d3e5cbe4f417ac6ffa0932f061955927f22b"
+        "hash": "b88d33656e0bc1b4ba85d3138d134ec8d58c3f04"
       }
     },
     "UPCGExValencyGrowthBFSFactory": {
@@ -12478,7 +12485,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/strategies",
       "source": {
         "file": "PCGExValencyGrowth/Public/PCGExGrowthOperation.h",
-        "hash": "4e870dd6cebb8d2dde065e2a7b86278d057fbfb2"
+        "hash": "8567768d0b28ddb120b78da73049cf337b77f8de"
       }
     },
     "UPCGExValencyGrowthRandomFactory": {
@@ -12827,7 +12834,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/valency-lattice",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyLattice.h",
-        "hash": "3ee51462e93dd6167b3f2833f64fc4b22fdc2e65"
+        "hash": "3cba0682759bcc5183c129c205e3e4ccce1a9bac"
       }
     },
     "UPCGExValencyLoadPropertiesSettings": {
@@ -12965,7 +12972,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/output/valency-load-properties",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyLoadProperties.h",
-        "hash": "ddf8e6487eeedbd8a576e76dd228144c2a2fbd0f"
+        "hash": "1bf2d6ef2211066306b289eaa31554bf3d4a6f3c"
       }
     },
     "UPCGExValencyModulePresenceFilterProviderSettings": {
@@ -13234,7 +13241,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/filters/filter-orbitals",
       "source": {
         "file": "PCGExValencyFoundations/Public/Filters/PCGExValencyOrbitalFilter.h",
-        "hash": "ec8c30099a50ca796ee56cd3e039bd60f6ec288b"
+        "hash": "43b561b79b9a970efc3b8c7f63445594b225df81"
       }
     },
     "UPCGExValencyOrbitalSet": {
@@ -13654,7 +13661,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/patterns/pattern-matcher",
       "source": {
         "file": "PCGExValencyFoundations/Public/Patterns/PCGExValencyPatternMatcher.h",
-        "hash": "16c1996e5eba6c58180dd57f4f72a5f9ccaf9236"
+        "hash": "5c578b2990e0c68bf8e22b64660ad70d6e460535"
       }
     },
     "UPCGExValencyPatternReplacementSettings": {
@@ -13906,7 +13913,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/patterns/valency-find-patterns",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyFindPatterns.h",
-        "hash": "00e2e28cebe9dbc659f586d49be1f48c8d75839e"
+        "hash": "2ae130a6a7029c71b73784d96cbc387808501ba8"
       }
     },
     "UPCGExValencyPlanarPartitionSettings": {
@@ -14147,7 +14154,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/valency-planar-partition",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyPlanarPartition.h",
-        "hash": "8b57341481076ca692a336b94b7858f7f0e538e4"
+        "hash": "0bb65e4b52c60f7cfa3c1e3b76f49d7e1280bfc2"
       }
     },
     "UPCGExValencyPrioritySolver": {
@@ -14223,7 +14230,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve/priority-solver",
       "source": {
         "file": "PCGExValencySolvers/Public/PCGExPrioritySolver.h",
-        "hash": "8fe7060386140c68a1462ea77e18be0d73c081a1"
+        "hash": "cbc44f99e74ff63ea77ff95a2a3b1c893620ec49"
       }
     },
     "UPCGExValencyTagPredicateFilterProviderSettings": {
@@ -14584,7 +14591,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-connectors",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteConnectors.h",
-        "hash": "ba689494856390f8d1e64a6b7c0590dbb8bbf851"
+        "hash": "a33385e4a708908cccf9fa5b1da00cc21ab26b6b"
       }
     },
     "UPCGExValencyWriteJunctionsSettings": {
@@ -14790,7 +14797,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-junctions",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteJunctions.h",
-        "hash": "5c1682ab77032e4686aba8e411be7a85d195964b"
+        "hash": "bdc05d399071394817331de0792c7c044f43ab5a"
       }
     },
     "UPCGExValencyWriteOrbitalsSettings": {
@@ -14961,7 +14968,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/valency-write-orbitals",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteOrbitals.h",
-        "hash": "0d24f03b60466187988daf72330ecc21d0b13529"
+        "hash": "18a1b236dd7dc0df5246e42456a30f66f30c5095"
       }
     }
   }

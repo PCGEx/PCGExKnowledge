@@ -5,6 +5,17 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "Sketches are edited in two places, and both present the same side panel and the same gestures.",
+    "outline": [
+      "Two hosts, one panel",
+      "A component by reference is read-only in the level",
+      "The gesture set",
+      "Snapping",
+      "Placement guides",
+      "Surface snapping",
+      "The transform gizmo",
+      "Crossings stay crossings",
+      "Cleanups and validation"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/authoring"
   },
   {
@@ -13,6 +24,12 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "A constraint is an authored relationship between sketch elements that the editor keeps true while you edit: hold this vertex on that line, keep this edge at that length.",
+    "outline": [
+      "Attaching one",
+      "Along",
+      "Length",
+      "Extending"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/constraints"
   },
   {
@@ -21,6 +38,12 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "A sketch carries authored metadata in four tiers, built on the property system described in Collection Properties.",
+    "outline": [
+      "Four tiers",
+      "Schemas and records",
+      "Assigning records",
+      "Sharing semantics"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/data-layer"
   },
   {
@@ -29,6 +52,14 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "How a sketch becomes a live cluster: the nodes, the collection type, property output, and what survives the print.",
+    "outline": [
+      "From the level",
+      "From assets",
+      "The collection type",
+      "Sketches inherit the staging pipeline whole",
+      "Property output",
+      "What survives the print"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/printing"
   },
   {
@@ -37,6 +68,12 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "A cluster drawn as walls and corridors implies rooms, and Find Cells is the PCGEx node that extracts them: it takes seed points and outputs the enclosed cells they land in.",
+    "outline": [
+      "The Sites edit layer",
+      "Site data",
+      "The cell preview",
+      "What comes out"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/sites"
   },
   {
@@ -45,6 +82,12 @@
     "plugin": "PCGExElementsClustersSketch",
     "kind": "concept",
     "purpose": "Authoring clusters by hand the way a spline component authors a curve: place vertices, connect them, annotate them, and print the result into a graph.",
+    "outline": [
+      "Stable Beta",
+      "A model, printed on demand",
+      "What a sketch holds",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/working-with-cluster-sketch/working-with-cluster-sketch"
   },
   {
@@ -53,6 +96,11 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "The systems outside the main path and cluster track: what each one is for, and which are worth learning before you need them.",
+    "outline": [
+      "Systems you meet inside other nodes",
+      "Modules you go to on purpose",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems"
   },
   {
@@ -61,6 +109,18 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Points meet constantly, and whenever they do, something decides what their values become.",
+    "outline": [
+      "What blending decides",
+      "Three ways to control it",
+      "What the defaults actually do",
+      "Monolithic Average reaches the Seed",
+      "The quaternion case changes shape at three sources",
+      "Weights",
+      "A blend op's own Weight is ignored by most consumers",
+      "Sampling, the most obvious consumer",
+      "One node breaks the rule",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/blending-and-sampling"
   },
   {
@@ -69,6 +129,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "When a node has many things on one pin and many candidates on another, something has to decide which goes with which.",
+    "outline": [
+      "Matching replaces the loop",
+      "A rule compares two datasets",
+      "Required and optional",
+      "Unmatched data goes quiet",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/matching"
   },
   {
@@ -77,6 +144,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "A picker answers one question: which indices.",
+    "outline": [
+      "A picker names indices",
+      "Three behaviours they all share",
+      "Who takes pickers",
+      "The Pickers pin on Cluster : Pick Closest takes targets",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/pickers"
   },
   {
@@ -85,6 +159,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Every builder offers two resolution modes, and this is the choice that matters most:",
+    "outline": [
+      "Fixed count, or fixed spacing",
+      "One shape per seed, cut to the seed",
+      "The four builders",
+      "φ Sphere is the fast one by a wide margin",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/shapes"
   },
   {
@@ -93,6 +174,14 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "A tensor gives direction to empty space.",
+    "outline": [
+      "Effectors, tensors, and the field",
+      "What drives a tensor",
+      "Constant is the safety net",
+      "Sampling the field",
+      "Who reads a field",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/tensors"
   },
   {
@@ -101,6 +190,14 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Clusters and paths describe structure without being geometry.",
+    "outline": [
+      "Quick helpers, and where to go instead",
+      "Four ways to a surface",
+      "Surfacing needs a cluster that survives being flattened",
+      "Volumes and colliders",
+      "What the surface nodes share",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/topology"
   },
   {
@@ -109,6 +206,9 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Collections, selectors, and the pick that travels as one attribute until something at the end of the graph spawns it.",
+    "outline": [
+      "Why a collection"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging"
   },
   {
@@ -117,6 +217,12 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Creating collections and working in the collection editor: the grid, categories, batch tools, and rebuilding staging.",
+    "outline": [
+      "Creating a collection",
+      "The Grid View",
+      "Batch tools",
+      "Rebuilding staging"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/authoring-collections"
   },
   {
@@ -125,6 +231,12 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels or actor subtrees to PCG data.",
+    "outline": [
+      "Actors that remember their settings",
+      "Harvesting a level",
+      "Level to PCG data",
+      "Keeping capture cheap at runtime"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/capturing-scenes"
   },
   {
@@ -133,6 +245,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Entries carry whatever data you declare on them: costs, gameplay tags, curve profiles, footprint hints, anything typed.",
+    "outline": [
+      "Declaring properties",
+      "Three tiers, one resolution",
+      "Harvested from actors",
+      "Reading values back",
+      "In Blueprint"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
   },
   {
@@ -141,6 +260,10 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "The collection asset model: seven types, one entry anatomy, sub-collections, and the staging data baked into every row.",
+    "outline": [
+      "Anatomy of an entry",
+      "Staging data"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collections"
   },
   {
@@ -149,6 +272,11 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Entries as grammar modules: symbols and sizes on collections, and reading them out for vanilla PCG subdivision.",
+    "outline": [
+      "Grammar on an entry",
+      "Reading it out",
+      "The loop"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collections-and-grammar"
   },
   {
@@ -157,6 +285,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Placing an asset inside a point: scale-to-fit, justification, variations, and where each runs.",
+    "outline": [
+      "Scale to Fit",
+      "Justification",
+      "Variations",
+      "Vanilla parity",
+      "Where fitting runs"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/fitting"
   },
   {
@@ -165,6 +300,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "How each point gets its entry: Staging : Distribute, seeds and determinism, category routing, and the selector family.",
+    "outline": [
+      "The hub",
+      "Seeds and determinism",
+      "Categories",
+      "The selectors",
+      "Modifiers"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/selecting-entries"
   },
   {
@@ -173,6 +315,11 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Rebuilding staging is the moment a collection bakes its data, and staging pipelines are how you attach your own logic to it: Blueprintable objects on the collection that run with every rebuild, entry by entry.",
+    "outline": [
+      "What a pipeline is",
+      "The hooks",
+      "What a hook can reach"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-pipelines"
   },
   {
@@ -181,6 +328,17 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Turning staged picks into scene content: the spawn route for each entry type, and sockets as attachment points.",
+    "outline": [
+      "Routing by type",
+      "Mixed picks need no splitting to work",
+      "Meshes",
+      "The Map goes into the spawner's override pin",
+      "Actors",
+      "Levels",
+      "PCG data",
+      "Along paths",
+      "Sockets"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-spawning"
   },
   {
@@ -189,6 +347,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Reskinning a result after distribution: Variant Collections, pick rewriting, and material re-rolls.",
+    "outline": [
+      "Variant Collections",
+      "The Swaps editor",
+      "Asset Swaps",
+      "Staging : Swap",
+      "One level down: materials"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/swapping-and-theming"
   },
   {
@@ -197,6 +362,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Once a pick is made, it has to travel: through filters, transforms, merges, and whatever else the graph does before spawning.",
+    "outline": [
+      "The pick hash",
+      "The Map",
+      "The downstream contract",
+      "Two output modes",
+      "Re-distribution"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/the-collection-map"
   },
   {
@@ -205,6 +377,16 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Point data says where things are.",
+    "outline": [
+      "Two datasets, one structure",
+      "Degree is the vocabulary",
+      "One Vtx dataset, several clusters",
+      "Vanilla nodes, and what the pairing survives",
+      "A cached cluster is checked by point count alone",
+      "Working with many clusters",
+      "Pack and Unpack are for storage",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/clusters"
   },
   {
@@ -213,6 +395,14 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Generate connections generously, then take away the ones you did not want.",
+    "outline": [
+      "Where clusters come from",
+      "Voronoi builds its own vertices",
+      "Coincidence prevention makes probe order matter",
+      "Refining",
+      "Bridging and cutting",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/clusters/building-and-refining"
   },
   {
@@ -229,6 +419,14 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Ordered points and connected points answer different questions, and a lot of procedural work needs both answers about the same geometry.",
+    "outline": [
+      "Paths into clusters",
+      "Clusters into paths",
+      "The round trip",
+      "Attributes survive the crossing better than structure does",
+      "Into pathfinding",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/clusters/paths-and-clusters"
   },
   {
@@ -237,6 +435,20 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Nearly every node in PCGEx reaches a moment where it has to decide whether to act on the element in front of it.",
+    "outline": [
+      "What a filter is",
+      "The four families",
+      "A point filter on an edge pin reads the edge",
+      "Filtering an attribute set",
+      "A spatial filter on an attribute set reads the world origin",
+      "Where they plug in",
+      "Stacking and grouping",
+      "Evaluation order comes from Priority",
+      "When a filter fails",
+      "Error means two different things",
+      "Reuse",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/filters"
   },
   {
@@ -245,6 +457,16 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Most of this book covers systems: clusters, paths, filters, staging.",
+    "outline": [
+      "The stock node, with the corners filled in",
+      "Making randomness repeatable",
+      "Bounds, axes and projection",
+      "Deciding whether to run at all",
+      "Seeing what the data holds",
+      "Reading from the level",
+      "Go and browse",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/odd-jobs"
   },
   {
@@ -253,6 +475,15 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Pathfinding turns connections into routes.",
+    "outline": [
+      "Routes run on the edges you built",
+      "Heuristics steer, refinement forbids",
+      "A query is a seed, a goal, and a picker",
+      "Heuristics are required, and they are the whole cost model",
+      "Dropdowns here, sub-nodes there",
+      "What the family produces",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/pathfinding"
   },
   {
@@ -261,6 +492,13 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Every search algorithm in PCGEx runs on your heuristics.",
+    "outline": [
+      "What all four share",
+      "What separates them",
+      "Negative costs come from a negative Weight Factor",
+      "Attribute alone gives A\\* nothing to aim at",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/pathfinding/algorithms"
   },
   {
@@ -269,6 +507,16 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "A cluster's edges divide space into regions, and those regions are usable geometry.",
+    "outline": [
+      "A cell is a face of the network",
+      "Seeded, or exhaustive",
+      "When seeds compete",
+      "Constraints decide what counts",
+      "Cells need a cluster that survives being flattened",
+      "Dead ends make a cell double back",
+      "Bounds come out alongside the paths",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/pathfinding/cells-and-hulls"
   },
   {
@@ -277,6 +525,14 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Some traversals have nowhere to be.",
+    "outline": [
+      "Filling a cluster from seeds",
+      "Named for clusters, grouped with pathfinding",
+      "Lanes, and how much they overlap",
+      "Fill Controls say when to stop",
+      "The legacy Heuristics pin on Flood Fill",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/pathfinding/growth-and-diffusion"
   },
   {
@@ -285,6 +541,18 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "A heuristic answers one question about one edge: what does crossing this cost.",
+    "outline": [
+      "Cheap is what gets chosen",
+      "Invert is how you ask for the scenic route",
+      "The providers",
+      "Several heuristics, one number",
+      "Feedback remembers where routes have been",
+      "Feedback needs a base heuristic",
+      "Seeing what a stack costs",
+      "The other consumers",
+      "Filters decide, heuristics prefer",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/pathfinding/heuristics"
   },
   {
@@ -293,6 +561,18 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "A path is a spline with the flexibility taken out.",
+    "outline": [
+      "A path is points in order",
+      "Anything that reorders points rewrites the path",
+      "Segments, and the off-by-one",
+      "What a path carries, and what it works out",
+      "Reach for Parallel Transport when a spline mesh twists",
+      "The families",
+      "When a path is too short",
+      "A path that comes back unchanged may have been refused",
+      "Where paths end, and clusters begin",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/paths"
   },
   {
@@ -316,6 +596,15 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Staging assets nothing spawns, materials, textures, particle systems, sound cues, as Generic entries of an Omni Collection.",
+    "outline": [
+      "The entry is the pick, the path is the payload",
+      "An empty Asset slot still picks",
+      "Bounds",
+      "Specialising the picker",
+      "Fallback: typed collections",
+      "An entry without an override writes the collection default",
+      "Where an actor collection already does it"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks/collections-of-anything"
   },
   {
@@ -331,6 +620,10 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "This checkbox looks harmless.",
+    "outline": [
+      "The Problem",
+      "Detection"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks/vanilla-pcg/editoronly-subgraphs"
   },
   {
@@ -339,6 +632,9 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Vanilla PCG nodes process the input data one after the other -- that's a strong design choice and it's good for your memory; but it also makes processing lots of smaller dataset _very slow_.",
+    "outline": [
+      "**Less Spawners is better**"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/tips-and-tricks/vanilla-pcg/merge-before-spawn"
   },
   {
@@ -347,6 +643,19 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
     "purpose": "Any toolkit that grows past a certain size hits the same fork: one node with fifty settings and a dozen mutually exclusive modes, or a separate node for every combination anyone might want.",
+    "outline": [
+      "Sub-nodes configure, consumers execute",
+      "Spotting one in the graph",
+      "Stacking several on one pin",
+      "The editor accepts wiring the consumer will reject",
+      "One sub-node, many consumers",
+      "What travels on the wire",
+      "Sub-nodes live for one execution",
+      "The only data type PCGEx adds",
+      "Identity lives in attributes and tags",
+      "Instanced behaviours",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/what-pcgex-adds"
   },
   {
@@ -355,6 +664,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Nearly all authoring happens inside one editor mode.",
+    "outline": [
+      "The Valency Editor Mode",
+      "The pieces you place",
+      "Create can hand the new actor its assets",
+      "The tool rail",
+      "Housekeeping"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring"
   },
   {
@@ -363,6 +679,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A connector is a component on the cage.",
+    "outline": [
+      "Placing one",
+      "Where connectors come from",
+      "Identifiers must be unique within a cage",
+      "What a connector transform is relative to",
+      "Span pairs",
+      "Span pairs are a work in progress"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/authoring-connectors"
   },
   {
@@ -371,6 +695,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "The orbital set decides which directions exist.",
+    "outline": [
+      "Start from a shipped set",
+      "Connections come from proximity",
+      "Manual connections",
+      "What an unconnected orbital means",
+      "Letting a module sit next to itself",
+      "Turning an orbital off"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/authoring-orbitals"
   },
   {
@@ -379,6 +711,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A pattern is an arrangement that can be recognised in a result, and what one is belongs to patterns.md.",
+    "outline": [
+      "Two routes",
+      "Only cage-authored patterns can replace anything",
+      "What a position asserts",
+      "Adjacencies and slots",
+      "What the asset carries",
+      "Rotating a whole pattern",
+      "Which to reach for"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/authoring-patterns"
   },
   {
@@ -387,6 +728,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "An orbital decides which direction two modules can bond along, and says nothing about whether the sides that meet there belong together.",
+    "outline": [
+      "What a bond tag says",
+      "How two seams match",
+      "Present specific, accept coarse",
+      "The mirror trap",
+      "Corner tags",
+      "A partially stated orbital derives nothing",
+      "Authoring surfaces",
+      "Bond tags on pattern positions"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/bond-and-corner-tags"
   },
   {
@@ -395,6 +746,17 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A bonding-rules.md asset is mostly output.",
+    "outline": [
+      "Sources",
+      "A zero entry weight skips the entry, in every mode",
+      "Level Bounds",
+      "Default Properties",
+      "External Storage",
+      "The exported asset is pipeline-managed",
+      "Compilation",
+      "Entry dedup is about the generated collection alone",
+      "The Modules list is editable, and every edit is temporary"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/bonding-rules-settings"
   },
   {
@@ -403,6 +765,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A cage marks a position in your authoring layout and declares what may sit there.",
+    "outline": [
+      "Type and role are different things",
+      "Getting content onto a cage",
+      "What a scanned actor becomes",
+      "Every scanned actor becomes something",
+      "What a cage transform means",
+      "Reach"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages"
   },
   {
@@ -411,6 +781,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A Valency Assembly Cage says: everything attached to this cage is one module.",
+    "outline": [
+      "One module from the subtree",
+      "Against a Module Cage",
+      "Against an ordinary cage",
+      "Creating one",
+      "Spawning it",
+      "The cage must be reachable when the library stages",
+      "When to reach for one"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/assembly-cages"
   },
   {
@@ -419,6 +798,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A footprint is the space a module occupies, described by marker components attached to its cage.",
+    "outline": [
+      "A footprint on its own does nothing",
+      "Footprints are a growth and grammar concern only",
+      "Building one",
+      "A Polygon marker turns Footprint Penetration into plain overlap",
+      "Channels"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/footprints"
   },
   {
@@ -427,6 +813,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Authoring orbital connections is precise: this cage bonds to that one, along this direction.",
+    "outline": [
+      "Two ways to name a target",
+      "The grant is mutual by default",
+      "Where the grant lands",
+      "It grants in bulk, including sides you narrowed",
+      "Narrowing by tag",
+      "When to use which"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/loose-neighbors"
   },
   {
@@ -435,6 +829,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A Valency Module Cage says: this entire level is one module.",
+    "outline": [
+      "A level is a kit or a module",
+      "Duplicating a level with a module cage in it",
+      "Duplicate a level, then Shift+click Rebuild All",
+      "When to reach for one"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/module-cages"
   },
   {
@@ -443,6 +843,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A module can carry data of your own: a material index, a gameplay value, a number some later stage reads.",
+    "outline": [
+      "Authoring them",
+      "Properties and mirroring",
+      "Tags are a different thing",
+      "Getting them back"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/module-properties"
   },
   {
@@ -451,6 +857,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Everything else about a cage says what the module is.",
+    "outline": [
+      "Weight",
+      "Placement policy",
+      "Spawn limits",
+      "Placement conditions",
+      "Reload your levels after changing it",
+      "Bounds modifier",
+      "Merge branches on bridge",
+      "Where these come from when mirroring"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/module-settings"
   },
   {
@@ -459,6 +875,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A corner piece authored once faces one way.",
+    "outline": [
+      "Where the rotations come from",
+      "Choosing which",
+      "Plane flips are an explicit opt-in",
+      "What variants do to weight",
+      "What a rotation does to an authored neighbour",
+      "Patterns rotate too"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/orbital-variants"
   },
   {
@@ -467,6 +891,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A kit repeats itself.",
+    "outline": [
+      "Five channels, chosen per source",
+      "How far a channel reaches",
+      "Asset palettes",
+      "Adding a source",
+      "When to reach for it"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/palettes-and-mirroring"
   },
   {
@@ -475,6 +906,9 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A Valency Cage (Null) stands at a position and asserts something about it without contributing a module.",
+    "outline": [
+      "Three things it can assert"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/placeholders"
   },
   {
@@ -483,6 +917,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A cage authors a module from its own content.",
+    "outline": [
+      "Cage role",
+      "What a reference names",
+      "Why author against one",
+      "Reference and Loose Neighbors"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/cages/reference-cages"
   },
   {
@@ -491,6 +931,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Attachment is exact.",
+    "outline": [
+      "A pipeline of three kinds",
+      "The fifteen",
+      "The working frame",
+      "Type defaults and instance overrides",
+      "Presets",
+      "Where to see them"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/connector-constraints"
   },
   {
@@ -499,6 +947,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A context volume is the entry point: it gathers the cages inside it and publishes them to the assets you point it at.",
+    "outline": [
+      "Where the volume's sets come from",
+      "Keeping incidental actors out",
+      "When it rebuilds",
+      "Automatic asset tracking"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/context-volumes"
   },
   {
@@ -507,6 +961,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Most cage authoring happens in the viewport rather than the details panel.",
+    "outline": [
+      "Two hover surfaces",
+      "Expanding across an orbital",
+      "Dropping a selection into a container",
+      "Registering references",
+      "Removing a link",
+      "Primary, Shift, and the menu"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/gestures"
   },
   {
@@ -515,6 +977,9 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "These pages are the vocabulary.",
+    "outline": [
+      "Read in this order"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts"
   },
   {
@@ -523,6 +988,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Everything in it is assembled rather than written by hand, from whichever sources you point it at.",
+    "outline": [
+      "It is a library",
+      "What a module is",
+      "The first source's settings win",
+      "What you configure, and what is assembled",
+      "Keeping it current",
+      "Author from inside the editor mode"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/bonding-rules"
   },
   {
@@ -531,6 +1004,11 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Valency has two ways of stating how modules connect: orbitals and connectors.",
+    "outline": [
+      "The two models",
+      "A module can carry both",
+      "Which model carries the structure"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/connection-models"
   },
   {
@@ -539,6 +1017,19 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Where an orbital is matched by direction, a connector is matched by identity, so two connectors can meet at any angle in space as long as their types accept each other and they face each other.",
+    "outline": [
+      "What a connector is",
+      "The connector set",
+      "Compatibility is directional",
+      "Joining two things that already exist needs both directions",
+      "Polarity",
+      "When two connectors mate",
+      "Two connectors in the same place do not necessarily meet",
+      "What attaching actually does",
+      "How growth treats an instance",
+      "Settle the set early",
+      "The cost of changing a set"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/connectors"
   },
   {
@@ -547,6 +1038,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Modules declare which directions they can bond along, and the solve matches the edges of your cluster against those directions.",
+    "outline": [
+      "What an orbital is",
+      "How an edge becomes a bond",
+      "An edge outside every orbital's tolerance",
+      "What a module asserts on an orbital",
+      "One set, for the whole project",
+      "Orbital sets tolerate being changed later"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/orbitals"
   },
   {
@@ -555,6 +1054,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Valency finds every occurrence of that arrangement in a result and can then act on it, most usefully by collapsing the whole thing into one larger asset.",
+    "outline": [
+      "What a pattern is made of",
+      "Matching is about arrangement",
+      "Replacing anything requires a pattern built from cages",
+      "Biases can take the decision over",
+      "Rotated arrangements",
+      "Rejection and seed patterns"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/patterns"
   },
   {
@@ -563,6 +1070,10 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Almost nothing in Valency asks for a module by name.",
+    "outline": [
+      "Three handles",
+      "A misspelled tag fails differently in each clause"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/selecting-modules"
   },
   {
@@ -571,6 +1082,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Generation is where the library gets used.",
+    "outline": [
+      "What actually flows",
+      "An older map costs you the newest modules, silently",
+      "The shape of a graph",
+      "Reading the result back"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating"
   },
   {
@@ -579,6 +1096,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Because it reads a finished result rather than driving placement, it works on anything that produced modules: a solve, a growth, a grammar, or a mixture.",
+    "outline": [
+      "What a match can do",
+      "Narrowing what is looked for",
+      "Overlapping matches",
+      "Steering which matches survive",
+      "Limits, per region",
+      "What comes out"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/finding-patterns"
   },
   {
@@ -587,6 +1112,18 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "What a grammar replaces, what it buys over a growth strategy, and the two ideas that make one readable: descriptors and edge scope.",
+    "outline": [
+      "A grammar is a growth strategy",
+      "What it buys",
+      "Asking for a module without naming one",
+      "A descriptor that resolves to nothing places nothing",
+      "Execution starts at a Seed",
+      "What each step sees",
+      "Two different things are called scope",
+      "Rules reshape and refuse",
+      "Values can come from the points",
+      "Overriding properties per node"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar"
   },
   {
@@ -595,6 +1132,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A grammar can express requirements it cannot satisfy by building greedily.",
+    "outline": [
+      "Three constructs that undo themselves",
+      "Three scopes",
+      "Where backtracking gives up",
+      "The symptom is a constraint that appears to be ignored",
+      "Global retry",
+      "Placeholders"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/backtracking"
   },
   {
@@ -603,6 +1148,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Branch, Choice and Merge: which one actually chooses, which one waits, and how rule state behaves when control flow forks.",
+    "outline": [
+      "Branch runs every arm",
+      "An arm dealt nothing",
+      "Choice picks one, and keeps a fallback",
+      "The continuation output",
+      "Merge waits",
+      "Rule state across a fork"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/branching"
   },
   {
@@ -611,6 +1164,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A grammar asset is one recipe, and every building it grows follows it with the same numbers.",
+    "outline": [
+      "The row is the one PCGEx uses everywhere",
+      "Which seed a value follows",
+      "When the attribute is missing",
+      "A bound value is checked where it is read, and some are corrected",
+      "What it costs",
+      "Grammars saved before bindings existed"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/data-bindings"
   },
   {
@@ -619,6 +1180,9 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Twenty-one node types, for looking one up.",
+    "outline": [
+      "Every node"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/grammar-nodes"
   },
   {
@@ -627,6 +1191,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Join and Prune: the nodes that work on what a grammar already built, one closing gaps between branches and one taking back what led nowhere.",
+    "outline": [
+      "Join spans two open connectors",
+      "Both Ends In Scope and Cross Branch Only cancel out",
+      "Prune takes placements back",
+      "A Prune only ever examines what its wire handed it",
+      "Cascade walks the chain back",
+      "What Prune refuses to touch",
+      "Settle First, and why it is off",
+      "What it hands downstream"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/joining-and-pruning"
   },
   {
@@ -635,6 +1209,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "The Filter node: five independent narrowings behind one word, the order they run in, and the two that look alike and anchor at opposite ends.",
+    "outline": [
+      "Where it starts from",
+      "The five narrowings",
+      "Two narrowings that look alike",
+      "Keep In Scope fails closed",
+      "When the library and the predicate disagree",
+      "An empty result is an empty result"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/narrowing-the-frontier"
   },
   {
@@ -643,6 +1225,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Three of the twenty-one grammar node types put modules in the world.",
+    "outline": [
+      "Three ways to place",
+      "A placement node that places nothing takes its subtree with it",
+      "Both cases warn, and the warning says which of three things went wrong",
+      "Bounding a loop",
+      "Multi-spawn",
+      "Prioritize Partial Spawns needs a bias to have an effect",
+      "Adoption at a Seed"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/placing-modules"
   },
   {
@@ -651,6 +1242,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Regions, and the biases and constraints they carry: where a rule applies, how nesting resolves, and the two-stage draw rules actually steer.",
+    "outline": [
+      "Where a rule lives",
+      "Region state is fresh, inline state persists",
+      "Nesting",
+      "Which placements a rule counts",
+      "When a constraint is asked",
+      "What failure costs",
+      "The draw rules actually steer"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/regions-and-rules"
   },
   {
@@ -659,6 +1259,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Sequence, Repeat, Optional and Yield: doing things in order, doing them several times, and the node that quietly rewires the loop it sits in.",
+    "outline": [
+      "Sequence finishes each step before the next begins",
+      "Sequence steps default to the whole frontier",
+      "Repeat draws a count, and can stop early",
+      "Optional always succeeds",
+      "Yield rewires the loop it sits in",
+      "A Yield overrides the Repeat body's edge scope"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/sequencing"
   },
   {
@@ -667,6 +1275,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A subgraph node expands another grammar asset in place.",
+    "outline": [
+      "Expansion happens at compile",
+      "Boundaries",
+      "Inherit or Isolate",
+      "Isolate inside a region compiles a warning",
+      "Grammar properties across the boundary",
+      "External or embedded"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
   },
   {
@@ -675,6 +1291,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Seek and Route: two nodes that build toward somewhere, one by feeling its way and one by solving first, and how a grammar says what to aim at.",
+    "outline": [
+      "A target is a live connector",
+      "A target-fed node waits for its contributions",
+      "Exclude Own Branch excludes everything on a single-seed run",
+      "Seek grows toward",
+      "Corridor modules and closing modules are two pools",
+      "Route solves, then commits",
+      "A found route can still fail to commit"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/targets"
   },
   {
@@ -683,6 +1308,17 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Growth keeps a frontier: the set of open connectors it could still expand from.",
+    "outline": [
+      "The loop",
+      "What it needs",
+      "Strategies",
+      "Budgets",
+      "Weight is spent as well as drawn",
+      "Space, overlap and containment",
+      "Two opposite symptoms, one setting",
+      "Starting and forbidding with patterns",
+      "What comes out"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grow"
   },
   {
@@ -691,6 +1327,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Growth from a single seed does not produce a single line.",
+    "outline": [
+      "Branches",
+      "Natural bridges",
+      "Active bridging",
+      "Bridge roles",
+      "Merging branches",
+      "Finding bridges after the fact"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grow/branches-and-bridges"
   },
   {
@@ -699,6 +1343,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "It does not care who resolved the input.",
+    "outline": [
+      "It extends the input cluster",
+      "Choosing what to grow from",
+      "The default source reads an attribute a solve never writes",
+      "Budgets and limits count differently",
+      "What comes out"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grow/from-a-cluster"
   },
   {
@@ -707,6 +1358,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Growth expands wherever its strategy happens to look next, which is why the strategies produce such different silhouettes from the same library.",
+    "outline": [
+      "What alignment measures",
+      "How each strategy reads it",
+      "Shaping the preference",
+      "The hard gate",
+      "The gate ignores Absolute",
+      "A seed whose connectors are all pruned places one module and stops",
+      "With a grammar"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grow/tensor-guidance"
   },
   {
@@ -715,6 +1375,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A solve or a growth produces points that know which module they are.",
+    "outline": [
+      "What a resolved point carries",
+      "What Staging does",
+      "Where PCGEx takes over",
+      "Points a pattern already absorbed",
+      "Fitting and transforms"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output"
   },
   {
@@ -723,6 +1390,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Properties authored on a cage travel through compilation and sit on the module.",
+    "outline": [
+      "What it needs",
+      "Three kinds of output",
+      "Mapping properties",
+      "Where a value comes from",
+      "One name, two types, and the override quietly loses",
+      "Tags as a string",
+      "Where it sits"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output/reading-properties"
   },
   {
@@ -731,6 +1407,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Connector points are positions with a facing and a type, which is exactly the shape of input a second pass wants.",
+    "outline": [
+      "Which connectors qualify",
+      "Claimed gives you both sides separately",
+      "What each point carries",
+      "Which node to reach for"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output/write-connectors"
   },
   {
@@ -739,6 +1421,13 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Solving never moves, adds or removes a position.",
+    "outline": [
+      "What it needs",
+      "How a solve proceeds",
+      "Solving part of a cluster",
+      "Entries from another rule set are re-solved",
+      "Steering the outcome"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/solve"
   },
   {
@@ -747,6 +1436,17 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A solve obeys the library.",
+    "outline": [
+      "Hard and soft",
+      "Fixed picks",
+      "Forcing a pick can produce something the rules forbid",
+      "A partial pre-solve is often the better tool",
+      "Biases",
+      "Affinity maps",
+      "Guidance patterns",
+      "Guidance and Find Patterns are the same assets doing opposite jobs",
+      "Where weights and limits come from"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/solve/guiding-a-solve"
   },
   {
@@ -755,6 +1455,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A solve needs a solver, supplied as a factory node.",
+    "outline": [
+      "Why the order matters at all",
+      "The four",
+      "Minimum spawn boosts are shared",
+      "Choosing one"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/solve/solver-strategies"
   },
   {
@@ -763,6 +1469,11 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Solving, growing and staging are stages: every pipeline has them, in that order.",
+    "outline": [
+      "What each one is for",
+      "Write Orbitals is a prerequisite",
+      "Where they sit in a pipeline"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/utility-nodes"
   },
   {
@@ -771,6 +1482,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Growth records connections as cluster edges.",
+    "outline": [
+      "Mated and spanning bonds",
+      "Which end is which",
+      "What a junction carries",
+      "Splitting the cluster",
+      "Narrowing which joints are written",
+      "Driven by the map"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/utility-nodes/junctions"
   },
   {
@@ -779,6 +1498,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A solve needs a cluster whose edges already carry orbital directions.",
+    "outline": [
+      "What it takes in",
+      "The lattice itself",
+      "One cluster, or one per group",
+      "What comes out",
+      "Two different suffixes, and only one of them defaults to Main",
+      "When to reach for it"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/utility-nodes/lattice"
   },
   {
@@ -787,6 +1514,15 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A cluster is one undifferentiated set of positions.",
+    "outline": [
+      "It runs before resolution",
+      "Finding the floors",
+      "Numbering across disconnected parts",
+      "Regions",
+      "What it writes",
+      "The Regions output",
+      "Driven by the map"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/utility-nodes/planar-partition"
   },
   {
@@ -795,6 +1531,12 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A solve does not work out for itself which direction each connection runs in.",
+    "outline": [
+      "Where it sits",
+      "How an orbital is assigned",
+      "What it writes",
+      "Getting the tolerance right"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/utility-nodes/write-orbitals"
   },
   {
@@ -835,6 +1577,10 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Authoring is level work.",
+    "outline": [
+      "What each one owns",
+      "Where to start"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems"
   },
   {
@@ -843,6 +1589,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Every way to reshape which module gets picked, how the two families differ, and how several biases compose into one number.",
+    "outline": [
+      "Two families",
+      "Bias nodes",
+      "Channel maps",
+      "Affinity maps",
+      "Grammar biases",
+      "How several biases combine",
+      "A bias that reshapes weights on positions nobody picks changes nothing",
+      "Bias or constraint"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/biases"
   },
   {
@@ -851,6 +1607,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Where Valency tells you what went wrong, what the common failures look like from the outside, and which page fixes each one.",
+    "outline": [
+      "Diagnostics land on the node",
+      "The Output Log",
+      "Valency's own categories",
+      "What the common failures look like",
+      "Narrowing it down",
+      "Seeing it in the level"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/debugging"
   },
   {
@@ -859,6 +1623,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A fact is a question Valency can answer about a position or a module, as a set of bits.",
+    "outline": [
+      "Two vocabularies",
+      "Asking a fact",
+      "Unanswerable tests",
+      "Connector gates",
+      "Where else facts are read",
+      "The seam between the two models"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/facts-and-gates"
   },
   {
@@ -867,6 +1639,14 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Four point filters test things only Valency knows: what module a point resolved to, which of its orbitals have neighbours, which of its connectors are still open.",
+    "outline": [
+      "The four",
+      "Finding the map",
+      "Testing orbitals",
+      "Testing connectors",
+      "When there is nothing to test",
+      "What they are for"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/filters"
   },
   {
@@ -875,6 +1655,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Attachment is decided by connectors, and connectors know nothing about volume.",
+    "outline": [
+      "The four conditions",
+      "Ignoring the parent",
+      "Overlap, with exceptions",
+      "Penetration",
+      "Spatial domains",
+      "A domain nobody supplied passes",
+      "Obstacles",
+      "Reading the two symptoms"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/footprints-and-overlap"
   },
   {
@@ -883,6 +1673,16 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Valency adds nineteen nodes and eight asset types.",
+    "outline": [
+      "Reading the list",
+      "Resolving modules",
+      "Preparing a cluster",
+      "Reading a result",
+      "Steering a run",
+      "Probe : Orbital",
+      "Assets",
+      "Grammar nodes live in the grammar asset"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/node-index"
   },
   {
@@ -891,6 +1691,18 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "A grammar can ask whether a placement sits inside or outside a named piece of geometry fed in from the graph.",
+    "outline": [
+      "One question, three rules",
+      "Naming a channel",
+      "A channel nothing was baked into passes",
+      "A connector is a point, a module is a pose",
+      "When the constraint is asked",
+      "Severity is read on two channels of the three",
+      "Inside means touches",
+      "Making a rule conditional",
+      "An inert rule reports nothing",
+      "Which one a problem wants"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/spatial-rules"
   },
   {
@@ -899,6 +1711,18 @@
     "plugin": "PCGExElementsValency",
     "kind": "concept",
     "purpose": "Weight decides how likely a module is.",
+    "outline": [
+      "Min and max",
+      "A minimum is a preference",
+      "Growth ignores minimums entirely",
+      "A cap as a proportion",
+      "What a relative cap measures against under growth",
+      "Sharing one budget",
+      "Partitioned limits",
+      "What enforces them",
+      "One count per module family",
+      "Limits or weight"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/systems/spawn-limits"
   },
   {
@@ -907,6 +1731,14 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "Most of what the node does is decided by one setting applied to a whole cluster.",
+    "outline": [
+      "Switching a value to an attribute",
+      "What can be driven",
+      "Bitmask attributes",
+      "Authoring the masks without knowing the bits",
+      "When an attribute is missing",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/attribute-overrides"
   },
   {
@@ -915,6 +1747,13 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "A connection point carries more than a position.",
+    "outline": [
+      "What a road hands over",
+      "Different values at a road's two ends",
+      "Which end counts as primary follows the road's direction",
+      "Intersection tags",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/connection-properties"
   },
   {
@@ -923,6 +1762,12 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "The other per-road modes size each connection from its own road's profile and ignore everything else at the junction.",
+    "outline": [
+      "What it fits to",
+      "When nothing constrains a road",
+      "The clamp",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/convex-fit-radius"
   },
   {
@@ -931,6 +1776,12 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "One Lane Profile on the node gives every road in the cluster the same cross-section.",
+    "outline": [
+      "Painting a profile onto edges",
+      "Profiles live on edges",
+      "Flipping a profile without turning the road",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/multiple-lane-profiles"
   },
   {
@@ -939,6 +1790,13 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "The default decomposition needs nothing configured, and it is the last thing in this section that does.",
+    "outline": [
+      "The model",
+      "Sizing an intersection",
+      "Shaping a road",
+      "What a connection carries",
+      "Data in, geometry out"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/overview"
   },
   {
@@ -947,6 +1805,12 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "The Zone Graph itself lands on the target actor as components, out of reach of the rest of your graph.",
+    "outline": [
+      "Road Paths",
+      "Polygon Paths",
+      "Only while `Polygon Point Type` is Lane Profile",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/path-outputs"
   },
   {
@@ -955,6 +1819,13 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "Two intersections joined by a short stub of road that you would rather see as one intersection: a divided road that briefly splits and rejoins, or a pair of junctions that landed too close together.",
+    "outline": [
+      "What a seam has to pass",
+      "Why nothing merged",
+      "What a fused intersection is made of",
+      "When it declines to merge",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/polygon-merging"
   },
   {
@@ -963,6 +1834,14 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "A polygon is a ring of connection points around a Vtx, and the radius is what puts them there.",
+    "outline": [
+      "Where a connection point sits",
+      "Sizing from the roads instead",
+      "Per-road and aggregate",
+      "Combining auto with a manual radius",
+      "**Use as Min** takes the larger value",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/polygon-radius"
   },
   {
@@ -971,6 +1850,13 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "A road built straight from cluster points ends on the Vtx its polygon sits on, which puts its last stretch inside the intersection.",
+    "outline": [
+      "Where a road stops",
+      "Trimming",
+      "The trim buffer",
+      "Roads that get dropped",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/road-endpoints"
   },
   {
@@ -979,6 +1865,14 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "A lane profile is directional.",
+    "outline": [
+      "Traffic Flow",
+      "Rings beyond every leaf",
+      "Global Direction",
+      "Sort Direction",
+      "Invert Orientation",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/road-orientation"
   },
   {
@@ -987,6 +1881,16 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "The node never asks you where the intersections go.",
+    "outline": [
+      "Two shapes, and the cluster decides both",
+      "What a Vtx becomes",
+      "Forcing a polygon",
+      "A forced polygon eats road on both sides",
+      "Closed loops",
+      "One breakpoint on a ring changes nothing",
+      "Which values come from Vtx, and which from edges",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/roads-and-polygons"
   },
   {
@@ -995,6 +1899,12 @@
     "plugin": "PCGExElementsZoneGraph",
     "kind": "concept",
     "purpose": "A road's shape between its points is a bezier, and the tangent length at each point is what decides how tightly it turns.",
+    "outline": [
+      "The four modes",
+      "Why the settings are usually hidden",
+      "Clamp to Short Neighbor",
+      "Related"
+    ],
     "url": "https://pcgex.gitbook.io/pcgex/zone-graph/working-with-zonegraph/tangent-control"
   },
   {
@@ -2088,64 +2998,14 @@
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/filters"
   },
   {
-    "id": "UK2Node_GetPCGExCollectionMember",
-    "name": "Get Collection Member",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "blueprint_node",
-    "purpose": "Reads any authorable field of the collection asset itself into a Blueprint graph, addressed by name.",
-    "situation": "A staging pipeline or editor utility needs a value that lives on the collection rather than on one of its rows.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/get-collection-member"
-  },
-  {
-    "id": "UK2Node_GetPCGExEntryMember",
-    "name": "Get Entry Member",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "blueprint_node",
-    "purpose": "Reads any authorable field of one collection entry into a Blueprint graph, addressed by raw index and field name.",
-    "situation": "A pipeline hook has an entry index in hand and needs that row's authored value before deciding what to write back.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/get-entry-member"
-  },
-  {
     "id": "UK2Node_GetPCGExEntryProperty",
-    "name": "Get Entry Property",
+    "name": "Collection Accessor Nodes",
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "blueprint_node",
-    "purpose": "Reads a declared property of one entry, resolved the way the rest of the collection system resolves it.",
-    "situation": "A pipeline or editor utility needs the value a given entry resolves for a declared property, without caring which tier supplies it.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/get-entry-property"
-  },
-  {
-    "id": "UK2Node_SetPCGExCollectionMember",
-    "name": "Set Collection Member",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "blueprint_node",
-    "purpose": "Writes one reflected member of the collection asset itself from Blueprint.",
-    "situation": "A staging pipeline or editor utility needs to set a collection-wide value, the same edit an author would make in the collection's details panel, without opening every collection by hand.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/set-collection-member"
-  },
-  {
-    "id": "UK2Node_SetPCGExEntryMember",
-    "name": "Set Entry Member",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "blueprint_node",
-    "purpose": "Writes one reflected member of a single collection entry, addressed by its raw index.",
-    "situation": "A staging pipeline hook holds an entry index and needs to write a field of that entry, the same edit an author would make in the collection's grid.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/set-entry-member"
-  },
-  {
-    "id": "UK2Node_SetPCGExEntryProperty",
-    "name": "Set Entry Property",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "blueprint_node",
-    "purpose": "Writes one of the collection's declared properties onto a single entry, addressed by its raw index, and enables that entry's own override for it.",
-    "situation": "A staging pipeline computes a per-entry value and needs it stored as that entry's own override rather than left to the collection default.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/set-entry-property"
+    "purpose": "The Blueprint nodes that read and write a collection by name, from a staging pipeline hook or an editor utility.",
+    "situation": "A pipeline hook has a collection and an entry index in hand and needs to read something authored on it, or to write a value the rest of the collection system will resolve.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/collection-accessor-nodes"
   },
   {
     "id": "UK2Node_SwitchOnCollectionType",
@@ -3686,6 +4546,24 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/debug/draw-attributes"
   },
   {
+    "id": "UPCGExDynamicMeshFilterProviderSettings",
+    "name": "Filter : Inclusion (Dynamic Mesh)",
+    "category": "Filter",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "provider",
+    "presets": [
+      "Is Inside (Dynamic Mesh)",
+      "Intersects (Dynamic Mesh)",
+      "Is Inside or Intersects (Dynamic Mesh)",
+      "Is Outside or Intersects (Dynamic Mesh)",
+      "Is Fully Inside (Dynamic Mesh)"
+    ],
+    "purpose": "Answers whether each element sits inside a dynamic mesh: the question Filter : Inclusion (Volume) puts to level volumes, asked here of mesh data flowing through the graph, which is what the Topology nodes build, what Spawn Dynamic Mesh consumes and what Dynamic Mesh to Clusters reads.",
+    "situation": "A surface was built earlier in the graph, and whether an element survives depends on whether it ended up inside that surface.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-inclusion-dynamic-mesh"
+  },
+  {
     "id": "UPCGExDynamicMeshToClustersSettings",
     "name": "Dynamic Mesh to Clusters",
     "plugin": "PCGExtendedToolkit",
@@ -3920,6 +4798,20 @@
     "purpose": "Compares how many points a dataset holds against a number, and answers for the dataset as a whole.",
     "situation": "A pin carrying datasets of wildly different sizes, where the small ones are noise and should be dropped before the expensive work starts.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/data-filters/data-filter-entry-count"
+  },
+  {
+    "id": "UPCGExEnumFilterProviderSettings",
+    "name": "Filter : Enum",
+    "category": "Filter",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "provider",
+    "aliases": [
+      "Filter : by Attribute (enum)"
+    ],
+    "purpose": "Tests a number stored on the element against the values of an enum, chosen by name from the enum itself instead of typed in as a digit.",
+    "situation": "An attribute holds an enum value as a number, and the next node should act only on the elements in one or a few named cases.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-enum"
   },
   {
     "id": "UPCGExExtrudePathSettings",
@@ -4311,6 +5203,16 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/common-settings/tangents/from-neighbors"
   },
   {
+    "id": "UPCGExFromSplineTangents",
+    "name": "From Spline",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "instanced_factory",
+    "purpose": "Reads each point's tangent off the closest reference spline, so a path takes the shape of a curve it was never built from.",
+    "situation": "A path was sampled or projected off a spline, or laid along one, and the spline it should follow is still in the graph.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/common-settings/tangents/from-spline"
+  },
+  {
     "id": "UPCGExFromTransformTangents",
     "name": "From Transform",
     "plugin": "PCGExtendedToolkit",
@@ -4362,6 +5264,16 @@
     "purpose": "Answers a question about an actor in the level rather than about the element in front of it.",
     "situation": "Points were built from actors already placed in the level, and which of them the next node touches depends on the tags those actors carry.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-gameplaytags"
+  },
+  {
+    "id": "UPCGExGetCachedDataSettings",
+    "name": "Get Cached Data",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Reads back what Set Cached Data stored on an actor's PCGEx Data Cache component: one cache ID, or every entry the component holds.",
+    "situation": "A graph on its second generation that has to pick up where the previous one left off, on an actor whose generated output has since been cleaned up.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data"
   },
   {
     "id": "UPCGExGetCollectionDataSettings",
@@ -4884,8 +5796,7 @@
   },
   {
     "id": "UPCGExNeighborSampleProviderSettings",
-    "name": "Sampler : Abstract",
-    "category": "Sampler",
+    "name": "Neighbor Sampler",
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "provider",
@@ -6335,6 +7246,22 @@
     "purpose": "Thins a dataset by removing points that overlap each other.",
     "situation": "A scatter dense enough that instances would intersect, needing thinning without a fixed grid or a re-scatter.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/self-pruning"
+  },
+  {
+    "id": "UPCGExSetCachedDataSettings",
+    "name": "Set Cached Data",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "presets": [
+      "Set Cached Data : Replace",
+      "Set Cached Data : Append",
+      "Set Cached Data : Clear",
+      "Set Cached Data : Clear All"
+    ],
+    "purpose": "Stores whatever arrives on its data pins on an actor, under a cache ID, so a later generation of this graph, or any other graph running against that actor, can read it back with Get Cached Data.",
+    "situation": "A result from one generation that the next generation has to read back, when nothing in vanilla PCG survives from one to the other.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data"
   },
   {
     "id": "UPCGExSettings",

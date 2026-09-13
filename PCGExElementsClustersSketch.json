@@ -167,7 +167,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/cluster-sketch-collection",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Collections/PCGExClusterSketchCollection.h",
-        "hash": "d2db5290206384443f3fb18230fb64bf0a476165"
+        "hash": "5a2b9a0e1f163eee050de3cfdaead52f67224dfe"
       }
     },
     "UPCGExGetSketchDataSettings": {
@@ -278,31 +278,35 @@
           "edit_condition": "bWriteActorReference",
           "semantics": "Written on the Vtx data and the site points; the Edges never carry it."
         },
-        "PropertyOutputMode": {
-          "display": "Property Output Mode",
-          "type": "EPCGExPropertyOutputMode",
-          "tooltip": "How printed sketch properties are selected.",
-          "default": "EPCGExPropertyOutputMode::AllFound",
-          "enum": "EPCGExPropertyOutputMode"
-        },
-        "PropertyOutputSettings": {
-          "display": "Property Output Settings",
-          "type": "FPCGExPropertyOutputSettings",
-          "tooltip": "Explicit selection (and renaming) of the authored properties to print.",
+        "PropertyOutput": {
+          "display": "Property Output",
+          "type": "FPCGExSketchPropertyOutputDetails",
+          "tooltip": "Which authored sketch properties print, and whether the Map sidecar is emitted.",
           "overridable": true,
-          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
-          "edit_condition_hides": true,
-          "see": "FPCGExPropertyOutputSettings",
+          "fields": [
+            {
+              "name": "Mode",
+              "display": "Mode",
+              "type": "EPCGExPropertyOutputMode",
+              "tooltip": "How printed sketch properties are selected.",
+              "default": "EPCGExPropertyOutputMode::AllFound",
+              "enum": "EPCGExPropertyOutputMode"
+            },
+            {
+              "name": "Explicit",
+              "display": "Explicit",
+              "type": "FPCGExPropertyOutputSettings",
+              "tooltip": "Explicit selection (and renaming) of the authored properties to print."
+            },
+            {
+              "name": "bOutputMap",
+              "display": "Output Map",
+              "type": "bool",
+              "tooltip": "Also emit the \"Map\" attribute set of referenced external resources; always on in AllFound mode.",
+              "default": "false"
+            }
+          ],
           "inlined_in_panel": true
-        },
-        "bOutputMap": {
-          "display": "Output Map",
-          "type": "bool",
-          "tooltip": "Emit the \"Map\" attribute set describing external resources referenced by written properties. Always emitted in AllFound mode (the toggle is hidden there).",
-          "default": "false",
-          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
-          "edit_condition_hides": true,
-          "advanced": true
         },
         "bQuiet": {
           "display": "Quiet",
@@ -348,7 +352,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/get-sketch-data",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExGetSketchData.h",
-        "hash": "b774676320450e385f5f87816c31abe26a4b3ed5"
+        "hash": "85f823e839509c37fafeb3ac544b3cc21fb9c9a4"
       }
     },
     "UPCGExStagingLoadSketchSettings": {
@@ -434,31 +438,35 @@
           "edit_condition_hides": true,
           "advanced": true
         },
-        "PropertyOutputMode": {
-          "display": "Property Output Mode",
-          "type": "EPCGExPropertyOutputMode",
-          "tooltip": "How printed sketch properties are selected.",
-          "default": "EPCGExPropertyOutputMode::AllFound",
-          "enum": "EPCGExPropertyOutputMode"
-        },
-        "PropertyOutputSettings": {
-          "display": "Property Output Settings",
-          "type": "FPCGExPropertyOutputSettings",
-          "tooltip": "Explicit selection (and renaming) of the authored properties to print.",
+        "PropertyOutput": {
+          "display": "Property Output",
+          "type": "FPCGExSketchPropertyOutputDetails",
+          "tooltip": "Which authored sketch properties print, and whether the Map sidecar is emitted.",
           "overridable": true,
-          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
-          "edit_condition_hides": true,
-          "see": "FPCGExPropertyOutputSettings",
+          "fields": [
+            {
+              "name": "Mode",
+              "display": "Mode",
+              "type": "EPCGExPropertyOutputMode",
+              "tooltip": "How printed sketch properties are selected.",
+              "default": "EPCGExPropertyOutputMode::AllFound",
+              "enum": "EPCGExPropertyOutputMode"
+            },
+            {
+              "name": "Explicit",
+              "display": "Explicit",
+              "type": "FPCGExPropertyOutputSettings",
+              "tooltip": "Explicit selection (and renaming) of the authored properties to print."
+            },
+            {
+              "name": "bOutputMap",
+              "display": "Output Map",
+              "type": "bool",
+              "tooltip": "Also emit the \"Map\" attribute set of referenced external resources; always on in AllFound mode.",
+              "default": "false"
+            }
+          ],
           "inlined_in_panel": true
-        },
-        "bOutputMap": {
-          "display": "Output Map",
-          "type": "bool",
-          "tooltip": "Emit the \"Map\" attribute set describing external resources referenced by written properties. Always emitted in AllFound mode (the toggle is hidden there).",
-          "default": "false",
-          "edit_condition": "PropertyOutputMode == EPCGExPropertyOutputMode::Explicit",
-          "edit_condition_hides": true,
-          "advanced": true
         },
         "Sketch": {
           "display": "Cluster Sketch",
@@ -650,7 +658,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExStagingLoadSketch.h",
-        "hash": "e352ced80d1ccf5b6e846efdb6c1b64efc553172"
+        "hash": "f63c4d71ec7edf1c37f0ab5e1f71a240fe095562"
       }
     }
   }
