@@ -3531,6 +3531,25 @@
         }
       ]
     },
+    "EPCGExInsideWeighting": {
+      "values": [
+        {
+          "name": "Distance",
+          "display_name": "Distance",
+          "tooltip": "Weight falls off with the distance to the closest edge, inside or out."
+        },
+        {
+          "name": "Full",
+          "display_name": "Full",
+          "tooltip": "Inside targets always get full weight. Outside targets fall off with distance."
+        },
+        {
+          "name": "Depth",
+          "display_name": "Depth",
+          "tooltip": "Inside targets weigh more the deeper they are, saturating at Depth Range. Outside targets fall off with distance."
+        }
+      ]
+    },
     "EPCGExIterationDataType": {
       "values": [
         {
@@ -4694,12 +4713,12 @@
         {
           "name": "FullRange",
           "display_name": "Full Range",
-          "tooltip": "Normalize in the [0..1] range using [0..Max Value] range."
+          "tooltip": "Remap the declared [Min..Max] range to [0..1]."
         },
         {
           "name": "EffectiveRange",
           "display_name": "Effective Range",
-          "tooltip": "Remap the input [Min..Max] range to [0..1]."
+          "tooltip": "Remap the sampled [Min..Max] range to [0..1]."
         }
       ]
     },
@@ -5031,7 +5050,7 @@
         {
           "name": "WithinRange",
           "display_name": "All (Within range)",
-          "tooltip": "Use RangeMax = 0 to include all targets"
+          "tooltip": "Use RangeMax = 0 to include all targets (where supported)"
         },
         {
           "name": "ClosestTarget",
@@ -5621,6 +5640,20 @@
           "name": "CollectionMap",
           "display_name": "Collection Map",
           "tooltip": "Write collection reference & pick for later use"
+        }
+      ]
+    },
+    "EPCGExStampRangeMode": {
+      "values": [
+        {
+          "name": "Target",
+          "display_name": "Target",
+          "tooltip": "Range is read on each target. A source is stamped when its distance to the target is within that target's range."
+        },
+        {
+          "name": "Combined",
+          "display_name": "Source + Target",
+          "tooltip": "Effective range = target range + source range, both min and max."
         }
       ]
     },
@@ -6364,6 +6397,53 @@
         }
       ]
     },
+    "EPCGExWeightedLookupFallback": {
+      "values": [
+        {
+          "name": "None",
+          "display_name": "None",
+          "tooltip": "No row is picked: forwarded attributes are left untouched on that point, the row index is -1."
+        },
+        {
+          "name": "UniformRandom",
+          "display_name": "Uniform Random",
+          "tooltip": "Pick a row at random, ignoring weights."
+        },
+        {
+          "name": "FixedRow",
+          "display_name": "Fixed Row",
+          "tooltip": "Pick a specific row index."
+        }
+      ]
+    },
+    "EPCGExWeightedLookupPickMode": {
+      "values": [
+        {
+          "name": "Highest",
+          "display_name": "Highest",
+          "tooltip": "Deterministic: the row with the highest weight wins. Ties resolve to the first row."
+        },
+        {
+          "name": "WeightedRandom",
+          "display_name": "Weighted Random",
+          "tooltip": "Seeded random pick where each row's probability is proportional to its weight."
+        }
+      ]
+    },
+    "EPCGExWeightedLookupWeightsSource": {
+      "values": [
+        {
+          "name": "Self",
+          "display_name": "Self",
+          "tooltip": "Weights are read from the processed points; the Map key column names the point attribute holding each row's weight."
+        },
+        {
+          "name": "External",
+          "display_name": "External",
+          "tooltip": "Weights are read from the Weights input; each point selects a Weights row by matching its key attribute, and the Map key column names the Weights attribute holding each row's weight."
+        }
+      ]
+    },
     "EPCGExWeightNormalization": {
       "values": [
         {
@@ -6938,7 +7018,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/data-utils/attribute-to-tag-details",
       "source": {
         "file": "PCGExCore/Public/Data/Utils/PCGExDataForwardDetails.h",
-        "hash": "b436a5f8e562a86a278ab06ceaa4f959ec48df90"
+        "hash": "c285d8c8137c711f65a6e4d504bcbfad11d252f9"
       }
     },
     "FPCGExBlendingDetails": {
@@ -7310,7 +7390,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-artifacts-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "1df7c023746f416ad7c8b845027c8c75fcb830e0"
+        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e"
       }
     },
     "FPCGExCellConstraintsDetails": {
@@ -7576,7 +7656,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-constraints-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "1df7c023746f416ad7c8b845027c8c75fcb830e0"
+        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e"
       }
     },
     "FPCGExCellGrowthDetails": {
@@ -7588,12 +7668,12 @@
       "purpose": "The **Growth** block: how far a claim spreads out from the cell a seed or a hole point landed in, counted in cells. **Pathfinding : Find Cells** and **Pathfinding : Find Cells (Bounded)** carry it as `Seed Growth`, where spreading adds cells to what a seed takes; **Pathfinding : Find All Cells** and **Pathfinding : Find All Cells (Bounded)** carry it as `Hole Growth`, where spreading removes them. `Merge Adjacent Cells` sits alongside and fuses everything one claim covers into a single closed path. Nothing here moves a cell's boundary or changes its shape.",
       "situation": "A seed should come away with a territory rather than a single region, or a hole should clear the ring of regions around it.",
       "mechanism": {
-        "text": "The cell the point landed in is depth 0, the cells around it are depth 1, theirs are depth 2, and the spread stops at whatever depth that point asked for. Two cells count as neighbours when they share an edge, so cells meeting at a single Vtx are not neighbours, and the cluster's outer boundary is a neighbour of nothing, which is what keeps a claim inside the cluster. The spread crosses cells the constraints discarded without taking them, so a claim at depth 2 can land on the far side of a rejected cell. A cell that two seeds both reached goes to one of them, settled by `Seed Ownership`."
+        "text": "The cell the point landed in is depth 0, the cells around it are depth 1, theirs are depth 2, and the spread stops at whatever depth that point asked for. Two cells count as neighbours when they share an edge, so cells meeting at a single Vtx are not neighbours, and the cluster's outer boundary is a neighbour of nothing, which is what keeps a claim inside the cluster. The spread crosses cells the constraints discarded without taking them, so a claim at depth 2 can land on the far side of a rejected cell; **Pathfinding : Find Cells (Bounded)** is the exception, taking a crossed cell that failed only its area, compactness or Concave Only limit. A cell that two seeds both reached goes to one of them, settled by `Seed Ownership`."
       },
       "off_label": [
         {
           "claim": "Set `Growth` high enough to reach every cell in the cluster and turn `Merge Adjacent Cells` on, and a single seed hands back the whole connected decomposition as one outline. That is the cluster's boundary with the constraint block still applying to the cells underneath it, which **Pathfinding : Find Cluster Hull** cannot give you.",
-          "grounded_in": "ExpandSeedToAdjacentCells walks the face adjacency map breadth-first with no cap but the depth, and the per-seed MergeAdjacentCells call in OnRangeProcessingComplete traces one boundary per connected run of the claim."
+          "grounded_in": "ExpandSeedToAdjacentCells walks the face adjacency map breadth-first with no cap but the depth, and MergeCellGroups in OnRangeProcessingComplete groups the claimed cells by owning seed, splits each group into adjacency-connected runs and traces one boundary per run."
         }
       ],
       "settings": {
@@ -7641,11 +7721,11 @@
         "bMergeAdjacentCells": {
           "display": "Merge Adjacent Cells",
           "type": "bool",
-          "tooltip": "When enabled, all cells assigned to the same seed are merged into a single closed path by dissolving shared interior edges. Only effective when Growth > 0. Constraint filtering may still produce multiple output cells if the grown region is non-contiguous.",
+          "tooltip": "When enabled, adjacent cells are merged into a single closed path by dissolving shared interior edges: per seed on seeded nodes (needs Growth > 0), per connected region otherwise. Constraint filtering may still split a non-contiguous region into several cells.",
           "default": "false",
           "overridable": true,
-          "semantics": "Merging dissolves the borders shared inside one claim and traces what is left, so a claim that came apart into separate islands comes back as one path per island. The fused outline is a new cell that no constraint is re-applied to: it can exceed `Max Area`, carry more points than `Max Point Count` allows, and it is always reported concave, which is what the artifacts block's convex and concave tags read.",
-          "trap": "On **Pathfinding : Find All Cells** and **Pathfinding : Find All Cells (Bounded)** this does not do what its own description says. There are no seeds there and it is not gated on `Growth`, so it fuses every surviving cell into one path per connected run of them and an ordinary decomposition collapses into a single outline.",
+          "semantics": "Merging dissolves the borders shared inside one claim and traces what is left, so a claim that came apart into separate islands comes back as one path per island. The fused outline is a new cell that no constraint is re-applied to: it can exceed `Max Area`, carry more points than `Max Point Count` allows, and it is always reported concave, which is what the artifacts block's convex and concave tags read. On the seeded nodes a `Seed Merge` with its key switched on takes over the grouping, fusing by key value rather than by seed.",
+          "trap": "On **Pathfinding : Find All Cells** and **Pathfinding : Find All Cells (Bounded)** there are no seeds and no `Growth` gate, so it fuses every surviving cell into one path per connected run of them and an ordinary decomposition collapses into a single outline.",
           "interacts_with": [
             "Growth"
           ]
@@ -7687,7 +7767,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-growth-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "1df7c023746f416ad7c8b845027c8c75fcb830e0"
+        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e"
       }
     },
     "FPCGExCellSeedMutationDetails": {
@@ -7797,12 +7877,12 @@
       "hints": [
         {
           "style": "warning",
-          "text": "Two switches on the node gate this block, and neither of them lives here. `Output Filtered Seeds` has to be on, because the rewritten points are the **SeedGenSuccess** pin and nothing else. `Output Paths` has to be on too, because the rewrite happens while a cell's path is being built. With either off the block runs on no seed at all, silently.",
+          "text": "Two switches on the node gate this block, and neither of them lives here. `Output Filtered Seeds` has to be on, because the rewritten points are the **SeedGenSuccess** pin and nothing else. `Output Paths` has to be on too, because the rewrite happens while a cell's path is being built. With either off the block runs on no seed at all, silently; with `Output Paths` off the winning seeds still reach **SeedGenSuccess**, unrewritten.",
           "anchor": "whats_it_for"
         },
         {
           "style": "warning",
-          "text": "A seed that owns several cells is rewritten once per cell onto the same point, so only one of them survives on it and nothing you can set decides which. `Seed Growth` above 0 is where a seed comes to own several; turning `Merge Adjacent Cells` on collapses the claim back to one cell per seed and the ambiguity with it.",
+          "text": "A seed that owns several cells is rewritten once per cell onto the same point, so only one of them survives on it and nothing you can set decides which. `Seed Growth` above 0 is where a seed comes to own several; turning `Merge Adjacent Cells` on fuses each connected run of the claim into one cell, which removes the ambiguity unless the claim came apart into islands. When a merge fuses cells won by several seeds, only the seed the fused path belongs to is rewritten, and the others reach **SeedGenSuccess** as they came in.",
           "anchor": "mechanism"
         }
       ],
@@ -7835,7 +7915,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-seed-mutation-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "1df7c023746f416ad7c8b845027c8c75fcb830e0"
+        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e"
       }
     },
     "FPCGExCollisionDetails": {
@@ -9311,7 +9391,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/transform-details/justification-details",
       "source": {
         "file": "PCGExCore/Public/Fitting/PCGExFitting.h",
-        "hash": "c9ee669399eb3722f81cdf3c12972363ad0abcac"
+        "hash": "f9d4a6db652a0b9bb96a1a52b5530af15c7e21bc"
       }
     },
     "FPCGExManhattanDetails": {
@@ -11360,7 +11440,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/batch-actions/action",
       "source": {
         "file": "PCGExElementsActions/Public/Core/PCGExActionFactoryProvider.h",
-        "hash": "a4b60dd26b08098402e902fa966d30f3b3d624e9"
+        "hash": "43c58b1a1b67eb9eba30d524b8bb6a6dfb747f9b"
       }
     },
     "UPCGExActionWriteValuesProviderSettings": {
@@ -12565,7 +12645,7 @@
           "display": "Selector Mode",
           "type": "EPCGExSelectorMode",
           "tooltip": "How distribution is configured for this node. Legacy uses the inline settings below -- only set for legacy nodes. External uses a factory on the Selector input pin.",
-          "default": "EPCGExSelectorMode::External",
+          "default": "EPCGExSelectorMode::Unset",
           "enum": "EPCGExSelectorMode",
           "advanced": true,
           "semantics": "Nodes saved before the selector system arrive on Legacy, where the inline Distribution settings drive the pick, the Selector pin is ignored, and every execution warns that the mode is scheduled for removal. Nodes created since take External. Migration is switching the mode and wiring a Selector : Classic configured the way the inline settings were.",
@@ -12942,7 +13022,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingDistribute.h",
-        "hash": "d267c23f387c2ac246e42798421e9f77464cdf43"
+        "hash": "a55e11ffff98d55deacb6406f51b33460b20ea9d"
       }
     },
     "UPCGExAttributeCheckFilterProviderSettings": {
@@ -16275,7 +16355,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/blending/blend-op-factory",
       "source": {
         "file": "PCGExBlending/Public/Core/PCGExBlendOpFactory.h",
-        "hash": "937b8d35af4caa294ace210d48c667e4d769260f"
+        "hash": "b74673fc50d4728c927e1177ab9dc2f7fc7deb76"
       }
     },
     "UPCGExBlendOpFactoryProviderSettings": {
@@ -22767,7 +22847,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition/cluster-filter-definition",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExClusterFilter.h",
-        "hash": "a2e7e5f171fe5b5793d43641ba7d745136473dba"
+        "hash": "58cf7cc8b6c88296cf656d5dcd448e130cfa5268"
       }
     },
     "UPCGExClustersProcessorSettings": {
@@ -24193,7 +24273,7 @@
       "hints": [
         {
           "style": "info",
-          "text": "`Steal Data` reaches only a target that exactly one iteration uses and that no other iteration reads as its source. Anything else is duplicated as usual, so enabling it on a fan-out operation changes nothing.",
+          "text": "`Steal Data` reaches only a target that exactly one iteration uses, that no other iteration reads as its source, and that no source inherits its attributes from, as data derived from that target upstream can. Anything else is duplicated as usual, so enabling it on a fan-out operation changes nothing.",
           "anchor": "mechanism"
         },
         {
@@ -24220,7 +24300,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/modify/copy-attributes",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExCopyAttributes.h",
-        "hash": "369f52976ab022d556d56aafb67c56d5f1cd7470"
+        "hash": "008759efb3002ad9397533a6831941d282e7585b"
       }
     },
     "UPCGExCopyClustersToPointsSettings": {
@@ -24992,7 +25072,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/copy-to-path",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExCopyToPaths.h",
-        "hash": "87869ecdaf239dbafcd1b7d63769765bd9962c9e"
+        "hash": "9fe976b16cb0eee61671fb477898641cc9693212"
       }
     },
     "UPCGExCopyToPointsSettings": {
@@ -27081,7 +27161,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/create-spline",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExCreateSpline.h",
-        "hash": "512c44174df9fa111a9e86da35084d1a434bc4e3"
+        "hash": "a4e45d508727178c9eb9e440f262e6ad54316a89"
       }
     },
     "UPCGExCreateTensorConstantSettings": {
@@ -36902,7 +36982,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fill-control",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Core/PCGExFillControlsFactoryProvider.h",
-        "hash": "c35b74089a6d301dd3c1549c129462ecc6fc7053"
+        "hash": "7ec61ba175f74cc0418f405da60a60b3e2af39f7"
       }
     },
     "UPCGExFillControlsHeuristicsBudgetProviderSettings": {
@@ -38003,7 +38083,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExFilterFactoryProvider.h",
-        "hash": "d9964109171413496e69dfeb09d9ff11e3121f88"
+        "hash": "890c48fda67659d733991fa05fa61e9d1636406b"
       }
     },
     "UPCGExFilterVtxSettings": {
@@ -38943,7 +39023,7 @@
           "tooltip": "Drive how a seed selects a node.",
           "overridable": true,
           "see": "FPCGExNodeSelectionDetails",
-          "semantics": "`Max Distance` is the only field this node reads. It caps how far a seed may sit off a cell's own plane before that cell will claim it, and how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed. At the default of -1 neither cap applies.",
+          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed. At the default of -1 neither cap applies.",
           "trap": "`Picking Method` is not consulted here. A seed reaches a cell by falling inside it once both are flattened, never by being nearest a Vtx or an edge.",
           "interacts_with": [
             "ProjectionDetails"
@@ -38956,7 +39036,7 @@
           "default": "EPCGExCellSeedOwnership::SeedOrder",
           "enum": "EPCGExCellSeedOwnership",
           "overridable": true,
-          "semantics": "A cell goes to one seed, so seeds sharing a cell do not each come away with a copy of it, and a seed that lost every cell it fell inside is reported on **SeedGenFailed**.",
+          "semantics": "A cell goes to one seed, so seeds sharing a cell do not each come away with a copy of it, and a seed that lost every cell it fell inside is reported on **SeedGenFailed**. The same rule settles a cell two growing claims both reached, and which seed a merged path belongs to.",
           "trap": "`Closest (Projected)` measures in world XY rather than in the projection plane the cells were found in, so it agrees with the containment test only while `Projection` is left on its default up vector.",
           "interacts_with": [
             "SortDirection",
@@ -38992,7 +39072,7 @@
           "overridable": true,
           "see": "FPCGExCellArtifactsDetails",
           "semantics": "The two switches inside decide which family of pins exists, so turning `Output Cell Bounds` on in `Separate Pins` adds three more pins rather than changing what the existing three carry.",
-          "trap": "Seed reporting is written while a cell's path is being built, so with `Output Paths` off every seed lands on **SeedGenFailed** and `Seed Mutations` never runs, even on a run that claimed its cells and filled the point-per-cell outputs.",
+          "trap": "`Seed Mutations` runs while a cell's path is being built, so with `Output Paths` off the winning seeds still reach **SeedGenSuccess** but arrive exactly as they came in.",
           "interacts_with": [
             "OutputMode",
             "bOutputFilteredSeeds",
@@ -39006,44 +39086,42 @@
           "overridable": true,
           "see": "FPCGExCellGrowthDetails",
           "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, and the fused outline is what gets sorted afterwards rather than the cells it came from.",
+          "trap": "Here the spread also takes a cell the constraints rejected for its area, its compactness, or an `Aspect Filter` of Concave Only, and that cell leaves with the claim. **Pathfinding : Find Cells** steps over the same cell without taking it. A cell rejected by any other limit is stepped over on both nodes.",
           "interacts_with": [
             "SeedOwnership",
+            "TriageFlags",
+            "Constraints",
+            "SeedMerge"
+          ]
+        },
+        "SeedMerge": {
+          "display": "Seed Merge",
+          "type": "FPCGExCellSeedMergeDetails",
+          "tooltip": "Merge adjacent cells whose seeds share a key value.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "SeedKey",
+              "display": "Seed Key",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Seed attribute or property whose value identifies a merge group. Compared by hash, so type sensitive (Float 0 != Double 0)."
+            }
+          ],
+          "semantics": "Groups the claimed cells by the value their owning seeds carry under `Seed Key`, then fuses each run of edge-sharing cells within a group into one closed path; cells of one group that do not touch stay separate. It needs no growth, and with growth on it replaces the per-seed grouping `Merge Adjacent Cells` would use. `Seed Ownership` picks which of the run's seeds the fused path belongs to, and that seed alone supplies the path's forwarded attributes and tags. Merging runs before the sort, so a fused outline is sorted as one cell, and the constraints are not re-applied to it.",
+          "trap": "A `Seed Key` the seeds do not carry is a warning, not an error: merging switches itself off and the node finishes with every cell separate.",
+          "interacts_with": [
+            "SeedGrowth",
+            "SeedOwnership",
             "TriageFlags"
-          ]
-        },
-        "PickCountAttributeName": {
-          "display": "Pick Count Attribute Name",
-          "type": "FName",
-          "tooltip": "Attribute name for pick count (how many times a cell was selected by seeds/growth)",
-          "default": "FName(\"PCGEx/PickCount\")",
-          "overridable": true,
-          "edit_condition": "bWriteExpansionAttributes",
-          "semantics": "Counted during growth and never written out. The counts exist on each cell while the node runs, and no attribute is created from them under any configuration.",
-          "trap": "`Write Expansion Attributes` and both names under it are inert. Nothing downstream will see `PCGEx/PickCount` or `PCGEx/Depth`.",
-          "interacts_with": [
-            "DepthAttributeName",
-            "SeedGrowth"
-          ]
-        },
-        "DepthAttributeName": {
-          "display": "Depth Attribute Name",
-          "type": "FName",
-          "tooltip": "Attribute name for depth (minimum depth at which cell was picked, 0 = direct seed)",
-          "default": "FName(\"PCGEx/Depth\")",
-          "overridable": true,
-          "edit_condition": "bWriteExpansionAttributes",
-          "semantics": "Inert, for the same reason as `Pick Count`.",
-          "interacts_with": [
-            "PickCountAttributeName"
           ]
         },
         "bOutputFilteredSeeds": {
           "display": "Output Filtered Seeds",
           "type": "bool",
-          "tooltip": "Output a filtered set of points containing only seeds that generated a valid path",
+          "tooltip": "Output a filtered set of points containing only seeds that claimed a valid cell, merged cells included.",
           "default": "false",
           "overridable": true,
-          "semantics": "The two pins arrive together and between them carry every seed point. Success means this seed owned at least one cell whose path was built, which a category being switched off in `Triage Flags` can take away from it.",
+          "semantics": "The two pins arrive together and between them carry every seed point. Success means this seed owns at least one cell in a category `Triage Flags` keeps, or had its cell fused into a merged one there, so switching a category off can take success away from it.",
           "interacts_with": [
             "TriageFlags",
             "Artifacts"
@@ -39056,10 +39134,11 @@
           "overridable": true,
           "edit_condition": "bOutputFilteredSeeds",
           "see": "FPCGExCellSeedMutationDetails",
-          "semantics": "Runs on the point heading to **SeedGenSuccess** once that seed's cell has been built, which is what lets it move the point onto the cell and size it to the cell's own bounds. Points heading to **SeedGenFailed** arrive as they came in.",
+          "semantics": "Runs on the point heading to **SeedGenSuccess** once that seed's cell has been built, which is what lets it move the point onto the cell and size it to the cell's own bounds. Points heading to **SeedGenFailed** arrive as they came in, and so do the seeds whose cells a merge fused into another seed's path.",
           "interacts_with": [
             "bOutputFilteredSeeds",
-            "Artifacts"
+            "Artifacts",
+            "SeedMerge"
           ]
         },
         "ProjectionDetails": {
@@ -39187,7 +39266,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells-bounded",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCellsBounded.h",
-        "hash": "2aa0a7f83549c45fa065fab55b7101c25c32a56d"
+        "hash": "bdd44173392da932437e6cbf9d1ade5b767b87d6"
       }
     },
     "UPCGExFindContoursSettings": {
@@ -39263,7 +39342,7 @@
           "tooltip": "Drive how a seed selects a node.",
           "overridable": true,
           "see": "FPCGExNodeSelectionDetails",
-          "semantics": "`Max Distance` is the only field this node reads. It caps how far a seed may sit off a cell's own plane before that cell will claim it, and it caps how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed at all. At the default of -1 neither cap applies.",
+          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and it caps how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed at all. At the default of -1 neither cap applies.",
           "trap": "`Picking Method` is not consulted here. A seed reaches a cell by falling inside it once both are flattened, never by being nearest a Vtx or an edge, so changing the method changes nothing.",
           "interacts_with": [
             "ProjectionDetails",
@@ -39277,7 +39356,7 @@
           "default": "EPCGExCellSeedOwnership::SeedOrder",
           "enum": "EPCGExCellSeedOwnership",
           "overridable": true,
-          "semantics": "A cell goes to one seed, so seeds sharing a cell do not each come away with a copy of it. The seeds that lost claim nothing from it, and a seed that lost every cell it fell inside is reported on **SeedGenFailed** next to the seeds that landed nowhere.",
+          "semantics": "A cell goes to one seed, so seeds sharing a cell do not each come away with a copy of it. The seeds that lost claim nothing from it, and a seed that lost every cell it fell inside is reported on **SeedGenFailed** next to the seeds that landed nowhere. The same rule settles a cell two growing claims both reached, and which seed a merged path belongs to.",
           "trap": "`Closest (Projected)` measures in world XY rather than in the projection plane the cells were found in. It matches `Closest` projected flat only while `Projection` is left on its default up vector; tilt that vector or switch to a per-face projection and the two stop agreeing.",
           "interacts_with": [
             "SortDirection",
@@ -39312,8 +39391,8 @@
           "tooltip": "Cell output settings (output mode, attributes, OBB settings)",
           "overridable": true,
           "see": "FPCGExCellArtifactsDetails",
-          "semantics": "The two output switches inside are independent, and cells reach them already owned, so the point-per-cell output carries one point per seed that won something rather than one per cell in the cluster.",
-          "trap": "Seed reporting is written while a cell's path is being built, so with `Output Paths` off every seed lands on **SeedGenFailed** and `Seed Mutations` never runs, even on a run that found its cells and filled the point-per-cell output.",
+          "semantics": "The two output switches inside are independent, and cells reach them already owned, so the point-per-cell output carries one point per claimed cell rather than one per cell in the cluster.",
+          "trap": "`Seed Mutations` runs while a cell's path is being built, so with `Output Paths` off the winning seeds still reach **SeedGenSuccess** but arrive exactly as they came in.",
           "interacts_with": [
             "bOutputFilteredSeeds",
             "SeedMutations"
@@ -39327,42 +39406,38 @@
           "see": "FPCGExCellGrowthDetails",
           "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when it is read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, so two seeds that grew into each other still come back as two paths.",
           "interacts_with": [
-            "SeedOwnership"
+            "SeedOwnership",
+            "SeedMerge"
           ]
         },
-        "PickCountAttributeName": {
-          "display": "Pick Count Attribute Name",
-          "type": "FName",
-          "tooltip": "Attribute name for pick count (how many times a cell was selected by seeds/growth)",
-          "default": "FName(\"PCGEx/PickCount\")",
+        "SeedMerge": {
+          "display": "Seed Merge",
+          "type": "FPCGExCellSeedMergeDetails",
+          "tooltip": "Merge adjacent cells whose seeds share a key value.",
           "overridable": true,
-          "edit_condition": "bWriteExpansionAttributes",
-          "semantics": "Counted during growth and never written out. The counts exist on each cell while the node runs, and no attribute is created from them under any configuration.",
-          "trap": "`Write Expansion Attributes` and both names under it are inert. Nothing downstream will see `PCGEx/PickCount` or `PCGEx/Depth`.",
+          "fields": [
+            {
+              "name": "SeedKey",
+              "display": "Seed Key",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Seed attribute or property whose value identifies a merge group. Compared by hash, so type sensitive (Float 0 != Double 0)."
+            }
+          ],
+          "semantics": "Groups the claimed cells by the value their owning seeds carry under `Seed Key`, then fuses each run of edge-sharing cells within a group into one closed path; cells of one group that do not touch stay separate. It needs no growth, and with growth on it replaces the per-seed grouping `Merge Adjacent Cells` would use. `Seed Ownership` picks which of the run's seeds the fused path belongs to, and that seed alone supplies the path's forwarded attributes and tags. The fused outline is a new cell the constraints are not re-applied to.",
+          "trap": "A `Seed Key` the seeds do not carry is a warning, not an error: merging switches itself off and the node finishes with every cell separate.",
           "interacts_with": [
-            "DepthAttributeName",
-            "SeedGrowth"
-          ]
-        },
-        "DepthAttributeName": {
-          "display": "Depth Attribute Name",
-          "type": "FName",
-          "tooltip": "Attribute name for depth (minimum depth at which cell was picked, 0 = direct seed)",
-          "default": "FName(\"PCGEx/Depth\")",
-          "overridable": true,
-          "edit_condition": "bWriteExpansionAttributes",
-          "semantics": "Inert, for the same reason as `Pick Count`.",
-          "interacts_with": [
-            "PickCountAttributeName"
+            "SeedGrowth",
+            "SeedOwnership",
+            "SeedMutations"
           ]
         },
         "bOutputFilteredSeeds": {
           "display": "Output Filtered Seeds",
           "type": "bool",
-          "tooltip": "Output a filtered set of points containing only seeds that generated a valid path",
+          "tooltip": "Output a filtered set of points containing only seeds that claimed a valid cell, merged cells included.",
           "default": "false",
           "overridable": true,
-          "semantics": "The two pins arrive together and between them carry every seed point, so the pair partitions the input rather than trimming it. Success means this seed ended up owning at least one cell whose path was built."
+          "semantics": "The two pins arrive together and between them carry every seed point, so the pair partitions the input rather than trimming it."
         },
         "SeedMutations": {
           "display": "Seed Mutations",
@@ -39371,10 +39446,11 @@
           "overridable": true,
           "edit_condition": "bOutputFilteredSeeds",
           "see": "FPCGExCellSeedMutationDetails",
-          "semantics": "Runs on the point heading to **SeedGenSuccess** once that seed's cell has been built, which is what lets it move the point onto the cell and size it to the cell's own bounds. Points heading to **SeedGenFailed** arrive as they came in.",
+          "semantics": "Runs on the point heading to **SeedGenSuccess** once that seed's cell has been built, which is what lets it move the point onto the cell and size it to the cell's own bounds. Points heading to **SeedGenFailed** arrive as they came in, and so do the seeds whose cells a merge fused into another seed's path.",
           "interacts_with": [
             "bOutputFilteredSeeds",
-            "Artifacts"
+            "Artifacts",
+            "SeedMerge"
           ]
         },
         "ProjectionDetails": {
@@ -39502,7 +39578,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCells.h",
-        "hash": "8ff05f2afe5f2a56a3e6a47ffea9bd8e9ac02681"
+        "hash": "2fd2ffaee6178ed9823fcc82f3659a3f5c13dbf6"
       }
     },
     "UPCGExFindPointOnBoundsClustersSettings": {
@@ -40338,7 +40414,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/flatten",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Utils/PCGExFlatten.h",
-        "hash": "9b5dc1ce350f573ac8255cbfff70b1651ee0644b"
+        "hash": "ab50e9b9d9cc8b95fb148df94ad5e40d79018faf"
       }
     },
     "UPCGExForceDirectedRelax": {
@@ -42443,7 +42519,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/get-path-data",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExGetPathData.h",
-        "hash": "898a93ac7c77a5e782003b09e879db28bf482efd"
+        "hash": "737d9d014d4d75b0973fd83231ba34d0e7b7a4a2"
       }
     },
     "UPCGExGetPropertiesDataSettings": {
@@ -42452,10 +42528,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsMeta",
       "classification": "node",
-      "purpose": "Turns actor references into attributes. Each row of the input names an actor or a property collection component by soft path; the node resolves it, reads the custom properties that component exposes, and writes their values as per-row attributes on a copy of the input. Resolution never loads anything, so a reference whose target is not already in memory counts as unresolved and is dropped or kept by the filtering toggles. A second output carries the external resources those property values point at.",
+      "purpose": "Turns actor references into attributes. Each row of the input, a point, an attribute set entry or a spline control point among them, names an actor or a property collection component by soft path; the node resolves it, reads the custom properties that component exposes, and writes their values as per-row attributes on a copy of the input. Resolution never loads anything, so a reference whose target is not already in memory counts as unresolved and is dropped or kept by the filtering toggles. A second output carries the external resources those property values point at.",
       "situation": "Points or rows carrying actor references, where the decisions downstream depend on values authored on those actors rather than on anything the graph knows.",
       "mechanism": {
-        "text": "One output per input, same shape and same row order: points come back as points and attribute sets as attribute sets. Rows are dropped from the output by the filtering block, never reordered, and the surviving rows carry one attribute per property that was written. Which properties those are comes from `Output Mode`: every property the resolved components carry, or exactly the ones listed. Rows pointing at the same component share one schema read, so the cost follows the number of distinct components rather than the number of rows."
+        "text": "One output per input, same type and same row order: points come back as points, attribute sets as attribute sets, splines as splines. Rows are dropped from the output by the filtering block, never reordered, and the surviving rows carry one attribute per property that was written. Data whose elements cannot be removed one at a time, splines among them, is forwarded whole instead, filtered rows keeping their attributes' defaults, and dropped only when every row is filtered out. Which properties those are comes from `Output Mode`: every property the resolved components carry, or exactly the ones listed. Rows pointing at the same component share one schema read, so the cost follows the number of distinct components rather than the number of rows."
       },
       "off_label": [
         {
@@ -42467,7 +42543,7 @@
         "inputs": [
           {
             "label": "Sources",
-            "note": "Points or attribute sets carrying the reference attribute.",
+            "note": "Points, attribute sets, splines or any other data whose rows carry the reference attribute.",
             "required": "always"
           }
         ],
@@ -42481,15 +42557,28 @@
             "note": "An attribute set describing the external resources the written properties reference, a staged collection pick being the usual case. The pin is always present and sits in the advanced section when nothing will be sent to it."
           }
         ],
-        "dynamic": "The output pin mirrors the input pin's type rather than declaring one, so the node preserves whatever it was handed."
+        "dynamic": "The Sources output mirrors the input pin's type rather than declaring one, so the node preserves whatever it was handed. Map is always an attribute set."
       },
       "settings": {
         "SourceAttribute": {
           "display": "Source Attribute",
           "type": "FName",
-          "tooltip": "Attribute on each input row holding the soft object path of the actor (or the UPCGExPropertyCollectionComponent directly). FString-typed attributes fall back to parsing the string as an FSoftObjectPath.",
+          "tooltip": "Attribute on each input row holding the soft object path of the actor (or the UPCGExPropertyCollectionComponent directly). FString-typed attributes fall back to parsing the string as an FSoftObjectPath. A @Data attribute writes one value per input on @Data unless Force Element Output is on.",
           "default": "FName(TEXT(\"ActorReference\"))",
           "overridable": true
+        },
+        "bForceElementOutput": {
+          "display": "Force Element Output",
+          "type": "bool",
+          "tooltip": "Keep writing per-element attributes when the source attribute lives on the @Data domain. Off writes one @Data value per input instead.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "Only reaches a Source Attribute on the @Data domain. On, the one reference is read for every row, so every row receives the same values. Off, each input is resolved once and its values are written as @Data attributes on its copy; the filtering block then keeps or drops the whole input, and Omit Partial Matches drops it when any requested property is missing.",
+          "interacts_with": [
+            "SourceAttribute",
+            "bOmitUnresolvedEntries",
+            "bOmitPartialMatches"
+          ]
         },
         "OutputMode": {
           "display": "Output Mode",
@@ -42536,7 +42625,7 @@
         "bOmitUnresolvedEntries": {
           "display": "Omit Unresolved Entries",
           "type": "bool",
-          "tooltip": "Drop rows whose soft path didn't resolve to a UPCGExPropertyCollectionComponent.",
+          "tooltip": "Drop rows whose soft path didn't resolve to a UPCGExPropertyCollectionComponent. Inputs whose elements can't be removed individually (splines, polygons, ...) are dropped whole when every row is filtered out, and forwarded intact (with a warning) otherwise.",
           "default": "true",
           "semantics": "Turn it off and unresolved rows stay in the output with nothing written for them, so they carry whatever default their output attribute was created with rather than a marker of any kind.",
           "interacts_with": [
@@ -42604,7 +42693,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/get-properties-data",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExGetPropertiesData.h",
-        "hash": "aa80b30ef3e4222a2a415e9da55e60c0360a2876"
+        "hash": "f6ef19d49ef8b4fe28cd0fded64e6672d94da148"
       }
     },
     "UPCGExGetTextureDataSettings": {
@@ -43338,7 +43427,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/heuristics/heuristics-definition",
       "source": {
         "file": "PCGExHeuristics/Public/Core/PCGExHeuristicsFactoryProvider.h",
-        "hash": "785b4d9fd9d3f93c6b5791778c73f20bc8c2892f"
+        "hash": "c6560bbce69344fc0f98eb2d79dfc52b65e8549e"
       }
     },
     "UPCGExHeuristicsGradientProviderSettings": {
@@ -44671,7 +44760,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-rule",
       "source": {
         "file": "PCGExMatching/Public/Core/PCGExMatchRuleFactoryProvider.h",
-        "hash": "5d0c08b93c515381df26d6d7b474ffc426034b9e"
+        "hash": "94ae964b53b0f06c3cea38913353e3aa11bab017"
       }
     },
     "UPCGExMeanFilterProviderSettings": {
@@ -45924,7 +46013,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/modify/meta-cleanup",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExMetaCleanup.h",
-        "hash": "28141265145341ce0e6cdd28ee652b1818202700"
+        "hash": "0757df783195f247d353a126537439ece4eaee53"
       }
     },
     "UPCGExModularSortPointsSettings": {
@@ -46753,7 +46842,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/cluster-sample-neighbors/neighbor-sampler",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/NeighborSamplers/PCGExNeighborSampleFactoryProvider.h",
-        "hash": "42372ee4a427041906f8bff1e8edf2de9e529af7"
+        "hash": "24741eab38a4dff3827f07f1be4f74f8545d2425"
       }
     },
     "UPCGExNodeAdjacencyFilterProviderSettings": {
@@ -47531,7 +47620,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-3d",
       "source": {
         "file": "PCGExNoise3D/Public/Core/PCGExNoise3DFactoryProvider.h",
-        "hash": "d08ac3e4d37cbea34eeb97b2bd6d397a51c78bad"
+        "hash": "eb8fe2e46f6d90a160b2dbeda07ec9b4578fcc7b"
       }
     },
     "UPCGExNoise3DFBMProviderSettings": {
@@ -50888,7 +50977,7 @@
           "type": "TArray<FPCGExOmniCollectionEntry>",
           "tooltip": "Entries Array",
           "see": "FPCGExOmniCollectionEntry",
-          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first, Generic among the choices; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints and actor classes to actor rows, level assets to level rows, PCG data assets to data asset rows and anything no other type claims to Generic rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset; a Blueprint whose parent is not an actor falls through to a Generic row referencing the Blueprint asset itself.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
+          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first, Generic among the choices; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints and actor classes to actor rows, PCG data assets to data asset rows and anything no other type claims to Generic rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset; a Blueprint whose parent is not an actor falls through to a Generic row referencing the Blueprint asset itself. A dropped level asset becomes a PCG data asset row with its Source set to Level, which exports the level to embedded PCG data; a Level row comes only from the add flow.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
           "interacts_with": [
             "TypeGlobals",
             "TypeStates"
@@ -50943,7 +51032,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/omni-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExOmniCollection.h",
-        "hash": "7b9ba6498e985ab09588e0c5833b74a022368f39"
+        "hash": "0ec13376aaa3702f29648e3b3922d99a57e58008"
       }
     },
     "UPCGExOrientAverage": {
@@ -55715,7 +55804,7 @@
           "display": "Selector Mode",
           "type": "EPCGExSelectorMode",
           "tooltip": "How distribution is configured for this node. Legacy uses the inline settings below -- only set for legacy nodes. External uses a factory on the Selector input pin.",
-          "default": "EPCGExSelectorMode::External",
+          "default": "EPCGExSelectorMode::Unset",
           "enum": "EPCGExSelectorMode",
           "advanced": true,
           "semantics": "Nodes saved before the selector system land on Legacy when they load, where the inline Distribution settings drive the pick, the Selector pin is ignored, and every execution warns that the mode is scheduled for removal. Anything created since is External. Migration is switching the mode and wiring a Selector : Classic configured the way the inline settings were. The setting has no effect at all while Use Staged Points is on, since no pick is made here.",
@@ -56346,7 +56435,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/staging-spline-mesh",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSplineMesh.h",
-        "hash": "de87ad0d761d650b370fec2c1ab06db5a58ab834"
+        "hash": "ccdd872634356613d812b4038e0e29778e305de8"
       }
     },
     "UPCGExPathSplineMeshSimpleSettings": {
@@ -56930,7 +57019,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/path-spline-mesh-simple",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathSplineMeshSimple.h",
-        "hash": "93bb23172fd70523532a08f712e484d7df561e22"
+        "hash": "740591e70b62f32ba3a04849a4fcb89cdfbc5d86"
       }
     },
     "UPCGExPathStitchSettings": {
@@ -57785,7 +57874,7 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "node",
-      "purpose": "The spawn route for picks that resolved to a PCG data entry. Each picked asset is loaded once and its contents are instantiated at every point that picked it, so one pick places a whole authored arrangement rather than one asset. What comes out is the asset's own data, sorted onto output pins declared by name, and it can be staged points again: the Collection Maps embedded in the loaded assets come back merged on the Map pin, so a captured scene re-enters the ordinary spawn routes.",
+      "purpose": "The spawn route for picks that resolved to a PCG data entry. Each picked asset is loaded once and its contents are instantiated at every point that picked it, so one pick places a whole authored arrangement rather than one asset. What comes out is the asset's own data, sorted onto output pins declared by name, and it can be staged points again: the Collection Maps embedded in the loaded assets come back merged on the Map pin, so a captured scene re-enters the ordinary spawn routes. It also reads attribute sets whose rows carry picks, such as the rows **Get Collection Data** writes; a row has no transform to place anything at, so each picked asset's contents come out once, untransformed and with cluster tags as saved.",
       "situation": "A staged dataset whose picks name PCG data entries, and the arrangements those entries hold have to come back into the graph at each point.",
       "mechanism": {
         "text": "One execution consumes staged points and produces the contents of the assets they picked; the input points are not forwarded, so nothing that arrived leaves. Each unique picked asset is loaded once, and every piece of spatial data inside it is copied per point and composed with that point's transform, scale included, while non-spatial data is emitted once per unique asset however many points picked it. A point whose pick is missing, unresolvable, or resolved to an entry of another collection type produces nothing. Each piece keeps the pin name it carried inside the asset: an exact match against a declared custom pin routes it there, and anything else lands on Out carrying that name as a tag. Cluster tags are rewritten per point, so one instance's Vtx and Edges stay paired to each other and not to another instance's."
@@ -57793,14 +57882,14 @@
       "off_label": [
         {
           "claim": "Turn Merge Embedded Collection Maps off and declare a custom output pin labelled CollectionMap, and each loaded asset's own embedded map comes out unmerged, one per unique asset, which is how you read what a captured level shipped with instead of the union of everything.",
-          "grounded_in": "the strip branch at the top of FProcessor::CompleteWork skips embedded CollectionMap data only while merging is on; with merging off it falls through to RegisterNonSpatialData, which routes by pin name through Context->RegisterOutput and deduplicates by asset"
+          "grounded_in": "the strip branch at the top of FProcessor::CompleteWork skips embedded CollectionMap data only while merging is on; with merging off it falls through to RegisterUniqueData, which routes by pin name through Context->RegisterOutput and deduplicates by asset"
         }
       ],
       "pins": {
         "inputs": [
           {
             "label": "In",
-            "note": "The staged points. A point contributes the contents of the asset its pick names; the point itself is not part of the output.",
+            "note": "The staged points, or attribute sets whose rows carry picks. A point or row contributes the contents of the asset its pick names; the input itself is not part of the output. Data of any other type is skipped with a warning.",
             "required": "always"
           },
           {
@@ -57817,7 +57906,7 @@
         "outputs": [
           {
             "label": "Out",
-            "note": "Loaded content that matched no declared pin, each piece carrying its original pin name as a tag. Spatial content arrives once per staged point, everything else once per unique asset."
+            "note": "Loaded content that matched no declared pin, each piece carrying its original pin name as a tag. From staged points, spatial content arrives once per point and everything else once per unique asset; from attribute-set rows, everything arrives once per unique asset."
           },
           {
             "label": "One pin per Custom Output Pins row",
@@ -57853,7 +57942,7 @@
           "tooltip": "If enabled, will refresh seeds on output points.",
           "default": "false",
           "overridable": true,
-          "semantics": "Seeds are recomputed from each spawned point's location after the instance transform lands, so two copies of one asset in different places stop sharing seeds. It reaches point data inside the asset and nothing else."
+          "semantics": "Seeds are recomputed from each spawned point's location after the instance transform lands, so two copies of one asset in different places stop sharing seeds. It reaches point data inside the asset and nothing else, and does nothing for attribute-set rows, which place nothing."
         },
         "bOmitEmptyData": {
           "display": "Omit Empty Data",
@@ -57861,8 +57950,8 @@
           "tooltip": "If enabled, will not output empty data, even if they have possibly meaningful @Data attributes",
           "default": "true",
           "overridable": true,
-          "semantics": "Empty means a point dataset with no points, or a spline or polyline with no segments.",
-          "trap": "The data still leaves the node. What gets skipped is the transform pass, so the empty data is emitted at the asset's own frame and reported as a failed transform unless the unsupported-type warnings are quieted.",
+          "semantics": "Empty means a point dataset with no points, or a spline or polyline with no segments. From attribute-set rows empty data is dropped outright.",
+          "trap": "From staged points the data still leaves the node. What gets skipped is the transform pass, so the empty data is emitted at the asset's own frame and reported as a failed transform unless the unsupported-type warnings are quieted.",
           "interacts_with": [
             "bQuietUnsupportedTypeWarnings"
           ]
@@ -57945,7 +58034,7 @@
               "default": "false"
             }
           ],
-          "semantics": "A forwarded attribute lands on the spawned data as a whole rather than per element, so every point of one instance carries the same value, read from the staged point that spawned it. An attribute of that name already inside the asset is replaced."
+          "semantics": "A forwarded attribute lands on the spawned data as a whole rather than per element, so every point of one instance carries the same value, read from the staged point that spawned it. An attribute of that name already inside the asset is replaced. From attribute-set rows, enabling it changes the output count: each row gets its own untransformed copy of the asset's contents to carry its values, with cluster tags rewritten per row, where otherwise each asset's contents come out once."
         },
         "bForwardInputTags": {
           "display": "Forward Input Tags",
@@ -57953,7 +58042,7 @@
           "tooltip": "If enabled, forward input data tags to spawned data.",
           "default": "true",
           "overridable": true,
-          "semantics": "The tags come from the staged points' own data, and only the per-point copies receive them; content emitted once per asset keeps the asset's tags alone.",
+          "semantics": "The tags come from the input data's own tags. From staged points only the per-point copies receive them, and content emitted once per asset keeps the asset's tags alone. From attribute-set rows every piece receives them.",
           "interacts_with": [
             "ExcludeTags"
           ]
@@ -58020,7 +58109,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-pcgdata",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadPCGData.h",
-        "hash": "70a372d48f38724df3f56473faeddd14e391b01f"
+        "hash": "d21b7212c7a0d30cb614f9793c17efdf4f01bb07"
       }
     },
     "UPCGExPickClosestClustersSettings": {
@@ -58728,7 +58817,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/pickers/picker",
       "source": {
         "file": "PCGExPickers/Public/Core/PCGExPickerFactoryProvider.h",
-        "hash": "9cf11c3146b1fc2be0eeaf3cc06623eed721fd96"
+        "hash": "c9b27aeefd178941a062bedcd051c58ad7fa58c5"
       }
     },
     "UPCGExPickerFilterProviderSettings": {
@@ -60053,7 +60142,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-definition",
       "source": {
         "file": "PCGExElementsProbing/Public/Core/PCGExProbeFactoryProvider.h",
-        "hash": "c26197f0b01994502c3f7dc719d77a7a0996655d"
+        "hash": "e305c725d0cf1d3db7bc7c466266c1393c73cf9f"
       }
     },
     "UPCGExProbeGlobalAnisotropicProviderSettings": {
@@ -61400,7 +61489,7 @@
               "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
             }
           ],
-          "semantics": "On a Blueprint's component template this is the authored layer instances of that Blueprint fall back to. On a placed instance each imported row carries its own toggle, and the toggle is instance-owned: turning it on pins that value on this actor, turning it back off hands the property to the class chain again. Editing the template's schema re-syncs every loaded instance to the new shape, so an instance never drifts out of step with the Blueprint it came from.",
+          "semantics": "On a Blueprint's component template this is the authored layer instances of that Blueprint fall back to. On a placed instance each imported row carries its own toggle, and the toggle is instance-owned: turning it on pins that value on this actor, turning it back off hands the property to the class chain again. Editing the template's schema re-syncs every loaded instance to the new shape, so an instance never drifts out of step with the Blueprint it came from.\n\nWhenever the editor reconstructs a placed actor, the values its instance has authored are restored before the construction script runs, so the script reads them, and restored again after it, so they win over anything the script writes to the same property. The field stays editable in the details panel even when the construction script writes to it.",
           "trap": "A value written from a construction script counts as instance authoring once it differs from the class default, and it then survives Blueprint recompiles, outliving edits to the script that wrote it. Resetting the field back to its class value is what hands control to the script again."
         }
       },
@@ -61441,7 +61530,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/property-collection-component",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertyCollectionComponent.h",
-        "hash": "2fd89963fc29fa228ea72d15fb435c216ce343ea"
+        "hash": "2d125b41cb0ce737a5e7341064874f51c5aea2bb"
       }
     },
     "UPCGExPropertySchemaAsset": {
@@ -63257,7 +63346,7 @@
       "purpose": "The sampler that runs the other way round. **Sample : Nearest Path** processes points and reads paths; this one processes paths and reads the points inside them, so what comes out is the paths, carrying what their contents added up to. It answers how many points a shape encloses and what their attributes average to, which is the question a per-point sampler cannot answer.",
       "situation": "Authored outlines that need to know what landed inside them, whether that is a count, an average, or a single representative point.",
       "mechanism": {
-        "text": "Every path is projected flat, and the points on the Targets pin are tested against that projection. Whatever falls inside is the path's sample set, and `Sample Method` decides whether the path keeps one of them or all of them. The outputs and blending are written onto the path's own data rather than onto the points, so a path leaves carrying a summary of its contents. A path that enclosed nothing is a failure, and `Output Mode` decides whether it still leaves on the main pin."
+        "text": "Every path is projected flat, and the points on the Targets pin are tested against that projection. Whatever falls inside is the path's sample set, and `Sample Method` decides whether the path keeps one of them or all of them. Each kept point is weighted by its distance to the path's edge, as `Inside Weighting` shapes it. The outputs and blending are written onto the path's own data rather than onto the points, so a path leaves carrying a summary of its contents. A path that enclosed nothing is a failure, and `Output Mode` decides whether it still leaves on the main pin."
       },
       "off_label": [
         {
@@ -63441,6 +63530,10 @@
               "type": "double",
               "default": "0"
             }
+          ],
+          "semantics": "Read once per path, so it has to be a constant or an attribute on the @Data domain. A per-point attribute stops the node with an error, and the same holds for `Min Range`.",
+          "interacts_with": [
+            "MinRange"
           ]
         },
         "HeightInclusion": {
@@ -63456,49 +63549,53 @@
           "tooltip": "Weight method used for blending",
           "default": "EPCGExRangeType::FullRange",
           "enum": "EPCGExRangeType",
-          "overridable": true
-        },
-        "bUseLocalCurve": {
-          "display": "Use Local Curve",
-          "type": "bool",
-          "tooltip": "Whether to use in-editor curve or an external asset.",
-          "default": "false"
-        },
-        "LocalWeightOverDistance": {
-          "display": "Weight Over Distance",
-          "type": "FRuntimeFloatCurve",
-          "tooltip": "Curve that balances weight over distance",
-          "edit_condition": "bUseLocalCurve",
-          "edit_condition_hides": true
-        },
-        "WeightOverDistance": {
-          "display": "Weight Over Distance",
-          "type": "TSoftObjectPtr<UCurveFloat>",
-          "tooltip": "Curve that balances weight over distance",
-          "default": "PCGExCurves::WeightDistributionLinear",
           "overridable": true,
-          "edit_condition": "!bUseLocalCurve",
-          "edit_condition_hides": true
+          "semantics": "Picks the span the edge distance is weighted across. `Full Range` runs it from `Min Range` to `Max Range`, so weights compare across paths. `Effective Range` runs it from the enclosed point nearest the edge to the one farthest from it, so weights are relative to each path's own contents.",
+          "interacts_with": [
+            "InsideWeighting"
+          ]
         },
-        "WeightCurveLookup": {
-          "display": "Weight Curve Lookup",
-          "type": "FPCGExCurveLookupDetails",
+        "InsideWeighting": {
+          "display": "Inside Weighting",
+          "type": "FPCGExInsideWeightingDetails",
+          "tooltip": "How targets lying inside the path are weighted against those near its edges. Blend ops receive the resulting weight and apply their own curve.",
+          "overridable": true,
           "fields": [
             {
               "name": "Mode",
               "display": "Mode",
-              "type": "EPCGExCurveLUTMode",
-              "tooltip": "Curve lookup mode",
-              "default": "EPCGExCurveLUTMode::Direct",
-              "enum": "EPCGExCurveLUTMode"
+              "type": "EPCGExInsideWeighting",
+              "tooltip": "How targets lying inside a closed shape are weighted relative to those near its edges.",
+              "default": "EPCGExInsideWeighting::Distance",
+              "enum": "EPCGExInsideWeighting"
             },
             {
-              "name": "Samples",
-              "display": "Samples",
-              "type": "int32",
-              "tooltip": "Number of samples in the lookup table.",
-              "default": "512"
+              "name": "DepthRange",
+              "display": "Depth Range",
+              "type": "double",
+              "tooltip": "Distance from the edge at which depth weight saturates. 0 uses the weighting range's max.",
+              "default": "0"
+            },
+            {
+              "name": "InsideWeightScale",
+              "display": "Inside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to inside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
+            },
+            {
+              "name": "OutsideWeightScale",
+              "display": "Outside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to outside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
             }
+          ],
+          "semantics": "Distance here is from each enclosed point to the path's nearest edge. `Distance` gives the points near the boundary the most weight and fades toward the middle. `Full` gives every point inside the whole weight, so while only inside points are admitted the summary is a plain average. `Depth` turns it around, so the points deepest inside weigh most, saturating at `Depth Range`.",
+          "trap": "The default `Distance` mode leans the blended summary toward the path's rim. Set `Full` when every enclosed point should count the same.",
+          "interacts_with": [
+            "WeightMethod",
+            "bOnlySampleWhenInside"
           ]
         },
         "OutputMode": {
@@ -63532,7 +63629,8 @@
           "default": "FName(\"@Data.NumInside\")",
           "overridable": true,
           "edit_condition": "bWriteNumInside",
-          "semantics": "The count of points the path enclosed, written onto the path. It is the output that survives every other setting being off, and it is what distinguishes a path that enclosed one point from one that enclosed many when a single-point method has flattened everything else."
+          "semantics": "The count of points the path enclosed, written onto the path. It is the output that survives every other setting being off, and it is what distinguishes a path that enclosed one point from one that enclosed many when a single-point method has flattened everything else.",
+          "trap": "A path that sampled nothing receives -1 here, not 0, so a sum or a greater-than-zero test across paths has to account for it."
         },
         "bOnlyIncrementInsideNumIfClosed": {
           "display": "└─ Only if Closed Path",
@@ -63605,7 +63703,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-inside-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleInsidePath.h",
-        "hash": "9a7c2b18ce3d3088b9e36ad617aa3c734d66614b"
+        "hash": "b7e4d98ddcbea0aed03d66225e7be838137e0198"
       }
     },
     "UPCGExSampleNearestBoundsSettings": {
@@ -63775,7 +63873,7 @@
         "bBlendPointProperties": {
           "display": "Blend Point Properties",
           "type": "bool",
-          "tooltip": "Write the sampled distance.",
+          "tooltip": "Blend point properties from the sampled targets.",
           "default": "false",
           "overridable": true,
           "edit_condition": "BlendingInterface == EPCGExBlendingInterface::Monolithic",
@@ -63784,7 +63882,7 @@
         "PointPropertiesBlendingSettings": {
           "display": "Point Properties Blending Settings",
           "type": "FPCGExPropertiesBlendingDetails",
-          "tooltip": "The constant to use as Up vector for the look at transform.",
+          "tooltip": "How each point property is blended from the sampled targets.",
           "default": "FPCGExPropertiesBlendingDetails(EPCGExBlendingType::None)",
           "overridable": true,
           "edit_condition": "bBlendPointProperties && BlendingInterface == EPCGExBlendingInterface::Monolithic",
@@ -63874,7 +63972,7 @@
         "LookAtTransformAttributeName": {
           "display": "LookAt",
           "type": "FName",
-          "tooltip": "Name of the 'transform' attribute to write sampled Transform to.",
+          "tooltip": "Name of the 'transform' attribute to write the look-at transform to.",
           "default": "FName(\"WeightedLookAt\")",
           "overridable": true,
           "edit_condition": "bWriteLookAtTransform"
@@ -63994,7 +64092,7 @@
         "AngleAttributeName": {
           "display": "Angle",
           "type": "FName",
-          "tooltip": "Name of the 'double' attribute to write sampled Signed distance to.",
+          "tooltip": "Name of the 'double' attribute to write the sampled angle to.",
           "default": "FName(\"WeightedAngle\")",
           "overridable": true,
           "edit_condition": "bWriteAngle"
@@ -64030,7 +64128,7 @@
         "SampledIndexAttributeName": {
           "display": "SampledIndex",
           "type": "FName",
-          "tooltip": "Name of the 'int32' attribute to write the sampled index to. Will use the closest index when sampling multiple points.",
+          "tooltip": "Name of the 'int32' attribute to write the sampled index to. -1 unless a single target is picked.",
           "default": "FName(\"SampledIndex\")",
           "overridable": true,
           "edit_condition": "bWriteSampledIndex"
@@ -64103,7 +64201,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-bounds",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestBounds.h",
-        "hash": "4c135f72fafa27a4356b68af0a861500854eb5a8"
+        "hash": "0091ecdffc2a7daca253e24300593f04271cc406"
       }
     },
     "UPCGExSampleNearestPathSettings": {
@@ -64116,7 +64214,7 @@
       "purpose": "Samples paths from your points, and by default it samples them as enclosed areas rather than as lines. A path is projected flat and a point is admitted when it falls inside that projection, which is what makes this the node for asking what region a point is in and how far it sits from that region's edge. Turning the inclusion settings off is what turns it back into a plain distance-to-the-line sampler.",
       "situation": "Points that need to know which authored outline they fall within, and how near its boundary they are.",
       "mechanism": {
-        "text": "Each path is projected onto a plane and each point is tested against that projection. `Only Sample When Inside` decides whether a point outside the shape may sample it at all, and `Always Sample When Inside` decides whether a point inside is exempt from the range band. Whatever survives those two is then handled like any sampler: `Sample Method` picks one path or accumulates them all, weights come from distance to the path, and the outputs and blending read the result. `Inclusion Offset` grows or shrinks the tested shape before any of this.",
+        "text": "Each path is projected onto a plane and each point is tested against that projection. `Only Sample When Inside` decides whether a point outside the shape may sample it at all, and `Always Sample When Inside` decides whether a point inside is exempt from the range band. Whatever survives those two is then handled like any sampler: `Sample Method` picks one path or accumulates them all, weights come from distance to the path as `Inside Weighting` shapes it, and the outputs and blending read the result. Blending reads the two path points either side of each sampled position, split by where that position falls along the segment. `Inclusion Offset` grows or shrinks the tested shape before any of this.",
         "steps": [
           "Paths are projected and offset, and inclusion is decided against the offset shape.",
           "The range band is applied to whatever inclusion admitted, unless the point is inside and exempt.",
@@ -64186,7 +64284,7 @@
           "default": "EPCGExSampleMethod::WithinRange",
           "enum": "EPCGExSampleMethod",
           "overridable": true,
-          "semantics": "`All (Within range)` accumulates every admitted path and weights them together, which is what lets a point sitting in overlapping outlines blend from all of them. The single-path methods keep one, so the weighting curve then only decides a number the outputs can read rather than how anything blends."
+          "semantics": "`All (Within range)` accumulates every admitted path and weights them together, which is what lets a point sitting in overlapping outlines blend from all of them. The single-path methods keep one, so blending has a single source."
         },
         "SortDirection": {
           "display": "└─ Sort direction",
@@ -64382,7 +64480,57 @@
           "tooltip": "Weight method used for blending",
           "default": "EPCGExRangeType::FullRange",
           "enum": "EPCGExRangeType",
-          "overridable": true
+          "overridable": true,
+          "semantics": "Picks the span the weight falls across. `Full Range` runs it from `Min Range` to `Max Range`, so weights compare across points. `Effective Range` runs it from the nearest path that point found to the farthest, so weights are relative to each point's own gather. With `Max Range` at 0 there is no declared span, and `Full Range` falls back to the sampled one.",
+          "trap": "Under `Effective Range` with `Distance` weighting, the farthest path a point found always weighs 0, so it contributes nothing to the blend.",
+          "interacts_with": [
+            "MinRange",
+            "MaxRange",
+            "InsideWeighting"
+          ]
+        },
+        "InsideWeighting": {
+          "display": "Inside Weighting",
+          "type": "FPCGExInsideWeightingDetails",
+          "tooltip": "How paths the point lies inside of are weighted against those it is merely near. Blend ops receive the resulting weight and apply their own curve.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Mode",
+              "display": "Mode",
+              "type": "EPCGExInsideWeighting",
+              "tooltip": "How targets lying inside a closed shape are weighted relative to those near its edges.",
+              "default": "EPCGExInsideWeighting::Distance",
+              "enum": "EPCGExInsideWeighting"
+            },
+            {
+              "name": "DepthRange",
+              "display": "Depth Range",
+              "type": "double",
+              "tooltip": "Distance from the edge at which depth weight saturates. 0 uses the weighting range's max.",
+              "default": "0"
+            },
+            {
+              "name": "InsideWeightScale",
+              "display": "Inside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to inside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
+            },
+            {
+              "name": "OutsideWeightScale",
+              "display": "Outside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to outside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
+            }
+          ],
+          "semantics": "`Distance` treats inside and outside alike: 1 at the nearest edge, falling to 0 at the far end of the weighting span. `Full` gives any path the point sits inside the whole weight, however far its edge. `Depth` turns the inside case around, so a shape weighs more the deeper the point sits in it, saturating at `Depth Range`, or at the span's far end when that is 0. The two weight scales multiply the result last, after the curve on the outputs, so a scale above 1 survives it.",
+          "trap": "Depth is measured to the nearest edge, the same distance the range band tests. With `Always Sample When Inside` off, a point sitting deeper than `Max Range` drops the shape before its depth can count.",
+          "interacts_with": [
+            "WeightMethod",
+            "bAlwaysSampleWhenInside"
+          ]
         },
         "bWeightFromOriginalTransform": {
           "display": "Weight From Original Transform",
@@ -64400,14 +64548,14 @@
         "LocalWeightOverDistance": {
           "display": "Weight Over Distance",
           "type": "FRuntimeFloatCurve",
-          "tooltip": "Curve that balances weight over distance",
+          "tooltip": "Curve that remaps the weight (1 at the closest edge, 0 at range) for the weighted outputs.",
           "edit_condition": "bUseLocalCurve",
           "edit_condition_hides": true
         },
         "WeightOverDistance": {
           "display": "Weight Over Distance",
           "type": "TSoftObjectPtr<UCurveFloat>",
-          "tooltip": "Curve that balances weight over distance",
+          "tooltip": "Curve that remaps the weight (1 at the closest edge, 0 at range) for the weighted outputs.",
           "default": "PCGExCurves::WeightDistributionLinear",
           "overridable": true,
           "edit_condition": "!bUseLocalCurve",
@@ -64434,6 +64582,17 @@
             }
           ]
         },
+        "bLegacyCurveInput": {
+          "display": "Legacy Curve Input",
+          "type": "bool",
+          "tooltip": "Feeds the curve the normalized distance (0 at the closest edge) instead of the weight, as nodes did before the weighting unification.",
+          "default": "false",
+          "advanced": true,
+          "semantics": "Switched on automatically for nodes saved with an older version of the plugin, so graphs keep the curve they were tuned with. New nodes feed the curve the weight, 1 at the closest edge. Legacy nodes feed it the normalized distance, 0 at the closest edge, so one curve asset reads backwards between the two.",
+          "interacts_with": [
+            "WeightOverDistance"
+          ]
+        },
         "SuccessAttributeName": {
           "display": "Success",
           "type": "FName",
@@ -64453,7 +64612,7 @@
         "LookAtTransformAttributeName": {
           "display": "LookAt",
           "type": "FName",
-          "tooltip": "Name of the 'transform' attribute to write sampled Transform to.",
+          "tooltip": "Name of the 'transform' attribute to write the look-at transform to.",
           "default": "FName(\"WeightedLookAt\")",
           "overridable": true,
           "edit_condition": "bWriteLookAtTransform"
@@ -64592,7 +64751,7 @@
         "AngleAttributeName": {
           "display": "Angle",
           "type": "FName",
-          "tooltip": "Name of the 'double' attribute to write sampled Signed distance to.",
+          "tooltip": "Name of the 'double' attribute to write the sampled angle to.",
           "default": "FName(\"WeightedAngle\")",
           "overridable": true,
           "edit_condition": "bWriteAngle"
@@ -64734,7 +64893,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestPath.h",
-        "hash": "8fcdf969f14e83df749a58b39f63edc76ed290fa"
+        "hash": "38050ab3bc25601fd3a1df80519c161eee31d9e7"
       }
     },
     "UPCGExSampleNearestPointSettings": {
@@ -64757,7 +64916,7 @@
       "off_label": [
         {
           "claim": "Setting `Max Range` to 0 turns the node into a whole-set operation: with no range to bound the search it visits every target, so `All (Within range)` becomes a weighted average over the entire target set and `Closest Target` becomes a global nearest.",
-          "grounded_in": "FProcessor::ProcessPoints skips the range test when RangeMax is 0 and walks ForEachTargetPoint instead of the bounded FindElementsWithBoundsTest."
+          "grounded_in": "FProcessor::ProcessPoints skips the range test when RangeMax is 0 and walks ForEachTargetPoint instead of the bounded ForEachElementWithBoundsTest."
         },
         {
           "claim": "Wiring the same data into both pins with `Ignore Self` off turns it into a self-proximity measure, since each point then finds itself at distance zero and every other point beyond it.",
@@ -64939,8 +65098,12 @@
           "default": "EPCGExSampleWeightMode::Distance",
           "enum": "EPCGExSampleWeightMode",
           "overridable": true,
-          "semantics": "`Distance` weights by how far the target is. `Attribute` replaces the distance with a value read off the target, which means the attribute is what the whole node sorts and weights by: under `Closest Target` the winner becomes the target with the lowest attribute value rather than the nearest one. `Att x Dist` keeps distance in play and scales it, so a target can be pulled forward or pushed back without leaving the ordering entirely to the attribute.",
-          "trap": "The range band is always tested against real distance, before the attribute is substituted. A target outside `Max Range` is gone whatever its weight attribute says."
+          "semantics": "`Distance` weights each target by where it sits in the span `Weight Method` picks: 1 at the near end, 0 at the far end. `Attribute` replaces that falloff with a value read off the target, and `Att x Dist` multiplies the two. The attribute only sets how much a target counts. `Closest Target` and `Farthest Target` still choose by real distance in every mode.",
+          "trap": "The attribute value still runs through the weight curve, which the panel hides in `Attribute` mode, and the default curve clamps to 0..1. Weights above 1 all read as 1 on the transform outputs and in Monolithic blending, so an attribute authored on a wider scale stops telling targets apart.",
+          "interacts_with": [
+            "WeightMethod",
+            "WeightOverDistance"
+          ]
         },
         "WeightAttribute": {
           "display": "Weight Attribute",
@@ -64953,11 +65116,17 @@
         "WeightMethod": {
           "display": "Weight Method",
           "type": "EPCGExRangeType",
-          "tooltip": "Weight method used for blending",
+          "tooltip": "Full Range remaps [Range Min..Range Max] to [0..1] (sampled span when Range Max is 0); Effective Range remaps the sampled [closest..farthest].",
           "default": "EPCGExRangeType::FullRange",
           "enum": "EPCGExRangeType",
           "overridable": true,
-          "semantics": "Decides what the weighting curve is measured against. `Full Range` uses `Max Range` as the denominator, so a point that found only nearby targets still reports them as close. The other setting normalises against the farthest target actually found, which makes the weights relative to that point's own gather and not comparable between points."
+          "semantics": "Decides the span the distance falloff runs across before the curve. `Full Range` runs it from `Min Range` to `Max Range`, so a target at `Min Range` weighs 1 and one at `Max Range` weighs 0, and weights compare across points. `Effective Range` runs it from the closest target that point found to the farthest, so the weights are relative to each point's own gather. With `Max Range` at 0 there is no declared span, and `Full Range` falls back to the sampled one.",
+          "trap": "Under `Effective Range` the farthest target a point found always weighs 0 before the curve, so with the default curve it contributes nothing to the blend. A point that found exactly two targets takes the closer one's values outright.",
+          "interacts_with": [
+            "MinRange",
+            "MaxRange",
+            "WeightMode"
+          ]
         },
         "bUseLocalCurve": {
           "display": "Use Local Curve",
@@ -65029,7 +65198,7 @@
         "bBlendPointProperties": {
           "display": "Blend Point Properties",
           "type": "bool",
-          "tooltip": "Write the sampled distance.",
+          "tooltip": "Blend point properties from the sampled targets.",
           "default": "false",
           "overridable": true,
           "edit_condition": "BlendingInterface == EPCGExBlendingInterface::Monolithic",
@@ -65038,7 +65207,7 @@
         "PointPropertiesBlendingSettings": {
           "display": "Point Properties Blending Settings",
           "type": "FPCGExPropertiesBlendingDetails",
-          "tooltip": "The constant to use as Up vector for the look at transform.",
+          "tooltip": "How each point property is blended from the sampled targets.",
           "default": "FPCGExPropertiesBlendingDetails(EPCGExBlendingType::None)",
           "overridable": true,
           "edit_condition": "bBlendPointProperties && BlendingInterface == EPCGExBlendingInterface::Monolithic",
@@ -65128,7 +65297,7 @@
         "LookAtTransformAttributeName": {
           "display": "LookAt",
           "type": "FName",
-          "tooltip": "Name of the 'transform' attribute to write sampled Transform to.",
+          "tooltip": "Name of the 'transform' attribute to write the look-at transform to.",
           "default": "FName(\"WeightedLookAt\")",
           "overridable": true,
           "edit_condition": "bWriteLookAtTransform"
@@ -65173,7 +65342,7 @@
           "default": "FName(\"WeightedDistance\")",
           "overridable": true,
           "edit_condition": "bWriteDistance",
-          "semantics": "On a failure this receives `Max Range` rather than zero, so a downstream test reading distance sees the far end of the band where nothing was found.",
+          "semantics": "On success this is the plain mean of the sampled targets' distances, unweighted, so neither the weights nor the curve move it. On a failure it receives `Max Range` rather than zero, so a downstream test reading distance sees the far end of the band where nothing was found.",
           "trap": "That fallback is the reason to write `Success` alongside it. Distance alone cannot tell a target found at the edge of the range from no target at all."
         },
         "bOutputNormalizedDistance": {
@@ -65250,7 +65419,7 @@
         "AngleAttributeName": {
           "display": "Angle",
           "type": "FName",
-          "tooltip": "Name of the 'double' attribute to write sampled Signed distance to.",
+          "tooltip": "Name of the 'double' attribute to write the sampled angle to.",
           "default": "FName(\"WeightedAngle\")",
           "overridable": true,
           "edit_condition": "bWriteAngle"
@@ -65286,10 +65455,11 @@
         "SampledIndexAttributeName": {
           "display": "SampledIndex",
           "type": "FName",
-          "tooltip": "Name of the 'int32' attribute to write the sampled index to. Will use the closest index when sampling multiple points.",
+          "tooltip": "Name of the 'int32' attribute to write the sampled index to. -1 unless a single target is picked.",
           "default": "FName(\"SampledIndex\")",
           "overridable": true,
-          "edit_condition": "bWriteSampledIndex"
+          "edit_condition": "bWriteSampledIndex",
+          "semantics": "Under `All (Within range)` every point receives -1, success or not, so the index cannot tell a sampled point from a failed one in that mode."
         },
         "HasSuccessesTag": {
           "display": "Has Successes Tag",
@@ -65338,7 +65508,7 @@
         {
           "anchor": "mechanism",
           "style": "warning",
-          "text": "A point that samples nothing is still written to. Success goes false, the transform and look-at outputs receive the point's own transform, distance receives `Max Range`, the sample count receives 0 and the sampled index receives -1. Nothing is left at its previous value unless the point was skipped by a filter with `Process Filtered Out As Fails` off."
+          "text": "A point that samples nothing is still written to. Success goes false, the transform and look-at outputs receive the point's own transform, distance, signed distance and each component of the component-wise distance receive `Max Range`, the sample count receives 0 and the sampled index receives -1. Angle is the one output a failure leaves at its previous value."
         }
       ],
       "related": [
@@ -65362,7 +65532,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-point",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestPoint.h",
-        "hash": "07b4386f1902b11f74863f1992e00a2bf290f844"
+        "hash": "d5267564a5dd7f9e85b59213abf0fd94ad8df6fd"
       }
     },
     "UPCGExSampleNearestSplineSettings": {
@@ -65375,7 +65545,7 @@
       "purpose": "Reads real splines rather than paths made of points. The targets arrive as polyline data, so what a point samples is a continuous curve with its own tangents and its own scale, and the result can be a position anywhere along it rather than at one of its control points. It is the sampler to reach for when the reference geometry was authored as a spline in the level.",
       "situation": "Points that need to align to, or measure against, a spline component rather than a path the graph built.",
       "mechanism": {
-        "text": "Each point finds its closest position on each spline, keeps whichever splines fall inside its range band, and `Sample Method` decides whether one of them wins or all of them are weighted together. Because the target is a curve rather than a list of points, the sampled position is continuous and carries the spline's own transform, which is what the transform and look-at outputs are built from. `Sample Inputs` narrows which splines are eligible by whether they close, before anything is measured."
+        "text": "Each point finds its closest position on each spline, keeps whichever splines fall inside its range band, and `Sample Method` decides whether one of them wins or all of them are weighted together, by distance as `Inside Weighting` shapes it. Because the target is a curve rather than a list of points, the sampled position is continuous and carries the spline's own transform, which is what the transform and look-at outputs are built from. `Sample Inputs` narrows which splines are eligible by whether they close, before anything is measured."
       },
       "off_label": [
         {
@@ -65582,7 +65752,55 @@
           "tooltip": "Weight method used for blending",
           "default": "EPCGExRangeType::FullRange",
           "enum": "EPCGExRangeType",
-          "overridable": true
+          "overridable": true,
+          "semantics": "Picks the span the weight falls across. `Full Range` runs it from `Min Range` to `Max Range`, so weights compare across points. `Effective Range` runs it from the nearest spline that point found to the farthest, so weights are relative to each point's own gather. With `Max Range` at 0 there is no declared span, and `Full Range` falls back to the sampled one.",
+          "trap": "Under `Effective Range` with `Distance` weighting, the farthest spline a point found always weighs 0 and drops out of the weighted outputs.",
+          "interacts_with": [
+            "MinRange",
+            "MaxRange",
+            "InsideWeighting"
+          ]
+        },
+        "InsideWeighting": {
+          "display": "Inside Weighting",
+          "type": "FPCGExInsideWeightingDetails",
+          "tooltip": "How splines the point lies on the inner side of are weighted against those it is merely near.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Mode",
+              "display": "Mode",
+              "type": "EPCGExInsideWeighting",
+              "tooltip": "How targets lying inside a closed shape are weighted relative to those near its edges.",
+              "default": "EPCGExInsideWeighting::Distance",
+              "enum": "EPCGExInsideWeighting"
+            },
+            {
+              "name": "DepthRange",
+              "display": "Depth Range",
+              "type": "double",
+              "tooltip": "Distance from the edge at which depth weight saturates. 0 uses the weighting range's max.",
+              "default": "0"
+            },
+            {
+              "name": "InsideWeightScale",
+              "display": "Inside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to inside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
+            },
+            {
+              "name": "OutsideWeightScale",
+              "display": "Outside Weight Scale",
+              "type": "double",
+              "tooltip": "Multiplier applied to outside targets' weight, for blending and weighted outputs alike.",
+              "default": "1"
+            }
+          ],
+          "semantics": "Inside means on the inner side of a closed spline. `Distance` treats both sides alike: 1 at the closest point, falling to 0 at the far end of the weighting span. `Full` gives any spline the point sits inside the whole weight. `Depth` turns the inside case around, so a spline weighs more the deeper the point sits within it, saturating at `Depth Range`, or at the span's far end when that is 0. The two weight scales multiply the result after the curve, so a scale above 1 survives it.",
+          "interacts_with": [
+            "WeightMethod"
+          ]
         },
         "bUseLocalCurve": {
           "display": "Use Local Curve",
@@ -65593,15 +65811,14 @@
         "LocalWeightOverDistance": {
           "display": "Weight Over Distance",
           "type": "FRuntimeFloatCurve",
-          "tooltip": "Curve that balances weight over distance",
+          "tooltip": "Curve that remaps the weight (1 at the closest point, 0 at range) for the weighted outputs.",
           "edit_condition": "bUseLocalCurve",
           "edit_condition_hides": true
         },
         "WeightOverDistance": {
           "display": "Weight Over Distance",
           "type": "TSoftObjectPtr<UCurveFloat>",
-          "tooltip": "Curve that balances weight over distance",
-          "default": "PCGExCurves::WeightDistributionLinearInv",
+          "tooltip": "Curve that remaps the weight (1 at the closest point, 0 at range) for the weighted outputs. Empty uses the default linear falloff.",
           "overridable": true,
           "edit_condition": "!bUseLocalCurve",
           "edit_condition_hides": true
@@ -65627,6 +65844,17 @@
             }
           ]
         },
+        "bLegacyCurveInput": {
+          "display": "Legacy Curve Input",
+          "type": "bool",
+          "tooltip": "Feeds the curve the normalized distance (0 at the closest point) instead of the weight, as nodes did before the weighting unification.",
+          "default": "false",
+          "advanced": true,
+          "semantics": "Switched on automatically for nodes saved with an older version of the plugin. New nodes feed the curve the weight, 1 at the closest point; legacy nodes feed it the normalized distance, 0 at the closest point. An empty curve resolves to the default ramp that matches each input, so the two agree until a custom curve is set, and from then on one curve asset reads backwards between them.",
+          "interacts_with": [
+            "WeightOverDistance"
+          ]
+        },
         "SuccessAttributeName": {
           "display": "Success",
           "type": "FName",
@@ -65646,7 +65874,7 @@
         "LookAtTransformAttributeName": {
           "display": "LookAt",
           "type": "FName",
-          "tooltip": "Name of the 'transform' attribute to write sampled Transform to.",
+          "tooltip": "Name of the 'transform' attribute to write the look-at transform to.",
           "default": "FName(\"WeightedLookAt\")",
           "overridable": true,
           "edit_condition": "bWriteLookAtTransform"
@@ -65785,7 +66013,7 @@
         "AngleAttributeName": {
           "display": "Angle",
           "type": "FName",
-          "tooltip": "Name of the 'double' attribute to write sampled Signed distance to.",
+          "tooltip": "Name of the 'double' attribute to write the sampled angle to.",
           "default": "FName(\"WeightedAngle\")",
           "overridable": true,
           "edit_condition": "bWriteAngle"
@@ -65980,7 +66208,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-spline",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestSpline.h",
-        "hash": "7e7b94927481ab1ea1ec8943eb790ea14ec44921"
+        "hash": "b31618c25402812503329ea53877e4d7b2f0f24d"
       }
     },
     "UPCGExSampleNearestSurfaceSettings": {
@@ -66316,7 +66544,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-surface",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestSurface.h",
-        "hash": "c497bbca357f295ab37d2900b414a56727b67627"
+        "hash": "6c8b6f3ca4d74d55e7ef4d5afa7f4495ace6dbf5"
       }
     },
     "UPCGExSampleNeighborsSettings": {
@@ -66641,6 +66869,817 @@
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleSockets.h",
         "hash": "0e6855d08da282b1ae7a67e16ec64e06a879cea3"
+      }
+    },
+    "UPCGExSampleStampPointsSettings": {
+      "id": "UPCGExSampleStampPointsSettings",
+      "name": "Sample : Stamp Points",
+      "category": "Sample",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsSampling",
+      "classification": "node",
+      "purpose": "Stamps target values onto the sources around them, with each target deciding how far it reaches. **Sample : Nearest Point** asks, from each point, which targets fall inside that point's range. This node asks which sources fall inside each target's own range, so a target with a wide range claims a wide area and a small one claims a little, target by target. Once the pairs are found, the outputs, blending and Apply Sampling behave as they do on Nearest Point.",
+      "situation": "Scattered influencers of different sizes, each of which should imprint its values on the points within its own reach.",
+      "mechanism": {
+        "text": "One source in, one source out, in the order they arrived. A target and a source pair up when the distance between them sits inside that target's range: `Target Min Range` to `Target Max Range`, multiplied by the target's range scale. Under `Source + Target` the source's own scaled range is added to both ends, so either side can widen the reach. `Sample Method` then keeps one pairing or all of them, each pairing is weighted across its own range, and the outputs, blending and Apply Sampling are written from that set. A source that no target reached counts as a failure and is still written to."
+      },
+      "off_label": [
+        {
+          "claim": "With `Target Min Range` above 0, each target stamps a ring instead of a disc, leaving the sources right next to it untouched.",
+          "grounded_in": "SampleTarget returns when the pair distance is below the target's resolved minimum, before any entry is recorded."
+        },
+        {
+          "claim": "Wire the same points to both pins with `Ignore Self` off and every point stamps its own values onto the neighbours inside its range, itself included: a smoothing pass whose radius varies point by point.",
+          "grounded_in": "bIgnoreSelf adds the processed data to the ignore list; cleared, the source data is indexed as targets like any other."
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Sources",
+            "required": "always",
+            "note": "The points that receive values. They are what the node processes and outputs."
+          },
+          {
+            "label": "Targets",
+            "required": "always",
+            "note": "The points that stamp their values. Each target carries its own range."
+          },
+          {
+            "label": "Blend Ops",
+            "required": "optional",
+            "note": "Per-attribute blend operations. Read when Blending Interface is Individual; advanced under Monolithic."
+          },
+          {
+            "label": "Sorting Rules",
+            "required": "conditional",
+            "note": "Decides which target wins under Best Candidate. Accepted and unread on the other methods.",
+            "condition": "when Sample Method is Best Candidate, advanced otherwise"
+          },
+          {
+            "label": "Use Value If",
+            "required": "optional",
+            "note": "Chooses which sources are processed at all. A source the filters reject is either skipped or recorded as a failure, which is what Process Filtered Out As Fails decides."
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The same sources, carrying whatever was enabled in Outputs, Blending and Apply Sampling."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "DataMatching": {
+          "display": "Data Matching",
+          "type": "FPCGExMatchingDetails",
+          "tooltip": "If enabled, allows you to filter out which targets get sampled by which data",
+          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::Sampling)",
+          "see": "FPCGExMatchingDetails"
+        },
+        "SampleMethod": {
+          "display": "Sample Method",
+          "type": "EPCGExSampleMethod",
+          "tooltip": "Sampling method.",
+          "default": "EPCGExSampleMethod::WithinRange",
+          "enum": "EPCGExSampleMethod",
+          "overridable": true
+        },
+        "SortDirection": {
+          "display": "└─ Sort direction",
+          "type": "EPCGExSortDirection",
+          "tooltip": "Sort direction",
+          "default": "EPCGExSortDirection::Ascending",
+          "enum": "EPCGExSortDirection",
+          "overridable": true,
+          "edit_condition": "SampleMethod == EPCGExSampleMethod::BestCandidate",
+          "edit_condition_hides": true
+        },
+        "RangeMode": {
+          "display": "Range Mode",
+          "type": "EPCGExStampRangeMode",
+          "tooltip": "Whose range gates a source/target pair.",
+          "default": "EPCGExStampRangeMode::Target",
+          "enum": "EPCGExStampRangeMode",
+          "overridable": true,
+          "semantics": "`Target` keeps the whole decision on the target side, so nothing on a source widens or narrows what reaches it. `Source + Target` adds the source's scaled minimum and maximum to the target's, so a large source is reached from further away and a source with a minimum of its own pushes every target's inner edge outward.",
+          "interacts_with": [
+            "TargetMaxRange",
+            "SourceMaxRange"
+          ]
+        },
+        "TargetMinRange": {
+          "display": "Target Min Range",
+          "type": "FPCGExInputShorthandSelectorDoubleAbs",
+          "tooltip": "Min range, read on each target.",
+          "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"RangeMin\"), 0, false)",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ]
+        },
+        "TargetMaxRange": {
+          "display": "Target Max Range",
+          "type": "FPCGExInputShorthandSelectorDoubleAbs",
+          "tooltip": "Max range, read on each target.",
+          "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"RangeMax\"), 5000, false)",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ],
+          "semantics": "Read per target point, so each target can carry its own reach. A negative value reads as its magnitude, and a minimum above the maximum is swapped.",
+          "trap": "0 means no reach, not unlimited: a target with a maximum of 0 stamps only the sources sitting exactly on it. **Sample : Nearest Point** reads 0 the other way round, so a range carried over from that node can find nothing here.",
+          "interacts_with": [
+            "TargetMinRange",
+            "TargetRangeScale"
+          ]
+        },
+        "TargetRangeScale": {
+          "display": "└─ Scale",
+          "type": "FPCGExInputShorthandSelectorDouble",
+          "tooltip": "Multiplies the target's min and max range. Use $Scale to scale a constant range per target (reads Scale.X).",
+          "default": "FPCGExInputShorthandSelectorDouble(FName(\"$Scale\"), 1.0, false)",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ],
+          "semantics": "Defaults to the target's own scale on X, so a target scaled up in the graph reaches further with no attribute needed.",
+          "trap": "Targets scaled for any other reason, such as mesh size, have their reach scaled with them. Set it to a constant of 1 when the range should ignore point scale.",
+          "interacts_with": [
+            "TargetMinRange",
+            "TargetMaxRange"
+          ]
+        },
+        "SourceMinRange": {
+          "display": "Source Min Range",
+          "type": "FPCGExInputShorthandSelectorDoubleAbs",
+          "tooltip": "Min range, read on each source, added to the target's.",
+          "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"RangeMin\"), 0, false)",
+          "overridable": true,
+          "edit_condition": "RangeMode == EPCGExStampRangeMode::Combined",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ]
+        },
+        "SourceMaxRange": {
+          "display": "Source Max Range",
+          "type": "FPCGExInputShorthandSelectorDoubleAbs",
+          "tooltip": "Max range, read on each source, added to the target's.",
+          "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"RangeMax\"), 0, false)",
+          "overridable": true,
+          "edit_condition": "RangeMode == EPCGExStampRangeMode::Combined",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ]
+        },
+        "SourceRangeScale": {
+          "display": "└─ Scale",
+          "type": "FPCGExInputShorthandSelectorDouble",
+          "tooltip": "Multiplies the source's min and max range. Use $Scale to scale a constant range per source (reads Scale.X).",
+          "default": "FPCGExInputShorthandSelectorDouble(FName(\"$Scale\"), 1.0, false)",
+          "overridable": true,
+          "edit_condition": "RangeMode == EPCGExStampRangeMode::Combined",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FPCGAttributePropertyInputSelector",
+              "tooltip": "Attribute or property selector to read from when Input is set to Attribute."
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "double",
+              "default": "0"
+            }
+          ]
+        },
+        "DistanceDetails": {
+          "display": "Distance Details",
+          "type": "FPCGExDistanceDetails",
+          "tooltip": "Distance method used for the range test and the weighting.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Source",
+              "display": "Source",
+              "type": "EPCGExDistance",
+              "default": "EPCGExDistance::Center",
+              "enum": "EPCGExDistance"
+            },
+            {
+              "name": "Target",
+              "display": "Target",
+              "type": "EPCGExDistance",
+              "default": "EPCGExDistance::Center",
+              "enum": "EPCGExDistance"
+            },
+            {
+              "name": "Type",
+              "display": "Type",
+              "type": "EPCGExDistanceType",
+              "default": "EPCGExDistanceType::Euclidian",
+              "enum": "EPCGExDistanceType"
+            },
+            {
+              "name": "bOverlapIsZero",
+              "display": "Overlap Is Zero",
+              "type": "bool",
+              "default": "true"
+            }
+          ]
+        },
+        "WeightMode": {
+          "display": "Weight Mode",
+          "type": "EPCGExSampleWeightMode",
+          "tooltip": "Which mode to use to compute weights.",
+          "default": "EPCGExSampleWeightMode::Distance",
+          "enum": "EPCGExSampleWeightMode",
+          "overridable": true,
+          "semantics": "`Distance` weights each pairing by where it sits in the span `Weight Method` picks: 1 at the near end, 0 at the far end. `Attribute` replaces that with a value read off the target, and `Att x Dist` multiplies the two. `Closest Target` and `Farthest Target` still choose by real distance in every mode.",
+          "trap": "The attribute value still runs through the weight curve, which the panel hides in `Attribute` mode, and the default curve clamps to 0..1. Weights above 1 all read as 1 on the transform outputs and in Monolithic blending.",
+          "interacts_with": [
+            "WeightMethod",
+            "WeightOverDistance"
+          ]
+        },
+        "WeightAttribute": {
+          "display": "Weight Attribute",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Weight attribute to read on targets.",
+          "overridable": true,
+          "edit_condition": "WeightMode != EPCGExSampleWeightMode::Distance",
+          "edit_condition_hides": true
+        },
+        "WeightMethod": {
+          "display": "Weight Method",
+          "type": "EPCGExRangeType",
+          "tooltip": "Full Range remaps each pair's [Range Min..Range Max] to [0..1]; Effective Range remaps the sampled [closest..farthest].",
+          "default": "EPCGExRangeType::FullRange",
+          "enum": "EPCGExRangeType",
+          "overridable": true,
+          "semantics": "`Full Range` weights each pairing across that pair's own range, from its minimum to its maximum, so a source at the same distance weighs more against a target with a wider reach. `Effective Range` weights across the closest and farthest target that stamped a given source, so the weights are relative to that source's own gather.",
+          "trap": "Under `Effective Range` the farthest target that reached a source always weighs 0 before the curve, so with the default curve it adds nothing to the blend.",
+          "interacts_with": [
+            "RangeMode",
+            "WeightMode"
+          ]
+        },
+        "bUseLocalCurve": {
+          "display": "Use Local Curve",
+          "type": "bool",
+          "tooltip": "Whether to use in-editor curve or an external asset.",
+          "default": "false",
+          "edit_condition": "WeightMode != EPCGExSampleWeightMode::Attribute",
+          "edit_condition_hides": true
+        },
+        "LocalWeightOverDistance": {
+          "display": "Weight Over Distance",
+          "type": "FRuntimeFloatCurve",
+          "tooltip": "Curve that balances weight over distance",
+          "edit_condition": "WeightMode != EPCGExSampleWeightMode::Attribute && bUseLocalCurve",
+          "edit_condition_hides": true
+        },
+        "WeightOverDistance": {
+          "display": "Weight Over Distance",
+          "type": "TSoftObjectPtr<UCurveFloat>",
+          "tooltip": "Curve that balances weight over distance",
+          "default": "PCGExCurves::WeightDistributionLinear",
+          "overridable": true,
+          "edit_condition": "WeightMode != EPCGExSampleWeightMode::Attribute && !bUseLocalCurve",
+          "edit_condition_hides": true
+        },
+        "WeightCurveLookup": {
+          "display": "Weight Curve Lookup",
+          "type": "FPCGExCurveLookupDetails",
+          "fields": [
+            {
+              "name": "Mode",
+              "display": "Mode",
+              "type": "EPCGExCurveLUTMode",
+              "tooltip": "Curve lookup mode",
+              "default": "EPCGExCurveLUTMode::Direct",
+              "enum": "EPCGExCurveLUTMode"
+            },
+            {
+              "name": "Samples",
+              "display": "Samples",
+              "type": "int32",
+              "tooltip": "Number of samples in the lookup table.",
+              "default": "512"
+            }
+          ]
+        },
+        "ApplySampling": {
+          "display": "Apply Sampling",
+          "type": "FPCGExApplySamplingDetails",
+          "tooltip": "Whether and how to apply sampled result directly (not mutually exclusive with output)",
+          "see": "FPCGExApplySamplingDetails"
+        },
+        "BlendingInterface": {
+          "display": "Blending Interface",
+          "type": "EPCGExBlendingInterface",
+          "tooltip": "How to blend data from sampled points",
+          "default": "EPCGExBlendingInterface::Individual",
+          "enum": "EPCGExBlendingInterface",
+          "overridable": true
+        },
+        "TargetAttributes": {
+          "display": "Target Attributes",
+          "type": "TMap<FName, EPCGExBlendingType>",
+          "tooltip": "Attributes to sample from the targets",
+          "overridable": true,
+          "edit_condition": "BlendingInterface == EPCGExBlendingInterface::Monolithic",
+          "edit_condition_hides": true
+        },
+        "bBlendPointProperties": {
+          "display": "Blend Point Properties",
+          "type": "bool",
+          "tooltip": "Whether to blend point properties as well.",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "BlendingInterface == EPCGExBlendingInterface::Monolithic",
+          "edit_condition_hides": true
+        },
+        "PointPropertiesBlendingSettings": {
+          "display": "Point Properties Blending Settings",
+          "type": "FPCGExPropertiesBlendingDetails",
+          "tooltip": "Per-property blending settings.",
+          "default": "FPCGExPropertiesBlendingDetails(EPCGExBlendingType::None)",
+          "overridable": true,
+          "edit_condition": "bBlendPointProperties && BlendingInterface == EPCGExBlendingInterface::Monolithic",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "DensityBlending",
+              "display": "Density",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "BoundsMinBlending",
+              "display": "BoundsMin",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "BoundsMaxBlending",
+              "display": "BoundsMax",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "ColorBlending",
+              "display": "Color",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "PositionBlending",
+              "display": "Position",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "RotationBlending",
+              "display": "Rotation",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "ScaleBlending",
+              "display": "Scale",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "SteepnessBlending",
+              "display": "Steepness",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            },
+            {
+              "name": "SeedBlending",
+              "display": "Seed",
+              "type": "EPCGExBlendingType",
+              "default": "EPCGExBlendingType::None",
+              "enum": "EPCGExBlendingType"
+            }
+          ]
+        },
+        "SuccessAttributeName": {
+          "display": "Success",
+          "type": "FName",
+          "tooltip": "Name of the 'boolean' attribute to write sampling success to.",
+          "default": "FName(\"bSamplingSuccess\")",
+          "overridable": true,
+          "edit_condition": "bWriteSuccess"
+        },
+        "TransformAttributeName": {
+          "display": "Transform",
+          "type": "FName",
+          "tooltip": "Name of the 'transform' attribute to write sampled Transform to.",
+          "default": "FName(\"WeightedTransform\")",
+          "overridable": true,
+          "edit_condition": "bWriteTransform"
+        },
+        "LookAtTransformAttributeName": {
+          "display": "LookAt",
+          "type": "FName",
+          "tooltip": "Name of the 'transform' attribute to write the look-at Transform to.",
+          "default": "FName(\"WeightedLookAt\")",
+          "overridable": true,
+          "edit_condition": "bWriteLookAtTransform"
+        },
+        "LookAtAxisAlign": {
+          "display": "├─ Align",
+          "type": "EPCGExAxisAlign",
+          "tooltip": "The axis to align transform the look at vector to.",
+          "default": "EPCGExAxisAlign::Forward",
+          "enum": "EPCGExAxisAlign",
+          "overridable": true
+        },
+        "LookAtUpSelection": {
+          "display": "├─ Use Up from...",
+          "type": "EPCGExSampleSource",
+          "tooltip": "Up vector source.",
+          "default": "EPCGExSampleSource::Constant",
+          "enum": "EPCGExSampleSource",
+          "overridable": true
+        },
+        "LookAtUpSource": {
+          "display": "└─ Up Vector (Attr)",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "The attribute or property on selected source to use as Up vector for the look at transform.",
+          "overridable": true,
+          "edit_condition": "LookAtUpSelection != EPCGExSampleSource::Constant",
+          "edit_condition_hides": true
+        },
+        "LookAtUpConstant": {
+          "display": "└─ Up Vector",
+          "type": "FVector",
+          "tooltip": "The constant to use as Up vector for the look at transform.",
+          "default": "FVector::UpVector",
+          "overridable": true,
+          "edit_condition": "LookAtUpSelection == EPCGExSampleSource::Constant",
+          "edit_condition_hides": true
+        },
+        "DistanceAttributeName": {
+          "display": "Distance",
+          "type": "FName",
+          "tooltip": "Name of the 'double' attribute to write sampled distance to.",
+          "default": "FName(\"WeightedDistance\")",
+          "overridable": true,
+          "edit_condition": "bWriteDistance"
+        },
+        "bOutputNormalizedDistance": {
+          "display": "├─ Normalized",
+          "type": "bool",
+          "tooltip": "Whether to output normalized distance or not",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "bWriteDistance",
+          "edit_condition_hides": true
+        },
+        "bOutputOneMinusDistance": {
+          "display": "│ └─ OneMinus",
+          "type": "bool",
+          "tooltip": "Whether to do a OneMinus on the normalized distance value",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "bWriteDistance && bOutputNormalizedDistance",
+          "edit_condition_hides": true
+        },
+        "DistanceScale": {
+          "display": "└─ Scale",
+          "type": "double",
+          "tooltip": "Scale factor applied to the distance output; allows inverting it with -1",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "bWriteDistance",
+          "edit_condition_hides": true
+        },
+        "SignedDistanceAttributeName": {
+          "display": "SignedDistance",
+          "type": "FName",
+          "tooltip": "Name of the 'double' attribute to write sampled Signed distance to.",
+          "default": "FName(\"WeightedSignedDistance\")",
+          "overridable": true,
+          "edit_condition": "bWriteSignedDistance"
+        },
+        "SignAxis": {
+          "display": "├─ Axis",
+          "type": "EPCGExAxis",
+          "tooltip": "Axis to use to calculate the distance' sign",
+          "default": "EPCGExAxis::Forward",
+          "enum": "EPCGExAxis",
+          "overridable": true,
+          "edit_condition": "bWriteSignedDistance",
+          "edit_condition_hides": true
+        },
+        "SignedDistanceScale": {
+          "display": "└─ Scale",
+          "type": "double",
+          "tooltip": "Scale factor applied to the signed distance output; allows inverting it with -1",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "bWriteSignedDistance",
+          "edit_condition_hides": true
+        },
+        "ComponentWiseDistanceAttributeName": {
+          "display": "Component Wise Distance",
+          "type": "FName",
+          "tooltip": "Name of the 'FVector' attribute to write component-wise distance to.",
+          "default": "FName(\"CWDistance\")",
+          "overridable": true,
+          "edit_condition": "bWriteComponentWiseDistance"
+        },
+        "bAbsoluteComponentWiseDistance": {
+          "display": "└─ Absolute",
+          "type": "bool",
+          "tooltip": "Whether to output absolute or signed component wise distances",
+          "default": "true",
+          "overridable": true,
+          "edit_condition": "bWriteComponentWiseDistance",
+          "edit_condition_hides": true
+        },
+        "AngleAttributeName": {
+          "display": "Angle",
+          "type": "FName",
+          "tooltip": "Name of the 'double' attribute to write the sampled angle to.",
+          "default": "FName(\"WeightedAngle\")",
+          "overridable": true,
+          "edit_condition": "bWriteAngle"
+        },
+        "AngleAxis": {
+          "display": "├─ Axis",
+          "type": "EPCGExAxis",
+          "tooltip": "Axis to use to calculate the angle",
+          "default": "EPCGExAxis::Forward",
+          "enum": "EPCGExAxis",
+          "overridable": true,
+          "edit_condition": "bWriteAngle",
+          "edit_condition_hides": true
+        },
+        "AngleRange": {
+          "display": "└─ Range",
+          "type": "EPCGExAngleRange",
+          "tooltip": "Unit/range to output the angle to.",
+          "default": "EPCGExAngleRange::PIRadians",
+          "enum": "EPCGExAngleRange",
+          "overridable": true,
+          "edit_condition": "bWriteAngle",
+          "edit_condition_hides": true
+        },
+        "NumSamplesAttributeName": {
+          "display": "NumSamples",
+          "type": "FName",
+          "tooltip": "Name of the 'int32' attribute to write the number of sampled neighbors to.",
+          "default": "FName(\"NumSamples\")",
+          "overridable": true,
+          "edit_condition": "bWriteNumSamples"
+        },
+        "SampledIndexAttributeName": {
+          "display": "SampledIndex",
+          "type": "FName",
+          "tooltip": "Name of the 'int32' attribute to write the sampled index to. -1 unless a single target is picked.",
+          "default": "FName(\"SampledIndex\")",
+          "overridable": true,
+          "edit_condition": "bWriteSampledIndex",
+          "semantics": "Under `All (Within range)` every source receives -1, success or not, so the index cannot tell a stamped source from a failed one in that mode."
+        },
+        "FailedSampleDistance": {
+          "display": "Failed Sample Distance",
+          "type": "double",
+          "tooltip": "Distance written to failed samples (Distance, Signed Distance, Component Wise). Written as-is, never scaled or normalized.",
+          "default": "-1",
+          "overridable": true,
+          "advanced": true,
+          "semantics": "Stands in for the range the other samplers write on a failure, because here there is no single range to write: each target carries its own. The default of -1 sits outside any real distance, so a failed source is easy to test for."
+        },
+        "HasSuccessesTag": {
+          "display": "Has Successes Tag",
+          "type": "FString",
+          "tooltip": "If enabled, add the specified tag to the output data if at least a single point has been sampled.",
+          "default": "TEXT(\"HasSuccesses\")",
+          "edit_condition": "bTagIfHasSuccesses"
+        },
+        "HasNoSuccessesTag": {
+          "display": "Has No Successes Tag",
+          "type": "FString",
+          "tooltip": "If enabled, add the specified tag to the output data if no points were sampled.",
+          "default": "TEXT(\"HasNoSuccesses\")",
+          "edit_condition": "bTagIfHasNoSuccesses"
+        },
+        "bProcessFilteredOutAsFails": {
+          "display": "Process Filtered Out As Fails",
+          "type": "bool",
+          "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
+          "default": "true",
+          "advanced": true
+        },
+        "bPruneFailedSamples": {
+          "display": "Prune Failed Samples",
+          "type": "bool",
+          "tooltip": "If enabled, points that failed to sample anything will be pruned.",
+          "default": "false",
+          "advanced": true
+        },
+        "bIgnoreSelf": {
+          "display": "Ignore Self",
+          "type": "bool",
+          "tooltip": "If enabled, source points won't sample themselves as targets.",
+          "default": "true",
+          "advanced": true,
+          "semantics": "Only does anything when the same data reaches both pins. It keeps a dataset from stamping its own points."
+        }
+      },
+      "inherits": [
+        "UPCGExPointsProcessorSettings",
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "anchor": "mechanism",
+          "style": "warning",
+          "text": "A source that no target reached is still written to. Success goes false, the transform and look-at outputs receive the source's own transform, distance, signed distance and each component of the component-wise distance receive `Failed Sample Distance` unscaled, angle and the sample count receive 0, and the sampled index receives -1."
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/additional-systems/blending-and-sampling.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/blending-and-sampling"
+        },
+        {
+          "path": "node-library/sampling/nearest/sample-nearest-point.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-point"
+        },
+        {
+          "path": "node-library/sampling/common-settings/apply-sampling-details.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/common-settings/apply-sampling-details"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/sample-stamp-points",
+      "source": {
+        "file": "PCGExElementsSampling/Public/Elements/PCGExSampleStampPoints.h",
+        "hash": "2fa5ed4af183829f23ed4dc1244ed8e6859e383a"
       }
     },
     "UPCGExSampleSurfaceGuidedSettings": {
@@ -67117,7 +68156,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-line-trace",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleSurfaceGuided.h",
-        "hash": "72925a46c5080baefffff99c618e7b4678544243"
+        "hash": "dc876d51c97a3f781282360b1f838ba9805bdd0d"
       }
     },
     "UPCGExSampleTextureSettings": {
@@ -68239,7 +69278,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-best-fit",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorBestFit.h",
-        "hash": "fff88c6fedf3dfee8f5fd2b3455decbdd3919e92"
+        "hash": "4ec2284b8917231c0a64e55ea3957a0fea077ff2"
       }
     },
     "UPCGExSelectorCascadeFactoryProviderSettings": {
@@ -68697,7 +69736,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-curve-remapped-weight",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorCurveRemapped.h",
-        "hash": "bbb37a1e7cf094aeef9d747073c4c68e5bbb6bed"
+        "hash": "be455ce6d4302deb25dcc77ec680b6e86e76831a"
       }
     },
     "UPCGExSelectorDensityWeightedFactoryProviderSettings": {
@@ -68818,7 +69857,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-density-weighted",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorDensityWeighted.h",
-        "hash": "701741c987fda89189a33cddaab4f3691b06106b"
+        "hash": "77b1b6dd1fadc76535fef3379866f31f932b76eb"
       }
     },
     "UPCGExSelectorFactoryProviderSettings": {
@@ -68894,7 +69933,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-definition",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorFactoryProvider.h",
-        "hash": "ba8a3b6c6f6c7db52f23c57c65160ec813b7329b"
+        "hash": "3724822d92e79e9caffc52bef7e506a846eaa358"
       }
     },
     "UPCGExSelectorInterleavedFactoryProviderSettings": {
@@ -69366,7 +70405,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-range-based",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorRangeBased.h",
-        "hash": "13a859609356ce8bca2d44f2090cdc29338ee4f2"
+        "hash": "231d9d527dadf4ced185ab56668bb267fc72c4f5"
       }
     },
     "UPCGExSelfPruningSettings": {
@@ -70003,7 +71042,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape",
       "source": {
         "file": "PCGExElementsShapes/Public/Core/PCGExShapeBuilderFactoryProvider.h",
-        "hash": "e3e0a28ef01a6cb03c4b6a59c8f8eb40bcbbef6f"
+        "hash": "869175be692654b86daefb7e6da3214c422644ec"
       }
     },
     "UPCGExShiftPathSettings": {
@@ -71580,14 +72619,8 @@
       "purpose": "Sorts datasets into three piles by where they sit relative to one reference box: this one is mine, this one straddles the border, this one is somebody else's problem. It is a box-against-box test with no settings, meant to run at the head of a partitioned graph so each partition can claim the work it owns outright and treat the border cases separately.",
       "situation": "A partitioned generation where each cell has to decide, cheaply and before doing any real work, which of the incoming datasets it is responsible for.",
       "mechanism": {
-        "text": "The first spatial data on the Bounds pin supplies one box, and every dataset on In is compared against it. A dataset whose own bounds centre falls inside the box goes to Inside; otherwise, if the two boxes overlap at all, it goes to Touching; everything else, including any input that carries no spatial bounds, goes to Outside. Data is re-pinned and never copied or modified. Any of the three pins that received nothing is deactivated, which culls whatever hangs off it."
+        "text": "The first spatial data on the Bounds pin supplies one reference box, and every dataset on In is compared against it. A dataset whose bounds centre lies within the box goes to Inside; failing that, one whose box overlaps it at all, even along a single face, goes to Touching; the rest go to Outside. The box owns its min faces but not its max faces, matching how PCG assigns positions to its partition grid, so a centre on the face two abutting boxes share is Inside for the box on whose min face it sits and Touching for the other. Data without a usable box is never Inside: unbounded data, such as world query data, overlaps every box and goes to Touching, while empty data, such as a point set with no points, goes to Outside with anything that is not spatial. Data is re-pinned and never copied or modified, and a pin that received nothing is deactivated, which culls whatever hangs off it."
       },
-      "off_label": [
-        {
-          "claim": "Because Inside is decided on the bounds centre alone, feeding it single points rather than datasets turns it into an ownership test with no border case at all: a point is either in the box or out of it, and Touching stays empty.",
-          "grounded_in": "the Inside test is a containment check on the input's bounds centre, which for a one-point dataset is that point"
-        }
-      ],
       "pins": {
         "inputs": [
           {
@@ -71604,15 +72637,15 @@
         "outputs": [
           {
             "label": "Inside",
-            "note": "Data whose bounds centre falls within the reference box."
+            "note": "Data whose bounds centre falls within the reference box, counting the box's min faces but not its max faces."
           },
           {
             "label": "Touching",
-            "note": "Data whose box overlaps the reference box without its centre being inside it."
+            "note": "Data whose box overlaps the reference box, even along a single face, without its centre qualifying for Inside; also unbounded data, which overlaps every box and belongs to none."
           },
           {
             "label": "Outside",
-            "note": "Everything else, including inputs that carry no spatial bounds at all, such as attribute sets."
+            "note": "Everything else: data clear of the box, empty data, and anything that is not spatial, such as attribute sets."
           }
         ],
         "dynamic": "The In pin and all three outputs accept any data type; only the Bounds pin is restricted to spatial data."
@@ -71626,6 +72659,11 @@
           "style": "warning",
           "text": "Inside means the centre is inside, not that the data fits. A dataset that overhangs the box on every side still lands on Inside as long as its middle is within, so treat Inside as ownership rather than as containment.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "warning",
+          "text": "When the Bounds pin receives point data, the reference box is the points' density bounds, not their plain bounds. Each point's bounds are scaled by 2 minus its `Steepness` about the point's pivot, so at the default `Steepness` of 0.5 the box is 1.5 times the points' bounds. The boxes of neighbouring partitions then overlap, and data centred near a shared border lands on Inside in more than one partition. Set `Steepness` to 1 on those points so the box matches their bounds; 0 would double it. The partition data on the graph Input node's In pin is already exact and needs no change.",
+          "anchor": "pins"
         }
       ],
       "related": [
@@ -71649,7 +72687,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/discarding/spatial-triage",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExSpatialTriage.h",
-        "hash": "a96cee37a04e1bf1c0809f89d9b5654271c5f42e"
+        "hash": "ab0b8162b46e32b15c6428f5b3b9864756b65c7c"
       }
     },
     "UPCGExSpawnDynamicMeshSettings": {
@@ -75043,7 +76081,7 @@
         "FPCGExTangentsDetails",
         "FPCGExTangentsScalingDetails"
       ],
-      "purpose": "Tangent rules decide, per point, how a curve arrives at that point and how it leaves it. Six ship, and they all answer with the same pair of vectors: **Path : Write Tangents** stores that pair as two vector attributes, while **Create Spline**, both Spline Mesh nodes and **Copy to Path** carry a `Source` picker that reads two named attributes, runs a rule in place, or asks for no tangents at all. Its default is the attribute route, reading `ArriveTangent` and `LeaveTangent`, which are the names **Path : Write Tangents** writes by default. Direction decides which way the curve leans through the point and length decides how far it holds that lean, so a long tangent carries the curve past the straight line between neighbours and a zero-length one flattens it onto that line.",
+      "purpose": "Tangent rules decide, per point, how a curve arrives at that point and how it leaves it. Every rule answers with the same pair of vectors: **Path : Write Tangents** stores that pair as two vector attributes, while **Create Spline**, both Spline Mesh nodes and **Copy to Path** carry a `Source` picker that reads two named attributes, runs a rule in place, or asks for no tangents at all. Its default is the attribute route, reading `ArriveTangent` and `LeaveTangent`, which are the names **Path : Write Tangents** writes by default. Direction decides which way the curve leans through the point and length decides how far it holds that lean, so a long tangent carries the curve past the straight line between neighbours and a zero-length one flattens it onto that line.",
       "situation": "A path is about to become a spline or a run of spline meshes, and the curve running between its points has to be decided.",
       "mechanism": {
         "text": "A rule is called once per point and handed the point positions plus three indices: the point, its predecessor and its successor. It fills in both vectors, and the two scales the consumer read at that point arrive as arguments, so the rule does the multiplying rather than the consumer. On a closed path every point is an interior point, because the neighbour indices wrap. An open path's first and last are not, and the base answers for them rather than the rule: the first gets the whole vector running from it to the second point, the last the whole vector from the second-to-last to it, and arrive and leave both get that same vector. `Start Override` and `End Override` put a rule of your choosing in place of that answer, and on a closed path neither is ever consulted."
@@ -75051,12 +76089,12 @@
       "hints": [
         {
           "style": "warning",
-          "text": "Only three of the six rules answer differently at an open path's ends. **From Transform**, **From Spline** and **Zero** define their own first-point and last-point behaviour; **Auto**, **Catmull-Rom** and **From Neighbors** fall through to the base's. Choosing one of those three as `Start Override` or `End Override` changes nothing at the two endpoints.",
+          "text": "Not every rule answers differently at an open path's ends. **From Transform**, **From Spline** and **Zero** define their own first-point and last-point behaviour; **Auto**, **Catmull-Rom** and **From Neighbors** fall through to the base's. Choosing one of those as `Start Override` or `End Override` changes nothing at the two endpoints.",
           "anchor": "mechanism"
         },
         {
           "style": "info",
-          "text": "`Arrive Scale` and `Leave Scale` belong to the consumer. **Path : Write Tangents** carries them on the node as full vectors, the other four inside their own Tangents block, where the constant is one number spread across all three axes. Both multiply component by component in world axes, so an uneven scale swings the tangent off the direction the rule computed as well as changing its length.",
+          "text": "`Arrive Scale` and `Leave Scale` belong to the consumer, and both are full vectors: **Path : Write Tangents** carries them on the node, every other consumer inside its own Tangents block. Both multiply component by component in world axes, so an uneven scale swings the tangent off the direction the rule computed as well as changing its length.",
           "anchor": "mechanism"
         },
         {
@@ -75094,7 +76132,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/common-settings/tangents/tangents-base",
       "source": {
         "file": "PCGExFoundations/Public/Tangents/PCGExTangentsInstancedFactory.h",
-        "hash": "7f1786217ceb73da2567f768438bc615f04a9eb5"
+        "hash": "d12315f0232bab9e2b1ba82e8bd99bc94f1db0f7"
       }
     },
     "UPCGExTensorDotFilterProviderSettings": {
@@ -75283,7 +76321,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/tensors/tensor",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensorFactoryProvider.h",
-        "hash": "5542cbf945aaee3b60527ec1193c5507ac725370"
+        "hash": "8e3333af5073307a2470f93cca9390c91e6d76c1"
       }
     },
     "UPCGExTensorSampler": {
@@ -78751,7 +79789,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-vtx-properties/vtx-property-provider",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/VtxProperties/PCGExVtxPropertyFactoryProvider.h",
-        "hash": "d1282430aae948259ea6291086350a5fc092c65c"
+        "hash": "f1dff235b29c5609357f6322dda84e92df64cb3d"
       }
     },
     "UPCGExVtxPropertySortedNeighborSettings": {
@@ -79305,6 +80343,314 @@
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExWaitForPCGData.h",
         "hash": "94245dea5c88d343c1ba7a0dc44d57cd02d8c885"
+      }
+    },
+    "UPCGExWeightedLookupSettings": {
+      "id": "UPCGExWeightedLookupSettings",
+      "name": "Weighted Lookup",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsMeta",
+      "classification": "node",
+      "purpose": "Picks one row of a table for each point, with the odds coming from the point's own data. The Map input is an attribute set holding one row per candidate, and each row's key column names the attribute that carries that row's weight, so a point whose Grass attribute reads 0.8 and whose Rock attribute reads 0.2 lands on the Grass row most of the time. The winning row's remaining columns are written onto the point, so the decision and its payload arrive together. **Tuple : Distribute** covers the neighbouring case, where the odds are authored on the node instead of read from the data.",
+      "situation": "Landscape layer weights are already on the points, and each point needs the table row belonging to whichever layer it mostly is.",
+      "mechanism": {
+        "text": "One point in, one point out, in the order they arrived; the node adds and removes nothing. Every Map row is one candidate, and the attribute its key column names supplies that row's weight, read either from the point itself or from the Weights row the point matched. Weights at or below zero, and rows whose weight attribute is absent, count as zero and are never picked. The winning row's forwarded columns are written onto the point as attributes, alongside whichever extra outputs are enabled. A point with no positive weight picks nothing and takes the Fallback instead."
+      },
+      "off_label": [
+        {
+          "claim": "Set Pick Mode to Highest, filter every Map column out of the forward, and switch the picked key output on: the node then reports which of a set of named attributes is the largest on each point, by name.",
+          "grounded_in": "Commit writes MapKeys[Row] to the key attribute independently of the forward handler, and the Highest branch commits the maximum-weight row."
+        },
+        {
+          "claim": "With Fallback left at None, the row index output marks every point nothing applied to with -1, which feeds straight into a filter for the points that had no usable weight.",
+          "grounded_in": "CommitFallback commits row -1 under Fallback None, and RowIndexWriter writes that value."
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The points that receive a row.",
+            "required": "always"
+          },
+          {
+            "label": "Map",
+            "note": "An attribute set with one row per candidate. The key column names the attribute holding that row's weight; every other column can be forwarded onto the picked point.",
+            "required": "always"
+          },
+          {
+            "label": "Weights",
+            "note": "The dataset holding the weight attributes the Map names. Each point selects its row there by key.",
+            "required": "conditional",
+            "condition": "when Weights Source is External"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The same points, carrying the picked row's forwarded columns and whichever extra outputs are enabled."
+          }
+        ],
+        "dynamic": "The output pin takes the type of whatever is wired into In, so the node hands back the shape it was given. Map is always an attribute set, and Weights accepts any data type."
+      },
+      "settings": {
+        "MapKey": {
+          "display": "Map Key",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Map column holding, per row, the name of the attribute that carries that row's weight.",
+          "overridable": true,
+          "semantics": "Names a column of the Map, defaulting to one called Key, and that column holds attribute names rather than weights. Two rows may name the same attribute, and each then counts as its own candidate at that attribute's weight, so the pair draws twice the odds a single row would while keeping its own forwarded columns.",
+          "interacts_with": [
+            "Columns"
+          ]
+        },
+        "Columns": {
+          "display": "Columns",
+          "type": "FPCGExNameFiltersDetails",
+          "tooltip": "Which Map columns are forwarded onto the picked point. The key column and output names never are.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "FilterMode",
+              "display": "Filter Mode",
+              "type": "EPCGExAttributeFilter",
+              "tooltip": "How the names are processed.",
+              "default": "EPCGExAttributeFilter::All",
+              "enum": "EPCGExAttributeFilter"
+            },
+            {
+              "name": "Matches",
+              "display": "Matches",
+              "type": "TMap<FString, EPCGExStringMatchMode>",
+              "tooltip": "List of matches that will be checked. Any success is a pass."
+            },
+            {
+              "name": "CommaSeparatedNames",
+              "display": "Comma Separated Names",
+              "type": "FString",
+              "tooltip": "A list of names separated by a comma, for easy overrides. The limitation is that they all use the same shared filter mode."
+            },
+            {
+              "name": "CommaSeparatedNameFilter",
+              "display": "Comma Separated Name Filter",
+              "type": "EPCGExStringMatchMode",
+              "tooltip": "Unique filter mode applied to comma separated names",
+              "default": "EPCGExStringMatchMode::Equals",
+              "enum": "EPCGExStringMatchMode"
+            },
+            {
+              "name": "bPreservePCGExData",
+              "display": "Preserve PCG Ex Data",
+              "type": "bool",
+              "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
+              "default": "true"
+            }
+          ],
+          "semantics": "The key column and the names of any enabled output attributes are removed from the forwarded set before this filter is consulted.",
+          "trap": "An enabled output takes its name over a Map column that shares it, so pointing the row index output at a name the Map already uses silently drops that column from the forward.",
+          "interacts_with": [
+            "MapKey",
+            "KeyAttributeName",
+            "RowIndexAttributeName",
+            "WeightAttributeName"
+          ]
+        },
+        "WeightsSource": {
+          "display": "Weights Source",
+          "type": "EPCGExWeightedLookupWeightsSource",
+          "tooltip": "Where each row's weight is read from.",
+          "default": "EPCGExWeightedLookupWeightsSource::Self",
+          "enum": "EPCGExWeightedLookupWeightsSource",
+          "overridable": true,
+          "semantics": "Self reads the weight attributes off the points being processed, so every point carries its own odds and the Map is the only extra input. External moves those attributes onto their own dataset and gives each point a key that selects one row there, so many points can share one set of odds; a Weights input of a single row that every point matches gives the whole dataset one table.",
+          "interacts_with": [
+            "PointKey",
+            "WeightsKey"
+          ]
+        },
+        "PointKey": {
+          "display": "Point Key",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Point attribute matched (by value hash) against the Weights key to select the point's Weights row.",
+          "overridable": true,
+          "edit_condition": "WeightsSource == EPCGExWeightedLookupWeightsSource::External",
+          "edit_condition_hides": true,
+          "semantics": "Matching is by value hash, so the point key and the Weights key have to hold the same type. The node warns when they differ, and keys of different types then match only by accident. A point whose key finds no Weights row takes the Fallback.",
+          "interacts_with": [
+            "WeightsKey",
+            "Fallback"
+          ]
+        },
+        "WeightsKey": {
+          "display": "Weights Key",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Weights attribute matched against each point's key. On duplicate keys, the first row wins.",
+          "overridable": true,
+          "edit_condition": "WeightsSource == EPCGExWeightedLookupWeightsSource::External",
+          "edit_condition_hides": true
+        },
+        "bQuietMissingWeightAttribute": {
+          "display": "Quiet Missing Weight Attribute",
+          "type": "bool",
+          "tooltip": "Suppress the warning emitted when a row's weight attribute is missing. Missing weights read as 0.",
+          "default": "false",
+          "overridable": true,
+          "semantics": "The warning fires once per attribute name for the whole run rather than once per input, so a name missing from every dataset is still reported once."
+        },
+        "PickMode": {
+          "display": "Pick Mode",
+          "type": "EPCGExWeightedLookupPickMode",
+          "tooltip": "How the picked row is chosen from the per-point weights.",
+          "default": "EPCGExWeightedLookupPickMode::WeightedRandom",
+          "enum": "EPCGExWeightedLookupPickMode",
+          "overridable": true,
+          "semantics": "Highest reads no seed and resolves ties to the first row holding the maximum, so its result is reproducible; Exponent and Contrast are hidden under it because they only shape a roll. Weighted Random rolls once per point against the weights, and a row sitting at zero can never come up.",
+          "interacts_with": [
+            "Exponent",
+            "Contrast",
+            "SeedComponents"
+          ]
+        },
+        "SeedComponents": {
+          "display": "Seed Components",
+          "type": "uint8",
+          "tooltip": "Which components contribute to seed generation.",
+          "default": "static_cast<uint8>(EPCGExSeedComponents::Local | EPCGExSeedComponents::Settings)",
+          "overridable": true,
+          "semantics": "Local and Settings are both on by default, so the node's own Seed folds into every roll and editing it re-rolls the whole dataset. Settings and Component are not separable: enabling either one folds both the node seed and the component seed in.",
+          "interacts_with": [
+            "LocalSeed",
+            "PickMode"
+          ]
+        },
+        "LocalSeed": {
+          "display": "Local Seed",
+          "type": "int32",
+          "tooltip": "Local seed offset.",
+          "default": "0",
+          "overridable": true
+        },
+        "Exponent": {
+          "display": "Exponent",
+          "type": "double",
+          "tooltip": "Exponent on max-normalized weights before the roll. 1 = no change, >1 sharpens, <1 flattens.",
+          "default": "1.0",
+          "overridable": true,
+          "edit_condition": "PickMode == EPCGExWeightedLookupPickMode::WeightedRandom",
+          "edit_condition_hides": true,
+          "semantics": "Shaping runs on weights normalized against the point's own largest weight, so the top row always maps to 1 and what changes is the distance the others sit from it. A weight of zero stays zero and stays unpickable at any exponent.",
+          "interacts_with": [
+            "Contrast",
+            "PickMode"
+          ]
+        },
+        "Contrast": {
+          "display": "Contrast",
+          "type": "double",
+          "tooltip": "Contrast on max-normalized weights before the roll, around 0.5. 1 = no change, >1 = more, <1 = less.",
+          "default": "1.0",
+          "overridable": true,
+          "edit_condition": "PickMode == EPCGExWeightedLookupPickMode::WeightedRandom",
+          "edit_condition_hides": true,
+          "semantics": "Applied after the exponent, on the same max-normalized weights, pivoting around 0.5. It widens or narrows the gap between the top row and the rest without ever lifting a zero.",
+          "interacts_with": [
+            "Exponent",
+            "ContrastCurve"
+          ]
+        },
+        "ContrastCurve": {
+          "display": "└─ Curve",
+          "type": "EPCGExContrastCurve",
+          "tooltip": "Contrast curve type.",
+          "default": "EPCGExContrastCurve::Power",
+          "enum": "EPCGExContrastCurve",
+          "overridable": true,
+          "edit_condition": "PickMode == EPCGExWeightedLookupPickMode::WeightedRandom && Contrast != 1.0",
+          "edit_condition_hides": true
+        },
+        "Fallback": {
+          "display": "Fallback",
+          "type": "EPCGExWeightedLookupFallback",
+          "tooltip": "What happens when a point has no usable weight (all weights are 0, or its key matches no Weights row).",
+          "default": "EPCGExWeightedLookupFallback::None",
+          "enum": "EPCGExWeightedLookupFallback",
+          "overridable": true,
+          "semantics": "Covers two situations at once: a point whose weights are all zero, and, under External, a point whose key matches no Weights row.",
+          "trap": "Uniform Random picks across every Map row, including rows whose weight attribute is missing everywhere, so one mistyped key can still be handed out. A fallback pick also writes zero to the weight output even though a row was chosen.",
+          "interacts_with": [
+            "FallbackRowIndex",
+            "PointKey",
+            "WeightAttributeName"
+          ]
+        },
+        "FallbackRowIndex": {
+          "display": "Fallback Row Index",
+          "type": "int32",
+          "tooltip": "Row picked by the Fixed Row fallback.",
+          "default": "0",
+          "overridable": true,
+          "edit_condition": "Fallback == EPCGExWeightedLookupFallback::FixedRow",
+          "edit_condition_hides": true,
+          "semantics": "An index past the end of the Map is clamped to the last row and warned about, rather than treated as no pick."
+        },
+        "KeyAttributeName": {
+          "display": "Key Attribute Name",
+          "type": "FName",
+          "tooltip": "Name of the attribute the picked key is written to. NAME_None when no row was picked.",
+          "default": "\"LookupKey\"",
+          "overridable": true,
+          "edit_condition": "bOutputKey"
+        },
+        "RowIndexAttributeName": {
+          "display": "Row Index Attribute Name",
+          "type": "FName",
+          "tooltip": "Name of the attribute the picked row index is written to. -1 when no row was picked.",
+          "default": "\"LookupRowIndex\"",
+          "overridable": true,
+          "edit_condition": "bOutputRowIndex"
+        },
+        "WeightAttributeName": {
+          "display": "Weight Attribute Name",
+          "type": "FName",
+          "tooltip": "Name of the attribute the picked weight is written to. 0 when no row was picked.",
+          "default": "\"LookupWeight\"",
+          "overridable": true,
+          "edit_condition": "bOutputWeight"
+        }
+      },
+      "inherits": [
+        "UPCGExPointsProcessorSettings",
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "style": "warning",
+          "text": "The Weights pin accepts more than one connection and reads only the first dataset. The node warns when several arrive, so a second wire dropped onto it changes nothing and is easy to miss.",
+          "anchor": "pins"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/odd-jobs.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/odd-jobs"
+        },
+        {
+          "path": "node-library/metadata/keys/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys"
+        },
+        {
+          "path": "node-library/metadata/keys/tuple-distribute.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/tuple-distribute"
+        },
+        {
+          "path": "node-library/metadata/keys/tuple.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/tuple"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/weighted-lookup",
+      "source": {
+        "file": "PCGExElementsMeta/Public/Elements/PCGExWeightedLookup.h",
+        "hash": "024a9a00b9135bb298ee24f2455bfa418cb460fa"
       }
     },
     "UPCGExWithinRangeFilterProviderSettings": {

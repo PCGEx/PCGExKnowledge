@@ -284,7 +284,7 @@
     "name": "Fitting",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Placing an asset inside a point: scale-to-fit, justification, variations, and where each runs.",
+    "purpose": "A point has bounds; an entry has staged bounds.",
     "outline": [
       "Scale to Fit",
       "Justification",
@@ -595,7 +595,7 @@
     "name": "Collections of Anything",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Staging assets nothing spawns, materials, textures, particle systems, sound cues, as Generic entries of an Omni Collection.",
+    "purpose": "The collection system spawns meshes, skinned meshes, actors, levels and PCG data.",
     "outline": [
       "The entry is the pick, the path is the payload",
       "An empty Asset slot still picks",
@@ -1111,7 +1111,7 @@
     "name": "Grammar",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "What a grammar replaces, what it buys over a growth strategy, and the two ideas that make one readable: descriptors and edge scope.",
+    "purpose": "A grammar replaces that decision with an authored one.",
     "outline": [
       "A grammar is a growth strategy",
       "What it buys",
@@ -1147,7 +1147,7 @@
     "name": "Branching",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Branch, Choice and Merge: which one actually chooses, which one waits, and how rule state behaves when control flow forks.",
+    "purpose": "Three node types shape control flow across a grammar, and their names are the least reliable in the plugin.",
     "outline": [
       "Branch runs every arm",
       "An arm dealt nothing",
@@ -1179,7 +1179,7 @@
     "name": "Grammar Nodes",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Twenty-one node types, for looking one up.",
+    "purpose": "Every grammar node type in one place, what each one does in a sentence, and which page explains it.",
     "outline": [
       "Every node"
     ],
@@ -1208,7 +1208,7 @@
     "name": "Narrowing the Frontier",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "The Filter node: five independent narrowings behind one word, the order they run in, and the two that look alike and anchor at opposite ends.",
+    "purpose": "Everything a Filter can do is a narrowing, and there are five of them.",
     "outline": [
       "Where it starts from",
       "The five narrowings",
@@ -1258,7 +1258,7 @@
     "name": "Sequencing",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Sequence, Repeat, Optional and Yield: doing things in order, doing them several times, and the node that quietly rewires the loop it sits in.",
+    "purpose": "Where branching.md decides which paths run, these four decide when.",
     "outline": [
       "Sequence finishes each step before the next begins",
       "Sequence steps default to the whole frontier",
@@ -1270,14 +1270,32 @@
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/sequencing"
   },
   {
+    "id": "working-with-valency/generating/grammar/stashing",
+    "name": "Stashing",
+    "plugin": "PCGExElementsValency",
+    "kind": "concept",
+    "purpose": "A grammar often has to come back to connectors it left behind.",
+    "outline": [
+      "A bank is a name",
+      "An Unstash publishes what is still open",
+      "The ordering is yours",
+      "The wire into an Unstash is a trigger",
+      "A disabled Unstash keeps running",
+      "What the compile tells you"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/stashing"
+  },
+  {
     "id": "working-with-valency/generating/grammar/subgraphs",
     "name": "Subgraphs",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A subgraph node expands another grammar asset in place.",
+    "purpose": "Reusing one grammar inside another: how a subgraph runs as one unit, how its boundaries wire up, what it sees of the frontier, and what Isolate does to the rules around it.",
     "outline": [
-      "Expansion happens at compile",
+      "One node, one run",
       "Boundaries",
+      "Failure inside the body",
+      "What the body sees",
       "Inherit or Isolate",
       "Isolate inside a region compiles a warning",
       "Grammar properties across the boundary",
@@ -2623,7 +2641,7 @@
     "plugin": "PCGExElementsValency",
     "kind": "entry",
     "classification": "shared_struct",
-    "purpose": "Picks one child at random, by weight, and runs only that one.",
+    "purpose": "Takes one of its options, chosen at random by weight.",
     "situation": "One of several continuations, chosen rather than combined.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/choice"
   },
@@ -2663,8 +2681,8 @@
     "plugin": "PCGExElementsValency",
     "kind": "entry",
     "classification": "shared_struct",
-    "purpose": "The source-side boundary of a subgraph.",
-    "situation": "A grammar meant to be referenced, that needs an entry point other than a Seed.",
+    "purpose": "One named entry of a grammar meant to be used as a subgraph.",
+    "situation": "A grammar authored to be referenced, that needs an entry point other than a Seed.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-input"
   },
   {
@@ -2673,8 +2691,8 @@
     "plugin": "PCGExElementsValency",
     "kind": "entry",
     "classification": "shared_struct",
-    "purpose": "The sink-side boundary of a subgraph.",
-    "situation": "A reusable grammar fragment that has to hand its frontier back to its caller.",
+    "purpose": "One named exit of a grammar meant to be used as a subgraph.",
+    "situation": "A reusable recipe that has to hand its frontier back to its caller.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-output"
   },
   {
@@ -2798,14 +2816,34 @@
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/multi-spawn"
   },
   {
+    "id": "FPCGExGrammarNodePayload_Stash",
+    "name": "Stash",
+    "plugin": "PCGExElementsValency",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Banks the connectors reaching it under a name, for an Unstash somewhere else in the graph to publish.",
+    "situation": "Connectors a distant part of the grammar should build on later.",
+    "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/stash"
+  },
+  {
     "id": "FPCGExGrammarNodePayload_Subgraph",
     "name": "Subgraph",
     "plugin": "PCGExElementsValency",
     "kind": "entry",
     "classification": "shared_struct",
-    "purpose": "Runs another grammar inline.",
-    "situation": "A section of grammar wanted in more than one place, or a graph grown too large to read.",
+    "purpose": "Runs another grammar asset as one unit.",
+    "situation": "A recipe wanted in more than one grammar, or one grammar grown too large to read on a single canvas.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph"
+  },
+  {
+    "id": "FPCGExGrammarNodePayload_Unstash",
+    "name": "Unstash",
+    "plugin": "PCGExElementsValency",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Publishes whatever the named Stash banked that is still open, at the moment flow reaches it.",
+    "situation": "A section that should build on connectors banked somewhere else in the graph.",
+    "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/unstash"
   },
   {
     "id": "FPCGExGrammarNodePayload_Yield",
@@ -6998,6 +7036,17 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/sample-sockets"
   },
   {
+    "id": "UPCGExSampleStampPointsSettings",
+    "name": "Sample : Stamp Points",
+    "category": "Sample",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Stamps target values onto the sources around them, with each target deciding how far it reaches.",
+    "situation": "Scattered influencers of different sizes, each of which should imprint its values on the points within its own reach.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/sample-stamp-points"
+  },
+  {
     "id": "UPCGExSampleSurfaceGuidedSettings",
     "name": "Sample : Line Trace",
     "category": "Sample",
@@ -8316,6 +8365,16 @@
     "purpose": "Pulls the output of PCG components living on other actors into this graph, holding execution until they have produced it.",
     "situation": "A graph that has to consume what another actor's PCG component produced, in the same generation pass, without knowing whether that component has run yet.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/wait-for-pcg-data"
+  },
+  {
+    "id": "UPCGExWeightedLookupSettings",
+    "name": "Weighted Lookup",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Picks one row of a table for each point, with the odds coming from the point's own data.",
+    "situation": "Landscape layer weights are already on the points, and each point needs the table row belonging to whichever layer it mostly is.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/weighted-lookup"
   },
   {
     "id": "UPCGExWithinRangeFilterProviderSettings",

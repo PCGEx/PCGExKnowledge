@@ -970,6 +970,20 @@
         }
       ]
     },
+    "EPCGExSubgraphFrontierScope": {
+      "values": [
+        {
+          "name": "Sealed",
+          "display_name": "Sealed",
+          "tooltip": "The body sees the connectors handed to its inputs plus everything it places itself (default)."
+        },
+        {
+          "name": "Open",
+          "display_name": "Open",
+          "tooltip": "The body sees the whole live frontier, parent connectors included."
+        }
+      ]
+    },
     "EPCGExSubgraphRuleScope": {
       "values": [
         {
@@ -980,7 +994,7 @@
         {
           "name": "Isolate",
           "display_name": "Isolate",
-          "tooltip": "Subgraph body is wrapped in a synthetic Replace region; parent rules do not bleed in."
+          "tooltip": "Subgraph body runs under a synthetic Replace region; parent rules do not bleed in."
         }
       ]
     },
@@ -6092,7 +6106,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/corridor",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_BeginRegion": {
@@ -6146,7 +6160,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/begin-region",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Branch": {
@@ -6188,7 +6202,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/branch",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Bridge": {
@@ -6430,7 +6444,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/join",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Choice": {
@@ -6439,17 +6453,27 @@
       "plugin": "PCGExElementsValency",
       "module": "PCGExValencyGrammar",
       "classification": "shared_struct",
-      "purpose": "Picks one child at random, by weight, and runs only that one. It is how a grammar carries alternatives: three ways a room can continue, one of them taken.",
+      "purpose": "Takes one of its options, chosen at random by weight. It is how a grammar carries alternatives: three ways a room can continue, one of them taken.",
       "situation": "One of several continuations, chosen rather than combined.",
       "mechanism": {
-        "text": "A weighted draw selects a single option pin and the rest are not evaluated at all. Because only one arm runs, a Choice is also the natural checkpoint for backtracking: undoing to a Choice and taking a different arm is what Branch scope backtracking does."
+        "text": "The weighted draw sets an order over the options and the Choice works down it: the drawn option runs first, and the rest follow by descending weight until one succeeds, after which none of the others run. An option that fails is rolled back before the next is tried, so nothing it placed survives. The **Then** pin fires once that loop ends, whether or not an option succeeded, and a Required Choice whose options all failed fails itself. Because every attempt is rolled back on its own, a Choice is also a checkpoint for backtracking: undoing to a Choice and taking a different arm is what Branch scope backtracking does."
       },
       "settings": {
-        "Weights": {
-          "display": "Weights",
-          "type": "TArray<float>",
-          "tooltip": "Per-child weights (parallel to option pins, NOT to emitted edges -- the emit expands these per linked edge and the continuation edge takes a neutral 1.0).",
-          "semantics": "Parallel to the option pins rather than to the edges the node emits, which matters because the emit expands a pin per linked edge and the continuation edge takes a neutral value. Reading the weights as per-edge is how a Choice appears to ignore them."
+        "Options": {
+          "display": "Options",
+          "type": "TArray<FPCGExGrammarChoiceOption>",
+          "tooltip": "One row per option pin, not per emitted edge: an option wired to several children enters the draw once per edge at its weight. The continuation edge takes a neutral 1.0.",
+          "fields": [
+            {
+              "name": "Weight",
+              "display": "Weight",
+              "type": "float",
+              "tooltip": "Relative pick weight; the pin label shows it as a share of the node total.",
+              "default": "1.0f"
+            }
+          ],
+          "semantics": "One row per option pin, in pin order, each carrying a relative Weight that the pin label shows as a share of the node total. A row and its pin travel together: adding, removing, duplicating or dragging a row in the details panel moves the pin and its links with it, and a Choice never drops below two rows.",
+          "trap": "An option pin wired to two children enters the draw twice at its full weight, so its real chance is higher than its label shows, and the two children are alternatives to each other rather than a pair that runs together."
         }
       },
       "related": [
@@ -6469,7 +6493,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/choice",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_EndRegion": {
@@ -6509,7 +6533,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/end-region",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Fill": {
@@ -6656,7 +6680,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/fill",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Gate": {
@@ -6776,6 +6800,11 @@
           "style": "info",
           "text": "The class is named Gate in source and displays as Filter. The book uses the display name, and this Filter is a grammar node rather than a PCGEx point filter.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "A wire out of a Filter carries the survivors whichever edge scope it is set to: **Inherited** and **Produced** both resolve to the connectors that passed. A Filter that passed nothing hands its children nothing rather than the sockets of the module above it.",
+          "anchor": "mechanism"
         }
       ],
       "related": [
@@ -6795,7 +6824,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/filter",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_GraphInput": {
@@ -6804,27 +6833,32 @@
       "plugin": "PCGExElementsValency",
       "module": "PCGExValencyGrammar",
       "classification": "shared_struct",
-      "purpose": "The source-side boundary of a subgraph. It emits whatever arrives on the matching input pin of the **Subgraph** node referencing this grammar, which is how a reusable fragment receives its frontier.",
-      "situation": "A grammar meant to be referenced, that needs an entry point other than a Seed.",
+      "purpose": "One named entry of a grammar meant to be used as a subgraph. A **Subgraph** node referencing this asset shows one input pin per Graph Input, labelled by boundary name, and enters the body here with whatever its matching pin received. It is how a reusable recipe takes its frontier from the caller: a Seed in a sub-asset is ignored when the asset is referenced, and compiling says so.",
+      "situation": "A grammar authored to be referenced, that needs an entry point other than a Seed.",
       "mechanism": {
-        "text": "The boundary name is what pairs this node with a pin on the referencing node, so naming is the whole of the wiring. During flatten the boundary is erased and the caller frontier connects straight through to whatever this fed."
+        "text": "When the body enters through this boundary, the node hands the slice that arrived on the matching pin to the nodes behind it, and every wire leaving it resolves to that slice whichever scope it asks for. A pin that arrived carrying the full frontier hands the body its whole view instead: under a Sealed Subgraph, what the caller could see when the body entered plus what the body has placed since; under Open, the whole live frontier. Boundaries the body did not enter through stay silent for that run. In the asset compiled on its own, nothing feeds a Graph Input, so it and everything behind it are left out of the compiled grammar."
       },
       "settings": {
         "BoundaryName": {
           "display": "Boundary Name",
           "type": "FName",
           "tooltip": "Name this boundary exposes on a referencing Subgraph node's pin.",
-          "semantics": "It becomes the pin label a referencing Subgraph node shows, so it is user-facing rather than internal. Renaming it after a grammar is already referenced breaks the pairing at the call site."
+          "semantics": "The label of the pin a referencing Subgraph node shows for this boundary, and the wiring key: an edge into that pin binds to this boundary by name when the parent compiles. The first Graph Input in declaration order is also where a pin carrying no name binds.",
+          "trap": "Renaming a boundary after a grammar is referenced drops every edge wired to the old name at the caller, with a compile warning naming it, and the caller's flow into that pin then runs nothing. Declaring the same name twice binds edges to the first and warns."
         }
       },
       "related": [
+        {
+          "path": "working-with-valency/generating/grammar/subgraphs.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+        },
         {
           "path": "working-with-valency/generating/grammar/grammar-nodes.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/grammar-nodes"
         },
         {
-          "path": "working-with-valency/generating/grammar/subgraphs.md",
-          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+          "path": "node-library/grammar/nodes/subgraph/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph"
         },
         {
           "path": "node-library/grammar/nodes/subgraph/graph-output.md",
@@ -6834,7 +6868,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-input",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_GraphOutput": {
@@ -6843,27 +6877,39 @@
       "plugin": "PCGExElementsValency",
       "module": "PCGExValencyGrammar",
       "classification": "shared_struct",
-      "purpose": "The sink-side boundary of a subgraph. Everything reaching it is merged and handed out through the matching output pin of the **Subgraph** node referencing this grammar.",
-      "situation": "A reusable grammar fragment that has to hand its frontier back to its caller.",
+      "purpose": "One named exit of a grammar meant to be used as a subgraph. A **Subgraph** node referencing this asset shows one output pin per Graph Output, labelled by boundary name, and publishes on it what this boundary captured once the body has finished. It is how a recipe hands the connectors it opened back to whatever runs it.",
+      "situation": "A reusable recipe that has to hand its frontier back to its caller.",
       "mechanism": {
-        "text": "Several internal flows may reach one Graph Output, and what leaves the boundary is their union, exactly as a Merge would produce. The boundary itself is erased at flatten, so nothing about it survives into the compiled graph."
+        "text": "While the body runs, every flow that reaches this boundary adds what it carries to the capture: a narrowed wire adds its slice, a wire carrying the full frontier adds everything the body can see at that moment, and a wire whose scope ran out adds nothing. Nothing leaves until the body has finished; the referencing node then publishes the capture on the matching pin, to every wire leaving it whichever scope it asks for. A captured connector consumed before the body finished does not come back, and a capture whose connectors were all consumed publishes an exhausted scope, so the nodes behind that pin run with nothing rather than the whole frontier. A boundary nothing reached publishes nothing. In the asset run on its own, a Graph Output is a plain passthrough: what reaches it goes straight on to whatever it feeds."
       },
       "settings": {
         "BoundaryName": {
           "display": "Boundary Name",
           "type": "FName",
           "tooltip": "Name this boundary exposes on a referencing Subgraph node's pin.",
-          "semantics": "Pairs with a pin on the referencing node by name, the same way the input boundary does. A grammar can expose several outputs, and each needs its own name for the caller to tell them apart."
+          "semantics": "The label of the pin a referencing Subgraph node shows for this boundary, and the wiring key for edges leaving that pin. A pin carrying no name binds to the first Graph Output in declaration order.",
+          "trap": "Renaming a boundary drops every edge wired to the old name at the caller with a compile warning, and that pin goes quiet. Declaring the same name twice binds edges to the first and warns."
         }
       },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "Under a Subgraph whose `Frontier Scope` is Open, a wire carrying the full frontier that reaches this boundary captures the parent's open connectors too, and the pin publishes them alongside the body's own. Sealed, the default, limits the capture to what the body was handed and what it placed.",
+          "anchor": "mechanism"
+        }
+      ],
       "related": [
+        {
+          "path": "working-with-valency/generating/grammar/subgraphs.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+        },
         {
           "path": "working-with-valency/generating/grammar/grammar-nodes.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/grammar-nodes"
         },
         {
-          "path": "working-with-valency/generating/grammar/subgraphs.md",
-          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+          "path": "node-library/grammar/nodes/subgraph/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph"
         },
         {
           "path": "node-library/grammar/nodes/subgraph/graph-input.md",
@@ -6873,7 +6919,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-output",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Growth": {
@@ -7099,7 +7145,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/growth",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Merge": {
@@ -7117,6 +7163,11 @@
         {
           "style": "info",
           "text": "Under Grammar Growth on Sequential execution a post-Merge section runs once per assignment rather than once in total, because each seed is a separate run. Parallel is the mode where a Merge means what it looks like it means.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "A wire out of a Merge carries the union whichever edge scope it is set to: **Inherited** and **Produced** both resolve to what the Merge published. A union whose connectors have all been consumed by then passes nothing downstream rather than falling back to the whole frontier.",
           "anchor": "mechanism"
         }
       ],
@@ -7137,7 +7188,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/merge",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Module": {
@@ -7183,7 +7234,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/module",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Optional": {
@@ -7252,7 +7303,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/optional",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_PlacementBase": {
@@ -7319,7 +7370,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/module-descriptor",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Prune": {
@@ -7613,7 +7664,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/prune",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Repeat": {
@@ -7725,7 +7776,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/repeat",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Route": {
@@ -8175,7 +8226,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/route",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Seed": {
@@ -8269,7 +8320,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/seed",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Seek": {
@@ -8645,7 +8696,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/seek",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Sequence": {
@@ -8676,7 +8727,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/sequence",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_SpawnBase": {
@@ -8795,7 +8846,62 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/multi-spawn",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
+      }
+    },
+    "FPCGExGrammarNodePayload_Stash": {
+      "id": "FPCGExGrammarNodePayload_Stash",
+      "name": "Stash",
+      "plugin": "PCGExElementsValency",
+      "module": "PCGExValencyGrammar",
+      "classification": "shared_struct",
+      "purpose": "Banks the connectors reaching it under a name, for an **Unstash** somewhere else in the graph to publish. Every Stash carrying the same name feeds one bank, and a bank lasts the whole run. It is how a section of grammar hands its open connectors to a section it has no wire to.",
+      "situation": "Connectors a distant part of the grammar should build on later.",
+      "mechanism": {
+        "text": "What arrives is recorded as a reference to each connector rather than as a copy of the frontier, so the bank keeps naming those connectors as the run goes on. A wire carrying a narrowed scope banks that slice. A wire carrying the whole frontier banks everything open at that moment. A wire whose scope is already exhausted banks nothing. The same connector reaching one bank twice is held once."
+      },
+      "settings": {
+        "StashName": {
+          "display": "Stash Name",
+          "type": "FName",
+          "tooltip": "Bank name. Every Stash with this name feeds one bank; an Unstash with this name reads it.",
+          "default": "NAME_None",
+          "semantics": "The name is the bank. Several Stashes carrying one name contribute to one set, which is what lets separate parts of a grammar fill the same bank, and it is also why a sub-asset inlined twice feeds one bank rather than two.",
+          "trap": "An unnamed Stash banks nothing, because nothing can address it. The compile reports it rather than failing."
+        },
+        "StashColor": {
+          "display": "Stash Color",
+          "type": "FLinearColor",
+          "tooltip": "Pill accent, inherited by paired Unstashes. Randomly drawn from the region palette on creation.",
+          "default": "PCGExValencyGrammar::NodeColors::StashFallback",
+          "semantics": "Authored per node and borrowed by every Unstash paired to it, so one bank reads as one colour wherever it appears in the graph."
+        }
+      },
+      "hints": [
+        {
+          "style": "info",
+          "text": "A Stash has no output. It is a sink, like a **Yield**, so the branch it sits on ends there.",
+          "anchor": "mechanism"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-valency/generating/grammar/stashing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/stashing"
+        },
+        {
+          "path": "node-library/grammar/nodes/unstash.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/unstash"
+        },
+        {
+          "path": "node-library/grammar/nodes/merge.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/merge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/stash",
+      "source": {
+        "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Subgraph": {
@@ -8804,11 +8910,17 @@
       "plugin": "PCGExElementsValency",
       "module": "PCGExValencyGrammar",
       "classification": "shared_struct",
-      "purpose": "Runs another grammar inline. The referenced graph is expanded into this one before anything executes, so a subgraph is a way of composing at authoring time rather than a call at run time.",
-      "situation": "A section of grammar wanted in more than one place, or a graph grown too large to read.",
+      "purpose": "Runs another grammar asset as one unit. The sub-asset's nodes are cloned into this grammar when it compiles, and the node runs that body when flow reaches one of its input pins: it enters through the matching **Graph Input**, lets everything inside finish, and hands the results out through its output pins, one per **Graph Output** the sub-asset declares. It is how a staircase, an entrance or a corridor recipe gets authored once and used in several grammars, and how one grammar stays readable past the size where everything fits on one canvas.",
+      "situation": "A recipe wanted in more than one grammar, or one grammar grown too large to read on a single canvas.",
       "mechanism": {
-        "text": "The reference is resolved and flattened during compile, and the compiled data carries no trace of the boundary. What survives is one flat graph, which is why a subgraph costs nothing at run time and why an unresolvable reference is a compile error rather than a missing step."
+        "text": "Each seed point that reaches the node runs the body on its own, in the caller's lineage: the seed point's random stream drives every Choice, Repeat and Optional inside it, the regions in force around the node apply inside it unless it isolates itself, and a Yield inside the body feeds the Repeat enclosing the node. The body runs to completion before anything leaves it. Each **Graph Output** then publishes what it captured on its own pin, to every wire leaving that pin whatever scope the wire asks for, and an output nothing reached publishes nothing. A failure anywhere inside the body undoes the whole body: everything it placed is removed, and the node reports failure when it is marked `Required`, or success with nothing placed otherwise. A body stopped by the placement budget keeps what it placed and reports success."
       },
+      "off_label": [
+        {
+          "claim": "A Subgraph with `Required` off makes any fragment an all-or-nothing attempt. The same nodes drawn inline keep whatever they placed before a late failure; referenced, a failure removes all of it and the flow carries on past the node as if the attempt never happened.",
+          "grounded_in": "The Subgraph evaluator's execute path restores its entry snapshot when any dispatch inside the body failed, then returns success for a node that is not Required."
+        }
+      ],
       "settings": {
         "SubgraphSource": {
           "display": "Subgraph Source",
@@ -8816,8 +8928,8 @@
           "tooltip": "Whether the referenced grammar is a separate asset or lives inside this one.",
           "default": "EPCGExSubgraphSource::External",
           "enum": "EPCGExSubgraphSource",
-          "semantics": "External references a standalone asset, so several grammars can share it. Embedded points at a sub-grammar this asset owns outright, which keeps a graph self-contained at the cost of reuse.",
-          "trap": "An embedded reference that no longer resolves fails the compile with an error naming the node, and so does a subgraph that reaches back into a grammar already being flattened. A cycle is caught rather than hung."
+          "semantics": "External points at a separately saved grammar asset, which is the reusable case and the one to use. Embedded references a grammar instanced inside this asset; the data side is complete, but the editor support for authoring one inline is scaffolded rather than finished, so treat it as reserved.",
+          "trap": "A reference left unset, or one that no longer resolves, fails the compile with an error naming the node. So does a cycle: a sub-asset that references a grammar already being expanded further up the chain."
         },
         "SubgrammarRef": {
           "display": "Subgrammar Ref",
@@ -8839,23 +8951,119 @@
           "tooltip": "Whether the inlined body sees the parent's enclosing region rules.",
           "default": "EPCGExSubgraphRuleScope::Inherit",
           "enum": "EPCGExSubgraphRuleScope",
-          "semantics": "Whether the inlined body sees the region rules enclosing the Subgraph node. Inheriting makes a subgraph behave as though its contents were pasted in place; not inheriting makes it a clean room, which is what you want for a fragment that should behave identically wherever it is used."
+          "semantics": "Inherit makes the body behave as though its nodes were drawn in place under the regions enclosing the node. Isolate gives the body a region of its own that replaces the inherited biases and constraints; it opens when the body starts and closes when it ends, however many inputs or outputs the sub-asset declares, so the body behaves the same way wherever it is used.",
+          "trap": "An Isolate node sitting inside a region reads as though that region applies to it. It does not, and compiling warns, naming the node and listing the regions whose rules are muted inside the body."
+        },
+        "FrontierScope": {
+          "display": "Frontier Scope",
+          "type": "EPCGExSubgraphFrontierScope",
+          "tooltip": "Which open connectors the body may read when a node inside it asks for the full frontier.",
+          "default": "EPCGExSubgraphFrontierScope::Sealed",
+          "enum": "EPCGExSubgraphFrontierScope",
+          "semantics": "Decides what a node inside the body sees when it asks for the full frontier, which is what a Sequence step, a Filter on a wire carrying no narrowed slice, or a Growth on a full-frontier wire does. Sealed keeps a Growth inside the recipe growing from what it was handed, never from an open socket elsewhere in the structure that happened to be closer; the connectors the body places join its view as it goes, and a sealed subgraph nested inside another adds what it placed to the outer body's view when it returns. Open sees the whole live frontier, the parent's open connectors included.",
+          "trap": "What counts as handed in depends on the wire into the node. A narrowed wire hands in its slice; a wire carrying the full frontier hands in everything the caller could see when the body entered; a wire whose scope ran out hands in nothing, and the body then sees only its own placements."
         }
       },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "Wiring is by boundary name. A pin carrying no name binds to the first boundary the sub-asset declares. A pin naming a boundary the sub-asset no longer declares is dropped, and compiling warns with the name, so a node that has gone quiet on one pin after a rename is worth checking for exactly that. Wiring several input pins of one node runs the body once per arrival, with only that input handing anything in, and compiling warns when it sees it. A sub-asset with no Graph Input compiles a warning, and flow into the node runs nothing.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "The rollback is stricter than the same nodes drawn inline, where a failure that surfaces only after the parent has moved on is reported and skipped rather than undone. Under a parent Choice, a Required Subgraph that fails makes the Choice try its next option, exactly as a failing option drawn inline would.",
+          "anchor": "mechanism"
+        }
+      ],
       "related": [
+        {
+          "path": "working-with-valency/generating/grammar/subgraphs.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+        },
         {
           "path": "working-with-valency/generating/grammar/grammar-nodes.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/grammar-nodes"
         },
         {
-          "path": "working-with-valency/generating/grammar/subgraphs.md",
-          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/subgraphs"
+          "path": "working-with-valency/generating/grammar/backtracking.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/backtracking"
+        },
+        {
+          "path": "working-with-valency/generating/grammar/narrowing-the-frontier.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/narrowing-the-frontier"
+        },
+        {
+          "path": "node-library/grammar/nodes/subgraph/graph-input.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-input"
+        },
+        {
+          "path": "node-library/grammar/nodes/subgraph/graph-output.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph/graph-output"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/subgraph",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
+      }
+    },
+    "FPCGExGrammarNodePayload_Unstash": {
+      "id": "FPCGExGrammarNodePayload_Unstash",
+      "name": "Unstash",
+      "plugin": "PCGExElementsValency",
+      "module": "PCGExValencyGrammar",
+      "classification": "shared_struct",
+      "purpose": "Publishes whatever the named **Stash** banked that is still open, at the moment flow reaches it. Reading the bank does not empty it, so a second Unstash, or the next turn of a **Repeat**, sees whatever is left. Everything below it works on that set.",
+      "situation": "A section that should build on connectors banked somewhere else in the graph.",
+      "mechanism": {
+        "text": "Every reference in the bank is resolved against the live frontier, and the ones still open are what the children get. A connector bonded or built on since it was stashed is gone from that answer, which is what makes a later Unstash see a remainder rather than a replay. A bank that has nothing open publishes nothing rather than falling back to the whole frontier, and says why once per run."
+      },
+      "settings": {
+        "StashName": {
+          "display": "Stash Name",
+          "type": "FName",
+          "tooltip": "Bank to read. GetOptions drives the picker on UPCGExGrammarUnstashNode.",
+          "default": "NAME_None",
+          "semantics": "The picker lists the names in the graph, the ones upstream of this node first. Picking one records that Stash's identity alongside its name, so renaming the Stash later carries the pairing with it.",
+          "trap": "An Unstash naming no Stash in the graph publishes an empty frontier, which the compile reports. Its children then run against nothing."
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "The wire into an Unstash is ordering, not data. The frontier it carries is discarded and the bank replaces it, which is why the graph draws that wire dashed and grey and offers it no edge scope. To work on the bank and something else together, wire both into a **Merge** and continue from there.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "Disabling an Unstash turns it into a pass-through **Filter**. What flows out is then the frontier that reached it rather than the bank, so the section below keeps running against a different set instead of stopping.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "A **Subgraph** whose `Frontier Scope` is Sealed limits what a node in its body sees when it reads the full frontier. An Unstash inside that body is not such a read: it publishes every open connector in the bank, including ones placed outside the body, so a bank reaches past the seal.",
+          "anchor": "mechanism"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-valency/generating/grammar/stashing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/grammar/stashing"
+        },
+        {
+          "path": "node-library/grammar/nodes/stash.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/stash"
+        },
+        {
+          "path": "node-library/grammar/nodes/merge.md",
+          "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/merge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/unstash",
+      "source": {
+        "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarNodePayload_Yield": {
@@ -8886,7 +9094,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/yield",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrammarNodePayloads.h",
-        "hash": "245e6add9fd1186f8979e475d3cdae660af5e02e"
+        "hash": "2550c7cf101a4e24e3710b7133e8a9a10243d748"
       }
     },
     "FPCGExGrammarRuleBase": {
@@ -9063,7 +9271,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/filters",
       "source": {
         "file": "PCGExValencyFoundations/Public/Filters/PCGExValencyFilterCommon.h",
-        "hash": "913a66a2f9375297d807bd8b876452725df80cbf"
+        "hash": "0e4fa8208523fb2533ca0401752ee38f3ec564d5"
       }
     },
     "UPCGExAffinityMapAsset": {
@@ -9438,7 +9646,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyBias.h",
-        "hash": "a624b7fdf336df7abe94814df0ab0db96b1f4e9a"
+        "hash": "b9139199cae460ab00ff6760609890d625500a53"
       }
     },
     "UPCGExCreateValencyChannelBiasSettings": {
@@ -9556,7 +9764,7 @@
       "purpose": "Every node in a grammar graph carries these, whatever it does. A grammar is a graph of instructions rather than a set of rules to satisfy, and these four settings decide what a node is called, whether the run may proceed without it, and which of the connectors reaching it are eligible in the first place.",
       "situation": "Reading the fields above a grammar node own settings, whichever node it is.",
       "mechanism": {
-        "text": "A node receives open connectors on its input edge and passes some set of them on. Before its own behaviour runs, the connector filters narrow what it was handed, so a node only ever sees the sockets it was told to consider. What it does with those is the payload underneath, and every node type has its own."
+        "text": "A node receives open connectors on its input edge and passes some set of them on. Before its own behaviour runs, the connector filters narrow what it was handed, so a node only ever sees the sockets it was told to consider. What it does with those is the payload underneath, and every node type has its own. **Unstash** is the exception on the input side: the frontier on its wire is discarded, so that wire carries ordering alone and the graph draws it dashed."
       },
       "settings": {
         "NodeName": {
@@ -9570,7 +9778,7 @@
           "type": "bool",
           "tooltip": "Whether this node is required (failure = hard error)",
           "default": "false",
-          "semantics": "It decides what a failure costs. A required node that cannot do its job fails the run at the severity the region declares; an optional one is skipped and the walk carries on past it. Most flow nodes want the default, and a placement whose absence would make the rest meaningless wants this on."
+          "semantics": "It decides what a failure costs. A required node that cannot do its job fails the run at the severity the region declares; an optional one is skipped and the walk carries on past it. Most flow nodes want the default, and a placement whose absence would make the rest meaningless wants this on. It is greyed out on the node types that take no connector filter (Seed, Begin Region, End Region, Merge, Yield, Stash, Unstash, Graph Input, Graph Output), with **Subgraph** the exception: there a failed body is the node's own failure, so the flag keeps its meaning."
         },
         "ConnectorTypeFilter": {
           "display": "Connector Type Filter",
@@ -9634,7 +9842,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes",
       "source": {
         "file": "PCGExElementsValencyEditor/Public/GrammarGraph/PCGExGrammarGraphNode.h",
-        "hash": "88c60acd5c4dcbf7cf100fbd31ed8aa6eee7a63c"
+        "hash": "daf117fc4a70b08885a76c1c1bce811bb41b00cf"
       }
     },
     "UPCGExGrammarGrowthFactory": {
@@ -9910,7 +10118,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar/nodes/nodes/placing-nodes",
       "source": {
         "file": "PCGExElementsValencyEditor/Public/GrammarGraph/PCGExGrammarGraphNode.h",
-        "hash": "88c60acd5c4dcbf7cf100fbd31ed8aa6eee7a63c"
+        "hash": "daf117fc4a70b08885a76c1c1bce811bb41b00cf"
       }
     },
     "UPCGExProbeValencyProviderSettings": {
@@ -10024,7 +10232,7 @@
       "purpose": "The asset a grammar-driven growth runs. It holds a graph of instructions rather than a set of rules to satisfy, so it says what to place, in what order and under what conditions, and it is edited in its own graph editor rather than in a details panel. **Grammar Growth** is what points a growth node at one.",
       "situation": "A structure that has a recipe, where the order things get built in is part of the design.",
       "mechanism": {
-        "text": "The graph is compiled once per execution, before any point is grown, and the compile is where authoring errors surface. Execution enters at a Seed node and follows the wires: nothing is inferred from connectivity, and a grammar with no Seed node does not compile. What the asset itself carries beyond the graph is the vocabulary the graph draws on, a connector set for its dropdowns, a property schema its placement nodes can override, and any sub-grammars it owns. The compile also records every node or rule value left on Attribute, and warns about one whose selector is empty, which then runs on its authored constant."
+        "text": "The compiled graph is saved with the asset, and a growth that finds it uncompiled compiles it once, before any point is grown. The compile is where authoring errors surface, and a grammar that fails it grows nothing, with a warning on the growth node. Execution enters at a Seed node and follows the wires: nothing is inferred from connectivity, and a grammar with no Seed node does not compile. What the asset itself carries beyond the graph is the vocabulary the graph draws on, a connector set for its dropdowns, a property schema its placement nodes can override, and any sub-grammars it owns. The compile also records every node or rule value left on Attribute, and warns about one whose selector is empty, which then runs on its authored constant."
       },
       "settings": {
         "FriendlyName": {
@@ -10132,7 +10340,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExStructuralGrammar.h",
-        "hash": "2f10fca7437d5bcf51be32877d3505a5cb9b910f"
+        "hash": "e45a27e14615602fd48b91018acfc4ecd2ff6d59"
       }
     },
     "UPCGExValencyAssetStagingSettings": {
@@ -10724,6 +10932,11 @@
       ],
       "hints": [
         {
+          "style": "info",
+          "text": "The random stream this node grows with folds in the seed of the PCG component running it, so the same graph on two components extends one input differently. Two components give matching results only when their seeds match too.",
+          "anchor": "mechanism"
+        },
+        {
           "style": "warning",
           "text": "The emitted Valency Map supersedes the one that came in, because the grown modules add entries to it. A downstream node handed the input map instead resolves the original modules and loses everything this pass added.",
           "anchor": "pins"
@@ -10750,7 +10963,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-cluster",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingClusterGrowth.h",
-        "hash": "e87992ac790525c0715011ed360ee71ea96e126e"
+        "hash": "67d4ea9aa9dcb5366d70dbbd563defdb9b641a05"
       }
     },
     "UPCGExValencyBondingGenerativeSettings": {
@@ -12485,7 +12698,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/strategies",
       "source": {
         "file": "PCGExValencyGrowth/Public/PCGExGrowthOperation.h",
-        "hash": "8567768d0b28ddb120b78da73049cf337b77f8de"
+        "hash": "d610fc04f53cb3eb027fe1a1fc07157d16361541"
       }
     },
     "UPCGExValencyGrowthRandomFactory": {
