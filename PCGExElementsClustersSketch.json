@@ -256,7 +256,7 @@
           "inlined_in_panel": true
         },
         "bIgnorePCGGeneratedComponents": {
-          "display": "Ignore PCG Generated Components",
+          "display": "Ignore PCGGenerated Components",
           "type": "bool",
           "tooltip": "Skip components PCG itself spawned, mirroring the engine getters.",
           "default": "true",
@@ -514,7 +514,7 @@
           "fields": [
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "FPCGExScaleToFitDetails",
               "tooltip": "How to scale objects to fit within target bounds."
             },
@@ -555,7 +555,7 @@
           "see": "FPCGExGraphBuilderDetails"
         },
         "TargetsAttributesToClusterTags": {
-          "display": "Targets Attributes To Cluster Tags",
+          "display": "Targets Attributes to Cluster Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Which target attributes to promote to tags on the printed clusters.",
           "overridable": true,
@@ -597,7 +597,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"

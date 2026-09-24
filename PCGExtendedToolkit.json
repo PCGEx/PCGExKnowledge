@@ -1949,15 +1949,15 @@
       "values": [
         {
           "name": "UserDefined",
-          "display_name": "UserDefined"
+          "display_name": "User Defined"
         },
         {
           "name": "EnumInteger",
-          "display_name": "EnumInteger"
+          "display_name": "Enum Integer"
         },
         {
           "name": "EnumName",
-          "display_name": "EnumName"
+          "display_name": "Enum Name"
         }
       ]
     },
@@ -2156,6 +2156,20 @@
           "name": "Attribute",
           "display_name": "@Data",
           "tooltip": "Attribute. Can only read from @Data domain."
+        }
+      ]
+    },
+    "EPCGExDataUniquesOutputMode": {
+      "values": [
+        {
+          "name": "Merged",
+          "display_name": "Merged",
+          "tooltip": "A single attribute set with one row per unique combination."
+        },
+        {
+          "name": "PerRow",
+          "display_name": "Per Row",
+          "tooltip": "One attribute set per unique combination, each holding a single row."
         }
       ]
     },
@@ -3962,11 +3976,11 @@
         },
         {
           "name": "Int32",
-          "display_name": "Int32"
+          "display_name": "Int 32"
         },
         {
           "name": "Int64",
-          "display_name": "Int64"
+          "display_name": "Int 64"
         }
       ]
     },
@@ -5140,17 +5154,17 @@
       "values": [
         {
           "name": "FirstWins",
-          "display_name": "FirstWins",
+          "display_name": "First Wins",
           "tooltip": "Earlier source wins; subsequent same-name entries are dropped and reported as conflicts."
         },
         {
           "name": "LastWins",
-          "display_name": "LastWins",
+          "display_name": "Last Wins",
           "tooltip": "Later source wins; earlier same-name entry is replaced and the displacement reported as a conflict."
         },
         {
           "name": "StrictTypeMatch",
-          "display_name": "StrictTypeMatch",
+          "display_name": "Strict Type Match",
           "tooltip": "Same-name + same UScriptStruct: silent dedupe (earlier kept). Same-name + different UScriptStruct: drop the later entry and report a conflict. This is the recommended default when merging manually-authored schemas with auto-scanned ones."
         },
         {
@@ -6693,11 +6707,11 @@
           ]
         },
         "bStripFromExport": {
-          "display": "Strip From Export",
+          "display": "Strip from Export",
           "type": "bool",
           "default": "true",
           "semantics": "This decides only what the marker contributes besides its socket, because the socket is harvested first and lands on the entry either way. Left on, the marker is rejected before bounds accumulate and before a level export runs, so it adds nothing to the entry's footprint and never reaches an exported PCG data asset. Turned off, it becomes ordinary level content: its tripod mesh counts toward the bounds and ships with the export. The same toggle sits on a socket component, where it has nothing to act on: the component contributes no bounds, and the export paths test actors.",
-          "trap": "Staging : Spawn Level honours this on the loose-actor and streamed paths, which skip stripped markers. With Spawn As Level Instance on, the level is instanced whole and the socket actors come with it into the spawned scene."
+          "trap": "Staging : Spawn Level honours this on the loose-actor and streamed paths, which skip stripped markers. With Spawn as Level Instance on, the level is instanced whole and the socket actors come with it into the spawned scene."
         }
       },
       "hints": [
@@ -6966,7 +6980,7 @@
           "semantics": "The index tag records the dataset's position rather than any attribute value, which is how a set of datasets keeps its ordering through nodes that do not preserve one. This prefix is what stops that tag colliding with an attribute-derived one."
         },
         "bPrefixWithAttributeName": {
-          "display": "Prefix With Attribute Name",
+          "display": "Prefix with Attribute Name",
           "type": "bool",
           "tooltip": "If enabled, prefix the attribute value with the attribute name",
           "default": "true",
@@ -7268,7 +7282,7 @@
           "default": "FName(\"IsTerminal\")",
           "overridable": true,
           "edit_condition": "bFlagTerminalPoint",
-          "semantics": "Flags the leaf Vtx themselves, the ends the loop turns around at, and not the pair of points either side of the turn. With `Keep Cells With Leaves` off, no cell reaching a leaf survives and every value written is false.",
+          "semantics": "Flags the leaf Vtx themselves, the ends the loop turns around at, and not the pair of points either side of the turn. With `Keep Cells with Leaves` off, no cell reaching a leaf survives and every value written is false.",
           "interacts_with": [
             "NumRepeatAttributeName"
           ]
@@ -7341,7 +7355,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -7402,7 +7416,7 @@
       "purpose": "The **Constraints** block, and where most cell settings live. A cluster's edges enclose many closed loops, and this block is the test each one passes to become a cell: a shape filter, a rule for loops that reach a dead end, a rule for the cluster's outer boundary, and paired limits on how large a loop may be. It runs before anything downstream sees a cell, so a loop that fails here is never claimed by a seed, never sorted against a bound and never counted. The cell nodes carry it, along with **Cluster : Cell Diagram** and **Topology : Cluster Surface**.",
       "situation": "A cell node is handing back loops that were never wanted, and the ones that were can be told apart by something they measure.",
       "mechanism": {
-        "text": "Every closed loop the cluster's edges enclose is measured once and tested against the whole block, and a loop that fails any test is discarded there and never becomes a cell. Six pairs of limits sit behind their own checkboxes and start switched off, so the block as it ships admits everything except the cluster's outer boundary. Half of what it measures comes from the cluster's own positions in world units, the bounds size, the perimeter and the segment lengths; half comes from the flattened polygon, the area and the compactness. `Aspect Filter` and `Keep Cells With Leaves` test shape instead of size. `Output Winding` decides nothing about survival, only the direction a surviving loop is written in."
+        "text": "Every closed loop the cluster's edges enclose is measured once and tested against the whole block, and a loop that fails any test is discarded there and never becomes a cell. Six pairs of limits sit behind their own checkboxes and start switched off, so the block as it ships admits everything except the cluster's outer boundary. Half of what it measures comes from the cluster's own positions in world units, the bounds size, the perimeter and the segment lengths; half comes from the flattened polygon, the area and the compactness. `Aspect Filter` and `Keep Cells with Leaves` test shape instead of size. `Output Winding` decides nothing about survival, only the direction a surviving loop is written in."
       },
       "off_label": [
         {
@@ -7433,13 +7447,13 @@
           "enum": "EPCGExCellShapeTypeOutput",
           "overridable": true,
           "semantics": "Convexity is decided from the cell's Vtx positions in space, with each turn measured against the world up vector and not against the projection plane the cell was found in. Aim `Projection` anywhere other than up and this filter starts sorting cells by a shape that is not the one you see flattened.",
-          "trap": "A loop that reaches a dead end is always concave. The turnaround visits the same Vtx on both sides of the leaf, which the convexity test reads as a reversal, so `Convex Only` discards every cell with a spike in it whatever `Keep Cells With Leaves` is set to.",
+          "trap": "A loop that reaches a dead end is always concave. The turnaround visits the same Vtx on both sides of the leaf, which the convexity test reads as a reversal, so `Convex Only` discards every cell with a spike in it whatever `Keep Cells with Leaves` is set to.",
           "interacts_with": [
             "bKeepCellsWithLeaves"
           ]
         },
         "bKeepCellsWithLeaves": {
-          "display": "Keep Cells With Leaves",
+          "display": "Keep Cells with Leaves",
           "type": "bool",
           "tooltip": "Whether to keep cells that include dead ends wrapping",
           "default": "true",
@@ -7470,7 +7484,7 @@
           "tooltip": "Omit cells that represent the outer boundary of the graph.",
           "default": "true",
           "overridable": true,
-          "semantics": "The outer boundary is picked out by area and winding once every loop has been built, so it is measured against every limit in this block first. A limit the boundary fails removes it before this switch is consulted, and `Keep If Sole` then has nothing to put back. What keeping it means differs by consumer: on the exhaustive nodes the boundary joins the output as one more cell, while on the seeded ones it is offered only to a seed that fell inside no cell at all.",
+          "semantics": "The outer boundary is picked out by area and winding once every loop has been built, so it is measured against every limit in this block first. A limit the boundary fails removes it before this switch is consulted, and `Keep if Sole` then has nothing to put back. What keeping it means differs by consumer: on the exhaustive nodes the boundary joins the output as one more cell, while on the seeded ones it is offered only to a seed that fell inside no cell at all.",
           "interacts_with": [
             "bKeepWrapperIfSolePath",
             "MinArea"
@@ -7619,7 +7633,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "**Pathfinding : Find Cluster Hull** carries this block and reads one field of it. Its boundary is traced with everything else replaced by defaults, so no limit runs, `Aspect Filter` is ignored, `Keep Cells With Leaves` is held on and `Output Winding` has no effect there. `Duplicate Leaf points` is the exception, and it applies.",
+          "text": "**Pathfinding : Find Cluster Hull** carries this block and reads one field of it. Its boundary is traced with everything else replaced by defaults, so no limit runs, `Aspect Filter` is ignored, `Keep Cells with Leaves` is held on and `Output Winding` has no effect there. `Duplicate Leaf points` is the exception, and it applies.",
           "anchor": "whats_it_for"
         }
       ],
@@ -8832,7 +8846,7 @@
           "semantics": "This one creates no attribute either: it spends the point's rotation, which a generated Vtx would otherwise leave at identity. Anything downstream that reads Vtx transforms, spline meshes and staging among them, inherits the surface orientation for free, and anything that wanted to write its own rotation onto those points is writing over this. A mesh with no normals leaves the rotations alone."
         },
         "bImportUVs": {
-          "display": "Import U Vs",
+          "display": "Import UVs",
           "type": "bool",
           "tooltip": "Import UV coordinates from mesh as point attributes.",
           "default": "false",
@@ -8919,7 +8933,7 @@
       },
       "off_label": [
         {
-          "claim": "Set `Build And Cache Clusters` to `Disabled` on the node that makes the cluster and nothing downstream can pick a prepared cluster up from that data, so the count-only staleness check has nothing left to be fooled by and every consumer rebuilds from the attributes. It costs that rebuild at each node, and it does not repair topology a vanilla node genuinely broke.",
+          "claim": "Set `Build and Cache Clusters` to `Disabled` on the node that makes the cluster and nothing downstream can pick a prepared cluster up from that data, so the count-only staleness check has nothing left to be fooled by and every consumer rebuilds from the attributes. It costs that rebuild at each node, and it does not repair topology a vanilla node genuinely broke.",
           "grounded_in": "FGraphBuilder's constructor sets Graph->bBuildClusters from WantsClusters(); FSubGraph::CompilationComplete only attaches a cluster to the edge data when that flag is set, and Helpers::TryGetCachedCluster returns nothing when no cluster is attached."
         }
       ],
@@ -9000,13 +9014,13 @@
           "semantics": "An edge point's seed is derived from where that point ended up, so it moves with `Edge Position` and is stable across runs that produce the same geometry. Left off, the derivation runs only for edges whose seed is still zero, which on a node rebuilding a cluster means the surviving edges keep the seeds they came in with. Turned on, it runs for every edge."
         },
         "BuildAndCacheClusters": {
-          "display": "Build And Cache Clusters",
+          "display": "Build and Cache Clusters",
           "type": "EPCGExOptionState",
           "tooltip": "If the use of cached clusters is enabled, output clusters along with the graph data.",
           "default": "EPCGExOptionState::Default",
           "enum": "EPCGExOptionState",
           "overridable": true,
-          "semantics": "`Default` reads `Default Build And Cache Clusters` from the plugin's project settings, which ships on. Whatever this says, the plugin-wide `Cache Clusters` switch above it has the final word: with that off, no cluster is ever attached and every downstream node rebuilds from the attributes.",
+          "semantics": "`Default` reads `Default Build and Cache Clusters` from the plugin's project settings, which ships on. Whatever this says, the plugin-wide `Cache Clusters` switch above it has the final word: with that off, no cluster is ever attached and every downstream node rebuilds from the attributes.",
           "interacts_with": [
             "FaceEnumeratorProjection",
             "bPreBuildChains"
@@ -9018,7 +9032,7 @@
           "tooltip": "Projection settings for the pre-built face enumerator. Downstream nodes with matching projection will reuse the cache.",
           "edit_condition": "bPreBuildFaceEnumerator",
           "see": "FPCGExGeo2DProjectionDetails",
-          "semantics": "The prepared face data rides along with the cluster, so it is built only while a cluster is being attached at all. With `Build And Cache Clusters` resolving to `Disabled`, or the plugin-wide `Cache Clusters` off, the checkbox is inert. Downstream reuse also needs the projection here to match the one the consuming node is set to, otherwise that node projects again for itself.",
+          "semantics": "The prepared face data rides along with the cluster, so it is built only while a cluster is being attached at all. With `Build and Cache Clusters` resolving to `Disabled`, or the plugin-wide `Cache Clusters` off, the checkbox is inert. Downstream reuse also needs the projection here to match the one the consuming node is set to, otherwise that node projects again for itself.",
           "interacts_with": [
             "BuildAndCacheClusters"
           ]
@@ -9913,7 +9927,7 @@
           "overridable": true,
           "edit_condition": "bRemoveSmallPaths",
           "semantics": "Clamped at 2, so it can only tighten a floor the block already enforces. At its default of 3 the switch removes exactly the paths that are a single hop long, which on **Pathfinding : Edges** means a seed and a goal that turned out to be neighbours.",
-          "trap": "The number tested is the finished path, so **Add Seed To Path** and **Add Goal To Path** count toward it. With both on, a single-hop route arrives as four points and clears a threshold of 3."
+          "trap": "The number tested is the finished path, so **Add Seed to Path** and **Add Goal to Path** count toward it. With both on, a single-hop route arrives as four points and clears a threshold of 3."
         },
         "MaxPointCount": {
           "display": "Max Point Count",
@@ -10135,7 +10149,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/property-output-settings",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertyWriter.h",
-        "hash": "bbd08bc93b44266218b5d94a2122e11a36672bea"
+        "hash": "4094eff752e297d44777df2434f4da998d920bd6"
       }
     },
     "FPCGExSelectorFactoryBaseConfig": {
@@ -10344,7 +10358,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -10392,7 +10406,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -10825,13 +10839,13 @@
           "semantics": "A fallback rather than an override: where the points carry a colour, theirs is used, and this fills in only where none exists. Setting it does not repaint a mesh whose source points already have colours."
         },
         "UVChannels": {
-          "display": "UV Channels",
+          "display": "UVChannels",
           "type": "FPCGExTopologyUVDetails",
           "tooltip": "UV input settings",
           "fields": [
             {
               "name": "UVs",
-              "display": "U Vs",
+              "display": "UVs",
               "type": "TArray<FPCGExUVInputDetails>",
               "tooltip": "List of UV channels"
             }
@@ -11646,7 +11660,7 @@
             },
             {
               "name": "ScaleToFitSource",
-              "display": "Scale To Fit Source",
+              "display": "Scale to Fit Source",
               "type": "EPCGExEntryVariationMode",
               "tooltip": "Where this entry's Scale to Fit comes from when a staging node considers entry overrides.",
               "default": "EPCGExEntryVariationMode::None",
@@ -12170,7 +12184,7 @@
           ]
         },
         "GlobalScaleToFitMode": {
-          "display": "Global Scale To Fit Mode",
+          "display": "Global Scale to Fit Mode",
           "type": "EPCGExGlobalVariationRule",
           "tooltip": "Collection-level rule for entry Scale to Fit overrides: let entries choose (PerEntry) or force GlobalScaleToFit on all of them (Overrule).",
           "default": "EPCGExGlobalVariationRule::PerEntry",
@@ -12181,13 +12195,13 @@
           ]
         },
         "GlobalScaleToFit": {
-          "display": "Global Scale To Fit",
+          "display": "Global Scale to Fit",
           "type": "FPCGExLeanScaleToFitDetails",
           "tooltip": "Collection-level Scale to Fit, consumed by entries whose ScaleToFitSource is Global (or by all entries when Overrule).",
           "fields": [
             {
               "name": "ScaleToFitMode",
-              "display": "Scale To Fit Mode",
+              "display": "Scale to Fit Mode",
               "type": "EPCGExFitMode",
               "tooltip": "How scaling is applied to fit within target bounds. None = no scaling, Uniform = same scale all axes, Individual = per-axis control.",
               "default": "EPCGExFitMode::Uniform",
@@ -12195,7 +12209,7 @@
             },
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "EPCGExScaleToFit",
               "tooltip": "Uniform scaling strategy. Fill = stretch to fill, Min = fit smallest axis, Max = fit largest axis, Avg = average.",
               "default": "EPCGExScaleToFit::Min",
@@ -12203,7 +12217,7 @@
             },
             {
               "name": "ScaleToFitX",
-              "display": "Scale To Fit X",
+              "display": "Scale to Fit X",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for X axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12211,7 +12225,7 @@
             },
             {
               "name": "ScaleToFitY",
-              "display": "Scale To Fit Y",
+              "display": "Scale to Fit Y",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Y axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12219,7 +12233,7 @@
             },
             {
               "name": "ScaleToFitZ",
-              "display": "Scale To Fit Z",
+              "display": "Scale to Fit Z",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Z axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12448,7 +12462,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "6a5037bd924ce829709cb253105047c037416c1c"
+        "hash": "d1bd7e1ce4342d6e13c60caa2c6677fb2ae6ebb8"
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -12740,7 +12754,7 @@
           ]
         },
         "ScaleToFit": {
-          "display": "Scale To Fit",
+          "display": "Scale to Fit",
           "type": "FPCGExScaleToFitDetails",
           "overridable": true,
           "edit_condition": "bApplyFitting && (SourceMode != EPCGExDistributeSourceMode::CollectionMap || RedistributionMode != EPCGExRedistributionMode::MicroCache)",
@@ -12748,7 +12762,7 @@
           "fields": [
             {
               "name": "ScaleToFitMode",
-              "display": "Scale To Fit Mode",
+              "display": "Scale to Fit Mode",
               "type": "EPCGExFitMode",
               "tooltip": "How scaling is applied to fit within target bounds. None = no scaling, Uniform = same scale all axes, Individual = per-axis control.",
               "default": "EPCGExFitMode::Uniform",
@@ -12756,7 +12770,7 @@
             },
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "EPCGExScaleToFit",
               "tooltip": "Uniform scaling strategy. Fill = stretch to fill, Min = fit smallest axis, Max = fit largest axis, Avg = average.",
               "default": "EPCGExScaleToFit::Min",
@@ -12764,7 +12778,7 @@
             },
             {
               "name": "ScaleToFitX",
-              "display": "Scale To Fit X",
+              "display": "Scale to Fit X",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for X axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12772,7 +12786,7 @@
             },
             {
               "name": "ScaleToFitY",
-              "display": "Scale To Fit Y",
+              "display": "Scale to Fit Y",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Y axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12780,7 +12794,7 @@
             },
             {
               "name": "ScaleToFitZ",
-              "display": "Scale To Fit Z",
+              "display": "Scale to Fit Z",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Z axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -12897,7 +12911,7 @@
           "edit_condition": "bWriteEntryType"
         },
         "WeightToAttribute": {
-          "display": "Weight To Attribute",
+          "display": "Weight to Attribute",
           "type": "EPCGExWeightOutputMode",
           "tooltip": "Update point scale so staged asset fits within its bounds",
           "default": "EPCGExWeightOutputMode::NoOutput",
@@ -13022,7 +13036,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingDistribute.h",
-        "hash": "a55e11ffff98d55deacb6406f51b33460b20ea9d"
+        "hash": "923e65fe9ffd62496f91311c0d2d0b48ff7ffc98"
       }
     },
     "UPCGExAttributeCheckFilterProviderSettings": {
@@ -13170,14 +13184,14 @@
           "semantics": "Names both outputs at once: the `@Data` attribute and the tag, which is written as the name and the value joined by a colon."
         },
         "bOutputToTags": {
-          "display": "Output To Tags",
+          "display": "Output to Tags",
           "type": "bool",
           "tooltip": "Whether to add the hash as a tag",
           "default": "false",
           "overridable": true
         },
         "bOutputToAttribute": {
-          "display": "Output To Attribute",
+          "display": "Output to Attribute",
           "type": "bool",
           "tooltip": "Whether to add the hash as an attribute",
           "default": "true",
@@ -13278,7 +13292,7 @@
           "inlined_in_panel": true
         },
         "bAutoCastIntegerToDouble": {
-          "display": "Auto Cast Integer To Double",
+          "display": "Auto Cast Integer to Double",
           "type": "bool",
           "tooltip": "If enabled, will auto-cast integer to double.",
           "default": "false"
@@ -13700,7 +13714,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -13720,7 +13734,7 @@
           "overridable": true
         },
         "OutputToPoints": {
-          "display": "Output To Points",
+          "display": "Output to Points",
           "type": "EPCGExStatsOutputToPoints",
           "tooltip": "How stats are written to point attributes (None, Prefix, or Suffix to attribute name).",
           "default": "EPCGExStatsOutputToPoints::None",
@@ -13732,7 +13746,7 @@
           ]
         },
         "OutputToTags": {
-          "display": "Output To Tags",
+          "display": "Output to Tags",
           "type": "EPCGExStatsOutputToPoints",
           "tooltip": "Output to tags",
           "default": "EPCGExStatsOutputToPoints::None",
@@ -14069,7 +14083,7 @@
           ]
         },
         "bPrefixWithAttributeName": {
-          "display": "Prefix With Attribute Name",
+          "display": "Prefix with Attribute Name",
           "type": "bool",
           "tooltip": "If enabled, prefix the attribute value with the attribute name",
           "default": "true",
@@ -14287,7 +14301,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -14951,7 +14965,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -15088,7 +15102,7 @@
           "overridable": true
         },
         "bSortByVolume": {
-          "display": "Sort By Volume",
+          "display": "Sort by Volume",
           "type": "bool",
           "tooltip": "If enabled, items will be sorted by volume (largest first) before packing. This is the classic BFD approach.",
           "default": "true",
@@ -15112,7 +15126,7 @@
           "edit_condition_hides": true
         },
         "SeedUVWAttribute": {
-          "display": "Seed UVW Attribute",
+          "display": "Seed UVWAttribute",
           "type": "FPCGAttributePropertyInputSelector",
           "overridable": true,
           "edit_condition": "SeedMode == EPCGExBinSeedMode::UVWAttribute",
@@ -15590,7 +15604,7 @@
           "edit_condition_hides": true
         },
         "SeedUVWAttribute": {
-          "display": "Seed UVW Attribute",
+          "display": "Seed UVWAttribute",
           "type": "FPCGAttributePropertyInputSelector",
           "overridable": true,
           "edit_condition": "SeedMode == EPCGExBinSeedMode::UVWAttribute",
@@ -15612,7 +15626,7 @@
           "edit_condition_hides": true
         },
         "bInferSplitAxisFromSeed": {
-          "display": "Infer Split Axis From Seed",
+          "display": "Infer Split Axis from Seed",
           "type": "bool",
           "tooltip": "Will attempt to infer the split axis from relative seed positioning, and fall back to selected axis if it can't find one.",
           "default": "false",
@@ -16961,7 +16975,7 @@
           "edit_condition": "bSetScale"
         },
         "PointAttributesToOutputTags": {
-          "display": "Point Attributes To Output Tags",
+          "display": "Point Attributes to Output Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy source point attributes as tags on output collections.",
           "edit_condition": "bGeneratePerPointData",
@@ -17397,7 +17411,7 @@
           "edit_condition": "bSetScale"
         },
         "PointAttributesToOutputTags": {
-          "display": "Point Attributes To Output Tags",
+          "display": "Point Attributes to Output Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy source point attributes as tags on output collections.",
           "edit_condition": "bGeneratePerPointData",
@@ -18083,7 +18097,7 @@
             },
             {
               "name": "bSaveToDiskImmediately",
-              "display": "Save To Disk Immediately",
+              "display": "Save to Disk Immediately",
               "type": "bool",
               "tooltip": "Write the package to disk now. Off leaves it dirty for the next Save All -- a timing switch, not a safety one.",
               "default": "true"
@@ -18272,7 +18286,7 @@
           ]
         },
         "bSplitCellEdgesAtSharedMidpoint": {
-          "display": "Split Cell Edges At Shared Midpoint",
+          "display": "Split Cell Edges at Shared Midpoint",
           "type": "bool",
           "tooltip": "Replace each centroid-to-centroid adjacency edge with two edges routed through a new vertex at the midpoint of the shared cell segment (centroid -> midpoint -> centroid). Forced on internally when Extract Skeleton is enabled.",
           "default": "false",
@@ -20908,7 +20922,7 @@
           },
           {
             "label": "Open Paths",
-            "note": "Open results, moved off the main pin. `Clip As Lines` sends every cut closed shape here.",
+            "note": "Open results, moved off the main pin. `Clip as Lines` sends every cut closed shape here.",
             "condition": "Open Paths Output is Output (Pin)"
           }
         ],
@@ -20978,7 +20992,7 @@
           ]
         },
         "bClipOpenPathsAsLines": {
-          "display": "Clip Open Paths As Lines",
+          "display": "Clip Open Paths as Lines",
           "type": "bool",
           "tooltip": "If true, clips open paths using RectClipLines (preserves them as open paths). If false, treats open paths as closed polygons for clipping.",
           "default": "true",
@@ -20992,7 +21006,7 @@
           ]
         },
         "bClipAsLines": {
-          "display": "Clip As Lines",
+          "display": "Clip as Lines",
           "type": "bool",
           "tooltip": "If true, clips closed paths as lines (outputs will be open paths). Useful when you want to cut through paths rather than get polygon intersections.",
           "default": "false",
@@ -21774,7 +21788,7 @@
               "default": "FPCGExInputShorthandSelectorInteger32Abs(FName(\"@Data.ClampMax\"), 500, false)"
             }
           ],
-          "semantics": "The draw is over the cluster's Vtx, so a relative amount is a share of that cluster rather than of the incoming Vtx dataset, and a cluster split across several Edges datasets draws separately in each."
+          "semantics": "The draw is over the cluster's Vtx, so a relative amount is a share of that cluster rather than of the incoming Vtx dataset, and a cluster split across several Edges datasets draws separately in each. The draw folds the node's Seed and the PCG component's Seed into its own base seed, so changing any of the three picks a different subset."
         }
       },
       "inherits": [
@@ -21819,7 +21833,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-centrality",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExClusterCentrality.h",
-        "hash": "b036d332ac622db3cba92386d65524d354f50a2c"
+        "hash": "7d2895c052f94fc4a9a7f427bf97f9f312b55b7f"
       }
     },
     "UPCGExClusterDecompositionSettings": {
@@ -21905,7 +21919,7 @@
           ]
         },
         "CellIDAttributeName": {
-          "display": "Cell ID Attribute Name",
+          "display": "Cell IDAttribute Name",
           "type": "FName",
           "tooltip": "Attribute name for the decomposition cell ID written to each node.",
           "default": "FName(\"CellID\")",
@@ -22601,7 +22615,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -22692,7 +22706,7 @@
           ]
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "edit_condition": "PathOutput != EPCGExFloodFillPathOutput::None",
@@ -23836,7 +23850,7 @@
           "default": "false"
         },
         "StripEnumNamespaceFromKey": {
-          "display": "Strip Enum Namespace From Key",
+          "display": "Strip Enum Namespace from Key",
           "type": "bool",
           "tooltip": "Strip the namespace prefix from enum keys. 'SomeEnum::SomeKey' becomes just 'SomeKey'.",
           "default": "true",
@@ -24392,7 +24406,7 @@
           "fields": [
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "FPCGExScaleToFitDetails",
               "tooltip": "How to scale objects to fit within target bounds."
             },
@@ -24430,7 +24444,7 @@
           ]
         },
         "TargetsAttributesToClusterTags": {
-          "display": "Targets Attributes To Cluster Tags",
+          "display": "Targets Attributes to Cluster Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy target point attributes as tags on output clusters.",
           "see": "FPCGExAttributeToTagDetails",
@@ -24474,7 +24488,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -24639,7 +24653,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -25102,7 +25116,7 @@
           "fields": [
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "FPCGExScaleToFitDetails",
               "tooltip": "How to scale objects to fit within target bounds."
             },
@@ -25137,7 +25151,7 @@
           "semantics": "Where the fitting happens, and the reason to reach for this node over the stock one. It decides whether a copy inherits the target's rotation and scale or keeps its own, and whether it is fitted into the target's bounds at all."
         },
         "TargetsAttributesToCopyTags": {
-          "display": "Targets Attributes To Copy Tags",
+          "display": "Targets Attributes to Copy Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Target attributes to copy as tags onto output points.",
           "see": "FPCGExAttributeToTagDetails",
@@ -25178,7 +25192,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -26170,7 +26184,7 @@
             },
             {
               "name": "LookAtAxis",
-              "display": "Look At Axis",
+              "display": "Look at Axis",
               "type": "EPCGExAxisAlign",
               "tooltip": "Axis used to align the look at rotation",
               "default": "EPCGExAxisAlign::Forward",
@@ -26352,7 +26366,7 @@
             },
             {
               "name": "LookAtAxis",
-              "display": "Look At Axis",
+              "display": "Look at Axis",
               "type": "EPCGExAxisAlign",
               "tooltip": "Axis used to align the look at rotation",
               "default": "EPCGExAxisAlign::Forward",
@@ -26535,7 +26549,7 @@
             },
             {
               "name": "LookAtAxis",
-              "display": "Look At Axis",
+              "display": "Look at Axis",
               "type": "EPCGExAxisAlign",
               "tooltip": "Axis used to align the look at rotation",
               "default": "EPCGExAxisAlign::Forward",
@@ -26749,7 +26763,7 @@
             },
             {
               "name": "LookAtAxis",
-              "display": "Look At Axis",
+              "display": "Look at Axis",
               "type": "EPCGExAxisAlign",
               "tooltip": "Axis used to align the look at rotation",
               "default": "EPCGExAxisAlign::Forward",
@@ -29628,9 +29642,7 @@
           "tooltip": "Name of the 'bool' attribute the Is Empty result is written to.",
           "default": "PCGExCullOnEmpty::IsEmptyName",
           "overridable": true,
-          "edit_condition": "bOutputIsEmpty",
-          "semantics": "Names the bool.",
-          "trap": "Its edit condition names the Output Is Empty toggle, so in Check Only the field is greyed out in the panel while still deciding the attribute name."
+          "edit_condition": "bCheckOnly || bOutputIsEmpty"
         },
         "bInvert": {
           "display": "Invert",
@@ -29638,12 +29650,11 @@
           "tooltip": "If enabled, inverts the output bool",
           "default": "false",
           "overridable": true,
-          "edit_condition": "bOutputIsEmpty",
-          "semantics": "Flips the bool before it is written, so the attribute reads true when at least one input had content.",
-          "trap": "Inversion never reaches the pin deactivation, which always follows the real emptiness. In Check Only that is harmless, and outside it the data pin still culls on genuinely empty input however this is set. The same greying applies as to the name field.",
+          "edit_condition": "bCheckOnly || bOutputIsEmpty",
+          "semantics": "Flips the bool before it is written, so the attribute reads true when at least one input had content. Whenever the bool is produced, the node's subtitle says which way round it is, Is Data Empty or Is Data NOT Empty, and it goes blank while this setting is driven by an override pin.",
+          "trap": "Inversion never reaches the pin deactivation, which always follows the real emptiness. In Check Only that is harmless, and outside it the data pin still culls on genuinely empty input however this is set.",
           "interacts_with": [
-            "bCheckOnly",
-            "OutputIsEmpty"
+            "bCheckOnly"
           ]
         }
       },
@@ -29651,11 +29662,6 @@
         "UPCGExSettings"
       ],
       "hints": [
-        {
-          "style": "warning",
-          "text": "The two Is Data Empty palette entries switch Check Only on, and the NOT variant switches inversion on with it. Both fields are then greyed out in the panel while still being what the node uses, so a preset node looks unconfigured and is not.",
-          "anchor": "whats_it_for"
-        },
         {
           "style": "info",
           "text": "Mixed inputs keep the pin active. A pin carrying one empty and one populated dataset forwards the populated one and stays live; deactivation needs every input to be empty.",
@@ -29679,7 +29685,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/cull-on-empty",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExCullOnEmpty.h",
-        "hash": "012be668f0282dcbf497b1abd215fc41fb3b764b"
+        "hash": "3fb134df89ed7608f5e26ff66c435d189da1ddfc"
       }
     },
     "UPCGExCutEdgesSettings": {
@@ -30067,7 +30073,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-hash",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExDataHash.h",
-        "hash": "89ffe9f23699e337e0ad13d2820d28283eba216e"
+        "hash": "fd683f0ca22fad531f59fe7bf0dd52c311ac800e"
       }
     },
     "UPCGExDataMatchFilterProviderSettings": {
@@ -30163,6 +30169,182 @@
         "hash": "48bb82af2541dae5543e1831385e8d0e2efbefe4"
       }
     },
+    "UPCGExDataUniquesSettings": {
+      "id": "UPCGExDataUniquesSettings",
+      "name": "Data Uniques",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsMeta",
+      "classification": "node",
+      "purpose": "Finds the distinct combinations of `@Data` values across many inputs, and records which inputs carry each one. Each combination becomes one row, copied from the first input that carries it, gathered in one attribute set or split into one set per combination. Each input is tagged with its row's identifier, so the rows can drive one pass per combination while the tags tell each pass which inputs belong to it. Every input comes back out, on the Out pin when all its keys could be read and on the Discarded pin when one could not.",
+      "situation": "Many datasets share a handful of distinct `@Data` configurations, and each configuration needs its own pass through the same processing.",
+      "mechanism": {
+        "text": "Each input is reduced to a single hash of its key attributes' `@Data` values, and inputs with equal hashes form one group. Groups become rows in the order they first appear among the inputs, each row copied from its group's first input, and the hash itself is the identifier a row shares with its inputs. Every input is forwarded in its original order: to Out, tagged with its identifier, when all its keys were read, and to Discarded, untagged, when a key is missing or holds a container or extended type. Nothing on the inputs changes except that each matched input gains the identifier tag; every tag it arrived with is kept as it was."
+      },
+      "off_label": [
+        {
+          "claim": "Wire a branch from Discarded and it runs only when some input lacks a key or holds one of an unsupported type. When every input keys cleanly the pin is deactivated and the branch is culled, which turns the node into a presence check for `@Data` attributes.",
+          "grounded_in": "PCGExDataUniques.cpp AdvanceWork sets bit 2 of InactiveOutputPinBitmask when NumDiscarded is zero; OutputPinsCanBeDeactivated returns true, and the engine culls tasks whose pin dependencies are all deactivated (pcg.Graph.DynamicTaskCulling, on by default)"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The datasets to group, of any type. Only their `@Data` values decide the grouping.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Uniques",
+            "note": "One row per distinct key combination, copied from the first input carrying it, plus the identifier column when `Write Identifier` is on. Merged gathers the rows in one attribute set; Per Row emits one set per combination. The pin is deactivated when no input could be keyed, which culls a branch fed only from it."
+          },
+          {
+            "label": "Out",
+            "note": "Every input whose keys were all read, in input order, tagged with its row's identifier when `Write Identifier` is on."
+          },
+          {
+            "label": "Discarded",
+            "note": "Inputs missing a key attribute, or whose key is anything other than a single basic value (numbers, booleans, vectors, rotators, quaternions, transforms, strings, names, soft object and class paths), in input order with their tags as they arrived. The pin is deactivated when nothing was discarded."
+          }
+        ],
+        "dynamic": "Out and Discarded take on the types wired into In, so a downstream pin sees the same data type that arrived; Uniques always presents an attribute set."
+      },
+      "settings": {
+        "KeyAttributes": {
+          "display": "Key Attributes",
+          "type": "TArray<FName>",
+          "tooltip": "@Data attributes whose combined values define uniqueness, in order. The \"@Data.\" prefix is optional; the domain is always @Data. Plain attribute names only -- sub-selections (\".X\", \".Length\") and properties ($...) are rejected. Inputs missing any of these (or carrying a container/extended type) are routed to the Discarded pin.",
+          "overridable": true,
+          "semantics": "A value's type is part of the combination: a 5 stored as a 32-bit integer and a 5 stored as a 64-bit integer land in different rows. Floats, doubles and everything built from them (vectors, rotators, quaternions, transforms) match bit for bit, with no tolerance; strings, names and soft paths ignore the case of ASCII letters, and the row keeps whichever spelling came first. The keys are read in order, this list first and then the comma-separated names, and reordering them renumbers the identifiers while leaving the grouping as it was.",
+          "trap": "An empty key list, or a name the node rejects, stops the node with an error before anything is forwarded, so every downstream branch receives nothing.",
+          "interacts_with": [
+            "CommaSeparatedKeyAttributes",
+            "OutputMode"
+          ]
+        },
+        "CommaSeparatedKeyAttributes": {
+          "display": "Comma Separated Key Attributes",
+          "type": "FString",
+          "tooltip": "Comma-separated key attribute names, appended to the list above. Handy for overrides.",
+          "overridable": true
+        },
+        "OutputMode": {
+          "display": "Output Mode",
+          "type": "EPCGExDataUniquesOutputMode",
+          "tooltip": "One merged attribute set (one row per unique combination), or one attribute set per unique combination. Merged: a row whose representative input lacks an attribute another row has reads that type's default (zero/empty); a name seen with two different types keeps the first type, and the other values are skipped with a warning.",
+          "default": "EPCGExDataUniquesOutputMode::Merged",
+          "enum": "EPCGExDataUniquesOutputMode",
+          "semantics": "Per Row gives each set only its own representative's attributes, so the default-filled cells and skipped values described for Merged cannot occur there. The sets carry no tags in either mode: a row is tied to its inputs only through its column values.",
+          "trap": "In Merged the first-seen type also governs key columns. A key that arrives as a 32-bit integer on some inputs and a 64-bit integer on others makes separate rows, and the rows holding the losing type read the column's default (zero or empty) in that column, while their identifiers stay distinct.",
+          "interacts_with": [
+            "KeyAttributes"
+          ]
+        },
+        "RowAttributes": {
+          "display": "Row Attributes",
+          "type": "FPCGExNameFiltersDetails",
+          "tooltip": "Which @Data attributes of the representative input (first seen per combination) are copied into its row. Leave on All to copy every @Data attribute. The filter applies to PCGEx-prefixed attributes too. A source attribute named like the identifier is never copied while Write Identifier is on.",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "FilterMode",
+              "display": "Filter Mode",
+              "type": "EPCGExAttributeFilter",
+              "tooltip": "How the names are processed.",
+              "default": "EPCGExAttributeFilter::All",
+              "enum": "EPCGExAttributeFilter"
+            },
+            {
+              "name": "Matches",
+              "display": "Matches",
+              "type": "TMap<FString, EPCGExStringMatchMode>",
+              "tooltip": "List of matches that will be checked. Any success is a pass."
+            },
+            {
+              "name": "CommaSeparatedNames",
+              "display": "Comma Separated Names",
+              "type": "FString",
+              "tooltip": "A list of names separated by a comma, for easy overrides. The limitation is that they all use the same shared filter mode."
+            },
+            {
+              "name": "CommaSeparatedNameFilter",
+              "display": "Comma Separated Name Filter",
+              "type": "EPCGExStringMatchMode",
+              "tooltip": "Unique filter mode applied to comma separated names",
+              "default": "EPCGExStringMatchMode::Equals",
+              "enum": "EPCGExStringMatchMode"
+            },
+            {
+              "name": "bPreservePCGExData",
+              "display": "Preserve PCGEx Data",
+              "type": "bool",
+              "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
+              "default": "true"
+            }
+          ],
+          "semantics": "The key attributes get no special treatment: filter them out and the rows no longer show the key values, leaving the identifier column as the only link between a row and its inputs.",
+          "trap": "The `Preserve PCGEx Data` field inside this filter has no effect on this node, whatever it is set to: PCGEx-prefixed attributes are kept or dropped by the filter like any other name.",
+          "interacts_with": [
+            "bWriteIdentifier"
+          ]
+        },
+        "bWriteIdentifier": {
+          "display": "Write Identifier",
+          "type": "bool",
+          "tooltip": "Write the row identifier (a hash of the key values, the same on every session so it can be saved) as an extra column on each row AND as a tag on each forwarded input, so rows and inputs can be paired downstream.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "The identifier is the hash the inputs were grouped by, a non-negative 64-bit integer, and the column and the tag carry the same number: that shared value is what pairs a row with its inputs. The same key values give the same identifier on every run, machine and platform, so an identifier can be saved and matched against a later run. Turned off, rows carry no identifier column and every input leaves with its tags as they arrived.",
+          "interacts_with": [
+            "IdentifierAttributeName",
+            "bPrefixTagWithAttributeName"
+          ]
+        },
+        "IdentifierAttributeName": {
+          "display": "Identifier Attribute Name",
+          "type": "FName",
+          "tooltip": "Name of the int64 identifier column on the rows; also the tag prefix on the inputs.",
+          "default": "FName(\"UniqueId\")",
+          "overridable": true,
+          "edit_condition": "bWriteIdentifier"
+        },
+        "bPrefixTagWithAttributeName": {
+          "display": "Prefix Tag with Attribute Name",
+          "type": "bool",
+          "tooltip": "If enabled, inputs are tagged \"IdentifierAttributeName:Value\", replacing any same-prefixed tag they already carry. Otherwise the bare value is used as the tag, and bare tags from an upstream Data Uniques are kept alongside it.",
+          "default": "true",
+          "overridable": true,
+          "edit_condition": "bWriteIdentifier",
+          "semantics": "The prefixed form is a named value: PCGEx reads `UniqueId:123` as the number 123 under the name `UniqueId`, which is what lets a value-matching rule such as **Match : Tags × Attributes** compare it against an attribute holding the same identifier. A bare tag has no name and can only be matched by its text.",
+          "interacts_with": [
+            "IdentifierAttributeName"
+          ]
+        }
+      },
+      "inherits": [
+        "UPCGExSettings"
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/odd-jobs.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/odd-jobs"
+        },
+        {
+          "path": "node-library/metadata/keys/get-properties-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/get-properties-data"
+        },
+        {
+          "path": "node-library/utilities/data-matching/match-tags-attributes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-tags-attributes"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-uniques",
+      "source": {
+        "file": "PCGExElementsMeta/Public/Elements/PCGExDataUniques.h",
+        "hash": "389614290626ec21d724e63b10e96feae072a673"
+      }
+    },
     "UPCGExDebugSettings": {
       "id": "UPCGExDebugSettings",
       "name": "Flush Debug",
@@ -30176,7 +30358,7 @@
       },
       "settings": {
         "bPCGExDebug": {
-          "display": "PCG Ex Debug",
+          "display": "PCGEx Debug",
           "type": "bool",
           "tooltip": "Debug drawing toggle. Exposed to have more control on debug draw in sub-graph.",
           "default": "true",
@@ -31410,7 +31592,7 @@
           "default": "true"
         },
         "bIncludeFromChildActors": {
-          "display": "Include From Child Actors",
+          "display": "Include from Child Actors",
           "type": "bool",
           "tooltip": "When true, child actor components are included in bounds computation.",
           "default": "false",
@@ -31887,7 +32069,7 @@
           "overridable": true
         },
         "bIncludeFilteredInMetrics": {
-          "display": "Include Filtered In Metrics",
+          "display": "Include Filtered in Metrics",
           "type": "bool",
           "tooltip": "If enabled, points that are filtered out from overlap detection are still accounted for in static metrics/maths. i.e they still participate to the overall bounds shape etc instead of being thoroughly ignored.",
           "default": "true",
@@ -32274,7 +32456,7 @@
           "grounded_in": "the group key is graph identity plus the applied override list, which is empty when no driver attribute matches a user parameter"
         },
         {
-          "claim": "Attributes To Tags stamps the driver row's values onto every output of the dispatch that row produced, which is what lets a downstream matching rule tie results back to the row that asked for them.",
+          "claim": "Attributes to Tags stamps the driver row's values onto every output of the dispatch that row produced, which is what lets a downstream matching rule tie results back to the row that asked for them.",
           "grounded_in": "the per-group tag set is built from the first contributing entry and appended to every gathered output in GatherDispatchOutputs"
         }
       ],
@@ -32313,7 +32495,7 @@
           "semantics": "Read per row as a soft object path. A row whose value is empty is skipped without a warning, which makes an empty path the intended way to say this row dispatches nothing. A value that names something that is not a graph or graph instance does warn."
         },
         "bAutoMatchByName": {
-          "display": "Auto Match By Name",
+          "display": "Auto Match by Name",
           "type": "bool",
           "tooltip": "If enabled, any driver attribute whose name exactly matches a subgraph user-parameter is applied as an override.",
           "default": "true",
@@ -32363,7 +32545,7 @@
           "semantics": "Routing is by exact label. A subgraph output whose label is not declared here is not lost, it lands on the catch-all output pin along with everything else unmatched."
         },
         "AttributesToTags": {
-          "display": "Attributes To Tags",
+          "display": "Attributes to Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Driver attributes promoted to tags on every output of the dispatched subgraph, tying outputs back to their source entry. Entries deduplicated into a shared dispatch tag with the FIRST entry's values (the index tag uses that entry's row index within its driver data).",
           "see": "FPCGExAttributeToTagDetails",
@@ -32517,10 +32699,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "node",
-      "purpose": "Hands each point one whole row of a table authored on the node. Composition names the columns, each column being one output attribute with a type; Values holds the rows, each carrying a weight and one value per column. Every point gets a row picked for it and that row's values written as attributes, so the values stay in the combinations they were authored in; a column holding a Collection Entry lands as a staged pick, with the Collection Map it resolves against emitted on a second pin. Tuple emits the same table as an attribute set; this node puts it on points.",
+      "purpose": "Hands each point one whole row of a table authored on the node. Composition names the columns, each column being one output attribute with a type; Values holds the rows, each carrying a weight and one value per column. Every point gets a row picked for it and that row's values written as attributes, so the values stay in the combinations they were authored in; a column holding a Collection Entry lands as a staged pick, with the Collection Map it resolves against emitted on a second pin. **Tuple** emits the same table as an attribute set; this node puts it on points or, with Output to @Data on, hands each input dataset one row on its @Data domain and leaves the points untouched.",
       "situation": "Several attributes have to vary together in fixed combinations, and each point should receive one whole combination.",
       "mechanism": {
-        "text": "One point in, one point out, in the order they arrived; nothing is added, removed or reordered. Each column of the Composition becomes one attribute named after that column, and a point receives the values of its picked row. A column the picked row has disabled writes nothing, so the point keeps whatever that attribute already held, or the column's own value from the Composition when the attribute is new. Distribution is the single thing that decides which row a point gets. A node with no columns or no rows passes its input straight through."
+        "text": "One point in, one point out, in the order they arrived; nothing is added, removed or reordered. Each column of the Composition becomes one attribute named after that column, and a point receives the values of its picked row. A column the picked row has disabled writes nothing, so the point keeps whatever that attribute already held, or the column's own value from the Composition when the attribute is new. Distribution is the single thing that decides which row a point gets. A node whose table resolves to no column, local or imported, or whose Values holds no rows, passes its input straight through."
       },
       "off_label": [
         {
@@ -32532,19 +32714,19 @@
         "inputs": [
           {
             "label": "In",
-            "note": "The points to receive row values. Several datasets can be wired, and each is picked over on its own.",
+            "note": "The point datasets to receive row values. Several can be wired, and each is picked over on its own.",
             "required": "always"
           }
         ],
         "outputs": [
           {
             "label": "Out",
-            "note": "The same points, carrying one attribute per column of the Composition."
+            "note": "The same points, carrying one attribute per column of the Composition; under Output to @Data they pass untouched and each dataset carries its row on its @Data domain."
           },
           {
             "label": "Map",
-            "note": "The Collection Map for the picks this node wrote: one row per collection, carrying its index and its asset path, with every sub-collection reachable from it listed too.",
-            "condition": "when Output Map is on and an enabled cell holds a collection pick; the pin sits collapsed as an advanced pin otherwise"
+            "note": "The Collection Map the Collection Entry picks resolve against: one row per collection, carrying its index and its asset path, with every sub-collection reachable from it listed too.",
+            "condition": "carries data when Output Map is on and there is a Collection Entry value to report; an advanced pin, collapsed, while Output Map is off"
           }
         ],
         "dynamic": null
@@ -32574,7 +32756,7 @@
               "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
             }
           ],
-          "semantics": "A column's Name is the attribute name written to the points, one attribute per column. Columns come from the schemas authored here and from any imported Property Schema assets, locals first, so a shared schema can define the table shape for several nodes at once and a local column of the same name overrides the imported one. A Float Curve column has no attribute form and is skipped, writing nothing for any row.",
+          "semantics": "A column's Name names the attribute it writes, one attribute per column; a Collection Entry column writes under a staging-layer name built from it. Columns come from the schemas authored here and from any imported Property Schema assets, locals first, and a local column overrides an imported one of the same name. A shared schema can supply the whole table to several nodes at once. A Float Curve column has no attribute form and is skipped, writing nothing for any row.",
           "trap": "Two local columns sharing a name is an execution error, and the message reports that duplicates exist without naming which.",
           "interacts_with": [
             "Values",
@@ -32607,6 +32789,21 @@
             "Distribution"
           ]
         },
+        "bOutputToDataDomain": {
+          "display": "Output to @Data",
+          "type": "bool",
+          "tooltip": "Pick one row per input and write it to @Data instead of per point. The input index replaces the point index (Index distribution) and the point seed (Local seed component; without it every input rolls the same row).",
+          "default": "false",
+          "overridable": true,
+          "semantics": "The points come through untouched: each column, and the row index and weight when those outputs are on, becomes one @Data value per dataset under the name it would carry per point. A disabled cell, or a dataset that Ignore leaves without a row, keeps any @Data value of that name the dataset already carries and otherwise takes the column's Composition value, or 0 for the row index and weight. The input index counts datasets in arrival order and skips empty ones, which the node drops from its output. The Map lists only the Collection Entry values it wrote, the Composition's own pick included wherever it stood in. A column the @Data domain refuses is dropped with a warning; that includes a column whose name is not a valid attribute name, which the per-point route only warns about.",
+          "trap": "The row follows the dataset's position among the inputs, never its content: under Index, and in the random modes while Local is ticked, adding, removing or reordering a dataset upstream hands different rows to every dataset whose position shifts.",
+          "interacts_with": [
+            "Distribution",
+            "IndexSafety",
+            "SeedComponents",
+            "bOutputMap"
+          ]
+        },
         "Distribution": {
           "display": "Distribution",
           "type": "EPCGExDistribution",
@@ -32614,26 +32811,28 @@
           "default": "EPCGExDistribution::WeightedRandom",
           "enum": "EPCGExDistribution",
           "overridable": true,
-          "semantics": "Index reads the point's position in its own dataset, so it takes no seed and the seed settings disappear with it. Random rolls evenly across every row and ignores the weights entirely. Weighted random rolls against the summed weights, and falls back to an even roll across every row when every weight is 0.",
+          "semantics": "Index reads the point's position in its own dataset, or the dataset's position among the inputs under Output to @Data, so it takes no seed and the seed settings disappear with it. Random rolls evenly across every row and ignores the weights entirely. Weighted random rolls against the summed weights, and falls back to an even roll across every row when every weight is 0.",
           "interacts_with": [
             "IndexSafety",
             "SeedComponents",
-            "Values"
+            "Values",
+            "bOutputToDataDomain"
           ]
         },
         "IndexSafety": {
           "display": "Index Safety",
           "type": "EPCGExIndexSafety",
-          "tooltip": "Index safety mode when Distribution is Index and point count exceeds row count",
+          "tooltip": "Index safety mode when Distribution is Index and the point (or @Data input) index exceeds the row count",
           "default": "EPCGExIndexSafety::Tile",
           "enum": "EPCGExIndexSafety",
           "overridable": true,
           "edit_condition": "Distribution == EPCGExDistribution::Index",
           "edit_condition_hides": true,
-          "semantics": "Tile, Clamp and Yoyo each map an out-of-range point index onto a real row, so every point still gets one. Ignore skips the point outright.",
-          "trap": "Under Ignore a skipped point is written nothing at all, so it leaves carrying its incoming attribute values or the Composition defaults, looking identical to a point that was given a row.",
+          "semantics": "Tile, Clamp and Yoyo each map an out-of-range index onto a real row, so every point, or every dataset under Output to @Data, still gets one. Ignore skips it outright.",
+          "trap": "Under Ignore a skipped point gets no row, yet nothing marks it: its columns keep their incoming values or take the Composition defaults, and a row index output reads 0 there when its attribute is new, the value the first row writes. Output to @Data skips a whole dataset the same way.",
           "interacts_with": [
-            "Distribution"
+            "Distribution",
+            "bOutputToDataDomain"
           ]
         },
         "SeedComponents": {
@@ -32644,10 +32843,11 @@
           "overridable": true,
           "edit_condition": "Distribution != EPCGExDistribution::Index",
           "edit_condition_hides": true,
-          "semantics": "Local and Settings are both on by default, so the node's own Seed property folds into every roll and changing it re-rolls every point. The staging selectors ship with all components off, where the point's own seed is the only thing that counts, so a table set up by habit from that side will behave differently here.",
+          "semantics": "Per point, the point's own seed always starts the roll, whatever is ticked. Local folds in Local Seed; Settings or Component, either one, folds in both the node's Seed and the PCG component's Seed, so under the defaults changing either one re-rolls every point. The staging selectors ship with all components off, where the point's own seed is the only thing that counts, so a table set up by habit from that side will behave differently here.",
           "interacts_with": [
             "LocalSeed",
-            "Distribution"
+            "Distribution",
+            "bOutputToDataDomain"
           ]
         },
         "LocalSeed": {
@@ -32682,10 +32882,11 @@
           "tooltip": "Emit the \"Map\" attribute set describing external resources referenced by written values (e.g. Collection Entry picks).",
           "default": "false",
           "advanced": true,
-          "semantics": "A Collection Entry column writes its pick under the staging-layer name PCGEx/CollectionEntry followed by the column name, and the pick is meaningless on its own: this is the toggle that emits the Map it resolves against. The Map gathers the collections of every enabled Collection Entry cell across all input datasets, so a table holding no picks emits nothing on the pin however the toggle is set.",
+          "semantics": "A Collection Entry column writes its pick under the staging-layer name PCGEx/CollectionEntry followed by the column name, and the pick is meaningless on its own: this is the toggle that emits the Map it resolves against. Per point, the Map lists the collection behind every enabled Collection Entry cell in the table, whether or not a point drew that row, plus the Composition's own pick wherever a point can be left holding it: a row that disables the cell, or Index with Ignore skipping points.",
           "trap": "The column name is the staging layer, so a consumer left on the default layer will not see the pick at all; its Staging Layer has to be set to the column name.",
           "interacts_with": [
-            "Composition"
+            "Composition",
+            "bOutputToDataDomain"
           ]
         }
       },
@@ -32696,12 +32897,12 @@
       "hints": [
         {
           "style": "warning",
-          "text": "An empty Composition or an empty Values list makes the node a pass-through, silently and with no warning. A half-configured node produces exactly the points it received, which reads as a downstream problem.",
+          "text": "The pass-through is silent, with no warning. A half-configured node produces the points it received, unchanged, which reads as a downstream problem.",
           "anchor": "mechanism"
         },
         {
           "style": "warning",
-          "text": "A Collection Entry cell whose collection is missing, or whose entry has since been deleted from it, writes a pick of zero, which every downstream consumer reads as no pick. Nothing is reported: the attribute is written either way, and the points look the same as points carrying valid picks.",
+          "text": "A Collection Entry cell whose collection is missing, or whose entry has since been deleted from it, writes a pick of zero, which every downstream consumer reads as no pick. The only report is an output-log warning, once per collection and column per session and never on the node, so after the first run a stale pick passes in silence and its points look the same as points carrying valid picks.",
           "anchor": "Composition"
         }
       ],
@@ -32722,7 +32923,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/tuple-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExDistributeTuple.h",
-        "hash": "3328ceb0137819b496afcca731d1fb3712964a14"
+        "hash": "7ac23b04d398d792d8e2c94585cf654172333217"
       }
     },
     "UPCGExDotFilterProviderSettings": {
@@ -32911,7 +33112,7 @@
           "semantics": "One entry per attribute to draw, each with its own presentation. Several entries draw together, so a single node can show a direction and the weight behind it at once."
         },
         "bPCGExDebug": {
-          "display": "PCG Ex Debug",
+          "display": "PCGEx Debug",
           "type": "bool",
           "tooltip": "Debug drawing toggle. Exposed to have more control on debug draw in sub-graph.",
           "default": "true",
@@ -34568,7 +34769,7 @@
         },
         {
           "style": "info",
-          "text": "How often a rule is asked is fixed by the rule and cannot be changed on the node. Once per edge: **Refine : Filter**, **Refine : Gabriel**, **Refine : Line Trace**, **Refine : Overlap**, **Refine : β Skeleton**. Once per Vtx, where the rule is handed one Vtx and every edge at it: the four length rules, the four score rules, and **Remove Leaves**. Once for the whole cluster: **Refine : Chain Filter**, **Refine : MST (Prim)**, **Refine : DFS (Tarjan)** and **Remove Leaves (Recursive)**. The per-edge group is also the only one where **Restore Edges That Connect To Valid Nodes** on the consumer does anything.",
+          "text": "How often a rule is asked is fixed by the rule and cannot be changed on the node. Once per edge: **Refine : Filter**, **Refine : Gabriel**, **Refine : Line Trace**, **Refine : Overlap**, **Refine : β Skeleton**. Once per Vtx, where the rule is handed one Vtx and every edge at it: the four length rules, the four score rules, and **Remove Leaves**. Once for the whole cluster: **Refine : Chain Filter**, **Refine : MST (Prim)**, **Refine : DFS (Tarjan)** and **Remove Leaves (Recursive)**. The per-edge group is also the only one where **Restore Edges That Connect to Valid Nodes** on the consumer does anything.",
           "anchor": "mechanism"
         },
         {
@@ -35911,7 +36112,7 @@
           "overridable": true
         },
         "bIgnoreIntersectionOnOrigin": {
-          "display": "Ignore Intersection On Origin",
+          "display": "Ignore Intersection on Origin",
           "type": "bool",
           "tooltip": "If enabled, if the origin location of the extrusion is detected as an intersection, it is not considered an intersection. This allows to have seeds perfectly located on paths used for intersections.",
           "default": "true",
@@ -36029,7 +36230,7 @@
           ]
         },
         "bMergeOnProximity": {
-          "display": "Merge On Proximity",
+          "display": "Merge on Proximity",
           "type": "bool",
           "tooltip": "Whether to test for intersection between actively extruding paths",
           "default": "false",
@@ -36129,7 +36330,7 @@
           "edit_condition": "bDetectClosedLoops"
         },
         "AttributesToPathTags": {
-          "display": "Attributes To Path Tags",
+          "display": "Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy source point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails",
@@ -36143,21 +36344,21 @@
           "edit_condition": "bTagIfChildExtrusion"
         },
         "IsStoppedByFiltersTag": {
-          "display": "Is Stopped By Filters Tag",
+          "display": "Is Stopped by Filters Tag",
           "type": "FString",
           "tooltip": "Tag to apply to paths stopped by filters.",
           "default": "TEXT(\"StoppedByFilters\")",
           "edit_condition": "bTagIfIsStoppedByFilters"
         },
         "IsStoppedByIntersectionTag": {
-          "display": "Is Stopped By Intersection Tag",
+          "display": "Is Stopped by Intersection Tag",
           "type": "FString",
           "tooltip": "Tag to apply to paths stopped by external intersection.",
           "default": "TEXT(\"StoppedByPath\")",
           "edit_condition": "bTagIfIsStoppedByIntersection"
         },
         "IsStoppedBySelfIntersectionTag": {
-          "display": "Is Stopped By Self Intersection Tag",
+          "display": "Is Stopped by Self Intersection Tag",
           "type": "FString",
           "tooltip": "Tag to apply to paths stopped by self-intersection.",
           "default": "TEXT(\"SelfCrossed\")",
@@ -36377,7 +36578,7 @@
             },
             {
               "name": "bWriteToAccumulatedValue",
-              "display": "Write To Accumulated Value",
+              "display": "Write to Accumulated Value",
               "type": "bool",
               "tooltip": "Store accumulated value in FCandidate::AccumulatedValue for use by other controls.",
               "default": "true"
@@ -37940,7 +38141,7 @@
           ]
         },
         "bDrawAsCompactNode": {
-          "display": "Draw As Compact Node",
+          "display": "Draw as Compact Node",
           "type": "bool",
           "tooltip": "Whether to draw this node as a compact node",
           "default": "true",
@@ -38100,7 +38301,7 @@
       },
       "off_label": [
         {
-          "claim": "Points mode strips the cluster role tags and both cluster attributes off everything it emits, so a filter set that everything passes turns this into a way of getting an ordinary point dataset out of a Vtx dataset, with `Split Outputs By Connectivity` off to keep it as one.",
+          "claim": "Points mode strips the cluster role tags and both cluster attributes off everything it emits, so a filter set that everything passes turns this into a way of getting an ordinary point dataset out of a Vtx dataset, with `Split Outputs by Connectivity` off to keep it as one.",
           "grounded_in": "PCGExClusters::Helpers::CleanupVtxData runs on every Points-mode output, and the all-pass branch emits a single duplicated dataset onto Inside."
         }
       ],
@@ -38220,7 +38421,7 @@
           ]
         },
         "bSplitOutputsByConnectivity": {
-          "display": "Split Outputs By Connectivity",
+          "display": "Split Outputs by Connectivity",
           "type": "bool",
           "tooltip": "If enabled, inside/outside groups will be partitioned by initial edge connectivity.",
           "default": "true",
@@ -38414,7 +38615,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "Applied before the sort, so a cell that failed a size or shape limit never reaches a category at all. `Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for; `Keep If Sole` puts it back when nothing else survived, and it is then sorted like any other cell.",
+          "semantics": "Applied before the sort, so a cell that failed a size or shape limit never reaches a category at all. `Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for; `Keep if Sole` puts it back when nothing else survived, and it is then sorted like any other cell.",
           "interacts_with": [
             "TriageFlags"
           ]
@@ -38554,7 +38755,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "`Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for at all, not merely whether it is kept, so with it off the boundary comes out as one more cell alongside the interior ones. `Keep If Sole` matters on a cluster with no interior faces, where it is the difference between one boundary path and nothing.",
+          "semantics": "`Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for at all, not merely whether it is kept, so with it off the boundary comes out as one more cell alongside the interior ones. `Keep if Sole` matters on a cluster with no interior faces, where it is the difference between one boundary path and nothing.",
           "interacts_with": [
             "Artifacts"
           ]
@@ -38690,7 +38891,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "`Duplicate Leaf points` is the one field in the block that this node reads. The hull is traced with the rest of the block replaced by defaults, so the size, count, perimeter, compactness and shape limits never run, `Keep Cells With Leaves` is always on, and a boundary that runs out along a dead end and back always comes back with that spike in it.",
+          "semantics": "`Duplicate Leaf points` is the one field in the block that this node reads. The hull is traced with the rest of the block replaced by defaults, so the size, count, perimeter, compactness and shape limits never run, `Keep Cells with Leaves` is always on, and a boundary that runs out along a dead end and back always comes back with that spike in it.",
           "trap": "`Output Winding` is among the fields replaced, so the hull always comes back wound the same way whatever it is set to. **Reverse Order** downstream is what turns a finished path round.",
           "interacts_with": [
             "ProjectionDetails"
@@ -38721,7 +38922,7 @@
           "semantics": "Read by nothing on this node. There are no seeds and nothing searches for a nearest Vtx or edge, so there is no search for it to switch."
         },
         "bQuietFailedToFindHullWarning": {
-          "display": "Quiet Failed To Find Hull Warning",
+          "display": "Quiet Failed to Find Hull Warning",
           "type": "bool",
           "tooltip": "Suppress warning when a hull could not be found for a cluster.",
           "default": "false",
@@ -39059,7 +39260,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "Applied before seeds are looked at and well before the sort, so a cell that failed a size or shape limit never gets claimed and never reaches a category. `Omit Wrapping Bounds` takes the cluster's outer boundary out of the running; `Keep If Sole` puts it back when nothing else survived, and it is then claimed and sorted like any other cell.",
+          "semantics": "Applied before seeds are looked at and well before the sort, so a cell that failed a size or shape limit never gets claimed and never reaches a category. `Omit Wrapping Bounds` takes the cluster's outer boundary out of the running; `Keep if Sole` puts it back when nothing else survived, and it is then claimed and sorted like any other cell.",
           "interacts_with": [
             "SeedPicking",
             "TriageFlags"
@@ -39085,8 +39286,7 @@
           "tooltip": "Seed growth settings. Expands seed selection to adjacent cells.",
           "overridable": true,
           "see": "FPCGExCellGrowthDetails",
-          "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, and the fused outline is what gets sorted afterwards rather than the cells it came from.",
-          "trap": "Here the spread also takes a cell the constraints rejected for its area, its compactness, or an `Aspect Filter` of Concave Only, and that cell leaves with the claim. **Pathfinding : Find Cells** steps over the same cell without taking it. A cell rejected by any other limit is stepped over on both nodes.",
+          "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, and the fused outline is what gets sorted afterwards rather than the cells it came from. A cell the constraints rejected is never claimed, but the spread still passes through it and counts it as a step, so a claim can carry on beyond it.",
           "interacts_with": [
             "SeedOwnership",
             "TriageFlags",
@@ -39155,7 +39355,7 @@
           ]
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails"
@@ -39195,7 +39395,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -39266,7 +39466,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells-bounded",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCellsBounded.h",
-        "hash": "bdd44173392da932437e6cbf9d1ade5b767b87d6"
+        "hash": "efa1d4a9bbe28a15f8bc6c8cd0fc48581af12226"
       }
     },
     "UPCGExFindContoursSettings": {
@@ -39283,7 +39483,7 @@
       },
       "off_label": [
         {
-          "claim": "Wire a single seed far outside the cluster, turn `Omit Wrapping Bounds` on and leave `Keep If Sole` on, and the node emits the cluster's outer boundary and nothing else, which is **Pathfinding : Find Cluster Hull** with the constraint block still applying and a seed to forward attributes from.",
+          "claim": "Wire a single seed far outside the cluster, turn `Omit Wrapping Bounds` on and leave `Keep if Sole` on, and the node emits the cluster's outer boundary and nothing else, which is **Pathfinding : Find Cluster Hull** with the constraint block still applying and a seed to forward attributes from.",
           "grounded_in": "HandleWrapperOnlyCase runs when no interior cell was claimed, admits seeds that fall in no cell at all, and gates them on SeedPicking.WithinDistanceSquared against the nearest edge."
         }
       ],
@@ -39379,7 +39579,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "Applied before any seed is looked at, so a cell that fails a size or shape limit is gone by the time claiming happens and the seed inside it is reported as a failure rather than falling through to the next cell out. `Omit Wrapping Bounds` takes the cluster's outer boundary out of the running by default; `Keep If Sole` puts it back only when nothing else survived, and a seed then has to be outside every cell and within `Max Distance` of an edge to claim it.",
+          "semantics": "Applied before any seed is looked at, so a cell that fails a size or shape limit is gone by the time claiming happens and the seed inside it is reported as a failure rather than falling through to the next cell out. `Omit Wrapping Bounds` takes the cluster's outer boundary out of the running by default; `Keep if Sole` puts it back only when nothing else survived, and a seed then has to be outside every cell and within `Max Distance` of an edge to claim it.",
           "interacts_with": [
             "SeedPicking",
             "Artifacts"
@@ -39404,9 +39604,10 @@
           "tooltip": "Seed growth settings. Expands seed selection to adjacent cells.",
           "overridable": true,
           "see": "FPCGExCellGrowthDetails",
-          "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when it is read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, so two seeds that grew into each other still come back as two paths.",
+          "semantics": "Growth counts cells rather than distance: 1 adds the cells sharing a border with the claimed one, 2 adds theirs, and the depth can differ per seed when it is read from an attribute. `Merge Adjacent Cells` dissolves the shared borders inside one seed's claim, per seed, so two seeds that grew into each other still come back as two paths. A cell the constraints rejected is never claimed, but the spread still passes through it and counts it as a step, so a claim can carry on beyond it.",
           "interacts_with": [
             "SeedOwnership",
+            "Constraints",
             "SeedMerge"
           ]
         },
@@ -39467,7 +39668,7 @@
           ]
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails"
@@ -39507,7 +39708,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -39578,7 +39779,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCells.h",
-        "hash": "2fd2ffaee6178ed9823fcc82f3659a3f5c13dbf6"
+        "hash": "b1f4d61402405c595c26b7f16ae527a5ad23f662"
       }
     },
     "UPCGExFindPointOnBoundsClustersSettings": {
@@ -40307,7 +40508,7 @@
           "edit_condition_hides": true
         },
         "bSaveAttributeForRestore": {
-          "display": "Save Attribute For Restore",
+          "display": "Save Attribute for Restore",
           "type": "bool",
           "tooltip": "Whether this is a new projection or an old one",
           "default": "true",
@@ -40942,7 +41143,7 @@
             },
             {
               "name": "bSnapOnEdge",
-              "display": "Snap On Edge",
+              "display": "Snap on Edge",
               "type": "bool",
               "tooltip": "When enabled, point will be moved exactly on the edge.",
               "default": "false"
@@ -41291,7 +41492,7 @@
           ]
         },
         "bOmitInvalidPathsFromOutput": {
-          "display": "Omit Invalid Paths From Output",
+          "display": "Omit Invalid Paths from Output",
           "type": "bool",
           "tooltip": "Drop paths that arrive with fewer than 2 points. Separate from the inherited Omit Invalid Paths Outputs, which judges the result: both must be off for a short input to reach the output.",
           "default": "true",
@@ -41661,7 +41862,7 @@
           "tooltip": "Read every entry on the cache instead of a single ID. Enable Tag With Cache ID to tell them apart.",
           "default": "false",
           "overridable": true,
-          "semantics": "Every entry on the component comes out at once, routed by stored pin label like a single read, and the node title reads All. The Status rows then carry None in their CacheID column, so Tag With Cache ID is the only way to tell one entry's data from another's.",
+          "semantics": "Every entry on the component comes out at once, routed by stored pin label like a single read, and the node title reads All. The Status rows then carry None in their CacheID column, so Tag with Cache ID is the only way to tell one entry's data from another's.",
           "interacts_with": [
             "CacheID",
             "bTagWithCacheID"
@@ -41674,7 +41875,7 @@
           "semantics": "Routing is by exact label against the pin the data was stored under, so the array is meant to be pasted from the Set node's Custom Input Pins. A stored label with no pin here falls through to Out; a pin here with no stored data is deactivated. Entries labelled None, labelled Out or Status, or repeating an earlier label are dropped from the pin set."
         },
         "bTagWithCacheID": {
-          "display": "Tag With Cache ID",
+          "display": "Tag with Cache ID",
           "type": "bool",
           "tooltip": "Tag every output with 'CacheID:<id>' so entries can be told apart, mostly useful with Read All Entries.",
           "default": "false",
@@ -41953,7 +42154,7 @@
           ]
         },
         "bOmitInvalidAndEmpty": {
-          "display": "Omit Invalid And Empty",
+          "display": "Omit Invalid and Empty",
           "type": "bool",
           "tooltip": "Drop entries that resolve to invalid / empty data instead of keeping them as placeholders.",
           "default": "true",
@@ -41995,7 +42196,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -42484,7 +42685,7 @@
           "default": "true"
         },
         "TagsToData": {
-          "display": "Tags To Data",
+          "display": "Tags to Data",
           "type": "EPCGExTagsToDataAction",
           "tooltip": "How key:value tags (from the forwarded actor/component tags) are converted to attributes.",
           "default": "EPCGExTagsToDataAction::ToData",
@@ -42494,7 +42695,7 @@
       "hints": [
         {
           "style": "info",
-          "text": "This is the vanilla actor getter with a PCGEx element under it, so the actor and component selection blocks behave exactly as they do on the stock node, `Ignore PCG Generated Components` included. What is not inherited is the path processor: no **Paths** input pin, and no `Omit Invalid Paths Outputs`.",
+          "text": "This is the vanilla actor getter with a PCGEx element under it, so the actor and component selection blocks behave exactly as they do on the stock node, `Ignore PCGGenerated Components` included. What is not inherited is the path processor: no **Paths** input pin, and no `Omit Invalid Paths Outputs`.",
           "anchor": "whats_it_for"
         }
       ],
@@ -44982,7 +45183,7 @@
           ]
         },
         "TagsToAttributes": {
-          "display": "Tags To Attributes",
+          "display": "Tags to Attributes",
           "type": "FPCGExNameFiltersDetails",
           "tooltip": "Tags to convert to attributes: simple tags become boolean (presence), tag:value pairs become their typed value.",
           "default": "FPCGExNameFiltersDetails(false)",
@@ -45019,7 +45220,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -45767,7 +45968,7 @@
           "fields": [
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "FPCGExScaleToFitDetails",
               "tooltip": "How to scale objects to fit within target bounds."
             },
@@ -45983,7 +46184,7 @@
           "semantics": "Two filters, read independently: one for attribute names, one for tags. Both are name tests, not value tests, so nothing here can decide by what an attribute contains. The rows this block carries for carry-over work are hidden on this node, which is the delete-only form of the same settings."
         },
         "bDrawAsCompactNode": {
-          "display": "Draw As Compact Node",
+          "display": "Draw as Compact Node",
           "type": "bool",
           "tooltip": "Whether to draw this node as a compact node",
           "default": "true",
@@ -46145,7 +46346,7 @@
             },
             {
               "name": "OperandBSource",
-              "display": "Operand B Source",
+              "display": "Operand BSource",
               "type": "EPCGExInputValueType",
               "tooltip": "Type of OperandB",
               "default": "EPCGExInputValueType::Constant",
@@ -50466,7 +50667,7 @@
             },
             {
               "name": "OperandBValue",
-              "display": "Operand B Value",
+              "display": "Operand BValue",
               "type": "FPCGExInputShorthandSelectorDouble",
               "tooltip": "OperandB",
               "default": "FPCGExInputShorthandSelectorDouble(FName(\"OperandB\"), 0, false)"
@@ -50797,7 +50998,7 @@
           ]
         },
         "bApplyPointScaleToOffset": {
-          "display": "Apply Point Scale To Offset",
+          "display": "Apply Point Scale to Offset",
           "type": "bool",
           "tooltip": "Scale offset direction & distance using point scale.",
           "default": "false",
@@ -51128,7 +51329,7 @@
           ]
         },
         "LookAtAttribute": {
-          "display": "Look At Attribute",
+          "display": "Look at Attribute",
           "type": "FPCGAttributePropertyInputSelector",
           "tooltip": "Vector attribute representing either a direction or world position, depending on selected mode.",
           "overridable": true,
@@ -51772,7 +51973,7 @@
       "off_label": [
         {
           "claim": "Switched to detect without inserting, this is a whole-dataset overlap test: nothing about the paths changes and the tags alone say which of them met something, which is the cheap way to route overlapping and non-overlapping paths apart before doing real work on either.",
-          "grounded_in": "with Create Point At Crossings off the path is forwarded rather than rebuilt, and the has-crossings tag is written from the crossing count found during the search"
+          "grounded_in": "with Create Point at Crossings off the path is forwarded rather than rebuilt, and the has-crossings tag is written from the crossing count found during the search"
         },
         {
           "claim": "The cross direction attribute records the other path's heading at the meeting point, so a crossing point carries information about a path it is not part of. Orienting on it turns each inserted point to face along whatever cut it.",
@@ -51824,7 +52025,7 @@
           ]
         },
         "CanBeCutTag": {
-          "display": "Can Be Cut Tag",
+          "display": "Can be Cut Tag",
           "type": "FName",
           "tooltip": "Filter entire dataset. If any tag is found on these paths, they are considered cut-able. Empty or None will ignore filtering.",
           "default": "NAME_None",
@@ -51866,7 +52067,7 @@
           "edit_condition_hides": true
         },
         "bCreatePointAtCrossings": {
-          "display": "Create Point At Crossings",
+          "display": "Create Point at Crossings",
           "type": "bool",
           "tooltip": "If enabled, a point will be created at the crossing' location.",
           "default": "true",
@@ -52043,7 +52244,7 @@
           "edit_condition": "bTagIfHasNoCrossings"
         },
         "bOmitUncuttableFromOutput": {
-          "display": "Omit Uncuttable From Output",
+          "display": "Omit Uncuttable from Output",
           "type": "bool",
           "tooltip": "If enabled, paths that are only \"cutters\" (paths that will cut but won't be cut).",
           "default": "false",
@@ -52196,7 +52397,7 @@
           "semantics": "Runs once per seed before any cluster is touched, and every index it returns becomes a query. It is what decides how many searches the node performs, which makes it the first place to look when a run is slower or emptier than expected."
         },
         "bAddSeedToPath": {
-          "display": "Add Seed To Path",
+          "display": "Add Seed to Path",
           "type": "bool",
           "tooltip": "Add seed point at the beginning of the path",
           "default": "false",
@@ -52210,7 +52411,7 @@
           ]
         },
         "bAddGoalToPath": {
-          "display": "Add Goal To Path",
+          "display": "Add Goal to Path",
           "type": "bool",
           "tooltip": "Add goal point at the end of the path",
           "default": "false",
@@ -52273,7 +52474,7 @@
           "enum": "EPCGExHeuristicScoreMode"
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
@@ -52317,7 +52518,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -52344,7 +52545,7 @@
           ]
         },
         "GoalAttributesToPathTags": {
-          "display": "Goal Attributes To Path Tags",
+          "display": "Goal Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy goal point attributes as tags on output paths.",
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
@@ -52388,7 +52589,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -52424,7 +52625,7 @@
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
           "edit_condition_hides": true,
           "see": "FPCGExPathOutputDetails",
-          "semantics": "Tested against the finished point count, extras included, so turning `Add Seed To Path` and `Add Goal To Path` on lifts every path two points closer to a minimum and two points closer to a maximum.",
+          "semantics": "Tested against the finished point count, extras included, so turning `Add Seed to Path` and `Add Goal to Path` on lifts every path two points closer to a minimum and two points closer to a maximum.",
           "interacts_with": [
             "bAddSeedToPath",
             "bAddGoalToPath"
@@ -52802,7 +53003,7 @@
           "edit_condition": "bUseNoGrowth"
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails"
@@ -52842,7 +53043,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -53008,17 +53209,17 @@
           "semantics": "The same four pickers the cluster nodes offer, deciding the same thing: how many queries the node runs and which goal each of them aims at. Pairings are settled against the two datasets alone, so a pair the navmesh cannot connect is still posed and then quietly fails."
         },
         "bAddSeedToPath": {
-          "display": "Add Seed To Path",
+          "display": "Add Seed to Path",
           "type": "bool",
           "tooltip": "Add seed point at the beginning of the path",
           "default": "true",
-          "semantics": "Prepends a point at the seed's own location. Both this and `Add Goal To Path` default on here, unlike their cluster counterparts, because the corridor's own first and last positions come from the navigation system and need not sit exactly on the seed and the goal.",
+          "semantics": "Prepends a point at the seed's own location. Both this and `Add Goal to Path` default on here, unlike their cluster counterparts, because the corridor's own first and last positions come from the navigation system and need not sit exactly on the seed and the goal.",
           "interacts_with": [
             "bAddGoalToPath"
           ]
         },
         "bAddGoalToPath": {
-          "display": "Add Goal To Path",
+          "display": "Add Goal to Path",
           "type": "bool",
           "tooltip": "Add goal point at the end of the path",
           "default": "true",
@@ -53062,7 +53263,7 @@
           ]
         },
         "SeedAttributesToPathTags": {
-          "display": "Seed Attributes To Path Tags",
+          "display": "Seed Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy seed point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails"
@@ -53102,7 +53303,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -53128,7 +53329,7 @@
           ]
         },
         "GoalAttributesToPathTags": {
-          "display": "Goal Attributes To Path Tags",
+          "display": "Goal Attributes to Path Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy goal point attributes as tags on output paths.",
           "see": "FPCGExAttributeToTagDetails"
@@ -53168,7 +53369,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -53362,35 +53563,35 @@
           ]
         },
         "bAddSeedToPath": {
-          "display": "Add Seed To Path",
+          "display": "Add Seed to Path",
           "type": "bool",
           "tooltip": "Add seed point at the beginning of the path",
           "default": "false",
           "overridable": true,
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
           "edit_condition_hides": true,
-          "semantics": "The seed here is the plot's first point, copied from the plot data. `Add Goal To Path` appends the plot's last point in the same way.",
+          "semantics": "The seed here is the plot's first point, copied from the plot data. `Add Goal to Path` appends the plot's last point in the same way.",
           "interacts_with": [
             "bAddGoalToPath",
             "bClosedLoop"
           ]
         },
         "bAddGoalToPath": {
-          "display": "Add Goal To Path",
+          "display": "Add Goal to Path",
           "type": "bool",
           "tooltip": "Add goal point at the end of the path",
           "default": "false",
           "overridable": true,
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
           "edit_condition_hides": true,
-          "semantics": "Suppressed under `Closed Loop` when `Add Seed To Path` is also on, because the two would name the same waypoint and the path would end where it started. Leave the seed off and the closing waypoint is appended as usual.",
+          "semantics": "Suppressed under `Closed Loop` when `Add Seed to Path` is also on, because the two would name the same waypoint and the path would end where it started. Leave the seed off and the closing waypoint is appended as usual.",
           "interacts_with": [
             "bAddSeedToPath",
             "bClosedLoop"
           ]
         },
         "bAddPlotPointsToPath": {
-          "display": "Add Plot Points To Path",
+          "display": "Add Plot Points to Path",
           "type": "bool",
           "tooltip": "Insert plot points inside the path",
           "default": "false",
@@ -53423,7 +53624,7 @@
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
           "edit_condition_hides": true,
           "semantics": "`Vtx` copies the Vtx each leg ran through, trimmed so a junction is written once. `Edge` copies the Edges points of the crossed edges instead and does no trimming at all, since consecutive legs never share an edge.",
-          "trap": "Under `Edge` the plot's own points are still copied in when `Add Seed To Path`, `Add Goal To Path` or `Add Plot Points To Path` is on, so the result mixes points from the Edges data with points from the plot data."
+          "trap": "Under `Edge` the plot's own points are still copied in when `Add Seed to Path`, `Add Goal to Path` or `Add Plot Points to Path` is on, so the result mixes points from the Edges data with points from the plot data."
         },
         "SeedPicking": {
           "display": "Seed Picking",
@@ -53467,7 +53668,7 @@
           "semantics": "Only affects how waypoints are matched to cluster elements. The search itself is untouched."
         },
         "bOmitCompletePathOnFailedPlot": {
-          "display": "Omit Complete Path On Failed Plot",
+          "display": "Omit Complete Path on Failed Plot",
           "type": "bool",
           "default": "false",
           "edit_condition": "OutputMode==EPCGExPathfindingOutputMode::Paths",
@@ -53608,12 +53809,12 @@
       },
       "settings": {
         "bAddSeedToPath": {
-          "display": "Add Seed To Path",
+          "display": "Add Seed to Path",
           "type": "bool",
           "tooltip": "Add seed point at the beginning of the path",
           "default": "true",
           "overridable": true,
-          "semantics": "The seed here is the plot's first point, copied in at its own location. `Add Goal To Path` appends the plot's last point in the same way, and both default on.",
+          "semantics": "The seed here is the plot's first point, copied in at its own location. `Add Goal to Path` appends the plot's last point in the same way, and both default on.",
           "trap": "A plot whose finished path holds two points or fewer is discarded outright, extras included. Turning both off is enough to lose a short plot entirely.",
           "interacts_with": [
             "bAddGoalToPath",
@@ -53621,7 +53822,7 @@
           ]
         },
         "bAddGoalToPath": {
-          "display": "Add Goal To Path",
+          "display": "Add Goal to Path",
           "type": "bool",
           "tooltip": "Add goal point at the end of the path",
           "default": "true",
@@ -53632,7 +53833,7 @@
           ]
         },
         "bAddPlotPointsToPath": {
-          "display": "Add Plot Points To Path",
+          "display": "Add Plot Points to Path",
           "type": "bool",
           "tooltip": "Insert plot points inside the path",
           "default": "false",
@@ -53693,7 +53894,7 @@
           "tooltip": "Nav agent to be used by the nav system."
         },
         "bOmitCompletePathOnFailedPlot": {
-          "display": "Omit Complete Path On Failed Plot",
+          "display": "Omit Complete Path on Failed Plot",
           "type": "bool",
           "default": "false",
           "overridable": true,
@@ -54247,7 +54448,7 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsPaths",
       "classification": "node",
-      "purpose": "Threads loose points into a path at the place they belong in its order. Each point on the **Targets** pin finds the segment it is closest to and becomes a new point inside it, so a scatter of points that had nothing to do with the path comes out as part of it. `Snap To Path` decides whether the new point moves onto the path or the path detours out to meet it, and on an open path targets sitting past either end can extend the run rather than crowd its last segment. Five optional attributes record where each insertion came from and how far it had to reach.",
+      "purpose": "Threads loose points into a path at the place they belong in its order. Each point on the **Targets** pin finds the segment it is closest to and becomes a new point inside it, so a scatter of points that had nothing to do with the path comes out as part of it. `Snap to Path` decides whether the new point moves onto the path or the path detours out to meet it, and on an open path targets sitting past either end can extend the run rather than crowd its last segment. Five optional attributes record where each insertion came from and how far it had to reach.",
       "situation": "Points produced somewhere else, doors, junctions or markers, that have to become part of a path already running past them.",
       "mechanism": {
         "text": "One execution takes paths and target points, and returns each path with one new point per target that found a home in it. Every original point survives in its original order, so the output count is the input count plus the accepted insertions, and a path that accepted none is passed straight through untouched. A target claims the segment whose closest point to it is nearest, which is a global choice across the whole path rather than a per-segment one, and several targets landing in one segment are laid out along it in the order they sit. An inserted point starts from the attributes of the point its segment begins at, then the `Blending` dropdown decides what it is really worth, then `Target Forwarding` copies anything named from the target that produced it.",
@@ -54259,7 +54460,7 @@
       },
       "off_label": [
         {
-          "claim": "With Snap To Path off and Prevent Collocation on, the node reads as a stitching pass rather than an insertion: the targets keep their own positions and the path is rerouted through them, so a coarse path plus a set of exact positions becomes one run that visits all of them in order.",
+          "claim": "With Snap to Path off and Prevent Collocation on, the node reads as a stitching pass rather than an insertion: the targets keep their own positions and the path is rerouted through them, so a coarse path plus a set of exact positions becomes one run that visits all of them in order.",
           "grounded_in": "The insert position is the target's original location unless bSnapToPath is set, and the original path points are all retained"
         },
         {
@@ -54320,7 +54521,7 @@
           "semantics": "Off, a target is inserted into every path it is close enough to, so one point can end up in several paths at once. On, the paths compete and the one whose segment the target is nearest to takes it."
         },
         "bSnapToPath": {
-          "display": "Snap To Path",
+          "display": "Snap to Path",
           "type": "bool",
           "tooltip": "If enabled, inserted points will be snapped to the path. Otherwise, they retain their original position.",
           "default": "false",
@@ -54351,7 +54552,7 @@
           "edit_condition": "!bEdgeInteriorOnly",
           "edit_condition_hides": true,
           "semantics": "Targets that project past the first or last point of an open path are placed beyond it, on the line the terminal segment continues along, and extend the run. Closed paths never extend, since they have no end to extend past.",
-          "trap": "The extension points sit on that continued line whatever `Snap To Path` says about the interior ones, and the `Alpha` written on them is not a 0 to 1 position: it is the projection distance in world units, negative before the start and one plus that distance after the end.",
+          "trap": "The extension points sit on that continued line whatever `Snap to Path` says about the interior ones, and the `Alpha` written on them is not a 0 to 1 position: it is the projection distance in world units, negative before the start and one plus that distance after the end.",
           "interacts_with": [
             "bSnapToPath",
             "AlphaAttributeName"
@@ -54541,7 +54742,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -55621,7 +55822,7 @@
           "grounded_in": "the PointFilterCache test at the head of the point loop routes the index to HandleInvalidPoint, which writes an empty asset path and leaves the segment slot without a mesh entry"
         },
         {
-          "claim": "With Weight To Attribute on, every point that produced no component is written as -1, or as 0 in the two Density options, so the weight attribute doubles as a per-point map of where segments actually exist, including the trailing point of every open path.",
+          "claim": "With Weight to Attribute on, every point that produced no component is written as -1, or as 0 in the two Density options, so the weight attribute doubles as a per-point map of where segments actually exist, including the trailing point of every open path.",
           "grounded_in": "HandleInvalidPoint writes -1 through the weight writer or 0 into Density for filtered, unresolved, non-mesh and end-of-path indices"
         }
       ],
@@ -55898,7 +56099,7 @@
           "trap": "Plain path points carry neither ArriveTangent nor LeaveTangent. On a freshly placed node the missing attribute is an error and that path builds nothing, which makes the tangent source the first thing to set on this node rather than the last."
         },
         "ScaleToFit": {
-          "display": "Scale To Fit",
+          "display": "Scale to Fit",
           "type": "FPCGExScaleToFitDetails",
           "tooltip": "If enabled, will break scaling interpolation across the spline.",
           "default": "FPCGExScaleToFitDetails(EPCGExFitMode::None)",
@@ -55908,7 +56109,7 @@
           "fields": [
             {
               "name": "ScaleToFitMode",
-              "display": "Scale To Fit Mode",
+              "display": "Scale to Fit Mode",
               "type": "EPCGExFitMode",
               "tooltip": "How scaling is applied to fit within target bounds. None = no scaling, Uniform = same scale all axes, Individual = per-axis control.",
               "default": "EPCGExFitMode::Uniform",
@@ -55916,7 +56117,7 @@
             },
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "EPCGExScaleToFit",
               "tooltip": "Uniform scaling strategy. Fill = stretch to fill, Min = fit smallest axis, Max = fit largest axis, Avg = average.",
               "default": "EPCGExScaleToFit::Min",
@@ -55924,7 +56125,7 @@
             },
             {
               "name": "ScaleToFitX",
-              "display": "Scale To Fit X",
+              "display": "Scale to Fit X",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for X axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -55932,7 +56133,7 @@
             },
             {
               "name": "ScaleToFitY",
-              "display": "Scale To Fit Y",
+              "display": "Scale to Fit Y",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Y axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -55940,7 +56141,7 @@
             },
             {
               "name": "ScaleToFitZ",
-              "display": "Scale To Fit Z",
+              "display": "Scale to Fit Z",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Z axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -56072,7 +56273,7 @@
           ]
         },
         "WeightToAttribute": {
-          "display": "Weight To Attribute",
+          "display": "Weight to Attribute",
           "type": "EPCGExWeightOutputMode",
           "tooltip": "Update point scale so staged asset fits within its bounds",
           "default": "EPCGExWeightOutputMode::NoOutput",
@@ -56435,7 +56636,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/staging-spline-mesh",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSplineMesh.h",
-        "hash": "ccdd872634356613d812b4038e0e29778e305de8"
+        "hash": "03368169bef4ac07abbd0ba6402a445e04ef55c9"
       }
     },
     "UPCGExPathSplineMeshSimpleSettings": {
@@ -57036,7 +57237,7 @@
       },
       "off_label": [
         {
-          "claim": "With Tolerance large and Only Match Start And Ends off, the node stops being about continuity and becomes a nearest-ends chainer: every fragment in a region gets linked to whichever fragment end is closest, which turns a field of unordered segments into a small number of long runs whose shape nobody chose.",
+          "claim": "With Tolerance large and Only Match Start and Ends off, the node stops being about continuity and becomes a nearest-ends chainer: every fragment in a region gets linked to whichever fragment end is closest, which turns a field of unordered segments into a small number of long runs whose shape nobody chose.",
           "grounded_in": "Candidates are collected by octree query on the endpoint bounds alone, and are only rejected on distance, partition and, optionally, alignment"
         }
       ],
@@ -57103,7 +57304,7 @@
           "semantics": "Declared with three choices, none of which is read anywhere in the node. A fused join always keeps one of the two original points exactly as it was, which is what the shipped `None` describes."
         },
         "bOnlyMatchStartAndEnds": {
-          "display": "Only Match Start And Ends",
+          "display": "Only Match Start and Ends",
           "type": "bool",
           "tooltip": "If enabled, stitching will only happen between a path's end point and another path start point. Otherwise, it's based on spatial proximity alone.",
           "default": "false",
@@ -57245,7 +57446,7 @@
           "semantics": "Decides which attributes and tags survive a merge, which is a question that only arises here because the members were separate datasets carrying separate metadata. An attribute missing from one member arrives at its default on that member's points."
         },
         "TagsToAttributes": {
-          "display": "Tags To Attributes",
+          "display": "Tags to Attributes",
           "type": "FPCGExNameFiltersDetails",
           "tooltip": "Tags to convert to attributes: simple tags become boolean (presence), tag:value pairs become their typed value.",
           "default": "FPCGExNameFiltersDetails(false)",
@@ -57282,7 +57483,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -57448,7 +57649,7 @@
             },
             {
               "name": "bSnapOnEdge",
-              "display": "Snap On Edge",
+              "display": "Snap on Edge",
               "type": "bool",
               "tooltip": "When enabled, point will be moved exactly on the edge.",
               "default": "false"
@@ -57726,7 +57927,7 @@
             },
             {
               "name": "ScaleToFitSource",
-              "display": "Scale To Fit Source",
+              "display": "Scale to Fit Source",
               "type": "EPCGExEntryVariationMode",
               "tooltip": "Where this entry's Scale to Fit comes from when a staging node considers entry overrides.",
               "default": "EPCGExEntryVariationMode::None",
@@ -57957,7 +58158,7 @@
           ]
         },
         "bFilterByTags": {
-          "display": "Filter By Tags",
+          "display": "Filter by Tags",
           "type": "bool",
           "tooltip": "If enabled, only spawn data from the PCGDataAsset that matches these tags. Empty means all data.",
           "default": "false",
@@ -58014,7 +58215,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -58109,7 +58310,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-pcgdata",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadPCGData.h",
-        "hash": "d21b7212c7a0d30cb614f9793c17efdf4f01bb07"
+        "hash": "94d75a2da9ff72159de7141073dfb37df950e44c"
       }
     },
     "UPCGExPickClosestClustersSettings": {
@@ -58188,7 +58389,7 @@
           "enum": "EPCGExFilterDataAction",
           "overridable": true,
           "semantics": "Keep emits the picked clusters, Omit emits the rest, and Tag emits every cluster with `Keep Tag` or `Omit Tag` added according to its verdict. The two tag names are read only under Tag.",
-          "trap": "Under Omit and Tag the clusters that reach the output are the ones no target claimed, and there is no target to read values from, so those clusters carry nothing from `Target Forwarding` or `Target Attributes To Tags`. Both blocks stay on screen and act only on whatever picked clusters the action lets through.",
+          "trap": "Under Omit and Tag the clusters that reach the output are the ones no target claimed, and there is no target to read values from, so those clusters carry nothing from `Target Forwarding` or `Target Attributes to Tags`. Both blocks stay on screen and act only on whatever picked clusters the action lets through.",
           "interacts_with": [
             "KeepTag",
             "OmitTag",
@@ -58236,7 +58437,7 @@
           "edit_condition": "Action == EPCGExFilterDataAction::Tag"
         },
         "TargetAttributesToTags": {
-          "display": "Target Attributes To Tags",
+          "display": "Target Attributes to Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Copy target point attributes as tags on output clusters.",
           "overridable": true,
@@ -58282,7 +58483,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -58382,7 +58583,7 @@
           "fields": [
             {
               "name": "bTreatAsNormalized",
-              "display": "Treat As Normalized",
+              "display": "Treat as Normalized",
               "type": "bool",
               "tooltip": "Whether to treat values as discrete indices or relative ones",
               "default": "false"
@@ -58478,7 +58679,7 @@
           "fields": [
             {
               "name": "bTreatAsNormalized",
-              "display": "Treat As Normalized",
+              "display": "Treat as Normalized",
               "type": "bool",
               "tooltip": "Whether to treat values as discrete indices or relative ones",
               "default": "false"
@@ -58568,7 +58769,7 @@
           "fields": [
             {
               "name": "bTreatAsNormalized",
-              "display": "Treat As Normalized",
+              "display": "Treat as Normalized",
               "type": "bool",
               "tooltip": "Whether to treat values as discrete indices or relative ones",
               "default": "false"
@@ -58680,7 +58881,7 @@
           "fields": [
             {
               "name": "bTreatAsNormalized",
-              "display": "Treat As Normalized",
+              "display": "Treat as Normalized",
               "type": "bool",
               "tooltip": "Whether to treat values as discrete indices or relative ones",
               "default": "false"
@@ -58754,7 +58955,7 @@
         "UPCGExPickerFactoryData"
       ],
       "purpose": "The base every Picker : node inherits. It never appears in the palette, and this page carries what they all share: the Picker pin they all emit on, the settings that decide what an authored value means, and how several pickers on one pin combine. Their consumers are Cherry Pick Points, Promote Attributes, Filter : Picker, and the Uber Filters, which take pickers to narrow what they test.",
-      "situation": "Reading any Picker : page and needing to know what Treat As Normalized changes, or what happens to a pick that lands outside the collection.",
+      "situation": "Reading any Picker : page and needing to know what Treat as Normalized changes, or what happens to a pick that lands outside the collection.",
       "mechanism": {
         "text": "A picker answers one question, which indices, and it is asked at execution by the node consuming it. That node supplies the count, so the same picker resolves against four entries or four hundred without being touched. Several pickers on one pin are gathered into one set of indices, which makes the combination a union: order does not matter, and picks two of them share collapse to one. Nothing in a picker names a dataset, which is what lets one be reused across nodes and across collections of different sizes.",
         "steps": [
@@ -59151,7 +59352,7 @@
             "label": "Sources",
             "note": "Points or attribute sets whose rows carry the asset paths to preload. Every connected dataset is read, and each is resolved for its own attribute.",
             "required": "conditional",
-            "condition": "on the Preload Resources entry with Load From Inputs on; the pin does not exist otherwise"
+            "condition": "on the Preload Resources entry with Load from Inputs on; the pin does not exist otherwise"
           },
           {
             "label": "Execution Dependency",
@@ -59201,7 +59402,7 @@
           "edit_condition_hides": true
         },
         "bLoadFromInputs": {
-          "display": "Load From Inputs",
+          "display": "Load from Inputs",
           "type": "bool",
           "tooltip": "Also read assets to preload from a connected input (points or attribute set). Opt-in: PCG forces the first input pin to be Required, so the input pin only exists while this is enabled.",
           "default": "false",
@@ -59226,7 +59427,7 @@
           "edit_condition_hides": true
         },
         "bManageOnOriginalComponent": {
-          "display": "Manage On Original Component",
+          "display": "Manage on Original Component",
           "type": "bool",
           "tooltip": "Whether to store resources on original component or not. Disable this when working with partitioned graphs that don't have unique per-partitions resources",
           "default": "true",
@@ -59888,7 +60089,7 @@
             },
             {
               "name": "bBorderToNearestCoreOnly",
-              "display": "Border To Nearest Core Only",
+              "display": "Border to Nearest Core Only",
               "type": "bool",
               "tooltip": "If true, connects border points to their nearest core point only. If false, connects to all reachable core points.",
               "default": "true"
@@ -60454,7 +60655,7 @@
             },
             {
               "name": "KMeansIterations",
-              "display": "K Means Iterations",
+              "display": "KMeans Iterations",
               "type": "int32",
               "tooltip": "K-Means iterations (for KMeansCentroids mode)",
               "default": "10"
@@ -62250,7 +62451,7 @@
           ]
         },
         "bAddEntryWhenCreatingFromExistingData": {
-          "display": "Add Entry When Creating From Existing Data",
+          "display": "Add Entry when Creating from Existing Data",
           "type": "bool",
           "tooltip": "Add metadata entry when creating a tracker from existing attribute set data.",
           "default": "false",
@@ -62260,7 +62461,7 @@
           "semantics": "Only reached by Create when the Tracker pin did deliver data, which is the case where the node reuses an existing attribute set as the tracker's body. An attribute set arriving with no rows needs this on, or the bool it carries has no entry to sit on."
         },
         "RemainderOffsetWhenCreateInsteadOfUpdate": {
-          "display": "Remainder Offset When Create Instead Of Update",
+          "display": "Remainder Offset when Create Instead Of Update",
           "type": "int32",
           "tooltip": "An offset applied when creating a tracker in \"Create or Update\" mode. The default value assume the tracker is created from inside a subgraph and thus that one iteration passed already.",
           "default": "-1",
@@ -62469,7 +62670,7 @@
         "text": "Every edge starts at the value the chosen refinement declares, either all kept or all removed, and the refinement then flips the ones it decides about. Nothing else in the node judges an edge. `Mode` decides what that marking becomes: a rebuilt cluster, two sets of edge points, or an attribute written beside the cluster it arrived as. A Vtx is never judged on its own; it leaves only when it is left with no edge, and only in Clusters mode. Two settings then get to overturn the rule, and both of them put edges back rather than taking more away.",
         "steps": [
           "The refinement marks edges, starting from the all-kept or all-removed baseline it declares.",
-          "Restore Edges That Connect To Valid Nodes puts back every removed edge whose two Vtx each kept at least one other edge.",
+          "Restore Edges That Connect to Valid Nodes puts back every removed edge whose two Vtx each kept at least one other edge.",
           "Sanitization puts back one edge at every Vtx, or every edge its filters accept.",
           "Mode turns what survived into a rebuilt cluster, into two sets of edge points, or into an attribute."
         ]
@@ -62545,7 +62746,7 @@
           "type": "TObjectPtr<UPCGExEdgeRefineInstancedFactory>",
           "overridable": true,
           "inlined_in_panel": true,
-          "semantics": "The rule is picked here, never wired. The slot ships empty and the node cancels with an error until something fills it, and the node's subtitle carries the picked rule's name, showing three dots while the slot is empty. Only one rule fits: to apply two, chain two of these nodes. The choice also reshapes the node around it, since it is what decides whether the Heuristics pin is required, whether the Edge Filters pin is read, and whether Restore Edges That Connect To Valid Nodes runs at all.",
+          "semantics": "The rule is picked here, never wired. The slot ships empty and the node cancels with an error until something fills it, and the node's subtitle carries the picked rule's name, showing three dots while the slot is empty. Only one rule fits: to apply two, chain two of these nodes. The choice also reshapes the node around it, since it is what decides whether the Heuristics pin is required, whether the Edge Filters pin is read, and whether Restore Edges That Connect to Valid Nodes runs at all.",
           "interacts_with": [
             "HeuristicScoreMode",
             "bRestoreEdgesThatConnectToValidNodes"
@@ -62568,7 +62769,7 @@
           "default": "EPCGExRefineEdgesOutput::Clusters",
           "enum": "EPCGExRefineEdgesOutput",
           "semantics": "**Clusters** rebuilds. Only edges that survived are inserted, an edge whose Vtx did not survive goes with it, the result is re-split by connected component and the Vtx dataset comes out shorter than it went in. **Points** replaces the Vtx and Edges outputs outright with **Kept Edges** and **Removed Edges**, one pair per incoming Edges dataset, holding the original edge points split in two with nothing rebuilt. **Attribute** carries the cluster through unchanged and records the verdict instead, under two separate blocks, one for the Vtx and one for the edges; both attribute names are validated before the node runs, so a name the metadata cannot take cancels the node rather than producing nothing.",
-          "trap": "Sanitization, Restore Edges That Connect To Valid Nodes and Cluster Output Settings are shown in Clusters mode only, and just the last of the three stops running when the mode changes. A Sanitization value left behind keeps restoring edges in Points and Attribute modes with no control on screen to say so, and set to Filters it still adds a required Sanitize Filters pin.",
+          "trap": "Sanitization, Restore Edges That Connect to Valid Nodes and Cluster Output Settings are shown in Clusters mode only, and just the last of the three stops running when the mode changes. A Sanitization value left behind keeps restoring edges in Points and Attribute modes with no control on screen to say so, and set to Filters it still adds a required Sanitize Filters pin.",
           "interacts_with": [
             "Sanitization",
             "bRestoreEdgesThatConnectToValidNodes",
@@ -62630,7 +62831,7 @@
           ]
         },
         "bRestoreEdgesThatConnectToValidNodes": {
-          "display": "Restore Edges That Connect To Valid Nodes",
+          "display": "Restore Edges That Connect to Valid Nodes",
           "type": "bool",
           "default": "false",
           "edit_condition": "Mode == EPCGExRefineEdgesOutput::Clusters",
@@ -63274,7 +63475,7 @@
           "tooltip": "Attribute pairs to swap values between when reversing.",
           "overridable": true,
           "see": "FPCGExSwapAttributePairDetails",
-          "semantics": "Exchanges the per-point values of two attributes that have to trade places when direction flips. Multiply By Minus One additionally negates both, which is what a directional value such as a tangent needs.",
+          "semantics": "Exchanges the per-point values of two attributes that have to trade places when direction flips. Multiply by Minus One additionally negates both, which is what a directional value such as a tangent needs.",
           "trap": "The swap runs only on datasets that were actually reversed. A dataset the method left alone keeps its pairs as they were, which is correct for tangents and surprising for anything else.",
           "interacts_with": [
             "Method"
@@ -63433,14 +63634,14 @@
           "edit_condition_hides": true
         },
         "bAlwaysSampleWhenInside": {
-          "display": "Always Sample When Inside",
+          "display": "Always Sample when Inside",
           "type": "bool",
           "tooltip": "If enabled, will always sample points if they lie inside, even if further away from the edges than the specified max range.",
           "default": "true",
           "overridable": true
         },
         "bOnlySampleWhenInside": {
-          "display": "Only Sample When Inside",
+          "display": "Only Sample when Inside",
           "type": "bool",
           "tooltip": "If enabled, will only sample paths if the point lies inside",
           "default": "true",
@@ -64146,7 +64347,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -64214,7 +64415,7 @@
       "purpose": "Samples paths from your points, and by default it samples them as enclosed areas rather than as lines. A path is projected flat and a point is admitted when it falls inside that projection, which is what makes this the node for asking what region a point is in and how far it sits from that region's edge. Turning the inclusion settings off is what turns it back into a plain distance-to-the-line sampler.",
       "situation": "Points that need to know which authored outline they fall within, and how near its boundary they are.",
       "mechanism": {
-        "text": "Each path is projected onto a plane and each point is tested against that projection. `Only Sample When Inside` decides whether a point outside the shape may sample it at all, and `Always Sample When Inside` decides whether a point inside is exempt from the range band. Whatever survives those two is then handled like any sampler: `Sample Method` picks one path or accumulates them all, weights come from distance to the path as `Inside Weighting` shapes it, and the outputs and blending read the result. Blending reads the two path points either side of each sampled position, split by where that position falls along the segment. `Inclusion Offset` grows or shrinks the tested shape before any of this.",
+        "text": "Each path is projected onto a plane and each point is tested against that projection. `Only Sample when Inside` decides whether a point outside the shape may sample it at all, and `Always Sample when Inside` decides whether a point inside is exempt from the range band. Whatever survives those two is then handled like any sampler: `Sample Method` picks one path or accumulates them all, weights come from distance to the path as `Inside Weighting` shapes it, and the outputs and blending read the result. Blending reads the two path points either side of each sampled position, split by where that position falls along the segment. `Inclusion Offset` grows or shrinks the tested shape before any of this.",
         "steps": [
           "Paths are projected and offset, and inclusion is decided against the offset shape.",
           "The range band is applied to whatever inclusion admitted, unless the point is inside and exempt.",
@@ -64297,14 +64498,14 @@
           "edit_condition_hides": true
         },
         "bAlwaysSampleWhenInside": {
-          "display": "Always Sample When Inside",
+          "display": "Always Sample when Inside",
           "type": "bool",
           "tooltip": "If enabled, will always sample paths if the point lies inside, even if further away from the edges than the specified max range.",
           "default": "true",
           "semantics": "Ships on, and exempts points inside a shape from the range band entirely. A point deep inside a large outline samples it even when the distance to the nearest edge is far past `Max Range`, so the range only ever governs points outside."
         },
         "bOnlySampleWhenInside": {
-          "display": "Only Sample When Inside",
+          "display": "Only Sample when Inside",
           "type": "bool",
           "tooltip": "If enabled, will only sample paths if the point lies inside",
           "default": "true",
@@ -64526,14 +64727,14 @@
             }
           ],
           "semantics": "`Distance` treats inside and outside alike: 1 at the nearest edge, falling to 0 at the far end of the weighting span. `Full` gives any path the point sits inside the whole weight, however far its edge. `Depth` turns the inside case around, so a shape weighs more the deeper the point sits in it, saturating at `Depth Range`, or at the span's far end when that is 0. The two weight scales multiply the result last, after the curve on the outputs, so a scale above 1 survives it.",
-          "trap": "Depth is measured to the nearest edge, the same distance the range band tests. With `Always Sample When Inside` off, a point sitting deeper than `Max Range` drops the shape before its depth can count.",
+          "trap": "Depth is measured to the nearest edge, the same distance the range band tests. With `Always Sample when Inside` off, a point sitting deeper than `Max Range` drops the shape before its depth can count.",
           "interacts_with": [
             "WeightMethod",
             "bAlwaysSampleWhenInside"
           ]
         },
         "bWeightFromOriginalTransform": {
-          "display": "Weight From Original Transform",
+          "display": "Weight from Original Transform",
           "type": "bool",
           "tooltip": "If enabled, will preserve the original point transform as base for weighting. Otherwise, use transform identity.",
           "default": "true",
@@ -64840,7 +65041,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -64869,7 +65070,7 @@
         {
           "anchor": "whats_it_for",
           "style": "warning",
-          "text": "The shipped configuration is an inside test, not a proximity test. `Only Sample When Inside` and `Always Sample When Inside` are both on out of the box, so points outside every path fail and points inside ignore the range. Clear the first one before treating this as a distance-to-the-line sampler."
+          "text": "The shipped configuration is an inside test, not a proximity test. `Only Sample when Inside` and `Always Sample when Inside` are both on out of the box, so points outside every path fail and points inside ignore the range. Clear the first one before treating this as a distance-to-the-line sampler."
         }
       ],
       "related": [
@@ -64944,7 +65145,7 @@
           {
             "label": "Use Value If",
             "required": "optional",
-            "note": "Chooses which of your points are sampled at all. A point the filters reject is either skipped or recorded as a failure, which is what Process Filtered Out As Fails decides."
+            "note": "Chooses which of your points are sampled at all. A point the filters reject is either skipped or recorded as a failure, which is what Process Filtered Out as Fails decides."
           }
         ],
         "outputs": [
@@ -65476,7 +65677,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -66154,7 +66355,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -66442,7 +66643,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -66482,7 +66683,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -66496,7 +66697,7 @@
           "advanced": true
         },
         "bProcessInsideAsFailedSamples": {
-          "display": "Process Inside As Failed Samples",
+          "display": "Process Inside as Failed Samples",
           "type": "bool",
           "tooltip": "Consider points that are inside as failed samples.",
           "default": "false",
@@ -66504,7 +66705,7 @@
           "advanced": true
         },
         "bProcessOutsideAsFailedSamples": {
-          "display": "Process Outside As Failed Samples",
+          "display": "Process Outside as Failed Samples",
           "type": "bool",
           "tooltip": "Consider points that are outside as failed samples.",
           "default": "false",
@@ -66919,7 +67120,7 @@
           {
             "label": "Use Value If",
             "required": "optional",
-            "note": "Chooses which sources are processed at all. A source the filters reject is either skipped or recorded as a failure, which is what Process Filtered Out As Fails decides."
+            "note": "Chooses which sources are processed at all. A source the filters reject is either skipped or recorded as a failure, which is what Process Filtered Out as Fails decides."
           }
         ],
         "outputs": [
@@ -67629,7 +67830,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -68064,7 +68265,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -68104,7 +68305,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -68118,7 +68319,7 @@
           "advanced": true
         },
         "bQuietUVSettingsWarning": {
-          "display": "Quiet UV Settings Warning",
+          "display": "Quiet UVSettings Warning",
           "type": "bool",
           "tooltip": "Suppress warnings about UV query settings not being enabled in project settings.",
           "default": "false"
@@ -68169,7 +68370,7 @@
       "purpose": "Reads texture values at coordinates the points already carry. The point supplies a UV, the texture data supplies the pixels, and a **Texture Param** says which parameter to read and what to call the result. It is the last step of the texture route rather than the whole of it: something upstream has to have produced both the UVs and the texture data.",
       "situation": "Points carrying UV coordinates that need a mask, a heightmap or a colour read out of the texture those coordinates belong to.",
       "mechanism": {
-        "text": "Each point reads its UV from `UV Source` and looks that coordinate up in the texture data on the pin. Which texture and which channels are read comes entirely from the Texture Param factories, so the node itself holds almost no configuration: the parameters decide what is sampled and where it is written, and several of them on the pin write several attributes in one pass. A point whose UV resolves to no texture is a failure and can be pruned."
+        "text": "Each point reads its UV from `UVSource` and looks that coordinate up in the texture data on the pin. Which texture and which channels are read comes entirely from the Texture Param factories, so the node itself holds almost no configuration: the parameters decide what is sampled and where it is written, and several of them on the pin write several attributes in one pass. A point whose UV resolves to no texture is a failure and can be pruned."
       },
       "pins": {
         "inputs": [
@@ -68194,7 +68395,7 @@
       },
       "settings": {
         "UVSource": {
-          "display": "UV Source",
+          "display": "UVSource",
           "type": "FPCGAttributePropertyInputSelector",
           "overridable": true,
           "semantics": "The coordinate to look up, read per point. Nothing here generates UVs, so this names an attribute something upstream already wrote: **Sample : Line Trace** can produce them from a surface hit, and a graph can author them directly."
@@ -68212,7 +68413,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -68301,7 +68502,7 @@
           },
           {
             "label": "Point Filters",
-            "note": "Decides which points are sampled at all. A point that fails counts as a failure unless `Process Filtered Out As Fails` is cleared, in which case it is skipped and left exactly as it arrived.",
+            "note": "Decides which points are sampled at all. A point that fails counts as a failure unless `Process Filtered Out as Fails` is cleared, in which case it is skipped and left exactly as it arrived.",
             "required": "optional"
           },
           {
@@ -68396,7 +68597,7 @@
           "edit_condition": "bTagIfHasNoSuccesses"
         },
         "bProcessFilteredOutAsFails": {
-          "display": "Process Filtered Out As Fails",
+          "display": "Process Filtered Out as Fails",
           "type": "bool",
           "tooltip": "If enabled, mark filtered out points as \"failed\". Otherwise, just skip the processing altogether. Only uncheck this if you want to ensure existing attribute values are preserved.",
           "default": "true",
@@ -68408,7 +68609,7 @@
           "tooltip": "If enabled, points that failed to sample anything will be pruned.",
           "default": "false",
           "advanced": true,
-          "semantics": "The one setting here that changes the point count. What counts as a failure is an id that matched nothing, plus, while `Process Filtered Out As Fails` is on, every point the filters rejected. Turning both on makes this node delete the points the filters excluded, which is rarely what the filters were for.",
+          "semantics": "The one setting here that changes the point count. What counts as a failure is an id that matched nothing, plus, while `Process Filtered Out as Fails` is on, every point the filters rejected. Turning both on makes this node delete the points the filters excluded, which is rarely what the filters were for.",
           "interacts_with": [
             "bProcessFilteredOutAsFails"
           ]
@@ -69412,7 +69613,7 @@
           "grounded_in": "FPCGExEntryRandomPickerOp::Pick calling FCategory::GetPickRandom, a uniform RandRange over the candidate count, against FPCGExEntryWeightedRandomPickerOp::Pick calling GetPickRandomWeighted"
         },
         {
-          "claim": "The weight-ordered Pick Modes turn Index into a rank picker. Feeding a normalized attribute with Remap Index To Collection Size on selects by where an entry sits in the weight ordering, so a point can ask for the heaviest or the lightest entry without knowing what the collection holds.",
+          "claim": "The weight-ordered Pick Modes turn Index into a rank picker. Feeding a normalized attribute with Remap Index to Collection Size on selects by where an entry sits in the weight ordering, so a point can ask for the heaviest or the lightest entry without knowing what the collection holds.",
           "grounded_in": "FCategory::GetPickWeightAscending and GetPickWeightDescending addressing the weight-sorted Order array, reached through Target->GetPick(Sanitized, IndexConfig.PickMode)"
         }
       ],
@@ -69627,7 +69828,7 @@
           "grounded_in": "TimeGetter->IsConstant() branch in FPCGExEntryCurveRemappedPickerOp::OnInitForData, where the effective-weight table is point-invariant and the same roll table serves every point"
         },
         {
-          "claim": "With Multiply By Entry Weight off and curves authored as flat plateaus, the response carries no magnitude, and the pick becomes a uniform roll among whichever entries are eligible at that driver value: a per-entry eligibility mask with no weighting in it.",
+          "claim": "With Multiply by Entry Weight off and curves authored as flat plateaus, the response carries no magnitude, and the pick becomes a uniform roll among whichever entries are eligible at that driver value: a per-entry eligibility mask with no weighting in it.",
           "grounded_in": "EffectiveWeight returning max(0, Curve(t)) unmultiplied, fed to RollWeightedStreaming, which is a uniform roll when every surviving weight is equal"
         }
       ],
@@ -69664,7 +69865,7 @@
             },
             {
               "name": "bMultiplyByEntryWeight",
-              "display": "Multiply By Entry Weight",
+              "display": "Multiply by Entry Weight",
               "type": "bool",
               "tooltip": "If enabled, the curve response is multiplied by the entry's authored Weight; otherwise the curve alone drives probability.",
               "default": "true"
@@ -69902,7 +70103,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "Seed Components treats Settings and Component as one switch. Enabling either one folds both the node's own Seed and the PCG component's seed into the roll, so a graph that meant to vary picks per component also re-rolls them whenever the node's Seed changes. Local is the only component that acts alone, and it is what makes Local Seed reach the roll.",
+          "text": "Seed Components treats Settings and Component as one switch. Enabling either one folds both the node's own seed and the PCG component's seed into the roll, so Settings alone still varies the picks from one PCG component to the next. Local is the only component that acts alone, and it is what makes Local Seed reach the roll.",
           "anchor": "mechanism"
         },
         {
@@ -70476,8 +70677,7 @@
           "overridable": true,
           "edit_condition": "Mode == EPCGExSelfPruningMode::Prune",
           "edit_condition_hides": true,
-          "semantics": "Ships on, and adds a small per-point jitter to the sort so that points which would otherwise tie are broken apart rather than resolved by index. Without it a uniformly scattered set prunes in a pattern that follows point order, which reads as directional thinning.",
-          "trap": "It changes which points survive between runs unless the seed is fixed, so a graph that needs a repeatable result has to either clear this or control the seed upstream."
+          "semantics": "Ships on, and adds a small per-point jitter to the sort so that points which would otherwise tie are broken apart rather than resolved by index. Without it a uniformly scattered set prunes in a pattern that follows point order, which reads as directional thinning. The jitter comes from each point's own seed and the node's Seed, so the same points prune the same way on every run; re-seeding the points or changing the node's Seed gives a different thinning."
         },
         "RandomRange": {
           "display": "└─ Range",
@@ -70653,7 +70853,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/self-pruning",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSelfPruning.h",
-        "hash": "069306c8c867f61c2f9f8be907ce378ded16d890"
+        "hash": "2522f8516f8d451f0dde4bd3e7ae9da2cf3cb832"
       }
     },
     "UPCGExSetCachedDataSettings": {
@@ -71620,7 +71820,7 @@
       },
       "settings": {
         "bOperateOnLeavesOnly": {
-          "display": "Operate On Leaves Only",
+          "display": "Operate on Leaves Only",
           "type": "bool",
           "tooltip": "If enabled, only check for dead ends.",
           "default": "false",
@@ -73089,7 +73289,7 @@
           "edit_condition": "bWriteLeaveTangent"
         },
         "TagsToData": {
-          "display": "Tags To Data",
+          "display": "Tags to Data",
           "type": "EPCGExTagsToDataAction",
           "tooltip": "Tag handling",
           "default": "EPCGExTagsToDataAction::ToData",
@@ -73155,7 +73355,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -73677,13 +73877,13 @@
           "edit_condition_hides": true
         },
         "ScaleToFit": {
-          "display": "Scale To Fit",
+          "display": "Scale to Fit",
           "type": "FPCGExScaleToFitDetails",
           "overridable": true,
           "fields": [
             {
               "name": "ScaleToFitMode",
-              "display": "Scale To Fit Mode",
+              "display": "Scale to Fit Mode",
               "type": "EPCGExFitMode",
               "tooltip": "How scaling is applied to fit within target bounds. None = no scaling, Uniform = same scale all axes, Individual = per-axis control.",
               "default": "EPCGExFitMode::Uniform",
@@ -73691,7 +73891,7 @@
             },
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "EPCGExScaleToFit",
               "tooltip": "Uniform scaling strategy. Fill = stretch to fill, Min = fit smallest axis, Max = fit largest axis, Avg = average.",
               "default": "EPCGExScaleToFit::Min",
@@ -73699,7 +73899,7 @@
             },
             {
               "name": "ScaleToFitX",
-              "display": "Scale To Fit X",
+              "display": "Scale to Fit X",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for X axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -73707,7 +73907,7 @@
             },
             {
               "name": "ScaleToFitY",
-              "display": "Scale To Fit Y",
+              "display": "Scale to Fit Y",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Y axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -73715,7 +73915,7 @@
             },
             {
               "name": "ScaleToFitZ",
-              "display": "Scale To Fit Z",
+              "display": "Scale to Fit Z",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Z axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -73780,7 +73980,7 @@
               "enum": "EPCGExVariationMode"
             }
           ],
-          "semantics": "Randomness is drawn per point from the point's own Seed property combined with the node's Seed, so the same points through the same node give the same variations, and re-seeding the points changes them.",
+          "semantics": "Randomness is drawn per point from the point's own Seed property combined with the node's Seed, so the same points through the same node give the same variations, and re-seeding the points or changing the node's Seed changes them.",
           "interacts_with": [
             "Source"
           ]
@@ -73843,7 +74043,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-fitting",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingFitting.h",
-        "hash": "ecfc43bc3950680f94f74754cbece6ebcefdfbac"
+        "hash": "7f92a2e0538b9cdbd2403f9885072eeb23b4228e"
       }
     },
     "UPCGExStagingLoadLevelSettings": {
@@ -73944,7 +74144,7 @@
           "type": "EPCGAttachOptions",
           "tooltip": "Controls where spawned ALevelInstance actors appear in the Outliner and how they are parented to the root actor. On the streaming-level path (no actor to attach), Attached silently behaves like InFolder.",
           "default": "EPCGAttachOptions::InFolder",
-          "semantics": "It governs the duplicated actors too, on the editor form where Spawn As Level Instance is off: the root actors of each duplicated hierarchy are parented to the target actor per this setting, and their children follow through the hierarchy they were authored with.",
+          "semantics": "It governs the duplicated actors too, on the editor form where Spawn as Level Instance is off: the root actors of each duplicated hierarchy are parented to the target actor per this setting, and their children follow through the hierarchy they were authored with.",
           "interacts_with": [
             "RootActor",
             "bSpawnAsLevelInstance"
@@ -73967,7 +74167,7 @@
           "trap": "Pointing this at a Level Instance streaming class fails the node outright with an error before any point is read, so nothing spawns at all."
         },
         "bSpawnAsLevelInstance": {
-          "display": "Spawn As Level Instance",
+          "display": "Spawn as Level Instance",
           "type": "bool",
           "tooltip": "When enabled (editor only), spawn ALevelInstance actors instead of raw streaming levels. Gives proper inspector grouping with collapsible entries in the World Outliner. Falls back to streaming if executed in cooked builds.",
           "default": "false",
@@ -74313,7 +74513,7 @@
       },
       "off_label": [
         {
-          "claim": "Trigger PCG Generation holds this node open until the generations it started report complete, so an Actor Collection of thin actors carrying nothing but a PCG component turns the node into a per-point graph launcher whose results are finished before anything downstream of it runs.",
+          "claim": "Trigger PCGGeneration holds this node open until the generations it started report complete, so an Actor Collection of thin actors carrying nothing but a PCG component turns the node into a per-point graph launcher whose results are finished before anything downstream of it runs.",
           "grounded_in": "FGenerationWatcher::Initialize taking a task manager token on the first watched component and releasing it only once all watched components report complete, plus the bHasPCGComponent gate on the watch call in FProcessor::SpawnAtPoint"
         }
       ],
@@ -74467,7 +74667,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -74499,7 +74699,7 @@
           "semantics": "Read as a String attribute, split on commas, with surrounding whitespace trimmed and blank pieces dropped. A dataset with no attribute of that name gets no per-instance tags and no warning."
         },
         "bTriggerPCGGeneration": {
-          "display": "Trigger PCG Generation",
+          "display": "Trigger PCGGeneration",
           "type": "bool",
           "tooltip": "If enabled, trigger PCG generation on spawned actors that have PCG components.",
           "default": "false",
@@ -74779,7 +74979,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-swap",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSwap.h",
-        "hash": "e10c6c5b32f70f6ead995eea945ae32b0947317a"
+        "hash": "d25ab96e52626b8e3e3db236c7b8c17d33669951"
       }
     },
     "UPCGExStateFactoryProviderSettings": {
@@ -75116,7 +75316,7 @@
             },
             {
               "name": "OperandBValue",
-              "display": "Operand B Value",
+              "display": "Operand BValue",
               "type": "FPCGExInputShorthandSelectorString",
               "tooltip": "Operand B for testing -- read from the point being tested (source).",
               "default": "FPCGExInputShorthandSelectorString(FName(\"OperandB\"), FString(TEXT(\"MyString\")))"
@@ -76886,7 +77086,7 @@
       "purpose": "Names one texture parameter on a material and says what a consumer should write when it finds it. A material exposes its textures by name, so the node reading them needs to be told which name to look for and what to call the results. It emits a factory on the Texture Param pin, read by **Get Texture Data**, **Sample : Texture** and **Sample : Line Trace**, and several of these on one pin describe several parameters at once.",
       "situation": "Materials that expose a mask or a heightmap under a known parameter name, and a graph that wants that texture's values on its points.",
       "mechanism": {
-        "text": "The factory carries a name to look for and a set of names to write to, and the consumer does the work. `Material Parameter Name` is the key looked up on whatever material the consumer resolved; a material without that parameter contributes nothing for this factory and the consumer carries on with the others. `Texture ID Attribute Name` receives what was found, and `Sample Attribute Name` receives the value read out of it. `Sampled Channels` decides which of R, G, B and A are read, always in that order whatever order you tick them in, and `Output Type` decides the shape they are packed into. `Scale` multiplies the result on the way out."
+        "text": "The factory carries a name to look for and a set of names to write to, and the consumer does the work. `Material Parameter Name` is the key looked up on whatever material the consumer resolved; a material without that parameter contributes nothing for this factory and the consumer carries on with the others. `Texture IDAttribute Name` receives what was found, and `Sample Attribute Name` receives the value read out of it. `Sampled Channels` decides which of R, G, B and A are read, always in that order whatever order you tick them in, and `Output Type` decides the shape they are packed into. `Scale` multiplies the result on the way out."
       },
       "pins": {
         "inputs": [],
@@ -76914,7 +77114,7 @@
             },
             {
               "name": "TextureIDAttributeName",
-              "display": "Texture ID Attribute Name",
+              "display": "Texture IDAttribute Name",
               "type": "FName",
               "tooltip": "Name of the attribute to output the path to",
               "default": "FName(\"TextureId\")"
@@ -77852,7 +78052,7 @@
           ]
         },
         "bApplyScaleToBounds": {
-          "display": "Apply Scale To Bounds",
+          "display": "Apply Scale to Bounds",
           "type": "bool",
           "tooltip": "Apply the new scale to point bounds as well.",
           "default": "false",
@@ -80162,7 +80362,7 @@
           "semantics": "Keeps every trigger except the selected one."
         },
         "bWaitForMissingActors": {
-          "display": "Wait For Missing Actors",
+          "display": "Wait for Missing Actors",
           "type": "bool",
           "tooltip": "If enabled, will wait for actor references to exist.",
           "default": "true",
@@ -80183,7 +80383,7 @@
           "semantics": "Seconds, clamped to thirty."
         },
         "bWaitForMissingComponents": {
-          "display": "Wait For Missing Components",
+          "display": "Wait for Missing Components",
           "type": "bool",
           "tooltip": "If enabled, will wait for at least a single PCG component to be found that uses the target Graph. Use carefully, and only if you know for sure it will be found at some point!",
           "default": "false",
@@ -80252,7 +80452,7 @@
           "tooltip": "If enabled, only output component data once per unique actor. Otherwise, output data as many time as found. When enabled, TargetIndexToTag is disabled.",
           "default": "true",
           "semantics": "On, an actor's component data is emitted once however many target points named it, tagged from the first of those points. Off, it is emitted once per naming point, which multiplies the output.",
-          "trap": "It also forces the index tag off in Target Attributes To Data Tags, since with one output per actor there is no single point index to record.",
+          "trap": "It also forces the index tag off in Target Attributes to Data Tags, since with one output per actor there is no single point index to record.",
           "interacts_with": [
             "TargetAttributesToDataTags"
           ]
@@ -80265,7 +80465,7 @@
           "semantics": "Copies the tags of the target dataset, not of the individual point, onto every piece of fetched data."
         },
         "TargetAttributesToDataTags": {
-          "display": "Target Attributes To Data Tags",
+          "display": "Target Attributes to Data Tags",
           "type": "FPCGExAttributeToTagDetails",
           "tooltip": "Lets you tag output data with attribute values from target points input",
           "see": "FPCGExAttributeToTagDetails",
@@ -80440,7 +80640,7 @@
             },
             {
               "name": "bPreservePCGExData",
-              "display": "Preserve PCG Ex Data",
+              "display": "Preserve PCGEx Data",
               "type": "bool",
               "tooltip": "If enabled, PCGEx attributes & tags won't be affected.  Cluster-related nodes rely on these to work!",
               "default": "true"
@@ -80517,7 +80717,7 @@
           "tooltip": "Which components contribute to seed generation.",
           "default": "static_cast<uint8>(EPCGExSeedComponents::Local | EPCGExSeedComponents::Settings)",
           "overridable": true,
-          "semantics": "Local and Settings are both on by default, so the node's own Seed folds into every roll and editing it re-rolls the whole dataset. Settings and Component are not separable: enabling either one folds both the node seed and the component seed in.",
+          "semantics": "Local and Settings are both on by default. Settings and Component are not separable: enabling either one folds both the node's Seed and the PCG component's Seed in, so under the defaults changing either one re-rolls the whole dataset.",
           "interacts_with": [
             "LocalSeed",
             "PickMode"
@@ -80650,7 +80850,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/weighted-lookup",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExWeightedLookup.h",
-        "hash": "024a9a00b9135bb298ee24f2455bfa418cb460fa"
+        "hash": "53350bb7e06ce7a499769ac697867d86b06e9d03"
       }
     },
     "UPCGExWithinRangeFilterProviderSettings": {
@@ -81504,7 +81704,7 @@
           "grounded_in": "FPathInclusionHelper::AddPath increments the containing path's Children for every path it contains, over the whole batch, and the count is written as a per-path value only"
         },
         {
-          "claim": "Turn `Write Path Data To Points` off, enable only per-path values, and the node stops touching the points at all: everything it measured leaves on the **PathProperties** pin as a table with one row per path, which is a shape for reading rather than for feeding back into geometry.",
+          "claim": "Turn `Write Path Data to Points` off, enable only per-path values, and the node stops touching the points at all: everything it measured leaves on the **PathProperties** pin as a table with one row per path, which is a shape for reading rather than for feeding back into geometry.",
           "grounded_in": "the per-path write macro calls WriteMark only while bWritePathDataToPoints is set, and the attribute-set row is written unconditionally"
         }
       ],
@@ -81594,7 +81794,7 @@
           "overridable": true
         },
         "bWritePathDataToPoints": {
-          "display": "Write Path Data To Points",
+          "display": "Write Path Data to Points",
           "type": "bool",
           "tooltip": "Whether to also write path attribute to the data set. Looks appealing, but can have massive memory cost -- this is legacy only.",
           "default": "true",
@@ -82369,7 +82569,7 @@
       },
       "settings": {
         "bMutateVtxToOOB": {
-          "display": "Mutate Vtx To OOB",
+          "display": "Mutate Vtx to OOB",
           "type": "bool",
           "tooltip": "Mutate Vtx into their OOB based on neighboring connections.",
           "default": "false",
@@ -82423,7 +82623,7 @@
           "overridable": true,
           "edit_condition": "bWriteVtxNormal",
           "semantics": "The value is one axis of the frame fitted to the neighbour positions, chosen by Axis, written as a unit vector in world space. It describes the neighbourhood, so it is a normal only where those positions describe a plane.",
-          "trap": "Three positions that are not in a line are the least a plane can be fitted to. A leaf Vtx offers one neighbour and a binary Vtx offers two, so unless Include Vtx In OOB adds a third and the three are not collinear, what lands there is not a normal of anything.",
+          "trap": "Three positions that are not in a line are the least a plane can be fitted to. A leaf Vtx offers one neighbour and a binary Vtx offers two, so unless Include Vtx in OOB adds a third and the three are not collinear, what lands there is not a normal of anything.",
           "interacts_with": [
             "NormalAxis",
             "AxisOrder",
@@ -82444,7 +82644,7 @@
           ]
         },
         "bIncludeVtxInOOB": {
-          "display": "Include Vtx In OOB",
+          "display": "Include Vtx in OOB",
           "type": "bool",
           "tooltip": "Include the vertex position in the oriented bounding box calculation.",
           "default": "false",

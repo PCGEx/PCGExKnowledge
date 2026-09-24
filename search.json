@@ -710,7 +710,7 @@
     "name": "Authoring Patterns",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A pattern is an arrangement that can be recognised in a result, and what one is belongs to patterns.md.",
+    "purpose": "The two ways to author a pattern, why one of them can replace things and the other cannot, and what a pattern position asserts.",
     "outline": [
       "Two routes",
       "Only cage-authored patterns can replace anything",
@@ -745,7 +745,7 @@
     "name": "Bonding Rules Settings",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "A bonding-rules.md asset is mostly output.",
+    "purpose": "The short list of things on a Bonding Rules asset that are actually yours to set: where it draws from, how it stores what it builds, and when it rebuilds.",
     "outline": [
       "Sources",
       "A zero entry weight skips the entry, in every mode",
@@ -755,7 +755,7 @@
       "The exported asset is pipeline-managed",
       "Compilation",
       "Entry dedup is about the generated collection alone",
-      "The Modules list is editable, and every edit is temporary"
+      "A compile that finds nothing keeps the last modules"
     ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/authoring/bonding-rules-settings"
   },
@@ -987,7 +987,7 @@
     "name": "Bonding Rules",
     "plugin": "PCGExElementsValency",
     "kind": "concept",
-    "purpose": "Everything in it is assembled rather than written by hand, from whichever sources you point it at.",
+    "purpose": "The module library everything generates from, where its contents can come from, and what a module actually is.",
     "outline": [
       "It is a library",
       "What a module is",
@@ -1213,7 +1213,7 @@
       "Where it starts from",
       "The five narrowings",
       "Two narrowings that look alike",
-      "Keep In Scope fails closed",
+      "Keep in Scope fails closed",
       "When the library and the predicate disagree",
       "An empty result is an empty result"
     ],
@@ -4354,6 +4354,16 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/filter-data-match"
   },
   {
+    "id": "UPCGExDataUniquesSettings",
+    "name": "Data Uniques",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Finds the distinct combinations of @Data values across many inputs, and records which inputs carry each one.",
+    "situation": "Many datasets share a handful of distinct `@Data` configurations, and each configuration needs its own pass through the same processing.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-uniques"
+  },
+  {
     "id": "UPCGExDebugSettings",
     "name": "Flush Debug",
     "plugin": "PCGExtendedToolkit",
@@ -6490,7 +6500,7 @@
     "kind": "entry",
     "classification": "provider",
     "purpose": "The base every Picker : node inherits.",
-    "situation": "Reading any Picker : page and needing to know what Treat As Normalized changes, or what happens to a pick that lands outside the collection.",
+    "situation": "Reading any Picker : page and needing to know what Treat as Normalized changes, or what happens to a pick that lands outside the collection.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/pickers/picker"
   },
   {

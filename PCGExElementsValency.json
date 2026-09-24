@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExElementsValency",
-  "version": "0.7",
+  "version": "0.8",
   "aliases": {
     "UPCGExProbeFactoryValency": "UPCGExProbeValencyProviderSettings",
     "UPCGExValencyBiasFactoryData": "UPCGExCreateValencyBiasSettings",
@@ -256,7 +256,7 @@
         },
         {
           "name": "NoMatchWeight",
-          "display_name": "NoMatchWeight",
+          "display_name": "No Match Weight",
           "tooltip": "Modules matching no entry receive the channel's No Match Weight."
         }
       ]
@@ -265,7 +265,7 @@
       "values": [
         {
           "name": "FirstMatch",
-          "display_name": "FirstMatch",
+          "display_name": "First Match",
           "tooltip": "First matching entry wins (declaration order)."
         },
         {
@@ -294,7 +294,7 @@
         },
         {
           "name": "Vector4",
-          "display_name": "Vector4",
+          "display_name": "Vector 4",
           "tooltip": "Continuous 4D vector, plain component math. Distance = euclidean over 4 components."
         },
         {
@@ -523,17 +523,17 @@
       "values": [
         {
           "name": "WeightedRandom",
-          "display_name": "WeightedRandom",
+          "display_name": "Weighted Random",
           "tooltip": "Select from matching modules using weights (deterministic)"
         },
         {
           "name": "FirstMatch",
-          "display_name": "FirstMatch",
+          "display_name": "First Match",
           "tooltip": "Select the first matching module (deterministic)"
         },
         {
           "name": "BestFit",
-          "display_name": "BestFit",
+          "display_name": "Best Fit",
           "tooltip": "Select module with best orbital configuration match"
         }
       ]
@@ -808,12 +808,12 @@
         },
         {
           "name": "MatchedPoints",
-          "display_name": "MatchedPoints",
+          "display_name": "Matched Points",
           "tooltip": "One point per active matched vtx, deduped across overlapping matches."
         },
         {
           "name": "MatchRoots",
-          "display_name": "MatchRoots",
+          "display_name": "Match Roots",
           "tooltip": "One point per match at the pattern root, bounded to that match's active points."
         }
       ]
@@ -822,22 +822,22 @@
       "values": [
         {
           "name": "WeightBased",
-          "display_name": "WeightBased",
+          "display_name": "Weight Based",
           "tooltip": "Prefer patterns with higher weights"
         },
         {
           "name": "LargestFirst",
-          "display_name": "LargestFirst",
+          "display_name": "Largest First",
           "tooltip": "Prefer patterns with more entries"
         },
         {
           "name": "SmallestFirst",
-          "display_name": "SmallestFirst",
+          "display_name": "Smallest First",
           "tooltip": "Prefer patterns with fewer entries"
         },
         {
           "name": "FirstDefined",
-          "display_name": "FirstDefined",
+          "display_name": "First Defined",
           "tooltip": "Use pattern definition order in BondingRules"
         }
       ]
@@ -846,12 +846,12 @@
       "values": [
         {
           "name": "RootKey",
-          "display_name": "RootKey",
+          "display_name": "Root Key",
           "tooltip": "The match belongs to its root node's partition; it may span a boundary."
         },
         {
           "name": "RequireUniform",
-          "display_name": "RequireUniform",
+          "display_name": "Require Uniform",
           "tooltip": "Reject a match whose active nodes don't all share one partition."
         }
       ]
@@ -865,12 +865,12 @@
         },
         {
           "name": "Swap",
-          "display_name": "Swap",
+          "display_name": "Replace M:N",
           "tooltip": "Per-position: each match takes the module authored on its own pattern cage."
         },
         {
           "name": "Substitute",
-          "display_name": "Substitute",
+          "display_name": "Replace N:1",
           "tooltip": "Whole-arrangement: the root takes the root cage's module and every other match is consumed."
         }
       ]
@@ -879,12 +879,12 @@
       "values": [
         {
           "name": "ExcludeFromMatches",
-          "display_name": "ExcludeFromMatches",
+          "display_name": "Exclude from Matches",
           "tooltip": "No match may include a filtered-out vtx, as root or as member."
         },
         {
           "name": "ExcludeAsRoot",
-          "display_name": "ExcludeAsRoot",
+          "display_name": "Exclude as Root",
           "tooltip": "A filtered-out vtx can't start a match, but can still be claimed as a member."
         }
       ]
@@ -1163,7 +1163,7 @@
         },
         {
           "name": "TreatAsEmpty",
-          "display_name": "TreatAsEmpty",
+          "display_name": "Treat as Empty",
           "tooltip": "Permanently empty: neighbors must accept emptiness on the facing orbital (boundary semantics)."
         }
       ]
@@ -1273,7 +1273,7 @@
         },
         {
           "name": "FromOrbital",
-          "display_name": "FromOrbital",
+          "display_name": "From Orbital",
           "tooltip": "A named orbital's direction IS the normal. Its sign is respected as authored."
         },
         {
@@ -1292,7 +1292,7 @@
         },
         {
           "name": "UnsolvedOnly",
-          "display_name": "UnsolvedOnly",
+          "display_name": "Unsolved Only",
           "tooltip": "Vtx inheriting a valid module are kept as fixed context; only module-less vtx are solved. Replaces the inverted-filter second-pass pattern."
         }
       ]
@@ -6786,7 +6786,7 @@
           ]
         },
         "KeepInScope": {
-          "display": "Keep In Scope",
+          "display": "Keep in Scope",
           "type": "EPCGExGrammarPlacementScope",
           "tooltip": "Membership scope for the structural filter.",
           "default": "EPCGExGrammarPlacementScope::SameBranch",
@@ -7565,7 +7565,7 @@
           "semantics": "On by default, and it is the setting that matters: without it only the immediate dead ends go, and the chain behind them stays. With it, retracting a tip exposes its parent as a dead end and the walk continues back."
         },
         "bBondsCountAsProgress": {
-          "display": "Bonds Count As Progress",
+          "display": "Bonds Count as Progress",
           "type": "FPCGExInputShorthandSelectorBoolean",
           "tooltip": "A live bridge bond counts as leading somewhere, even though a bond adds no child link.",
           "default": "FPCGExInputShorthandSelectorBoolean(FName(\"BondsCountAsProgress\"), true, false)",
@@ -8278,7 +8278,7 @@
           "semantics": "Relative odds when several Seed roots compete for one seed point, so it only matters in a grammar with more than one entry point. It is read for the seed point being assigned, so an attribute makes the odds differ point by point, and a value below zero counts as zero; when every competitor weighs zero the draw is uniform. A seed name narrows the competitors before this draw rather than bypassing it, so roots sharing one Name still draw among themselves."
         },
         "bClaimByName": {
-          "display": "Claim By Name",
+          "display": "Claim by Name",
           "type": "bool",
           "tooltip": "Only claim seed points whose name (the grammar's Seed Name Attribute) equals this node's Name. Off: a point whose name matches no Seed is still eligible for this one.",
           "default": "false",
@@ -8453,7 +8453,7 @@
           ]
         },
         "bGrowFromBothEnds": {
-          "display": "Grow From Both Ends",
+          "display": "Grow from Both Ends",
           "type": "FPCGExInputShorthandSelectorBoolean",
           "tooltip": "Grow a second corridor FROM the targets toward this one at the same time, alternating heads until they meet -- far more robust than one greedy head. Children inherit both corridors.",
           "default": "FPCGExInputShorthandSelectorBoolean(FName(\"GrowFromBothEnds\"), false, false)",
@@ -9621,7 +9621,7 @@
       "hints": [
         {
           "style": "info",
-          "text": "Two settings come from the shared bias provider and sit above the ones here. Priority orders resolution and is cosmetic while biases combine by multiplying, since the product is the same whatever the order. Quiet When Inactive suppresses the per-cluster warning a bias raises when it resolves to nothing, which is right when one node feeds many clusters and only some carry the attribute it reads, and wrong while you are still checking the node is wired correctly.",
+          "text": "Two settings come from the shared bias provider and sit above the ones here. Priority orders resolution and is cosmetic while biases combine by multiplying, since the product is the same whatever the order. Quiet when Inactive suppresses the per-cluster warning a bias raises when it resolves to nothing, which is right when one node feeds many clusters and only some carry the attribute it reads, and wrong while you are still checking the node is wired correctly.",
           "anchor": "Weight"
         }
       ],
@@ -9956,7 +9956,7 @@
         },
         {
           "style": "warning",
-          "text": "A seed point that no Seed root accepts stays placed and grows nothing. After a run that had seed points, a Seed with **Claim By Name** on that claimed none of them is named in a run warning, so a name column with a typo shows up on the node rather than as structure that never appeared.",
+          "text": "A seed point that no Seed root accepts stays placed and grows nothing. After a run that had seed points, a Seed with **Claim by Name** on that claimed none of them is named in a run warning, so a name column with a typo shows up on the node rather than as structure that never appeared.",
           "anchor": "mechanism"
         }
       ],
@@ -10264,7 +10264,7 @@
           "type": "FPCGAttributePropertyInputSelector",
           "tooltip": "Name or String seed point attribute holding the Seed node that should claim it; a @Data selector names one Seed per input. Only the top-level grammar's attribute is read.",
           "edit_condition": "bMatchSeedNames",
-          "semantics": "Its checkbox switches seed-name matching on for every growth that runs this grammar. On, each seed point is read for the name of the Seed node that should claim it, from a Name or String attribute, and a `@Data` selector names one Seed for every point of an input. The name is applied after the descriptor test, so it chooses among the Seed roots that already accept the point's module: a name matching one or more roots keeps only those, which then draw among themselves by `Weight`, and a name no root carries, or no name at all, leaves the point to every root that does not have **Claim By Name** on. Only the top-level grammar's setting is read; a subgraph's is ignored.",
+          "semantics": "Its checkbox switches seed-name matching on for every growth that runs this grammar. On, each seed point is read for the name of the Seed node that should claim it, from a Name or String attribute, and a `@Data` selector names one Seed for every point of an input. The name is applied after the descriptor test, so it chooses among the Seed roots that already accept the point's module: a name matching one or more roots keeps only those, which then draw among themselves by `Weight`, and a name no root carries, or no name at all, leaves the point to every root that does not have **Claim by Name** on. Only the top-level grammar's setting is read; a subgraph's is ignored.",
           "trap": "The selector has to name an attribute. A point property turns matching off without a word, and an attribute of any type other than Name or String reads every point as unnamed, with a run warning on the growth saying so."
         },
         "bCleanupSeedNameAttribute": {
@@ -10415,14 +10415,14 @@
           "semantics": "A position a pattern absorbed stays in the cluster, still carrying an entry, while the pattern's own output already represents it. Off, those points are written an explicitly invalid pick and spawn nothing, which is what you want. On, both appear, occupying the same space."
         },
         "ScaleToFit": {
-          "display": "Scale To Fit",
+          "display": "Scale to Fit",
           "type": "FPCGExScaleToFitDetails",
           "default": "FPCGExScaleToFitDetails(EPCGExFitMode::None)",
           "overridable": true,
           "fields": [
             {
               "name": "ScaleToFitMode",
-              "display": "Scale To Fit Mode",
+              "display": "Scale to Fit Mode",
               "type": "EPCGExFitMode",
               "tooltip": "How scaling is applied to fit within target bounds. None = no scaling, Uniform = same scale all axes, Individual = per-axis control.",
               "default": "EPCGExFitMode::Uniform",
@@ -10430,7 +10430,7 @@
             },
             {
               "name": "ScaleToFit",
-              "display": "Scale To Fit",
+              "display": "Scale to Fit",
               "type": "EPCGExScaleToFit",
               "tooltip": "Uniform scaling strategy. Fill = stretch to fill, Min = fit smallest axis, Max = fit largest axis, Avg = average.",
               "default": "EPCGExScaleToFit::Min",
@@ -10438,7 +10438,7 @@
             },
             {
               "name": "ScaleToFitX",
-              "display": "Scale To Fit X",
+              "display": "Scale to Fit X",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for X axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -10446,7 +10446,7 @@
             },
             {
               "name": "ScaleToFitY",
-              "display": "Scale To Fit Y",
+              "display": "Scale to Fit Y",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Y axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -10454,7 +10454,7 @@
             },
             {
               "name": "ScaleToFitZ",
-              "display": "Scale To Fit Z",
+              "display": "Scale to Fit Z",
               "type": "EPCGExScaleToFit",
               "tooltip": "Scaling strategy for Z axis when using Individual mode.",
               "default": "EPCGExScaleToFit::None",
@@ -10696,7 +10696,7 @@
             },
             {
               "name": "bStopOnFirstFailure",
-              "display": "Stop On First Failure",
+              "display": "Stop on First Failure",
               "type": "bool",
               "tooltip": "Stop a branch if no placement found for a socket",
               "default": "false"
@@ -10797,7 +10797,7 @@
           "semantics": "It has to be enabled here before the Tensors pin moves out of Advanced, and connecting a tensor without enabling this changes nothing."
         },
         "bNonSeedsAsObstacles": {
-          "display": "Non Seeds As Obstacles",
+          "display": "Non Seeds as Obstacles",
           "type": "bool",
           "tooltip": "Register non-seed resolved modules' footprints as placement obstacles, so growth avoids overlapping the existing structure.",
           "default": "true",
@@ -10805,7 +10805,7 @@
           "semantics": "Registers the footprints of everything the filters rejected, so growth will not place through the parts of the structure it was not asked to extend. Turning it off is what lets new growth pass through the existing structure, which is occasionally the point and usually a mistake."
         },
         "bNonSeedsInPool": {
-          "display": "Non Seeds In Pool",
+          "display": "Non Seeds in Pool",
           "type": "bool",
           "tooltip": "Add non-seed modules to the growth history, so grammar sees them and growth can bridge back into the existing structure. They are never frontier-expanded nor made grammar roots.",
           "default": "true",
@@ -10911,13 +10911,13 @@
             },
             {
               "name": "ZMin",
-              "display": "Z Min",
+              "display": "ZMin",
               "type": "FPCGExInputShorthandNameDouble",
               "tooltip": "Z band lower extent for spline -> Polygon bakes. Constant or @Data attribute."
             },
             {
               "name": "ZMax",
-              "display": "Z Max",
+              "display": "ZMax",
               "type": "FPCGExInputShorthandNameDouble",
               "tooltip": "Z band upper extent for spline -> Polygon bakes. Constant or @Data attribute."
             }
@@ -11083,7 +11083,7 @@
             },
             {
               "name": "bStopOnFirstFailure",
-              "display": "Stop On First Failure",
+              "display": "Stop on First Failure",
               "type": "bool",
               "tooltip": "Stop a branch if no placement found for a socket",
               "default": "false"
@@ -11197,7 +11197,7 @@
           ]
         },
         "bSkipOnUnknownSeedName": {
-          "display": "Skip On Unknown Seed Name",
+          "display": "Skip on Unknown Seed Name",
           "type": "bool",
           "tooltip": "When the seed name attribute matches no module: off = warn and fall back to the full candidate pool, on = warn and leave the point unseeded.",
           "default": "false",
@@ -11283,7 +11283,7 @@
           "tooltip": "Emit the seed points growth never used -- left unseeded by name filtering, an empty candidate pool, the strategy's seed mask, or refused placement conditions -- to the \"Unused Seeds\" pin.",
           "default": "false",
           "overridable": true,
-          "semantics": "Unused covers every way a seed can fail to start a structure: a requested module name nothing matches, with Skip On Unknown Seed Name on; a candidate pool that came up empty; a grammar root's seed mask that admitted no module; and a seed whose every candidate pose was refused by placement conditions. A seed that fell back after an unknown name and then placed counts as used.",
+          "semantics": "Unused covers every way a seed can fail to start a structure: a requested module name nothing matches, with Skip on Unknown Seed Name on; a candidate pool that came up empty; a grammar root's seed mask that admitted no module; and a seed whose every candidate pose was refused by placement conditions. A seed that fell back after an unknown name and then placed counts as used.",
           "interacts_with": [
             "UnusedSeedReasonAttributeName",
             "bSkipOnUnknownSeedName"
@@ -11341,13 +11341,13 @@
             },
             {
               "name": "ZMin",
-              "display": "Z Min",
+              "display": "ZMin",
               "type": "FPCGExInputShorthandNameDouble",
               "tooltip": "Z band lower extent for spline -> Polygon bakes. Constant or @Data attribute."
             },
             {
               "name": "ZMax",
-              "display": "Z Max",
+              "display": "ZMax",
               "type": "FPCGExInputShorthandNameDouble",
               "tooltip": "Z band upper extent for spline -> Polygon bakes. Constant or @Data attribute."
             }
@@ -11403,7 +11403,7 @@
       "purpose": "The module library, and the only Valency asset a PCG graph consumes directly. It is assembled from several kinds of source rather than authored by hand: cages gathered through a Context Volume, Module Cages that publish themselves, the collection importer, and any contribution provider a project adds. Every generation node reads one.",
       "situation": "The library a solve or a growth draws its modules from.",
       "mechanism": {
-        "text": "A compile pass walks the contributions, turns each into a module, and deduplicates the result, so two identical cages become one module. What lands in the asset is the compiled list plus the sets it was compiled against. Editing a level does not leave the asset stale indefinitely: the editor tracks staleness, refreshes on load, and runs a per-tick pass while the Valency editor mode is active."
+        "text": "A compile pass walks the contributions, turns each into a module, and deduplicates the result, so two identical cages become one module. What lands in the asset is the compiled list plus the sets it was compiled against. Editing a level does not leave the asset stale indefinitely: the editor tracks staleness, refreshes on load, and runs a per-tick pass while the Valency editor mode is active. A rebuild that reproduces what the asset already holds does not mark it as modified; Force Rebuild still regenerates the PCG graphs that read it in that case, and Rebuild Stale does not."
       },
       "settings": {
         "OrbitalSet": {
@@ -11455,13 +11455,13 @@
             }
           ],
           "semantics": "Dropped in by hand, or auto-registered by a Context Volume that targets this asset.",
-          "trap": "A Module Cage never registers itself here. Which rules asset consumes one is that asset decision, so a Module Cage that appears to contribute nothing is usually missing from this list."
+          "trap": "A Module Cage never registers itself here. Which rules asset consumes one is that asset's decision, so a Module Cage that appears to contribute nothing is usually missing from this list."
         },
         "ContributionProviders": {
           "display": "Contribution Providers",
           "type": "TArray<TObjectPtr<UPCGExValencyContributionProvider>>",
           "tooltip": "Compile-time payload sources beyond direct level contributors: the built-in collection importer, or any user-defined UPCGExValencyContributionProvider subclass. Never reaches cooked builds.",
-          "semantics": "Compile-time sources beyond direct levels: the built-in collection importer, or a project own subclass. None of it reaches a cooked build, so a provider is an authoring-time route into the library and never a runtime one."
+          "semantics": "Compile-time sources beyond direct levels: the built-in collection importer, or a project's own subclass. None of it reaches a cooked build, so a provider is an authoring-time route into the library and never a runtime one."
         },
         "LevelBoundsEvaluator": {
           "display": "Level Bounds Evaluator",
@@ -11502,17 +11502,17 @@
           "semantics": "The values a module falls back to when its cage authored none. Valency : Load Properties reads this as one of its two defaults tiers, which is what lets a property exist on every point without being authored on every cage."
         },
         "bCompileOnRebuild": {
-          "display": "Compile On Rebuild",
+          "display": "Compile on Rebuild",
           "type": "bool",
           "tooltip": "Compile during BuildFromCages and serialize the result with the asset.",
           "default": "true"
         },
         "bAutoRebuildOnStale": {
-          "display": "Auto Rebuild On Stale",
+          "display": "Auto Rebuild on Stale",
           "type": "bool",
           "tooltip": "Auto-refresh from PostLoad / asset-registry hooks when upstream dependencies change.",
           "default": "true",
-          "semantics": "Off, the asset holds whatever it last compiled until you rebuild it by hand, which is the setting for a library that should stop moving while a graph is being tuned around it."
+          "semantics": "Off stops the automatic refreshes only. A Context Volume that targets this asset runs a Force Rebuild on it whenever the volume's baked contribution changes, whatever this is set to, so switching it off does not hold the library still while cages in those volumes are being edited."
         },
         "bEntryDedupIncludesModuleName": {
           "display": "Entry Dedup Includes Module Name",
@@ -11527,6 +11527,11 @@
           "style": "info",
           "text": "A great deal of the refresh automation is gated on the Valency editor mode being active. Compiling from a level that is open without that mode on is the usual reason a rebuild appears to have missed a cage.",
           "anchor": "LevelContributors"
+        },
+        {
+          "style": "warning",
+          "text": "A compile whose sources produce no module at all keeps the previous compile's modules, records that in the read-only Last Compile Notice field and raises an editor notification. Generation keeps placing those modules until a compile produces at least one, which replaces them all and clears the notice.",
+          "anchor": "mechanism"
         },
         {
           "style": "info",
@@ -11555,7 +11560,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bonding-rules-asset",
       "source": {
         "file": "PCGExValencyFoundations/Public/PCGExBondingRules.h",
-        "hash": "9eeb6de0da55380bb3cebe89de6e22f2b7fda176"
+        "hash": "bf7c43b5b1e409c1626d8e49b4a64c74af81e2b7"
       }
     },
     "UPCGExValencyBondingSettings": {
@@ -11750,14 +11755,14 @@
             },
             {
               "name": "bWarnOnUnmatchedFixedPick",
-              "display": "Warn On Unmatched Fixed Pick",
+              "display": "Warn on Unmatched Fixed Pick",
               "type": "bool",
               "tooltip": "Warn when fixed pick name doesn't match any module",
               "default": "false"
             },
             {
               "name": "bWarnOnIncompatibleFixedPick",
-              "display": "Warn On Incompatible Fixed Pick",
+              "display": "Warn on Incompatible Fixed Pick",
               "type": "bool",
               "tooltip": "Warn when fixed pick module doesn't fit orbital configuration (only when Skip behavior)",
               "default": "true"
@@ -13498,7 +13503,7 @@
           "semantics": "On by default, which means directions follow each point rotation rather than staying in world space. On unrotated points that changes nothing; on points carrying varied rotations it changes every answer, and it is the first thing to check when a probe or a write pass matches nothing."
         },
         "bAuthorDirectionsAsRotator": {
-          "display": "Author Directions As Rotator",
+          "display": "Author Directions as Rotator",
           "type": "bool",
           "tooltip": "Authoring view only -- directions are always stored as vectors, and flipping this never marks dependents stale.",
           "default": "false"
@@ -13646,7 +13651,7 @@
       "purpose": "Authored multi-module arrangements that can be recognised in a finished result. One asset class covers both connection models, and either half may be left out, so a pattern can describe an orbital arrangement, a connector one, or a mix of the two.",
       "situation": "An arrangement worth recognising after the fact: a hero piece to substitute in, or a shape later stages need to find.",
       "mechanism": {
-        "text": "Patterns are authored as named entries and compiled against the sets that resolve their slot names. An asset with no orbital set authors no orbital slots, and the same holds on the connector side, so what the asset can express follows from which sets it was given rather than from a mode."
+        "text": "Patterns are authored as named entries and compiled against the sets that resolve their slot names. An asset with no orbital set authors no orbital slots, and the same holds on the connector side, so what the asset can express follows from which sets it was given rather than from a mode. A rebuild that reproduces what the asset already holds does not mark it as modified; Force Rebuild still regenerates the PCG graphs that read it in that case, and Rebuild Stale does not."
       },
       "settings": {
         "Patterns": {
@@ -13768,10 +13773,11 @@
           "semantics": "Walked to their level-sourced entries at compile, so a collection here contributes the pattern cages inside the levels it points at rather than the collection entries themselves."
         },
         "bAutoRebuildOnStale": {
-          "display": "Auto Rebuild On Stale",
+          "display": "Auto Rebuild on Stale",
           "type": "bool",
           "tooltip": "Auto-refresh from PostLoad / asset-registry hooks when upstream dependencies change.",
-          "default": "true"
+          "default": "true",
+          "semantics": "Off stops the automatic refreshes only. A Context Volume that targets this asset recompiles it whenever the volume's baked pattern contribution changes, whatever this is set to, so switching it off does not hold the asset still while pattern cages in those volumes are being edited."
         }
       },
       "related": [
@@ -13791,7 +13797,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/patterns/pattern-asset",
       "source": {
         "file": "PCGExValencyFoundations/Public/Patterns/PCGExValencyPatternAsset.h",
-        "hash": "5c76b463ae57eecc676d789d4af83cc1f83e2672"
+        "hash": "641e4bac00c12cbc0be72c10118f2f7afc1d97e1"
       }
     },
     "UPCGExValencyPatternMatcher": {
@@ -14034,7 +14040,7 @@
           "semantics": "Matched Points gives one point per active matched Vtx, deduped where matches overlap. Match Roots gives one point per match at the pattern root, bounded to that match's active points, which is the shape to reach for when something should act once per occurrence rather than once per position."
         },
         "bInvertConnectorTransformPolicyOnMatched": {
-          "display": "Invert Connector Transform Policy On Matched",
+          "display": "Invert Connector Transform Policy on Matched",
           "type": "bool",
           "tooltip": "Describes the INPUT -- set it to match the upstream Bonding node's own transform policy. Points are un-posed to cage space either way; this only selects what gets composed off.",
           "default": "true",
@@ -14275,7 +14281,7 @@
           "semantics": "The one to reach for when a limit or a match needs to be per region: a single value unique across the whole cluster, never 0, so it can be fed straight to the partitioned limits on a solve or a growth, or to Find Patterns."
         },
         "bOutputAdjacencyOnVtx": {
-          "display": "Output Adjacency On Vtx",
+          "display": "Output Adjacency on Vtx",
           "type": "bool",
           "tooltip": "Mirror the two vertical-adjacency counts onto every vtx, so they can be filtered on directly instead of joining back through the Regions output.",
           "default": "true",
@@ -15122,7 +15128,7 @@
           "semantics": "It hands the resolved substrate straight to the next Valency node instead of making it re-derive one from the attributes. Turning it off changes no result, only the work a downstream solve has to repeat."
         },
         "bWarnOnNoMatch": {
-          "display": "Warn On No Match",
+          "display": "Warn on No Match",
           "type": "bool",
           "tooltip": "If enabled, will output warnings for edges that don't match any orbital",
           "default": "true",
