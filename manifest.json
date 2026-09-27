@@ -1,6 +1,6 @@
 {
   "bundle_schema": "2.1.0",
-  "generated": "2026-09-24",
+  "generated": "2026-09-27",
   "plugins": [
     {
       "plugin": "PCGExElementsClustersSketch",
@@ -14,7 +14,7 @@
       "version": "0.8",
       "file": "PCGExElementsValency.json",
       "entries": 111,
-      "concepts": 70
+      "concepts": 69
     },
     {
       "plugin": "PCGExElementsZoneGraph",
@@ -25,9 +25,9 @@
     },
     {
       "plugin": "PCGExtendedToolkit",
-      "version": "0.78.1",
+      "version": "0.79",
       "file": "PCGExtendedToolkit.json",
-      "entries": 490,
+      "entries": 494,
       "concepts": 38
     }
   ]

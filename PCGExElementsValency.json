@@ -10933,7 +10933,7 @@
       "hints": [
         {
           "style": "info",
-          "text": "The random stream this node grows with folds in the seed of the PCG component running it, so the same graph on two components extends one input differently. Two components give matching results only when their seeds match too.",
+          "text": "Growth here draws from a stream seeded by the node's Seed combined with the PCG component's Seed, so changing either one re-rolls it, and two components extend one input identically unless their Seeds differ. Under a grammar, each seed Vtx's own Seed property also feeds the draws for the structure grown from it. The Vtx this pass adds carry a Seed property derived from the node's Seed and their placement order.",
           "anchor": "mechanism"
         },
         {
@@ -10963,7 +10963,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-cluster",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingClusterGrowth.h",
-        "hash": "67d4ea9aa9dcb5366d70dbbd563defdb9b641a05"
+        "hash": "d3c977c4bc71a510fdfa11529f44ed34b499d3b2"
       }
     },
     "UPCGExValencyBondingGenerativeSettings": {
@@ -11364,6 +11364,11 @@
           "style": "warning",
           "text": "Growth checks nothing spatially unless something asks it to. Two modules that mate perfectly can occupy the same space, and the run will place them there. Overlap is refused by placement conditions authored on the modules, or by a grammar rule, and by nothing on this node.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "Growth here draws from a stream seeded by the node's Seed, and each seed point's starting module from the node's Seed and the point's index in its input, so the same seed points in the same order grow the same structure and changing the Seed re-rolls it. Under a grammar, each seed point's own Seed property also feeds the draws for the structure grown from it. The Vtx this node writes carry a Seed property derived from the node's Seed and their placement order.",
+          "anchor": "mechanism"
         }
       ],
       "related": [
@@ -11391,7 +11396,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-points",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingGenerative.h",
-        "hash": "c8f3e806e79469267cf84231f4aca9ec4411acd3"
+        "hash": "b9522af7530aa0a33f1a9ab5c07979211b3c219c"
       }
     },
     "UPCGExValencyBondingRules": {
@@ -11807,7 +11812,11 @@
           "tooltip": "Vary the solve per cluster by mixing a content hash of its point seeds into the solve seed. Still deterministic -- the same points always solve the same way, whatever the ordering.",
           "default": "false",
           "overridable": true,
-          "semantics": "Without it, every cluster in one execution solves from the same seed, so identical clusters come out identical. Mixing in a hash of each cluster's own point seeds separates them while keeping every one reproducible, and reordering the inputs changes nothing."
+          "semantics": "The solve seed is the node's Seed: the strategy draws from it, restarts derive theirs from it, and a Weighted Random fixed pick draws from it too, so changing it re-rolls the solve. Without this option every cluster in one execution starts from that seed alone, so identical clusters come out identical. With it, the per-cluster hash is mixed into all of those draws, fixed picks included.",
+          "interacts_with": [
+            "FixedPicks",
+            "MaxSolveRestarts"
+          ]
         },
         "bOutputUnsolvableMarker": {
           "display": "Output Unsolvable Marker",
@@ -11884,7 +11893,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve",
       "source": {
         "file": "PCGExValencySolvers/Public/Elements/PCGExValencyBonding.h",
-        "hash": "86ce69c7df12f07b63550f09c3acbe8366583e4d"
+        "hash": "d707248866874a647997c4bf5e03957e3bdbe092"
       }
     },
     "UPCGExValencyConnectorFilterProviderSettings": {
@@ -13052,7 +13061,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/valency-lattice",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyLattice.h",
-        "hash": "3cba0682759bcc5183c129c205e3e4ccce1a9bac"
+        "hash": "3537aa70912b9f450799d37db8afc2e6ffc8c1c0"
       }
     },
     "UPCGExValencyLoadPropertiesSettings": {
@@ -14586,7 +14595,7 @@
       "purpose": "Emits one point per connector on a finished result's resolved modules, each carrying a packed reference back to the connector it came from. A connector point is a position with a facing and a type, which is the shape of input a second pass wants, so this is the chaining node: a solve or a growth followed by something that builds onto its sockets.",
       "situation": "A finished structure whose open sockets have to become the input of whatever comes next.",
       "mechanism": {
-        "text": "Every Vtx is read back as a resolved module and each of that module's connectors is considered in turn, subject to the claim scope, the eligibility selection and any gates the connector itself carries. What survives becomes one point at the connector's own transform, so the count out has nothing to do with the count in. The cluster passes through untouched: this node adds a stream rather than modifying one."
+        "text": "Every Vtx is read back as a resolved module and each of that module's connectors is considered in turn, subject to the claim scope, the eligibility selection and any gates the connector itself carries. A connector that survives is run through its connector constraints and emits a point at a pose they produce, at its own transform when it carries none, or no point when they reject every candidate, so the count out has nothing to do with the count in. Any draw in that pipeline, and the pick among candidates when more survive than may be emitted, is seeded per connector by the node's Seed and the Vtx's own Seed property, so the same input always lands the same way and re-seeding the Vtx or changing the node's Seed re-rolls the poses. The cluster passes through untouched: this node adds a stream rather than modifying one."
       },
       "off_label": [
         {
@@ -14686,7 +14695,7 @@
         "AllowMultiSpawnPerConnector": {
           "display": "Allow Multi Spawn Per Connector",
           "type": "FPCGExInputShorthandSelectorBoolean",
-          "tooltip": "Per-point: emit one point per Generator candidate, capped by the connector's Spawn Capacity. Off emits a single point at the base transform and skips Generators.",
+          "tooltip": "Per-point: On emits up to Spawn Capacity of a connector's constraint candidates, Off at most one.",
           "default": "FPCGExInputShorthandSelectorBoolean(FName(\"AllowMultiSpawn\"), false, false)",
           "fields": [
             {
@@ -14717,7 +14726,8 @@
               "default": "false"
             }
           ],
-          "semantics": "Off, a connector emits exactly one point at its own transform and any Generator constraints authored on it are skipped. On, the Generators run and the connector emits a point per candidate pose they produce, capped by the connector's own spawn capacity. It reads per point, so the two behaviours can coexist in one run.",
+          "semantics": "The switch is read per Vtx, so all of one module's connectors share it; per-connector control comes from each connector's own `Spawn Capacity`.",
+          "trap": "`Spawn Capacity` defaults to 1, and a connector left there emits at most one point with the switch on or off. Off still runs the constraints, so a connector carrying a Generator lands its point on a generated pose.",
           "interacts_with": [
             "ConnectorSelection"
           ]
@@ -14791,10 +14801,6 @@
       ],
       "related": [
         {
-          "path": "working-with-valency/generating/output/write-connectors.md",
-          "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output/write-connectors"
-        },
-        {
           "path": "working-with-valency/concepts/connectors.md",
           "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/concepts/connectors"
         },
@@ -14810,7 +14816,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-connectors",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteConnectors.h",
-        "hash": "a33385e4a708908cccf9fa5b1da00cc21ab26b6b"
+        "hash": "c53899ed7ec5ffa9a7da1316debf4b2c9e2be9c4"
       }
     },
     "UPCGExValencyWriteJunctionsSettings": {
@@ -14881,7 +14887,7 @@
           "tooltip": "Points forwards clusters untouched; Split Cluster rebuilds them with junction vtx inserted.",
           "default": "EPCGExJunctionOutputMode::Points",
           "enum": "EPCGExJunctionOutputMode",
-          "semantics": "Points describes the result and changes nothing about it. Split Cluster changes the topology: each bonded edge A to B becomes A to junction to B, and a spanning bond gains two junction Vtx rather than one. Those inserted Vtx carry no Valency entry, so every downstream node that resolves modules has to expect Vtx that resolve to nothing.",
+          "semantics": "Points describes the result and changes nothing about it. Split Cluster changes the topology: each bonded edge A to B becomes A to junction to B, and a spanning bond gains two junction Vtx rather than one. Those inserted Vtx carry no Valency entry, so every downstream node that resolves modules has to expect Vtx that resolve to nothing. Their Seed property is derived from the node's Seed and their index.",
           "interacts_with": [
             "JunctionFlagAttributeName"
           ]
@@ -15016,7 +15022,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-junctions",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteJunctions.h",
-        "hash": "bdc05d399071394817331de0792c7c044f43ab5a"
+        "hash": "9c1d1cea334ce3f6889cf812436dc8a6f57c9a70"
       }
     },
     "UPCGExValencyWriteOrbitalsSettings": {

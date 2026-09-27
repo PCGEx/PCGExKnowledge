@@ -511,41 +511,8 @@
           "type": "FPCGExTransformDetails",
           "tooltip": "How each printed cluster inherits its target point's transform.",
           "overridable": true,
-          "fields": [
-            {
-              "name": "ScaleToFit",
-              "display": "Scale to Fit",
-              "type": "FPCGExScaleToFitDetails",
-              "tooltip": "How to scale objects to fit within target bounds."
-            },
-            {
-              "name": "Justification",
-              "display": "Justification",
-              "type": "FPCGExJustificationDetails",
-              "tooltip": "How to align objects within target bounds after scaling."
-            },
-            {
-              "name": "bInheritScale",
-              "display": "Inherit Scale",
-              "type": "bool",
-              "tooltip": "Multiply result scale by the target point's scale.",
-              "default": "false"
-            },
-            {
-              "name": "bInheritRotation",
-              "display": "Inherit Rotation",
-              "type": "bool",
-              "tooltip": "Rotate result by the target point's rotation.",
-              "default": "false"
-            },
-            {
-              "name": "bIgnoreBounds",
-              "display": "Ignore Bounds",
-              "type": "bool",
-              "tooltip": "Skip bounds calculations and use position only. Disables scale-to-fit and justification.",
-              "default": "false"
-            }
-          ]
+          "see": "FPCGExTransformDetails",
+          "semantics": "The fit is measured once per sketch, on its printed Vtx, and every copy of that sketch places its Vtx, its Edges and its site points through that one box, so the sites keep their drawn place on the cluster however the fit scales or justifies it. A sketch whose cluster does not print is fitted by its own drawn bounds instead, and its sites land in that frame."
         },
         "GraphBuilderDetails": {
           "display": "Cluster Output Settings",
@@ -658,7 +625,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/staging-load-sketch",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExStagingLoadSketch.h",
-        "hash": "f63c4d71ec7edf1c37f0ab5e1f71a240fe095562"
+        "hash": "2069c18dec194fca0004e1f68eb3ba42ae5b2d5e"
       }
     }
   }

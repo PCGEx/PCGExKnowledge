@@ -230,7 +230,7 @@
     "name": "Capturing Scenes",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Building collections from things you placed: actor property deltas, level harvesting, and exporting levels or actor subtrees to PCG data.",
+    "purpose": "Collections can be authored row by row, and they can also be captured: from actors you configured in a viewport, from levels you dressed by hand.",
     "outline": [
       "Actors that remember their settings",
       "Harvesting a level",
@@ -327,7 +327,7 @@
     "name": "Staging & Spawning",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Turning staged picks into scene content: the spawn route for each entry type, and sockets as attachment points.",
+    "purpose": "Staging decides and records the pick; spawning happens later, in vanilla mesh spawners driven by PCGEx Mesh Selector Staged, or in the dedicated Staging : spawn nodes for actors, levels and PCG data.",
     "outline": [
       "Routing by type",
       "Mixed picks need no splitting to work",
@@ -1418,20 +1418,6 @@
       "Where it sits"
     ],
     "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output/reading-properties"
-  },
-  {
-    "id": "working-with-valency/generating/output/write-connectors",
-    "name": "Write Connectors",
-    "plugin": "PCGExElementsValency",
-    "kind": "concept",
-    "purpose": "Connector points are positions with a facing and a type, which is exactly the shape of input a second pass wants.",
-    "outline": [
-      "Which connectors qualify",
-      "Claimed gives you both sides separately",
-      "What each point carries",
-      "Which node to reach for"
-    ],
-    "url": "https://pcgex.gitbook.io/pcgex/valency/working-with-valency/generating/output/write-connectors"
   },
   {
     "id": "working-with-valency/generating/solve",
@@ -2972,7 +2958,7 @@
     "kind": "entry",
     "classification": "shared_struct",
     "purpose": "The concerns every selector carries beside its own picking strategy.",
-    "situation": "Two selectors reading the same points keep producing the same picks, or picks need restricting to a slice of the collection by name.",
+    "situation": "Two selectors reading the same points keep producing the same picks, or picks need restricting to a slice of the collection by category name or by entry tags.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/selector-base-config"
   },
   {
@@ -3014,6 +3000,16 @@
     "purpose": "Everything the topology nodes decide about the mesh once its triangles exist.",
     "situation": "A surface that triangulated correctly and still needs shading, coordinates and normals before anything can render it.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/common-settings/topology-details"
+  },
+  {
+    "id": "FPCGExTransformDetails",
+    "name": "Transform Details",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Decides how a copied dataset lands on each target point: fitted into the target's bounds, then carried by the target's transform.",
+    "situation": "A point pattern or a cluster stamped onto target points, where each copy has to sit inside its target's bounds.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/transform-details"
   },
   {
     "id": "FPCGExUVW",
@@ -5078,7 +5074,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "provider",
-    "purpose": "Every filter node except Filter Group inherits this base, and this page carries the settings they all share: the Priority that orders a stack before it runs, and the Warnings and Errors policies deciding what a filter does when it cannot do its job.",
+    "purpose": "Every filter node except Filter Group inherits this base, and this page carries the settings they all share: the Priority that orders a stack before it runs, and the two failure policies deciding what a filter does when it cannot do its job, all of them under the node's advanced properties.",
     "situation": "Reading any filter page and needing to know what its `Priority`, `Initialization Failure Policy` or `Missing Data Policy` does, since those three are the same on every filter node.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition"
   },
@@ -5312,6 +5308,29 @@
     "purpose": "Answers a question about an actor in the level rather than about the element in front of it.",
     "situation": "Points were built from actors already placed in the level, and which of them the next node touches depends on the tags those actors carry.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-gameplaytags"
+  },
+  {
+    "id": "UPCGExGetActorBoundsSettings",
+    "name": "Get Actor Bounds",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Gathers the loaded actors that match a class or a set of tags and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data.",
+    "situation": "A level of placed props and blockers that a scatter has to stay clear of, where the filter needs only where each actor is and how big it is.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds"
+  },
+  {
+    "id": "UPCGExGetActorBoundsWPSettings",
+    "name": "Get Actor Bounds (WP)",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "aliases": [
+      "Get Actor Bounds (World Partition)"
+    ],
+    "purpose": "The World Partition form of Get Actor Bounds, for the editor only.",
+    "situation": "A partitioned level where the scatter has to stay clear of props sitting in cells that are streamed out while the graph generates.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds-wp"
   },
   {
     "id": "UPCGExGetCachedDataSettings",
@@ -6766,6 +6785,16 @@
     "purpose": "A probe that connects points along the directions an Orbital Set defines, so the cluster it helps build is already shaped like the set a solve will use.",
     "situation": "A loose point cloud that has to become a cluster whose connections line up with a bonding direction set.",
     "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/probe-orbital"
+  },
+  {
+    "id": "UPCGExProjectionSettings",
+    "name": "Projection",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Moves points onto a landscape, a surface or other spatial data, the same job as the stock Projection node, built for many point datasets at once: every input is projected against one shared target in parallel and comes out as points, one dataset per input.",
+    "situation": "Several point datasets that each have to be dropped onto the same landscape or other spatial target.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/projection"
   },
   {
     "id": "UPCGExPropertyBlueprintLibrary",
