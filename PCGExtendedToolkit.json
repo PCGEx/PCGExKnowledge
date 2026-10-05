@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExtendedToolkit",
-  "version": "0.79",
+  "version": "0.79.1",
   "aliases": {
     "FPCGExAdjacencyStateConfigBase": "UPCGExAdjacencyStateFactoryProviderSettings",
     "FPCGExAmplitudeConfig": "UPCGExVtxPropertyAmplitudeSettings",
@@ -33,6 +33,8 @@
     "FPCGExGameplayTagsFilterConfig": "UPCGExGameplayTagsFilterProviderSettings",
     "FPCGExGetCachedDataContext": "UPCGExGetCachedDataSettings",
     "FPCGExGetCachedDataElement": "UPCGExGetCachedDataSettings",
+    "FPCGExGetPartitionActorContext": "UPCGExGetPartitionActorSettings",
+    "FPCGExGetPartitionActorElement": "UPCGExGetPartitionActorSettings",
     "FPCGExGUIDDetails": "UPCGExWriteGUIDSettings",
     "FPCGExHeuristicAttributeConfig": "UPCGExCreateHeuristicAttributeSettings",
     "FPCGExHeuristicConfigAzimuth": "UPCGExHeuristicsAzimuthProviderSettings",
@@ -446,40 +448,22 @@
         {
           "name": "ActorSpace",
           "display_name": "Actor Space",
-          "tooltip": "Point takes the actor transform; bounds are the cached component boxes brought into actor space."
+          "tooltip": "Point takes the actor transform; bounds are the cached component world boxes brought into actor space. Loose on rotated actors (two AABB inflations), but never touches component internals."
         },
         {
           "name": "WorldAABB",
           "display_name": "World AABB",
           "tooltip": "Point sits at the center of the world-space box with identity rotation and unit scale."
-        }
-      ]
-    },
-    "EPCGExActorSelection": {
-      "values": [
-        {
-          "name": "ByClass",
-          "display_name": "By Class",
-          "tooltip": "Select actors of the given class, subclasses included."
         },
         {
-          "name": "ByTag",
-          "display_name": "By Tag",
-          "tooltip": "Select actors carrying the given tag(s)."
-        }
-      ]
-    },
-    "EPCGExActorTagMatch": {
-      "values": [
-        {
-          "name": "Any",
-          "display_name": "Any",
-          "tooltip": "An actor matches when it carries at least one of the tags."
+          "name": "ActorSpaceLocal",
+          "display_name": "Actor Space (Local Bounds)",
+          "tooltip": "Point takes the actor transform; each component's own local bounds are carried into actor space in one step, non-uniform scale included (one AABB inflation only, exact for unrotated components). Components whose local bounds disagree with their world bounds, and unloaded World Partition actors, behave as Actor Space."
         },
         {
-          "name": "All",
-          "display_name": "All",
-          "tooltip": "An actor matches only when it carries every tag."
+          "name": "PerPrimitive",
+          "display_name": "Per Primitive",
+          "tooltip": "One point per primitive component: the component transform and its own local bounds, the tightest representation available. Point count is no longer one per actor. Components whose local bounds disagree with their world bounds get their world box brought into component space; unloaded World Partition actors behave as Actor Space."
         }
       ]
     },
@@ -2083,6 +2067,11 @@
           "name": "WorldActor",
           "display_name": "PCG World Actor",
           "tooltip": "The level's PCG World Actor, shared by every component in the world."
+        },
+        {
+          "name": "Input",
+          "display_name": "Input",
+          "tooltip": "Every actor referenced on the Target Actor pin. An empty pin names no host: nothing is read or written."
         }
       ]
     },
@@ -3081,6 +3070,110 @@
         }
       ]
     },
+    "EPCGExFootprintAdjust": {
+      "values": [
+        {
+          "name": "Add",
+          "display_name": "Add",
+          "tooltip": "Extents + Adjust"
+        },
+        {
+          "name": "Multiply",
+          "display_name": "Multiply",
+          "tooltip": "Extents * Adjust"
+        }
+      ]
+    },
+    "EPCGExFootprintAxis": {
+      "values": [
+        {
+          "name": "Projection",
+          "display_name": "Projection",
+          "tooltip": "Each corner's offset is measured along its own projection displacement; a push follows the extreme corner's displacement and lands it exactly on the surface."
+        },
+        {
+          "name": "ReferenceUp",
+          "display_name": "Reference Up",
+          "tooltip": "Offsets and push are measured along the reference rotation's up axis. Approximate on tilted references, keeps the point seated along its own axis."
+        }
+      ]
+    },
+    "EPCGExFootprintFailMetric": {
+      "values": [
+        {
+          "name": "None",
+          "display_name": "None",
+          "tooltip": "The footprint never fails the projection."
+        },
+        {
+          "name": "Overhang",
+          "display_name": "Overhang",
+          "tooltip": "Fail when the maximum overhang exceeds the threshold."
+        },
+        {
+          "name": "Penetration",
+          "display_name": "Penetration",
+          "tooltip": "Fail when the maximum penetration exceeds the threshold."
+        },
+        {
+          "name": "Either",
+          "display_name": "Either",
+          "tooltip": "Fail when either maximum exceeds the threshold."
+        }
+      ]
+    },
+    "EPCGExFootprintPush": {
+      "values": [
+        {
+          "name": "None",
+          "display_name": "None",
+          "tooltip": "Measure only."
+        },
+        {
+          "name": "Sink",
+          "display_name": "Sink",
+          "tooltip": "Push the point toward the surface until the most overhanging corner touches it."
+        },
+        {
+          "name": "Raise",
+          "display_name": "Raise",
+          "tooltip": "Push the point away from the surface until the deepest corner surfaces."
+        },
+        {
+          "name": "Balance",
+          "display_name": "Balance",
+          "tooltip": "Push so the most overhanging and the deepest corner sit at equal distance from the surface."
+        }
+      ]
+    },
+    "EPCGExFootprintReference": {
+      "values": [
+        {
+          "name": "Input",
+          "display_name": "Input",
+          "tooltip": "The point's input rotation orients the footprint box."
+        },
+        {
+          "name": "Projected",
+          "display_name": "Projected",
+          "tooltip": "The rotation the target projects for the point center orients the footprint box (surface-aligned)."
+        }
+      ]
+    },
+    "EPCGExFootprintThreshold": {
+      "values": [
+        {
+          "name": "Manual",
+          "display_name": "Manual",
+          "tooltip": "Threshold value, constant or per-point attribute."
+        },
+        {
+          "name": "BoundsHeight",
+          "display_name": "Bounds Height",
+          "tooltip": "The footprint box' full height (Z size after adjust)."
+        }
+      ]
+    },
     "EPCGExFormatReplacementMode": {
       "values": [
         {
@@ -3290,6 +3383,25 @@
           "name": "Flatten",
           "display_name": "Flatten",
           "tooltip": "Hoist the collection entries as if they were part of this collection."
+        }
+      ]
+    },
+    "EPCGExGrid2DMode": {
+      "values": [
+        {
+          "name": "Auto",
+          "display_name": "Auto",
+          "tooltip": "Follow the component the grid is resolved from (3D when there is none)."
+        },
+        {
+          "name": "Force2D",
+          "display_name": "2D",
+          "tooltip": "Force a 2D grid: the Z coordinate is always 0 and dropped from the id."
+        },
+        {
+          "name": "Force3D",
+          "display_name": "3D",
+          "tooltip": "Force a 3D grid."
         }
       ]
     },
@@ -4212,6 +4324,53 @@
         }
       ]
     },
+    "EPCGExPartitionActorKind": {
+      "values": [
+        {
+          "name": "Serialized",
+          "display_name": "Serialized",
+          "tooltip": "Partition actors saved with the level and streamed by World Partition."
+        },
+        {
+          "name": "RuntimeGenerated",
+          "display_name": "Runtime Generated",
+          "tooltip": "Transient partition actors pooled by the runtime generation scheduler. They never carry data layers or an HLOD layer."
+        },
+        {
+          "name": "FromSource",
+          "display_name": "From Source",
+          "tooltip": "Runtime generated when the descriptor source generates at runtime, serialized otherwise."
+        }
+      ]
+    },
+    "EPCGExPartitionActorOutput": {
+      "values": [
+        {
+          "name": "AttributeSet",
+          "display_name": "Attribute Set",
+          "tooltip": "One attribute set, one row per partition actor."
+        },
+        {
+          "name": "Points",
+          "display_name": "Points",
+          "tooltip": "One point data, one point per partition actor, at its location and sized like its cell."
+        }
+      ]
+    },
+    "EPCGExPartitionDescriptorSource": {
+      "values": [
+        {
+          "name": "ExecutingComponent",
+          "display_name": "Executing Component",
+          "tooltip": "Look partitions up on the executing component's own grid: its graph's 2D setting, and its actor's data layers and HLOD layer."
+        },
+        {
+          "name": "Input",
+          "display_name": "Input",
+          "tooltip": "Look partitions up on the grid of each actor, partition actor or PCG component referenced on the Reference pin."
+        }
+      ]
+    },
     "EPCGExPartitionLayout": {
       "values": [
         {
@@ -4223,6 +4382,20 @@
           "name": "Rows",
           "display_name": "Rows",
           "tooltip": "Each grid entry becomes its own row in the output attribute set, with the structured outputs per row."
+        }
+      ]
+    },
+    "EPCGExPartitionResolution": {
+      "values": [
+        {
+          "name": "FromComponent",
+          "display_name": "From Executing Component",
+          "tooltip": "Use the executing component's grid size when it is partitioned; fall back to the explicit grid otherwise."
+        },
+        {
+          "name": "Explicit",
+          "display_name": "Explicit",
+          "tooltip": "Always use the explicit grid set on this entry, ignoring the executing component."
         }
       ]
     },
@@ -6071,6 +6244,20 @@
           "name": "Primitives",
           "display_name": "Primitives",
           "tooltip": "Only the provided primitive components will be tested."
+        }
+      ]
+    },
+    "EPCGExTagFilterScope": {
+      "values": [
+        {
+          "name": "TopLevel",
+          "display_name": "Top Level",
+          "tooltip": "Test only the collection's own entries. Entries reached through sub-collections are not tested."
+        },
+        {
+          "name": "Recursive",
+          "display_name": "Recursive",
+          "tooltip": "Test every entry at every depth, sub-collection containers included. A container that fails drops its whole subtree."
         }
       ]
     },
@@ -10981,7 +11168,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/common-settings/tensor-sampling-mutations-details",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensor.h",
-        "hash": "9e356b5235a6a49e10cfe1118a235aab4b78ba60"
+        "hash": "c1fe401fe12f5c4dd05920eaab27cb335b16ba4b"
       }
     },
     "FPCGExTopologyDetails": {
@@ -12041,7 +12228,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/actor-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExActorCollection.h",
-        "hash": "7d8e8fa041bb2c216a8e3348f84646a22b4bf237"
+        "hash": "913e4aacd40a70818045f3f8268a8c5c074a9338"
       }
     },
     "UPCGExAdjacencyStateFactoryProviderSettings": {
@@ -12722,7 +12909,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "d1bd7e1ce4342d6e13c60caa2c6677fb2ae6ebb8"
+        "hash": "3416b38c2d553600ad476eaff85d02196e0c6ebc"
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -13296,7 +13483,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingDistribute.h",
-        "hash": "e195f99f26d13e153e31c5bd187e34bf28730be9"
+        "hash": "cff683e04061776146798173b2037ecfcce50d8d"
       }
     },
     "UPCGExAttributeCheckFilterProviderSettings": {
@@ -20376,7 +20563,7 @@
           "type": "EPCGExGroupingPolicy",
           "from": "UPCGExClipper2ProcessorSettings",
           "tooltip": "How main inputs are grouped. With data matching enabled this applies *within* each matched pre-group; otherwise it applies across all main inputs.",
-          "default": "EPCGExGroupingPolicy::Consolidate",
+          "default": "EPCGExGroupingPolicy::Auto",
           "enum": "EPCGExGroupingPolicy",
           "overridable": true,
           "edit_condition": "bExposeGroupingPolicy",
@@ -21708,7 +21895,7 @@
           "type": "EPCGExGroupingPolicy",
           "from": "UPCGExClipper2ProcessorSettings",
           "tooltip": "How main inputs are grouped. With data matching enabled this applies *within* each matched pre-group; otherwise it applies across all main inputs.",
-          "default": "EPCGExGroupingPolicy::Consolidate",
+          "default": "EPCGExGroupingPolicy::Auto",
           "enum": "EPCGExGroupingPolicy",
           "overridable": true,
           "edit_condition": "bExposeGroupingPolicy",
@@ -29924,7 +30111,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/cull-on-empty",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExCullOnEmpty.h",
-        "hash": "3fb134df89ed7608f5e26ff66c435d189da1ddfc"
+        "hash": "66c5a522076d55726297cd0432d9ff4ee0705680"
       }
     },
     "UPCGExCutEdgesSettings": {
@@ -30312,7 +30499,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-hash",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExDataHash.h",
-        "hash": "fd683f0ca22fad531f59fe7bf0dd52c311ac800e"
+        "hash": "5b1d5690ae55a89b1348269033fb8a8ddfb297a4"
       }
     },
     "UPCGExDataMatchFilterProviderSettings": {
@@ -31691,7 +31878,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/actor-content-filter",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExActorContentFilter.h",
-        "hash": "8624545ee634084945813ccafa3cb0ceb0061c44"
+        "hash": "6b1bf9a1214d8ea29f28b7a65c1d612746daa3ca"
       }
     },
     "UPCGExDefaultActorMeshClassificator": {
@@ -32828,7 +33015,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/dispatch-subgraphs",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExDispatchSubgraph.h",
-        "hash": "6c60883478f1f2b4a115219850700c91e5ade495"
+        "hash": "94e9a253416faf8ac2468dba75c3681ea2557c36"
       }
     },
     "UPCGExDistanceFilterProviderSettings": {
@@ -42003,22 +42190,26 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsSpatial",
       "classification": "node",
-      "purpose": "Gathers the loaded actors that match a class or a set of tags and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data. It is the fast form of the stock **Get Actor Data** node set to `Get Single Point` with `Merge Simple Data` on, for the case where the points only ever feed an exclusion or spatial filter and nothing downstream reads an actor reference or a tag attribute. The stock node recomputes bounds per component, looping every instance of an instanced mesh, grows its output one point at a time and writes per-actor metadata whose string dedup scans everything already written; this node reads the cached component bounds, allocates the output once and never touches metadata.",
+      "purpose": "Gathers the loaded actors that pass a class filter and a set of tag clauses and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data. `Bounds Source` can split an actor into one point per primitive, and `Exclude` removes actors the rest of the selection let through or, with `Output Discarded` on, routes them to a **Discarded** pin. It is the fast form of the stock **Get Actor Data** node set to `Get Single Point` with `Merge Simple Data` on, for the case where the points only ever feed an exclusion or spatial filter and nothing downstream reads an actor reference or a tag attribute. The stock node recomputes bounds per component, looping every instance of an instanced mesh, grows its output one point at a time and writes per-actor metadata whose string dedup scans everything already written; this node reads the cached component bounds, allocates the output once and never touches metadata.",
       "situation": "A level of placed props and blockers that a scatter has to stay clear of, where the filter needs only where each actor is and how big it is.",
       "mechanism": {
-        "text": "One execution sweeps the loaded actors of the world once and emits one point per actor that passes the selection: its transform, its bounds and a seed derived from its position, with no attributes, in a single point data. `Bounds Source` decides the frame the point is expressed in, the actor's own or the world's. Points come out sorted by actor name, so the output and its CRC do not change when unrelated actors are added or removed elsewhere in the level, and an execution that matches nothing produces no output data at all. Bounds are the union of the actor's primitive components' cached boxes; editor sprite components never count, so an actor with nothing but a sprite has no bounds."
+        "text": "One execution sweeps the loaded actors of the world once and emits one point per actor that passes the selection, or one per primitive when `Bounds Source` is Per Primitive: a transform, bounds and a seed derived from the point's position, with no attributes, in a single point data. Bounds are built from the cached boxes of the actor's primitive components, and a primitive counts only when it has collision enabled, or is visible in game on an actor that is not hidden, so an actor made of editor sprites and arrows has no bounds. Points are ordered by position, X first, then Y, then Z, with rotation, scale and bounds settling ties, so the same set of points comes out in the same order on every execution. An execution that matches nothing produces no output data at all."
       },
       "off_label": [
         {
-          "claim": "Turn `Omit Actors Without Bounds` off and actors with no primitives at all, empty actors and targets among them, come through as zero-extent points at their location, which makes the node a way to read marker actors by tag with no metadata cost.",
-          "grounded_in": "Internal::FinalizeSnapshot in PCGExActorBounds.cpp emits a zero-extent point at the actor transform when the world bounds are invalid and bOmitActorsWithoutBounds is off."
+          "claim": "Turn `Omit Actors Without Bounds` off and actors with no contributing primitive, empty actors and targets among them, come through as zero-extent points at their location, which makes the node a way to read marker actors by tag with no metadata cost.",
+          "grounded_in": "Internal::FinalizeSnapshot in PCGExActorBounds.cpp appends a zero-extent snapshot at the actor transform when the world bounds are invalid, bOmitActorsWithoutBounds is off and the cull box, when there is one, contains the actor location. Internal::ShouldSkipPrimitive decides which primitives contribute to those bounds."
+        },
+        {
+          "claim": "With `Output Discarded` on, `Exclude` stops removing anything and works as a split: one sweep puts the actors without the tag on **Out** and the actors with it on **Discarded**, each ready for its own filter.",
+          "grounded_in": "FTagMatcher::Test in PCGExActorBounds.cpp returns Excluded for an actor that satisfies both Require clauses and carries an Exclude tag, once a Discarded list is there to receive it, and FSweep::Route sends the actor to that list. Boot in PCGExGetActorBounds.cpp points the list at the context's Discarded array when bOutputDiscarded is on, and AdvanceWork writes both arrays through the same WritePoints."
         }
       ],
       "pins": {
         "inputs": [
           {
             "label": "Bounds",
-            "note": "Any spatial data; only its bounds are read, and only actors whose world box overlaps them are kept. Wire the Input node to cull to the executing component's own bounds.",
+            "note": "Any spatial data; only its bounds are read, and only actors whose world box overlaps them are kept. In Per Primitive mode the test is made per primitive. Wire the Input node to cull to the executing component's own bounds.",
             "required": "conditional",
             "condition": "when Unbounded is off, which is the only time the pin exists"
           }
@@ -42026,7 +42217,12 @@
         "outputs": [
           {
             "label": "Out",
-            "note": "One point per matching actor, in one point data. No data at all when nothing matched."
+            "note": "One point per matching actor, or per primitive when Bounds Source is Per Primitive, in one point data. No data at all when nothing matched."
+          },
+          {
+            "label": "Discarded",
+            "note": "The actors `Exclude` removed, as points shaped like those on Out, in one point data. No data at all when nothing was excluded.",
+            "condition": "when Output Discarded is on"
           }
         ],
         "dynamic": null
@@ -42035,42 +42231,39 @@
         "Selection": {
           "display": "Selection",
           "type": "FPCGExActorSelectionDetails",
+          "from": "UPCGExGetActorBoundsBaseSettings",
           "tooltip": "Which actors to gather.",
           "overridable": true,
           "fields": [
             {
-              "name": "Selection",
-              "display": "Selection",
-              "type": "EPCGExActorSelection",
-              "tooltip": "How actors are selected.",
-              "default": "EPCGExActorSelection::ByClass",
-              "enum": "EPCGExActorSelection"
-            },
-            {
               "name": "ActorClass",
               "display": "Actor Class",
               "type": "TSubclassOf<AActor>",
-              "tooltip": "Actor class to select; subclasses match."
+              "tooltip": "Actor class to gather; subclasses match."
             },
             {
-              "name": "Tags",
-              "display": "Tags",
-              "type": "TArray<FName>",
-              "tooltip": "Tags to test against each actor's tags."
+              "name": "RequireAll",
+              "display": "Require All",
+              "type": "FString",
+              "tooltip": "Comma-separated tags an actor must all carry."
             },
             {
-              "name": "TagMatch",
-              "display": "Tag Match",
-              "type": "EPCGExActorTagMatch",
-              "tooltip": "Whether an actor needs any or all of the tags.",
-              "default": "EPCGExActorTagMatch::Any",
-              "enum": "EPCGExActorTagMatch"
+              "name": "RequireAny",
+              "display": "Require Any",
+              "type": "FString",
+              "tooltip": "Comma-separated tags an actor must carry at least one of."
+            },
+            {
+              "name": "Exclude",
+              "display": "Exclude",
+              "type": "FString",
+              "tooltip": "Comma-separated tags that exclude an otherwise selected actor. Tested before its bounds are read, so an excluded actor costs no more than a non-matching one unless the node outputs its Discarded pin."
             },
             {
               "name": "bAllowWildcards",
               "display": "Allow Wildcards",
               "type": "bool",
-              "tooltip": "Treat '*' and '?' in tags as wildcards. Only tags that actually contain one pay a string match per actor.",
+              "tooltip": "Treat '*' and '?' in any clause as wildcards. A pattern is string-matched once per distinct actor tag, then remembered.",
               "default": "false"
             },
             {
@@ -42093,6 +42286,7 @@
         "Output": {
           "display": "Output",
           "type": "FPCGExActorBoundsOutputDetails",
+          "from": "UPCGExGetActorBoundsBaseSettings",
           "tooltip": "How each actor becomes a point.",
           "overridable": true,
           "fields": [
@@ -42112,6 +42306,13 @@
               "default": "true"
             },
             {
+              "name": "bIgnoreEditorOnly",
+              "display": "Ignore Editor Only",
+              "type": "bool",
+              "tooltip": "Skip editor-only primitives, and every primitive of an editor-only actor. Turn off to account for editor-only markers; they still need collision or in-game visibility to contribute.",
+              "default": "true"
+            },
+            {
               "name": "bIncludeChildActors",
               "display": "Include Child Actors",
               "type": "bool",
@@ -42126,11 +42327,12 @@
               "default": "true"
             }
           ],
-          "semantics": "`Bounds Source` picks the frame. Actor Space, the default, keeps the actor's rotation and scale on the point and brings each primitive's cached world box into actor space one component at a time before taking their union, so a component that sits rotated relative to its actor contributes a looser box than its own geometry, and an actor at zero scale gets an empty box. World AABB puts the point at the centre of the union of the world boxes with no rotation and unit scale, so the point is upright whatever the actor's rotation. `Ignore PCGGenerated Components`, on by default, leaves out primitives tagged `PCG Generated Component`, so content a graph spawned onto an actor does not widen that actor's bounds. `Include Child Actors` also walks the primitives of child actor components. `Omit Actors Without Bounds`, on by default, drops an actor whose primitives contributed nothing; off, that actor comes through as a zero-extent point at its location, and a cull box then keeps it only when the location itself is inside the box."
+          "semantics": "`Bounds Source` picks the frame and the point count. Actor Space, the default, keeps the actor's rotation and scale on the point and brings each primitive's cached world box into actor space one component at a time before taking their union, so a component that sits rotated relative to its actor contributes a looser box than its own geometry, and an actor at zero scale gets a zero-extent box. World AABB puts the point at the centre of the union of the world boxes with no rotation and unit scale, so the point is upright whatever the actor's rotation. Actor Space (Local Bounds) keeps the actor transform as Actor Space does, and carries each component's own local box into actor space in one step, non-uniform scale included, which fits a rotated actor more tightly; a component whose local box does not agree with its cached world box is handled the Actor Space way, that component alone. Per Primitive emits one point per contributing primitive, carrying the component's transform and its own local box, or its cached world box brought into component space when the two do not agree. Each primitive is tested against the cull box on its own, so an actor straddling the box yields only the primitives that touch it. Actor Space (Local Bounds) and Per Primitive ask each component for its local box on top of the cached bounds the other modes read. `Ignore PCGGenerated Components`, on by default, leaves out primitives tagged `PCG Generated Component`, so content a graph spawned onto an actor does not widen that actor's bounds. `Ignore Editor Only`, on by default, leaves an editor-only actor with no contributing primitive, which hands it to `Omit Actors Without Bounds`. `Include Child Actors` also walks the primitives of child actor components. `Omit Actors Without Bounds`, on by default, drops an actor whose primitives contributed nothing; off, that actor comes through as a zero-extent point at its location, whatever the mode, and a cull box then keeps it only when the location itself is inside the box."
         },
         "bUnbounded": {
           "display": "Unbounded",
           "type": "bool",
+          "from": "UPCGExGetActorBoundsBaseSettings",
           "tooltip": "Gather every matching actor in the world. When off, a required Bounds input appears and only actors overlapping it are kept (wire the Input node for the component's own bounds).",
           "default": "true",
           "semantics": "Off, a **Bounds** pin appears and is required. The node reads the bounds of the first data wired to it, any spatial data will do, and keeps only actors whose world box overlaps them; the Input node's own data is the usual wire, which culls to the executing component's bounds. The switch is not overridable because it changes the node's pin set.",
@@ -42142,6 +42344,7 @@
         "bMustOverlapSelf": {
           "display": "Must Overlap Self",
           "type": "bool",
+          "from": "UPCGExGetActorBoundsBaseSettings",
           "tooltip": "Additionally require actors to overlap the executing component bounds. Independent of the Bounds input. Adds the component bounds to the cache key, so each partitioned cell executes on its own.",
           "default": "false",
           "overridable": true,
@@ -42149,6 +42352,17 @@
           "trap": "When the input box and the component bounds do not overlap each other the intersection is empty and nothing is gathered, without a warning. A component with no valid bounds of its own gathers nothing either, with a warning.",
           "interacts_with": [
             "bUnbounded"
+          ]
+        },
+        "bOutputDiscarded": {
+          "display": "Output Discarded",
+          "type": "bool",
+          "from": "UPCGExGetActorBoundsBaseSettings",
+          "tooltip": "Output the actors excluded by Exclude tags to a Discarded pin, shaped like the main output. They are a subset of what the node would output without Exclude, so the bounds cull still applies. Each discarded actor then costs a bounds read.",
+          "default": "false",
+          "semantics": "Not overridable, because it changes the node's pin set. Only `Exclude` feeds the **Discarded** pin: an actor rejected by the class filter, by a Require clause, by `Ignore Self` or by `Ignore PCGSpawned Actors` appears on neither pin. With an empty Exclude clause, or an execution that excluded nothing, the pin carries no data.",
+          "interacts_with": [
+            "Exclude"
           ]
         }
       },
@@ -42158,7 +42372,12 @@
       "hints": [
         {
           "style": "info",
-          "text": "Editing a matching actor dirties the graph the way it does for the stock node: one tracking key per class or per tag. When the Bounds pin is wired, or the selection is overridden, the keys are registered at execution instead and carry the input box.",
+          "text": "Editing a matching actor dirties the graph the way it does for the stock node, through the narrowest tracking key every match satisfies: one Require All tag, or else each Require Any tag, or else the class. When the Bounds pin is wired, or the selection is overridden, the keys are registered at execution instead and carry the input box.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "The node title carries the selection: the class when the filter is on, then each clause that holds something, written as all:, any: and not:.",
           "anchor": "mechanism"
         }
       ],
@@ -42183,7 +42402,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Bounds/PCGExGetActorBounds.h",
-        "hash": "85c11b61145de31d3ab7b4511c2d275774592ed1"
+        "hash": "ba4ce8f7ac8e09a1161ce0e61f778f43938a6117"
       }
     },
     "UPCGExGetActorBoundsWPSettings": {
@@ -42195,15 +42414,15 @@
       "palette_aliases": [
         "Get Actor Bounds (World Partition)"
       ],
-      "purpose": "The World Partition form of **Get Actor Bounds**, for the editor only. It reads the partition's actor descriptors instead of sweeping loaded actors, so actors that are not loaded are gathered too, each as one point carrying its transform and bounds and nothing else, merged into one point data. A loaded actor is read live, because a descriptor refreshes only when its actor is saved, so edits made since the last save are honoured; an unloaded actor contributes the transform and world bounds saved in its descriptor. Outside the editor, on a world that is not partitioned, or when the partition exposes no descriptors, the node warns and outputs nothing.",
+      "purpose": "The World Partition form of **Get Actor Bounds**, for the editor only. It reads the partition's actor descriptors instead of sweeping loaded actors, so actors that are not loaded are gathered too, as points carrying a transform and bounds and nothing else, merged into one point data, with the settings and the **Discarded** pin of **Get Actor Bounds**. A loaded actor is read live, tags, transform and bounds, because a descriptor refreshes only when its actor is saved, so edits made since the last save are honoured; an unloaded actor contributes the tags, transform and world bounds saved in its descriptor. Outside the editor, on a world that is not partitioned, or when the partition exposes no descriptors, the node warns and outputs nothing.",
       "situation": "A partitioned level where the scatter has to stay clear of props sitting in cells that are streamed out while the graph generates.",
       "mechanism": {
-        "text": "One execution walks the partition's actor descriptors, every one of them, or only those the editor spatial hash finds inside the cull box when there is one, and emits one point per descriptor that passes the selection, sorted by actor name, with no attributes, in a single point data; an execution that matches nothing produces no output data. Class and tags are tested on the descriptor, which holds what was last saved, for loaded and unloaded actors alike. Only the transform and bounds take the hybrid path: a loaded actor is read from its live primitives the way **Get Actor Bounds** reads it, and an unloaded actor has a single saved world box, which `Bounds Source` uses as it is or brings into the saved transform."
+        "text": "One execution walks the partition's actor descriptors, every one of them, or only those the editor spatial hash finds inside the cull box when there is one, and keeps the descriptors whose saved class passes the class filter, when that filter is on. A loaded actor is then read the way **Get Actor Bounds** reads it: its live class, tags, transform and primitives decide whether it is kept and what its points are. An unloaded actor is judged on its saved tags and has a single saved world box, so it is always one point, which `Bounds Source` expresses in the world frame or in the saved transform. Points carry no attributes and land in a single point data, ordered by position, X first, then Y, then Z; an execution that matches nothing produces no output data."
       },
       "off_label": [
         {
           "claim": "Turn `Omit Actors Without Bounds` off and actors with no bounds, loaded or not, come through as zero-extent points at their location, which reads marker actors by tag across the whole partition without loading a cell.",
-          "grounded_in": "Internal::FinalizeSnapshot in PCGExActorBounds.cpp emits a zero-extent point at the actor transform when the world bounds are invalid and bOmitActorsWithoutBounds is off; SnapshotBox reaches it with the descriptor transform."
+          "grounded_in": "Internal::FinalizeSnapshot in PCGExActorBounds.cpp appends a zero-extent snapshot at the actor transform when the world bounds are invalid, bOmitActorsWithoutBounds is off and the cull box, when there is one, contains the actor location. SnapshotBox reaches it with the descriptor transform, from FSweep::AddBox, which the Sweep in PCGExGetActorBoundsWP.cpp calls for every descriptor with no live actor."
         }
       ],
       "pins": {
@@ -42218,7 +42437,12 @@
         "outputs": [
           {
             "label": "Out",
-            "note": "One point per matching actor, loaded or not, in one point data. No data at all when nothing matched, and none outside the editor or on a world without a partition."
+            "note": "One point per matching actor, loaded or not, or per primitive of a loaded actor when Bounds Source is Per Primitive, in one point data. No data at all when nothing matched, and none outside the editor or on a world without a partition."
+          },
+          {
+            "label": "Discarded",
+            "note": "The actors `Exclude` removed, loaded or not, as points shaped like those on Out, in one point data. No data at all when nothing was excluded.",
+            "condition": "when Output Discarded is on"
           }
         ],
         "dynamic": null
@@ -42227,42 +42451,39 @@
         "Selection": {
           "display": "Selection",
           "type": "FPCGExActorSelectionDetails",
-          "tooltip": "Which actors to gather. A Blueprint class filter loads each descriptor's base class on the game thread; native classes compare without loading.",
+          "from": "UPCGExGetActorBoundsBaseSettings",
+          "tooltip": "Which actors to gather.",
           "overridable": true,
           "fields": [
-            {
-              "name": "Selection",
-              "display": "Selection",
-              "type": "EPCGExActorSelection",
-              "tooltip": "How actors are selected.",
-              "default": "EPCGExActorSelection::ByClass",
-              "enum": "EPCGExActorSelection"
-            },
             {
               "name": "ActorClass",
               "display": "Actor Class",
               "type": "TSubclassOf<AActor>",
-              "tooltip": "Actor class to select; subclasses match."
+              "tooltip": "Actor class to gather; subclasses match."
             },
             {
-              "name": "Tags",
-              "display": "Tags",
-              "type": "TArray<FName>",
-              "tooltip": "Tags to test against each actor's tags."
+              "name": "RequireAll",
+              "display": "Require All",
+              "type": "FString",
+              "tooltip": "Comma-separated tags an actor must all carry."
             },
             {
-              "name": "TagMatch",
-              "display": "Tag Match",
-              "type": "EPCGExActorTagMatch",
-              "tooltip": "Whether an actor needs any or all of the tags.",
-              "default": "EPCGExActorTagMatch::Any",
-              "enum": "EPCGExActorTagMatch"
+              "name": "RequireAny",
+              "display": "Require Any",
+              "type": "FString",
+              "tooltip": "Comma-separated tags an actor must carry at least one of."
+            },
+            {
+              "name": "Exclude",
+              "display": "Exclude",
+              "type": "FString",
+              "tooltip": "Comma-separated tags that exclude an otherwise selected actor. Tested before its bounds are read, so an excluded actor costs no more than a non-matching one unless the node outputs its Discarded pin."
             },
             {
               "name": "bAllowWildcards",
               "display": "Allow Wildcards",
               "type": "bool",
-              "tooltip": "Treat '*' and '?' in tags as wildcards. Only tags that actually contain one pay a string match per actor.",
+              "tooltip": "Treat '*' and '?' in any clause as wildcards. A pattern is string-matched once per distinct actor tag, then remembered.",
               "default": "false"
             },
             {
@@ -42285,7 +42506,8 @@
         "Output": {
           "display": "Output",
           "type": "FPCGExActorBoundsOutputDetails",
-          "tooltip": "How each actor becomes a point. Unloaded actors only have a world box, so Actor Space is derived from it.",
+          "from": "UPCGExGetActorBoundsBaseSettings",
+          "tooltip": "How each actor becomes a point.",
           "overridable": true,
           "fields": [
             {
@@ -42304,6 +42526,13 @@
               "default": "true"
             },
             {
+              "name": "bIgnoreEditorOnly",
+              "display": "Ignore Editor Only",
+              "type": "bool",
+              "tooltip": "Skip editor-only primitives, and every primitive of an editor-only actor. Turn off to account for editor-only markers; they still need collision or in-game visibility to contribute.",
+              "default": "true"
+            },
+            {
               "name": "bIncludeChildActors",
               "display": "Include Child Actors",
               "type": "bool",
@@ -42318,12 +42547,13 @@
               "default": "true"
             }
           ],
-          "semantics": "`Bounds Source` picks the frame, and what it has to work with depends on whether the actor is loaded. A loaded actor is read from its live primitives, as **Get Actor Bounds** reads it: Actor Space keeps the actor's rotation and scale on the point and brings each primitive's cached world box into actor space before taking their union, World AABB puts an upright point at the centre of the union of world boxes. An unloaded actor has one saved world box and no component list: World AABB uses that box as saved, Actor Space brings that single box into the saved transform, so the box turns with the actor but is no tighter than the saved world box was. `Ignore PCGGenerated Components` and `Include Child Actors` therefore act on loaded actors only. `Omit Actors Without Bounds`, on by default, drops a loaded actor whose primitives contributed nothing and an unloaded actor whose descriptor holds no valid bounds; off, either comes through as a zero-extent point at the actor location."
+          "semantics": "`Bounds Source` picks the frame and the point count, and what it has to work with depends on whether the actor is loaded. A loaded actor is read from its live primitives, as **Get Actor Bounds** reads it, in every mode: one point per actor, or one per primitive in Per Primitive. An unloaded actor has one saved world box and no component list, so it is one point in every mode: World AABB uses that box as saved, and Actor Space, Actor Space (Local Bounds) and Per Primitive all bring that single box into the saved transform, so the box turns with the actor but is no tighter than the saved world box was. `Ignore PCGGenerated Components` and `Include Child Actors` therefore act on loaded actors only, and so does the rule that a primitive must collide or be visible in game to count. `Ignore Editor Only` reaches an unloaded actor through the editor-only flag saved in its descriptor: on, an unloaded editor-only actor is treated as having no bounds. `Omit Actors Without Bounds`, on by default, drops a loaded actor whose primitives contributed nothing and an unloaded actor with no valid bounds; off, either comes through as a zero-extent point at the actor location."
         },
         "bUnbounded": {
           "display": "Unbounded",
           "type": "bool",
-          "tooltip": "Gather every matching actor in the partition. When off, a required Bounds input appears and only actors overlapping it are kept, through the partition's editor spatial hash (wire the Input node for the component's own bounds).",
+          "from": "UPCGExGetActorBoundsBaseSettings",
+          "tooltip": "Gather every matching actor in the world. When off, a required Bounds input appears and only actors overlapping it are kept (wire the Input node for the component's own bounds).",
           "default": "true",
           "semantics": "Off, a **Bounds** pin appears and is required, and the walk changes shape: the partition's editor spatial hash is asked for the descriptors inside the input box, so descriptors elsewhere are never visited at all. Any spatial data will do, and the Input node's own data culls to the executing component's bounds. The switch is not overridable because it changes the node's pin set.",
           "trap": "Wired data that carries no valid bounds gathers nothing and logs a warning. The pin has no way to ask for everything: switch Unbounded back on for that.",
@@ -42334,6 +42564,7 @@
         "bMustOverlapSelf": {
           "display": "Must Overlap Self",
           "type": "bool",
+          "from": "UPCGExGetActorBoundsBaseSettings",
           "tooltip": "Additionally require actors to overlap the executing component bounds. Independent of the Bounds input. Adds the component bounds to the cache key, so each partitioned cell executes on its own.",
           "default": "false",
           "overridable": true,
@@ -42341,6 +42572,17 @@
           "trap": "When the input box and the component bounds do not overlap each other the intersection is empty and nothing is gathered, without a warning. A component with no valid bounds of its own gathers nothing either, with a warning.",
           "interacts_with": [
             "bUnbounded"
+          ]
+        },
+        "bOutputDiscarded": {
+          "display": "Output Discarded",
+          "type": "bool",
+          "from": "UPCGExGetActorBoundsBaseSettings",
+          "tooltip": "Output the actors excluded by Exclude tags to a Discarded pin, shaped like the main output. They are a subset of what the node would output without Exclude, so the bounds cull still applies. Each discarded actor then costs a bounds read.",
+          "default": "false",
+          "semantics": "Not overridable, because it changes the node's pin set. Only `Exclude` feeds the **Discarded** pin: an actor rejected by the class filter, by a Require clause, by `Ignore Self` or by `Ignore PCGSpawned Actors` appears on neither pin. With an empty Exclude clause, or an execution that excluded nothing, the pin carries no data.",
+          "interacts_with": [
+            "Exclude"
           ]
         }
       },
@@ -42376,7 +42618,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds-wp",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Bounds/PCGExGetActorBoundsWP.h",
-        "hash": "9254a8fbe829ab759206c6995e502d190c45122e"
+        "hash": "3487e550e2afb146211e6070598403d1339e19f2"
       }
     },
     "UPCGExGetCachedDataSettings": {
@@ -42389,23 +42631,28 @@
         "FPCGExGetCachedDataContext",
         "FPCGExGetCachedDataElement"
       ],
-      "purpose": "Reads back what **Set Cached Data** stored on an actor's **PCGEx Data Cache** component: one cache ID, or every entry the component holds. The data comes out on Out, or on a custom output pin whose label matches the pin it was stored under, and a Status attribute set says for each target actor whether anything was found. The cache is empty on the first generation, so a graph that reads it branches on Status rather than on the data pins.",
+      "purpose": "Reads back what **Set Cached Data** stored on an actor's **PCGEx Data Cache** component: one cache ID, that ID across a list of partition cells, or every entry the component holds. The hosts are named by actor references on the Target Actor pin, which is how a graph reads the caches of the partition actors **Get Partition Actor** found, or by `Target` when the host is the graph's own actor or the PCG World Actor. The data comes out on Out, or on a custom output pin whose label matches the pin it was stored under, and a Status attribute set says for each target actor and each key whether anything was found. The cache is empty on the first generation, so a graph that reads it branches on Status, or turns on `Wait Timeout` to pause until the writer has run.",
       "situation": "A graph on its second generation that has to pick up where the previous one left off, on an actor whose generated output has since been cleaned up.",
       "mechanism": {
-        "text": "Each run resolves its target actors, from the Target Actor pin when it carries data and from `Target` otherwise, and reads the requested entries off each actor's cache component. Every stored dataset is routed by the pin label it was stored under: a label matching one of `Custom Output Pins` goes to that pin, everything else goes to Out. Data pins that received nothing are deactivated rather than removed, so downstream wires survive a miss, and Status is never deactivated. The data is handed out as the very objects the cache holds, with no copy made. The node never reuses a cached result of its own, and it computes an output checksum from the data itself, so nodes downstream stay cached while what it reads back is unchanged."
+        "text": "Each run resolves its target actors, the ones referenced on the Target Actor pin or the single actor `Target` names, and reads the requested entries off each actor's cache component. Every stored dataset is routed by the pin label it was stored under: a label matching one of `Custom Output Pins` goes to that pin, everything else goes to Out. Data pins that received nothing are deactivated rather than removed, so downstream wires survive a miss, and Status is never deactivated. The data is handed out as the objects the cache itself holds. The node never reuses a cached result of its own, and it computes an output checksum from the data itself, so nodes downstream stay cached while what it reads back is unchanged."
       },
       "off_label": [
         {
           "claim": "With nothing wired to its data pins, the node is a probe: Status alone says whether an actor has a cache and how many datasets sit under the ID, without pulling any of them into the graph.",
-          "grounded_in": "AdvanceWork stages the Status attribute set from the rows Boot recorded whether or not any data pin has a consumer, with Found and DataCount filled per target actor"
+          "grounded_in": "PCGExGetCachedData::ReadTargets records one status row per target actor and key, with Found and DataCount filled, and FPCGExGetCachedDataElement::AdvanceWork stages them as the Status attribute set whether or not any data pin has a consumer"
+        },
+        {
+          "claim": "With several `Partitions` entries and nothing wired to the data pins, Status reports which of the surrounding cells have stored anything: one row per key, each with its own Found and DataCount.",
+          "grounded_in": "PCGExGetCachedData::ReadTargets records one status row per target actor and resolved key, found or not, and AdvanceWork writes them to Status whether or not any data pin has a consumer"
         }
       ],
       "pins": {
         "inputs": [
           {
             "label": "Target Actor",
-            "note": "Actor references naming the actors whose cache to read; when connected it overrides Target. Every unique actor referenced becomes a target.",
-            "required": "optional"
+            "note": "Actor references naming the actors whose cache to read. Every unique reference becomes a target. The pin exists only while Target is Input, which is the default; left unwired there, the node is culled and never runs.",
+            "required": "conditional",
+            "condition": "when Target is Input"
           }
         ],
         "outputs": [
@@ -42420,11 +42667,11 @@
           },
           {
             "label": "Status",
-            "note": "An attribute set with one row per target actor: Found, DataCount, ActorReference and CacheID. A single row with Found false when no target actor resolved. Never deactivated.",
+            "note": "An attribute set with Found, DataCount, ActorReference and CacheID: one row per target actor, and per key when Prefix with Partition Id reads several. A reference that did not resolve gets its rows too, after those of the resolved actors, with Found false and the reference as its ActorReference. With no target at all the rows are still written, with Found false and an empty ActorReference. Never deactivated.",
             "condition": "when Output Status is on"
           }
         ],
-        "dynamic": "The output pin set follows Custom Output Pins and Output Status: each declared custom pin is added ahead of Out, and Status exists only while Output Status is on. Pins that end a run with nothing on them are deactivated, not removed."
+        "dynamic": "The Target Actor input exists only while Target is Input. The output pin set follows Custom Output Pins and Output Status: each declared custom pin is added ahead of Out, and Status exists only while Output Status is on. Pins that end a run with nothing on them are deactivated, not removed."
       },
       "settings": {
         "CacheID": {
@@ -42434,9 +42681,10 @@
           "default": "FName(\"Default\")",
           "overridable": true,
           "edit_condition": "!bReadAllEntries",
-          "semantics": "Has to be the ID the Set stored under; a mismatch is an ordinary miss, reported through Status rather than logged. Left as None the node errors out before resolving any target, unless Read All Entries is on.",
+          "semantics": "Has to be the ID the Set stored under; a mismatch is an ordinary miss, reported through Status with no warning. Left as None the node errors out before resolving any target, unless Read All Entries is on.",
           "interacts_with": [
-            "bReadAllEntries"
+            "bReadAllEntries",
+            "bPrefixWithPartitionId"
           ]
         },
         "bReadAllEntries": {
@@ -42445,10 +42693,98 @@
           "tooltip": "Read every entry on the cache instead of a single ID. Enable Tag With Cache ID to tell them apart.",
           "default": "false",
           "overridable": true,
-          "semantics": "Every entry on the component comes out at once, routed by stored pin label like a single read, and the node title reads All. The Status rows then carry None in their CacheID column, so Tag with Cache ID is the only way to tell one entry's data from another's.",
+          "semantics": "Every entry on the component comes out at once, routed by stored pin label like a single read, and the node title reads All. The Status rows then carry None in their CacheID column, so Tag with Cache ID is the only way to tell one entry's data from another's. Prefix with Partition Id has no effect here: every entry is read whatever its key, the ones stored under a prefixed key included.",
           "interacts_with": [
             "CacheID",
-            "bTagWithCacheID"
+            "bTagWithCacheID",
+            "bPrefixWithPartitionId"
+          ]
+        },
+        "bPrefixWithPartitionId": {
+          "display": "Prefix with Partition Id",
+          "type": "bool",
+          "tooltip": "Read '<PartitionId>_<CacheID>' for every entry of Partitions instead of the bare ID. Only the keys change; the host is still the Target, and data still routes by the pin label it was stored with.",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "!bReadAllEntries",
+          "semantics": "Each entry of Partitions resolves to one key, the partition id and the cache ID joined by an underscore, such as 25600_0_0_Default, and every key is read from every target actor in one run. Whichever cell does the reading, an entry that a Set stored from its Road pin leaves through this node's Road pin. Status carries one row per target actor and key, with the key in its CacheID column, and Tag with Cache ID writes the same key.",
+          "trap": "When the partition cannot be resolved, because the run has no execution source or its bounds are invalid, the node warns and reads nothing, and Status holds one not-found row per target actor with None as its CacheID. The bare cache ID is never read in its place.",
+          "interacts_with": [
+            "CacheID",
+            "Partitions",
+            "bReadAllEntries",
+            "bTagWithCacheID",
+            "bOutputStatus",
+            "bQuietMissingPartitionWarning"
+          ]
+        },
+        "Partitions": {
+          "display": "Partitions",
+          "type": "TArray<FPCGExPartitionQuery>",
+          "tooltip": "Partitions to read, relative to the executing component's own cell; one key each, all read at once. 2D and 3D ids differ ('size_x_y' vs 'size_x_y_z'): force one here when the Set ran with another 2D setting.",
+          "default": "{FPCGExPartitionQuery{}}",
+          "edit_condition": "IsPartitionEditable()",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Offset",
+              "display": "Offset",
+              "type": "FIntVector",
+              "tooltip": "Integer cell offset from the resolved cell. (0,0,0) is the cell itself, (1,0,0) the next cell along X, etc. In 2D the Z offset is ignored.",
+              "default": "FIntVector::ZeroValue"
+            },
+            {
+              "name": "GridSizeResolution",
+              "display": "Grid Size Resolution",
+              "type": "EPCGExPartitionResolution",
+              "tooltip": "How this entry's grid size is resolved.",
+              "default": "EPCGExPartitionResolution::FromComponent",
+              "enum": "EPCGExPartitionResolution"
+            },
+            {
+              "name": "ExplicitGrid",
+              "display": "Explicit Grid",
+              "type": "EPCGHiGenGrid",
+              "tooltip": "Grid size for this entry. Used when resolution is Explicit, and as the fallback when From Component has no partitioned component.",
+              "default": "EPCGHiGenGrid::Grid256"
+            },
+            {
+              "name": "GridSizeOffset",
+              "display": "Grid Size Offset",
+              "type": "int32",
+              "tooltip": "Steps the resolved grid size along the power-of-two grid ladder: positive = coarser, negative = finer (e.g. -1 turns 800 into 400). Clamped to the exposed range (400 .. 204800). 0 leaves the resolved size untouched. Applies in both resolution modes.",
+              "default": "0"
+            },
+            {
+              "name": "Grid2D",
+              "display": "Grid 2D",
+              "type": "EPCGExGrid2DMode",
+              "tooltip": "2D/3D handling.",
+              "default": "EPCGExGrid2DMode::Auto",
+              "enum": "EPCGExGrid2DMode"
+            }
+          ],
+          "semantics": "One entry is one cell to read, resolved from the centre of the executing component's bounds. The default entry names the cell the component generates in, an Offset names a neighbour of it, and a Grid Size Offset or an explicit grid names the cell of another grid size that the same centre falls in. A coarser grid gives the cell containing the executing one, which is how a fine runtime cell reads what a coarser one stored; a finer grid gives the single fine cell under that centre. Entries that resolve to the same key are read once, for instance when two grid steps are both clamped at the end of the grid range. Data comes out target actor by target actor, in list order within each. An empty list while the prefix is on is an error: the node stops before reading and outputs nothing, Status included. The list shows while Prefix with Partition Id is on or driven through its override pin, and never under Read All Entries.",
+          "trap": "A two-dimensional id carries no Z coordinate and a three-dimensional one does, so 25600_0_0 and 25600_0_0_0 are different keys. Under Auto the choice follows the executing component's graph, and an entry stored from a graph with the other setting is missed unless Grid 2D is forced to the same value on both nodes.",
+          "interacts_with": [
+            "bPrefixWithPartitionId",
+            "bReadAllEntries",
+            "Target"
+          ]
+        },
+        "WaitTimeout": {
+          "display": "Wait Timeout",
+          "type": "double",
+          "tooltip": "When enabled, pause until every requested entry is readable on every target (any entry, under Read All Entries), or until this many seconds of real time have passed; whatever is readable is then output. In a game world, a reference that does not resolve yet is waited for too.",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "bWaitForCache",
+          "semantics": "The checkbox on the row switches the wait on, and is off by default; an override pin drives the duration only. The wait pauses this node without holding the frame, so the graph that writes the entries can run meanwhile, and the read happens once, when the wait ends. A target with no cache component yet counts as not readable, a PCG World Actor that does not exist yet included. Under Target Input an empty pin requests nothing and is never waited on, and a reference that fails the Partition Id Attribute check counts as one that does not resolve. When the time runs out the misses are reported through Status and a warning is raised.",
+          "interacts_with": [
+            "bQuietTimeoutWarning",
+            "bReadAllEntries",
+            "PartitionIdAttribute",
+            "Target"
           ]
         },
         "CustomOutputPins": {
@@ -42462,42 +42798,98 @@
           "type": "bool",
           "tooltip": "Tag every output with 'CacheID:<id>' so entries can be told apart, mostly useful with Read All Entries.",
           "default": "false",
-          "semantics": "Adds a tag of the form CacheID:Default to every output dataset, the key and value form every PCGEx tag reader parses, so a later node can split a Read All Entries result back into its entries."
+          "semantics": "Adds a tag of the form CacheID:Default to every output dataset, the key and value form every PCGEx tag reader parses, so a later node can split a Read All Entries result back into its entries. An entry stored under a prefixed key is tagged with the whole key, partition id included.",
+          "interacts_with": [
+            "bReadAllEntries",
+            "bPrefixWithPartitionId"
+          ]
         },
         "bOutputStatus": {
           "display": "Output Status",
           "type": "bool",
-          "tooltip": "Emit a Status attribute set: one row per target actor with Found, DataCount, ActorReference and CacheID.",
+          "tooltip": "Emit a Status attribute set with Found, DataCount, ActorReference and CacheID: one row per target actor, and per partition key when Prefix With Partition Id is on. A reference that does not resolve reads as not found.",
           "default": "true",
           "semantics": "Off removes the Status pin altogether. On, the row's ActorReference is the actor's soft path, which is what the Target Actor pin of a following Set or Get reads, so Status can drive the next cache node directly.",
           "interacts_with": [
-            "bReadAllEntries"
+            "bReadAllEntries",
+            "Target"
           ]
+        },
+        "bQuietMissingPartitionWarning": {
+          "display": "Quiet Missing Partition Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warning when a target holds some of the partition keys but not all of them.",
+          "default": "false",
+          "semantics": "A target actor that holds some of the requested keys and lacks others is routine when the partitions being read are generated at runtime. The warning is raised per target actor and names the keys that actor lacks. The data that was found is output either way, and the Status row of each key says which ones were missing. A target actor holding none of the keys, or no cache component at all, is an ordinary miss and raises no warning whatever this setting says, so a read of a single key never raises it. The warning for a partition that cannot be resolved is a separate one and stays.",
+          "interacts_with": [
+            "Partitions",
+            "bPrefixWithPartitionId",
+            "bOutputStatus"
+          ]
+        },
+        "bQuietTimeoutWarning": {
+          "display": "Quiet Timeout Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warning raised when Wait Timeout elapses.",
+          "default": "false"
         },
         "Target": {
           "display": "Target",
           "type": "EPCGExDataCacheTarget",
           "from": "UPCGExDataCacheSettingsBase",
-          "tooltip": "Which actor hosts the cache. Ignored when the Target Actor pin is connected.",
-          "default": "EPCGExDataCacheTarget::ExecutingActor",
+          "tooltip": "Which actor hosts the cache. Input adds the Target Actor pin, so not overridable.",
+          "default": "EPCGExDataCacheTarget::Input",
           "enum": "EPCGExDataCacheTarget",
-          "overridable": true,
-          "edit_condition": "IsTargetPinUnconnected()",
-          "semantics": "Read only while the Target Actor pin is unconnected. Executing Actor is the partition actor of the current grid cell when the component is partitioned, so a partitioned graph reads the cache of its own cell; Original Actor is the actor of the unpartitioned component in that case and the same actor otherwise. A read never spawns the PCG World Actor: with none in the level that target resolves to nothing, which is a warning and a not-found Status row.",
+          "semantics": "Under Input an empty pin is a miss like any other: Status gets its not-found rows, the missing target warning is raised, and no other value is fallen back to. Executing Actor is the partition actor of the current grid cell when the component is partitioned, so a partitioned graph reads the cache of its own cell; Original Actor is the actor of the unpartitioned component in that case and the same actor otherwise. A read never spawns the PCG World Actor: with none in the level that target resolves to nothing, which is a warning and a not-found Status row.",
           "interacts_with": [
-            "ActorReferenceAttribute"
+            "ActorReferenceAttribute",
+            "PartitionIdAttribute",
+            "bPrefixWithPartitionId",
+            "bQuietMissingTargetWarning"
           ]
         },
         "ActorReferenceAttribute": {
           "display": "Actor Reference Attribute",
           "type": "FName",
           "from": "UPCGExDataCacheSettingsBase",
-          "tooltip": "'FSoftObjectPath' attribute read on the Target Actor pin when it is connected. A component reference resolves to its owner.",
+          "tooltip": "'FSoftObjectPath' attribute read on the Target Actor pin. A component reference resolves to its owner.",
           "default": "FName(\"ActorReference\")",
           "overridable": true,
-          "semantics": "Read on every dataset reaching the Target Actor pin, as soft object paths; a path naming a component resolves to the component's owner, and duplicates collapse to one target. A dataset with rows but no readable attribute of that name logs a warning; an empty dataset is passed over in silence.",
+          "edit_condition": "Target == EPCGExDataCacheTarget::Input",
+          "edit_condition_hides": true,
+          "semantics": "Read on every dataset reaching the Target Actor pin, and duplicates collapse to one target. A reference is used only while its actor is loaded: the node never loads one. A dataset with rows but no readable attribute of that name logs a warning; an empty dataset is passed over in silence.",
           "interacts_with": [
-            "Target"
+            "Target",
+            "PartitionIdAttribute"
+          ]
+        },
+        "PartitionIdAttribute": {
+          "display": "Partition Id Attribute",
+          "type": "FName",
+          "from": "UPCGExDataCacheSettingsBase",
+          "tooltip": "'FString' attribute read next to each reference, as written by Get Partition Actor. A referenced partition actor must still stand for that partition: runtime generated ones are pooled and reused. None skips the check.",
+          "default": "PCGExPartitionActors::PartitionIdAttributeName",
+          "overridable": true,
+          "edit_condition": "Target == EPCGExDataCacheTarget::Input",
+          "edit_condition_hides": true,
+          "semantics": "The check applies to a reference that resolves to a partition actor, on a row whose value is not empty: any other actor, an empty value, or data without the attribute is taken as it comes. A partition actor that no longer stands for the partition its row names is treated as unresolved: nothing is read from it, and Status reports the reference as not found. The attribute, under this default name, is what **Get Partition Actor** writes next to each reference, so wiring that node into the Target Actor pin needs no setup.",
+          "interacts_with": [
+            "ActorReferenceAttribute",
+            "Target",
+            "WaitTimeout",
+            "bOutputStatus"
+          ]
+        },
+        "bQuietMissingTargetWarning": {
+          "display": "Quiet Missing Target Warning",
+          "type": "bool",
+          "from": "UPCGExDataCacheSettingsBase",
+          "tooltip": "Suppress the warnings about target actors that cannot be resolved: none at all, or some of the references.",
+          "default": "false",
+          "semantics": "Under Target Input an empty Target Actor pin raises the first of these on every run. That is the ordinary outcome when the pin is fed by **Get Partition Actor** and none of the partitions asked for has an actor, which makes this the setting to turn on for a graph that reads streamed partitions and branches on Status.",
+          "interacts_with": [
+            "Target",
+            "bOutputStatus"
           ]
         }
       },
@@ -42507,7 +42899,7 @@
       "hints": [
         {
           "style": "danger",
-          "text": "The data on Out and the custom pins is the cache's own objects, not a copy, so the cache is a hidden second consumer of it. A downstream node with Steal Data enabled edits the persisted objects in place, and the next generation reads back the edited version.",
+          "text": "The data on Out and the custom pins is the cache's own objects, not a copy, so the cache is a hidden second consumer of it. A downstream node with Steal Data enabled edits the persisted objects in place, and the next generation reads back the edited version. The one exception is an editor build reading a host that sits outside the persistent level of its world: that read hands out copies.",
           "anchor": "pins"
         },
         {
@@ -42517,13 +42909,28 @@
         },
         {
           "style": "info",
-          "text": "A first generation, or an actor that never had a Set run against it, is an ordinary miss: nothing is logged, the data pins deactivate, and Status reports Found false. Branch on Status.",
+          "text": "A first generation, or an actor that never had a Set run against it, is an ordinary miss: no warning is raised, the data pins deactivate, and Status reports Found false. Branch on Status.",
           "anchor": "mechanism"
         },
         {
           "style": "info",
-          "text": "The node title carries the cache ID, or All when reading every entry.",
+          "text": "The node title carries the cache ID, or All when reading every entry. With Prefix with Partition Id on, the ID follows a {Partition} placeholder, as in {Partition}_Default, since the partition cells are only known when the node runs.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "warning",
+          "text": "A query changes the key and never the host. Under Executing Actor each cell of a partitioned component reads and writes the partition actor of its own cell, so what another cell stored that way is reached by naming that cell's partition actor on the Target Actor pin, under the bare cache ID, and **Get Partition Actor** outputs those references. A query is for a host that cells share: Original Actor, PCG World Actor, or one actor named on the pin.",
+          "anchor": "Partitions"
+        },
+        {
+          "style": "info",
+          "text": "In the details panel each row of the list is named by what its query resolves to: Self for the executing cell, Neighbor once Offset is set, followed by the grid step when Grid Size Offset is set, as in Self +1, or by the stepped grid size when the grid is explicit, as in Neighbor @ 25600.",
+          "anchor": "Partitions"
+        },
+        {
+          "style": "info",
+          "text": "A cache hosted on a runtime generated partition actor belongs to the cell it was written in. Those actors are pooled and reused with their components intact, and the cache empties itself when its actor leaves the cell, so a read never returns what another cell left behind.",
+          "anchor": "Target"
         }
       ],
       "related": [
@@ -42534,6 +42941,14 @@
         {
           "path": "node-library/utilities/data-cache/set-cached-data.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data"
+        },
+        {
+          "path": "node-library/utilities/get-partition-actor.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/get-partition-actor"
+        },
+        {
+          "path": "node-library/utilities/partition-identifier.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/partition-identifier"
         },
         {
           "path": "node-library/utilities/control-flow/wait-for-pcg-data.md",
@@ -42551,7 +42966,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExGetCachedData.h",
-        "hash": "eaab85877bcedf4da86ea7e1dff72ab0b4865cfc"
+        "hash": "5a4f7096398661983f28d258deec8e763f77aabf"
       }
     },
     "UPCGExGetCollectionDataSettings": {
@@ -42790,6 +43205,64 @@
             "CategoryInheritance"
           ]
         },
+        "TagFilter": {
+          "display": "Tag Filter",
+          "type": "FPCGExBaseTagFilterDetails",
+          "tooltip": "Clause values are read as constants (graph overrides apply); a clause set to Attribute is ignored with a warning.",
+          "overridable": true,
+          "edit_condition": "bUseTagFilter",
+          "fields": [
+            {
+              "name": "RequireAll",
+              "display": "Require All",
+              "type": "FPCGExInputShorthandNameName",
+              "tooltip": "Entries must carry every one of these tags. Blank = unconstrained. A tag no entry carries makes the filter match nothing.",
+              "default": "FPCGExInputShorthandNameName(FName(\"TagsAll\"), NAME_None, false)"
+            },
+            {
+              "name": "RequireAny",
+              "display": "Require Any",
+              "type": "FPCGExInputShorthandNameName",
+              "tooltip": "Entries must carry at least one of these tags. Blank = unconstrained. Tags no entry carries are ignored.",
+              "default": "FPCGExInputShorthandNameName(FName(\"TagsAny\"), NAME_None, false)"
+            },
+            {
+              "name": "Exclude",
+              "display": "Exclude",
+              "type": "FPCGExInputShorthandNameName",
+              "tooltip": "Entries carrying any of these tags are excluded. Blank = unconstrained.",
+              "default": "FPCGExInputShorthandNameName(FName(\"TagsExclude\"), NAME_None, false)"
+            },
+            {
+              "name": "bParseCommaSeparatedLists",
+              "display": "Parse Comma Separated Lists",
+              "type": "bool",
+              "tooltip": "Split every clause value on commas into several tags (trimmed, empties dropped) instead of reading it as a single tag.",
+              "default": "false"
+            },
+            {
+              "name": "TagSources",
+              "display": "Tag Sources",
+              "type": "uint8",
+              "tooltip": "Which tags an entry is matched on: its own tags, and/or its sub-collection's tags when the entry is a sub-collection.",
+              "default": "static_cast<uint8>(EPCGExAssetTagInheritance::Asset)"
+            }
+          ],
+          "semantics": "With its checkbox on, only entries whose tags satisfy the clauses produce rows. The test runs after the category filter and before the walk descends, so a sub-collection entry that fails takes its whole subtree with it. With every clause blank nothing is filtered.",
+          "interacts_with": [
+            "TagFilterScope",
+            "CategoryFilters",
+            "SubCollectionHandling"
+          ]
+        },
+        "TagFilterScope": {
+          "display": "└─ Scope",
+          "type": "EPCGExTagFilterScope",
+          "tooltip": "Which entries the tag filter is tested against.",
+          "default": "EPCGExTagFilterScope::TopLevel",
+          "enum": "EPCGExTagFilterScope",
+          "edit_condition": "bUseTagFilter"
+        },
         "AssetPathAttributeName": {
           "display": "Asset Path",
           "type": "FName",
@@ -42801,6 +43274,18 @@
           "trap": "A host holding both kinds resolves to the soft object path form, so an Omni collection of actors and meshes, or a Merged fanout spanning both, writes no class path anywhere. The actor rows still carry their class path as the string value of that object path attribute.",
           "interacts_with": [
             "Fanout"
+          ]
+        },
+        "AssetIdAttributeName": {
+          "display": "Asset Id",
+          "type": "FName",
+          "tooltip": "Name of the attribute the asset ID is written to.",
+          "default": "FName(\"AssetId\")",
+          "overridable": true,
+          "edit_condition": "bWriteAssetId",
+          "semantics": "An int32 hash of the row's asset path: the same value on every machine and in every session, and 0 for a row with no asset. A sub-collection row carries the ID of the sub-collection asset's own path, as the path attribute does. The Kweave bridge's Mesh List computes the same ID for a mesh, so rows stamped here match what the Kweave mesh nodes key on. Redirectors are not followed.",
+          "interacts_with": [
+            "AssetPathAttributeName"
           ]
         },
         "WeightAttributeName": {
@@ -43024,7 +43509,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/get-collection-data",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExGetCollectionData.h",
-        "hash": "c78aa99851469bdef1f6847be5caba3995291646"
+        "hash": "a904edb897e548f89258c8ad21ff585f40f81719"
       }
     },
     "UPCGExGetGUIDSettings": {
@@ -43117,6 +43602,228 @@
       "source": {
         "file": "PCGExFoundations/Public/Elements/Utils/PCGExGetGUID.h",
         "hash": "021457bb77d93f59deed9749a500342ed817bbcb"
+      }
+    },
+    "UPCGExGetPartitionActorSettings": {
+      "id": "UPCGExGetPartitionActorSettings",
+      "name": "Get Partition Actor",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsBridges",
+      "classification": "node",
+      "covers": [
+        "FPCGExGetPartitionActorContext",
+        "FPCGExGetPartitionActorElement"
+      ],
+      "purpose": "Finds the PCG partition actors behind a list of grid cells and outputs a reference to each one it finds, with the partition id that actor stands for. Those rows are what the Target Actor pin of **Set Cached Data** and **Get Cached Data** reads, which is how one graph reaches the cache a partitioned generation stored on its own partition actors, cell by cell, while World Partition streams those actors in and out. Cells are named relative to the executing component, on its own grid or on the grid of any PCG component referenced on a pin, and the node can pause until a missing partition actor arrives.",
+      "situation": "A graph that reads or writes data hosted on the partition actors of a partitioned generation, in a world where only some of those actors exist at any moment.",
+      "mechanism": {
+        "text": "One run looks up every `Partitions` entry on every descriptor source and outputs one row per partition actor found, carrying its ActorReference and its PartitionId. An entry names a grid cell from the centre of the executing component's bounds, and the descriptor source supplies the rest of what the engine files a partition actor under: the 2D setting, and the data layers and HLOD layer of its owner. A cell that has no partition actor at that moment contributes nothing, and an actor reached through several entries is output once. The node never reuses a cached result of its own, and it computes an output checksum from the rows themselves, so nodes downstream stay cached while the same actors come out."
+      },
+      "off_label": [
+        {
+          "claim": "With `Output Type` on Points the output doubles as a picture of what is loaded: one cube per partition actor found, at the size of its grid, ready for a debug node to draw.",
+          "grounded_in": "the Points branch of FPCGExGetPartitionActorElement::AdvanceWork writes one point per resolved request at the partition actor's location, with bounds of half the request's grid size on every axis"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Reference",
+            "note": "References to the actors, partition actors or PCG components whose grid the partitions are looked up on, read from Actor Reference Attribute on every dataset. The pin exists only while Descriptor Source is Input; left unwired there, the node is culled and never runs.",
+            "required": "conditional",
+            "condition": "when Descriptor Source is Input"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "One row per partition actor found, with its ActorReference and PartitionId attributes: an attribute set, or points when Output Type is Points."
+          }
+        ],
+        "dynamic": "The Reference input exists only while Descriptor Source is Input, and Out is an attribute set pin or a point pin depending on Output Type."
+      },
+      "settings": {
+        "DescriptorSource": {
+          "display": "Descriptor Source",
+          "type": "EPCGExPartitionDescriptorSource",
+          "tooltip": "Whose grid the partitions are looked up on. Input adds the Reference pin, so not overridable.",
+          "default": "EPCGExPartitionDescriptorSource::ExecutingComponent",
+          "enum": "EPCGExPartitionDescriptorSource",
+          "semantics": "Decides whose grid is searched. The engine keeps one partition actor per cell for each distinct combination of grid size, 2D setting, data layers and HLOD layer, so a lookup borrows those from a PCG component: the executing one, or each one referenced on the Reference pin. The cell is still the one the centre of the executing component falls in, and its grid size still comes from the executing component or from the entry's explicit grid. Under Input, an actor stands for every PCG component it carries, a partition actor for its own grid, and a local component for the partition actor it lives on.",
+          "interacts_with": [
+            "ActorReferenceAttribute",
+            "Partitions",
+            "Kind"
+          ]
+        },
+        "ActorReferenceAttribute": {
+          "display": "Actor Reference Attribute",
+          "type": "FName",
+          "tooltip": "'FSoftObjectPath' attribute read on the Reference pin. Any other component reference resolves to its owner.",
+          "default": "FName(\"ActorReference\")",
+          "overridable": true,
+          "edit_condition": "DescriptorSource == EPCGExPartitionDescriptorSource::Input",
+          "edit_condition_hides": true,
+          "semantics": "Read on every dataset reaching the Reference pin. A string attribute holding object paths is accepted as well, and duplicates collapse to one lookup. A reference is used only while its object is loaded: the node never loads one. A dataset with rows but no readable attribute of that name logs a warning; an empty dataset is passed over in silence.",
+          "interacts_with": [
+            "DescriptorSource",
+            "bQuietInvalidReferenceWarning"
+          ]
+        },
+        "Partitions": {
+          "display": "Partitions",
+          "type": "TArray<FPCGExPartitionQuery>",
+          "tooltip": "Partitions to output, relative to the executing component's own cell; one actor each. Auto 2D follows the descriptor source, so force 2D or 3D here to reach the other kind of grid.",
+          "default": "{FPCGExPartitionQuery{}}",
+          "fields": [
+            {
+              "name": "Offset",
+              "display": "Offset",
+              "type": "FIntVector",
+              "tooltip": "Integer cell offset from the resolved cell. (0,0,0) is the cell itself, (1,0,0) the next cell along X, etc. In 2D the Z offset is ignored.",
+              "default": "FIntVector::ZeroValue"
+            },
+            {
+              "name": "GridSizeResolution",
+              "display": "Grid Size Resolution",
+              "type": "EPCGExPartitionResolution",
+              "tooltip": "How this entry's grid size is resolved.",
+              "default": "EPCGExPartitionResolution::FromComponent",
+              "enum": "EPCGExPartitionResolution"
+            },
+            {
+              "name": "ExplicitGrid",
+              "display": "Explicit Grid",
+              "type": "EPCGHiGenGrid",
+              "tooltip": "Grid size for this entry. Used when resolution is Explicit, and as the fallback when From Component has no partitioned component.",
+              "default": "EPCGHiGenGrid::Grid256"
+            },
+            {
+              "name": "GridSizeOffset",
+              "display": "Grid Size Offset",
+              "type": "int32",
+              "tooltip": "Steps the resolved grid size along the power-of-two grid ladder: positive = coarser, negative = finer (e.g. -1 turns 800 into 400). Clamped to the exposed range (400 .. 204800). 0 leaves the resolved size untouched. Applies in both resolution modes.",
+              "default": "0"
+            },
+            {
+              "name": "Grid2D",
+              "display": "Grid 2D",
+              "type": "EPCGExGrid2DMode",
+              "tooltip": "2D/3D handling.",
+              "default": "EPCGExGrid2DMode::Auto",
+              "enum": "EPCGExGrid2DMode"
+            }
+          ],
+          "semantics": "One entry is one cell, looked up once per descriptor source. The default entry names the cell the centre of the executing component falls in, an Offset names a neighbour of it, and a Grid Size Offset or an explicit grid names the cell of another grid size that the same centre falls in. The PartitionId of a row is the id of that cell, written as size_x_y on a 2D grid and size_x_y_z on a 3D one, which is what **Partition Identifier** writes for the same cell when it adds no prefix. Rows come out source by source, in list order within each. An empty list is an error, and the node outputs nothing.",
+          "trap": "From a component that is not partitioned, an entry left on From Executing Component has no grid size to follow and uses its Explicit Grid. When the lookup targets the partition actors of another graph, set the entry to the grid size those actors were generated at.",
+          "interacts_with": [
+            "DescriptorSource",
+            "Kind"
+          ]
+        },
+        "Kind": {
+          "display": "Kind",
+          "type": "EPCGExPartitionActorKind",
+          "tooltip": "Which kind of partition actor to look for.",
+          "default": "EPCGExPartitionActorKind::Serialized",
+          "enum": "EPCGExPartitionActorKind",
+          "overridable": true,
+          "semantics": "Serialized and runtime generated partition actors are filed apart, so one lookup finds one kind. A serialized lookup includes the data layers and HLOD layer of its descriptor source. A runtime generated lookup uses the grid size and the 2D setting alone, since those actors carry neither. From Source decides per descriptor source, which matters when the Reference pin mixes components that generate at runtime with components that do not.",
+          "trap": "A runtime generated partition actor is pooled: once its cell is released, the same actor is handed to another cell and its reference stays valid. PartitionId records which cell a row was taken for, and **Set Cached Data** and **Get Cached Data** read it to refuse a reference that has since moved on.",
+          "interacts_with": [
+            "DescriptorSource",
+            "WaitTimeout"
+          ]
+        },
+        "OutputType": {
+          "display": "Output Type",
+          "type": "EPCGExPartitionActorOutput",
+          "tooltip": "Shape of the output. Drives the output pin type, so not overridable.",
+          "default": "EPCGExPartitionActorOutput::AttributeSet",
+          "enum": "EPCGExPartitionActorOutput",
+          "semantics": "The attribute set is output even when it has no row, so the node downstream always receives data. The point output is absent when nothing was found. A point sits at the location of its partition actor with bounds of half the grid size on every axis, so on a 2D grid it is a cube where the cell itself has no limit along Z.",
+          "interacts_with": [
+            "Partitions"
+          ]
+        },
+        "WaitTimeout": {
+          "display": "Wait Timeout",
+          "type": "double",
+          "tooltip": "When enabled, pause until every reference is loaded and every partition actor is registered, or until this many seconds of real time have passed; whatever is loaded is then output. In 5.8+ a serialized partition actor is given up on as soon as World Partition has streamed its cell in without it.",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "bWaitForMissingActors",
+          "semantics": "The checkbox on the row switches the wait on, and is off by default; an override pin drives the duration only. The wait pauses this node without holding the frame, and what ends it depends on what is missing. A serialized partition actor is waited for in a game world only: nothing streams in the editor world, so there it is reported missing at once. A runtime generated one is waited for in any world, until it is handed out or the time runs out, because the runtime generation scheduler assigns those once streaming has completed. A reference on the Reference pin that does not resolve yet is waited for in a game world only. Running out of time raises a warning.",
+          "trap": "With the wait off, a partition actor that is still streaming in when the node runs is missing from the output, and its arrival does not run the node again.",
+          "interacts_with": [
+            "Kind",
+            "bQuietTimeoutWarning"
+          ]
+        },
+        "bQuietMissingPartitionWarning": {
+          "display": "Quiet Missing Partition Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warning when some of the requested partition actors are loaded but not all of them.",
+          "default": "false",
+          "semantics": "The warning names the partition ids that have no actor, and it is raised only when part of the request was found. With nothing found at all the miss goes to the log at Verbose level and no warning is raised: an unloaded region is the ordinary case, and the empty output is what the graph branches on.",
+          "interacts_with": [
+            "Partitions"
+          ]
+        },
+        "bQuietInvalidReferenceWarning": {
+          "display": "Quiet Invalid Reference Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warnings about the Reference pin: no reference, or one that is not loaded or carries no PCG component.",
+          "default": "false"
+        },
+        "bQuietTimeoutWarning": {
+          "display": "Quiet Timeout Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warning raised when Wait Timeout elapses.",
+          "default": "false"
+        }
+      },
+      "inherits": [
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "style": "info",
+          "text": "ActorReference is flagged as the last attribute of the output, so a downstream `@Last` selector reads the reference and never PartitionId.",
+          "anchor": "pins"
+        },
+        {
+          "style": "info",
+          "text": "In the details panel each row of the list is named by what its query resolves to: Self for the executing cell, Neighbor once Offset is set, followed by the grid step when Grid Size Offset is set, as in Self +1, or by the stepped grid size when the grid is explicit, as in Neighbor @ 25600.",
+          "anchor": "Partitions"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/odd-jobs.md#reading-from-the-level",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/odd-jobs.md#reading-from-the-level"
+        },
+        {
+          "path": "node-library/utilities/data-cache/get-cached-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data"
+        },
+        {
+          "path": "node-library/utilities/data-cache/set-cached-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data"
+        },
+        {
+          "path": "node-library/utilities/partition-identifier.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/partition-identifier"
+        },
+        {
+          "path": "node-library/utilities/control-flow/wait-for-pcg-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/wait-for-pcg-data"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/get-partition-actor",
+      "source": {
+        "file": "PCGExElementsBridges/Public/Elements/PCGExGetPartitionActor.h",
+        "hash": "5acbf7953cae478aee57e5d959af3080f9200a47"
       }
     },
     "UPCGExGetPathDataSettings": {
@@ -46296,7 +47003,7 @@
       "purpose": "Instanced-mesh spawning is what the vanilla Static Mesh Spawner already does, and this is what teaches it to read staged picks. It is not a node: it is picked as the spawner's Mesh Selector Type, where it is listed as Staging Data, and from there it resolves every point's pick against the Collection Map and hands the spawner its instance lists, carrying the entry's mesh, its tags, its component descriptor and the pick's material variant. Custom properties the collections declare can also be packed into the spawned component's Custom Primitive Data, which puts collection-authored values in reach of materials with no attribute plumbing. Picks that resolved to something other than a mesh entry contribute nothing, so a mixed staged dataset can be wired straight in, and skinned mesh entries have their own selector for the vanilla Skinned Mesh Spawner, configured the same way.",
       "situation": "A staged dataset reaches a Static Mesh Spawner, and the meshes have to come out with the descriptors, tags and material variants their collections authored.",
       "mechanism": {
-        "text": "One execution takes the points on the spawner's input and the Collection Map on the spawner's override pin: every attribute set wired there is examined, the ones carrying a Map are read, and anything else on that pin stays the spawner's business. Points are grouped by their pick, and the spawner receives one instance list per distinct entry and material variant, however many points share it, which is what decides how many instanced components come out. Picks that resolve to an entry which is not a mesh contribute no instances, and their points are otherwise untouched.",
+        "text": "One execution takes the points on the spawner's input and the Collection Map on the spawner's override pin: every attribute set wired there is examined, the ones carrying a Map are read, and anything else on that pin stays the spawner's business. Points are grouped by their pick, and the spawner receives one instance list per distinct entry and material variant, however many points share it, with the mirrored points of a list moved to a second one. That count is what decides how many instanced components come out. Picks that resolve to an entry which is not a mesh contribute no instances, and their points are otherwise untouched.",
         "steps": [
           "The entry's component descriptor is resolved: the Descriptor Override struct while Use Template Descriptor is on, the entry's own descriptor (or its collection's globals) when it is off.",
           "The entry's tags are appended to the component tags either way.",
@@ -46327,6 +47034,13 @@
           "type": "bool",
           "default": "false",
           "semantics": "Applied after the descriptor is resolved, so it clears collision whichever descriptor supplied it, the override struct or the entry's own."
+        },
+        "bForceEntryReverseCulling": {
+          "display": "Force Entry Reverse Culling",
+          "type": "bool",
+          "tooltip": "Spawn every instance with the entry's Reverse Culling as-is, instead of flipping it for points whose transform is mirrored (negative scale).",
+          "default": "false",
+          "semantics": "An instanced component renders all of its instances with one cull mode, so by default the points of an entry whose transform is mirrored go to a second instance list with Reverse Culling flipped, and an entry whose points are all mirrored has its one list flipped instead. On, every instance stays in the entry's own list with the entry's cull mode. Nanite flips mirrored instances by itself and ignores the flag, so on a Nanite mesh the split adds a component and changes nothing on screen."
         },
         "TemplateDescriptor": {
           "display": "Descriptor Override",
@@ -46422,7 +47136,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/staging-data-mesh-selector",
       "source": {
         "file": "PCGExCollections/Public/MeshSelectors/PCGExMeshSelectorStaged.h",
-        "hash": "09e5fead5c0d75d13e105dbd4f6e23a0afa8cb9d"
+        "hash": "9f96e044ca1f2d5ef4870781470e650bdb2e8918"
       }
     },
     "UPCGExMeshToClustersSettings": {
@@ -52219,7 +52933,7 @@
           "default": "EPCGExPartitionSource::ExecutingComponent",
           "enum": "EPCGExPartitionSource",
           "semantics": "Executing Component asks about the cell the current generation belongs to and emits an attribute set; it needs no input and produces one row's worth of description per grid entry. Input Positions asks about points instead, forwarding a copy of them with the ids written per point.",
-          "trap": "Under Executing Component the answer depends on the component that is generating. A graph running on a non-partitioned component, or with no execution source at all, warns and emits an empty attribute set rather than failing.",
+          "trap": "Under Executing Component the answer depends on the component that is generating. A component that is not partitioned still gets one: entries set to From Executing Component take their grid size from Explicit Grid, and the cell is the one the centre of the component's bounds falls in. With no execution source, or with bounds that are not valid, the node warns and emits an empty attribute set.",
           "interacts_with": [
             "Layout",
             "Outputs",
@@ -52344,6 +53058,11 @@
           "style": "warning",
           "text": "In a two-dimensional grid the Z coordinate is always zero and is dropped from the identifier, so the same name is produced for positions at any height and an entry's Z offset does nothing.",
           "anchor": "Grids"
+        },
+        {
+          "style": "info",
+          "text": "**Set Cached Data** and **Get Cached Data** take the same queries, without the Suffix, for their Prefix with Partition Id setting, and build their keys from the id this node writes under Executing Component before any Id Prefix. A cache keyed per cell needs no Partition Identifier in the graph.",
+          "anchor": "Grids"
         }
       ],
       "related": [
@@ -52358,12 +53077,20 @@
         {
           "path": "node-library/metadata/analyze/data-hash.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-hash"
+        },
+        {
+          "path": "node-library/utilities/data-cache/set-cached-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data"
+        },
+        {
+          "path": "node-library/utilities/data-cache/get-cached-data.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/partition-identifier",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Utils/PCGExPartitionIdentifier.h",
-        "hash": "7226ed41f864a2be63b32232b7496003f2caab1c"
+        "hash": "f6e1f2480708f8c14633844bd9075a22601210fd"
       }
     },
     "UPCGExPartitionVerticesSettings": {
@@ -57122,7 +57849,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/staging-spline-mesh",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSplineMesh.h",
-        "hash": "62fdec130df320839b0caae3abf7a0beedccdd82"
+        "hash": "828c694c2dd331a2318f3fffeb93ad671597d1e1"
       }
     },
     "UPCGExPathSplineMeshSimpleSettings": {
@@ -57712,7 +58439,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/path-spline-mesh-simple",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathSplineMeshSimple.h",
-        "hash": "89f5392a3466830e19bc4f3e2540bf77d6c53459"
+        "hash": "2fcebfb9fce5534be4084d33dc62fe9c51141810"
       }
     },
     "UPCGExPathStitchSettings": {
@@ -58819,7 +59546,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-pcgdata",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadPCGData.h",
-        "hash": "73a8f47b7b22e0bc6b6776d56412171a6a1fab8f"
+        "hash": "37e877ed1f1fc79f93729a3cf13a710694534a6f"
       }
     },
     "UPCGExPickClosestClustersSettings": {
@@ -62114,15 +62841,25 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsSampling",
       "classification": "node",
-      "purpose": "Moves points onto a landscape, a surface or other spatial data, the same job as the stock Projection node, built for many point datasets at once: every input is projected against one shared target in parallel and comes out as points, one dataset per input. What lands is chosen per component, so a scatter can take the terrain's height without its tilt. The slope a point lands on can become its density, and the attributes the target writes as it projects, landscape layer weights among them, come across only when you name them.",
+      "purpose": "Moves points onto a landscape, a surface or other spatial data, the same job as the stock Projection node, built for many point datasets at once: every input is projected against one shared target in parallel and comes out as points, one dataset per input. What lands is chosen per component, so a scatter can take the terrain's height without its tilt. The slope a point lands on can become its density, and the attributes the target writes as it projects, landscape layer weights among them, come across only when you name them. A point with wide bounds can also be probed at the four corners of its bottom face once it has landed, so a gap under one corner or a bump through another is measured, can fail the point, and can push it until it sits.",
       "situation": "Several point datasets that each have to be dropped onto the same landscape or other spatial target.",
       "mechanism": {
-        "text": "Every point is handed to the one target wired into `Projection Target` and projected by that target's own rule, so what moves a point, and what counts as a failure, depends on the kind of data wired in. The result reaches the point through `Apply Sampling`, which picks the position, rotation and scale components that are taken. A point the target rejects is removed while `Prune Failed Projections` is on and left as it was otherwise. A point the `Filters` reject is never projected, and counts as a failed projection unless `Process Filtered Out as Fails` is off. Each input comes out as one dataset, its surviving points in their original order, changed only by what `Apply Sampling`, `Normal to Density`, `Success` and `Attributes Forwarding` write."
+        "text": "Every point is handed to the one target wired into `Projection Target` and projected by that target's own rule, so what moves a point, and what counts as a failure, depends on the kind of data wired in. `Apply Sampling` picks which position, rotation and scale components the point takes. A rejected point is removed while `Prune Failed Projections` is on and left as it was otherwise; a point the `Filters` reject is never projected and counts as rejected unless `Process Filtered Out as Fails` is off. With `Footprint` on, points passing `Footprint Filters` are probed again at the four corners of their bounds' bottom face, stood at the projected center; the gap or bump found there is written out, can fail the point, and can push it until it sits. Each input comes out as one dataset, its surviving points in their original order.",
+        "steps": [
+          "With `Footprint` on, the bottom corners are probed at the projected center, in the `Reference` rotation, before `Apply Sampling` writes anything.",
+          "`Overhang` and `Penetration` are written from those probes.",
+          "`Fail Metric` is tested; a failing point becomes a failed projection and is not pushed.",
+          "`Apply Sampling` writes the point, then `Push` moves it."
+        ]
       },
       "off_label": [
         {
           "claim": "Turn `Apply Transform` off and leave `Prune Failed Projections` on, and the node becomes a parallel pass or fail test against any spatial data: points the target cannot project are removed and the rest come through with their transforms untouched. Swap the pruning for `Success` to tag the outcome instead of acting on it.",
           "grounded_in": "FProcessor::ProcessPoints still calls ProjectPoint for every filtered-in point while pruning or the success writer is active, records the result in ProjectionMask, and skips the transform write when ApplySampling.WantsApply() is false; FProcessor::Write gathers by that mask."
+        },
+        {
+          "claim": "With `Footprint` on, `Push` set to None and `Apply Transform` off, the node measures how level the ground is under each point without moving it: `Overhang` and `Penetration` come out as plain attributes for a later filter or blend to act on.",
+          "grounded_in": "FProcessor::ProcessPoints runs the footprint probe and the two writers whenever Context->bFootprint is set, and the push is only added when ApplySampling.WantsApply() is true and FProjectionFootprint::WantsPush() is set; Boot keeps the footprint enabled while either output is written."
         }
       ],
       "pins": {
@@ -62140,6 +62877,11 @@
           {
             "label": "Filters",
             "note": "Point filters deciding which points are projected at all. A rejected point is never projected, so it keeps its transform, density and forwarded attributes. Unless `Process Filtered Out as Fails` is off, it is then handled as a failed projection: `Success` reads false and pruning removes it.",
+            "required": "optional"
+          },
+          {
+            "label": "Footprint Filters",
+            "note": "Point filters narrowing which projected points get the footprint check. A point they reject is projected as usual, with no corner probe, nothing written to `Overhang` or `Penetration` and no push. The pin exists only while `Footprint` is on, and switching it off drops whatever was wired to it.",
             "required": "optional"
           }
         ],
@@ -62166,10 +62908,11 @@
           "default": "FName(\"bProjectionSuccess\")",
           "overridable": true,
           "edit_condition": "bWriteSuccess",
-          "semantics": "A point the `Filters` reject is written false while `Process Filtered Out as Fails` is on. With it off the point is not written, so it reads false or keeps the value the attribute already carried. While `Prune Failed Projections` is on, every projected point that survives reads true, so the flag only tells outcomes apart with pruning off.",
+          "semantics": "A point the `Filters` reject is written false while `Process Filtered Out as Fails` is on. With it off the point is not written, so it reads false or keeps the value the attribute already carried. A point that fails its `Footprint` check reads false as well. While `Prune Failed Projections` is on, every projected point that survives reads true, so the flag only tells outcomes apart with pruning off.",
           "interacts_with": [
             "bPruneFailedProjections",
-            "bProcessFilteredOutAsFails"
+            "bProcessFilteredOutAsFails",
+            "Footprint"
           ]
         },
         "NormalToDensity": {
@@ -62210,6 +62953,117 @@
             }
           ],
           "semantics": "Out of the box it compares against straight up, with no offset and a strength of 1, so density becomes the cosine of the slope: 1 on flat ground, 0.5 at 60 degrees, 0 on a wall. The normal is the up axis of the rotation the target hands back, so it follows the target's rule: a landscape gives its surface normal, a ray hit the face it struck, point data the averaged up of the points overlapped, a polygon its own up, and a spline interior the spline's up at its nearest point. Textures, volumes and the other targets that move nothing hand back the point's own rotation, so density then measures how the point itself is tilted. Nothing clamps the result: `Add` and `Divide` can take density past 1 and `Subtract` below 0. A `Strength` of zero or below reads as 0.0001, which leaves only an exact match dense."
+        },
+        "Footprint": {
+          "display": "Footprint",
+          "type": "FPCGExProjectionFootprintDetails",
+          "tooltip": "Corner offsets are written before the fail decision. Points not passing 'Footprint Filters' get the plain projection.",
+          "overridable": true,
+          "edit_condition": "bFootprint",
+          "fields": [
+            {
+              "name": "Reference",
+              "display": "Reference",
+              "type": "EPCGExFootprintReference",
+              "tooltip": "Rotation that orients the footprint box at the projected center.",
+              "default": "EPCGExFootprintReference::Input",
+              "enum": "EPCGExFootprintReference"
+            },
+            {
+              "name": "Axis",
+              "display": "Axis",
+              "type": "EPCGExFootprintAxis",
+              "tooltip": "Axis the corner offsets and the push are measured along. Push and measurement always share it.",
+              "default": "EPCGExFootprintAxis::Projection",
+              "enum": "EPCGExFootprintAxis"
+            },
+            {
+              "name": "BoundsSource",
+              "display": "Bounds Source",
+              "type": "EPCGExPointBoundsSource",
+              "tooltip": "Point bounds the footprint box is built from.",
+              "default": "EPCGExPointBoundsSource::ScaledBounds",
+              "enum": "EPCGExPointBoundsSource"
+            },
+            {
+              "name": "AdjustMode",
+              "display": "Adjust Mode",
+              "type": "EPCGExFootprintAdjust",
+              "tooltip": "How Adjust combines with the box extents (half sizes).",
+              "default": "EPCGExFootprintAdjust::Add",
+              "enum": "EPCGExFootprintAdjust"
+            },
+            {
+              "name": "Adjust",
+              "display": "Adjust",
+              "type": "FPCGExInputShorthandSelectorVector",
+              "tooltip": "Per-axis change applied to the box extents before probing; a negative result clamps to zero.",
+              "default": "FPCGExInputShorthandSelectorVector(FName(\"FootprintAdjust\"), FVector::ZeroVector)"
+            },
+            {
+              "name": "FailMetric",
+              "display": "Fail Metric",
+              "type": "EPCGExFootprintFailMetric",
+              "tooltip": "Which measurement can fail the projection. A corner that finds no surface fails the point whenever this is not None.",
+              "default": "EPCGExFootprintFailMetric::None",
+              "enum": "EPCGExFootprintFailMetric"
+            },
+            {
+              "name": "ThresholdSource",
+              "display": "Threshold Source",
+              "type": "EPCGExFootprintThreshold",
+              "tooltip": "Where the fail threshold comes from.",
+              "default": "EPCGExFootprintThreshold::Manual",
+              "enum": "EPCGExFootprintThreshold"
+            },
+            {
+              "name": "Threshold",
+              "display": "Threshold",
+              "type": "FPCGExInputShorthandSelectorDoubleAbs",
+              "tooltip": "Distance above which the selected measurement fails the point.",
+              "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"FootprintThreshold\"), 100.0)"
+            },
+            {
+              "name": "Push",
+              "display": "Push",
+              "type": "EPCGExFootprintPush",
+              "tooltip": "Move the point along the measurement axis to seat it. The whole push vector is added, whatever position components are applied.",
+              "default": "EPCGExFootprintPush::Sink",
+              "enum": "EPCGExFootprintPush"
+            }
+          ],
+          "semantics": "Off by default, and the block ships with `Push` set to Sink, so switching it on moves points at once; set `Push` to None to measure only. The box is the point's bounds by `Bounds Source`: Scaled Bounds applies the point scale, Bounds ignores it, Density Bounds grows them by steepness, and Center shrinks the box to the point so every corner probes at the center. `Adjust` then changes the extents per axis, added under the default `Adjust Mode` and multiplied otherwise, so Multiply with `Adjust` still at zero collapses the box to its bottom center. The box stands at the projected center and turns by `Reference`: Input keeps the point's own rotation, Projected takes the rotation the target hands back and switches rotation projection on even when `Apply Sampling` takes none. Only the four corners of the bottom face are probed, against the same target and by the same rule as the center, positions only. `Axis` sets how a corner's displacement is read and how a push moves: Projection, the default, reads each corner along its own displacement and pushes the point along the extreme corner's, which lands that corner on the surface whatever the target; Reference Up reads and pushes along the box's up axis, which keeps the point seated along its own axis and only approximates the surface when the box is tilted. A surface above a corner counts as penetration and a gap under it as overhang, so `Overhang` is the largest gap and `Penetration` the deepest corner, each zero when no corner does that. `Fail Metric` picks which of the two, or either, is compared to the threshold, `Threshold` by default or the box's full height after `Adjust` under `Threshold Source`; a point past it is handled as a failed projection after its offsets have been written, so `Success` reads false and `Prune Failed Projections` removes it. A corner the target rejects fails the point while `Fail Metric` is set and is skipped otherwise; with every corner rejected both offsets read 0 and nothing is pushed. `Push` moves the point once `Apply Sampling` has written it: Sink by the overhang so the lowest corner meets the surface, Raise by the penetration so the deepest corner surfaces, Balance to the midpoint of the two extremes. The whole vector is added, so with only some position components applied it still moves the others, and with none applied the push is skipped with a warning.",
+          "interacts_with": [
+            "ApplySampling",
+            "bPruneFailedProjections",
+            "SuccessAttributeName",
+            "OverhangAttributeName",
+            "PenetrationAttributeName"
+          ]
+        },
+        "OverhangAttributeName": {
+          "display": "Overhang",
+          "type": "FName",
+          "tooltip": "Name of the 'double' attribute to write the maximum overhang to : largest gap under a bottom corner, 0 when none hangs.",
+          "default": "FName(\"FootprintOverhang\")",
+          "overridable": true,
+          "edit_condition": "bWriteOverhang",
+          "semantics": "World units, never negative, taken before `Push` moves the point. Written for every point that was probed, including one that then fails on it. A point the center projection rejected, or one the `Filters` or `Footprint Filters` skipped, keeps the value the attribute already carried, or reads 0 on a new attribute.",
+          "interacts_with": [
+            "Footprint"
+          ]
+        },
+        "PenetrationAttributeName": {
+          "display": "Penetration",
+          "type": "FName",
+          "tooltip": "Name of the 'double' attribute to write the maximum penetration to : deepest bottom corner under the surface, 0 when none sinks.",
+          "default": "FName(\"FootprintPenetration\")",
+          "overridable": true,
+          "edit_condition": "bWritePenetration",
+          "semantics": "World units, never negative, taken before `Push` moves the point. Written for every point that was probed, including one that then fails on it. A point the center projection rejected, or one the `Filters` or `Footprint Filters` skipped, keeps the value the attribute already carried, or reads 0 on a new attribute.",
+          "interacts_with": [
+            "Footprint"
+          ]
         },
         "AttributesForwarding": {
           "display": "Attributes Forwarding",
@@ -62276,10 +63130,11 @@
           "default": "true",
           "overridable": true,
           "advanced": true,
-          "semantics": "What counts as a rejection follows the target: a position outside a landscape's footprint, a ray that hits nothing, bounds that overlap no target point, a point outside a volume. Points the `Filters` reject count as rejections too, unless `Process Filtered Out as Fails` is off.",
+          "semantics": "What counts as a rejection follows the target: a position outside a landscape's footprint, a ray that hits nothing, bounds that overlap no target point, a point outside a volume. Points the `Filters` reject count as rejections too, unless `Process Filtered Out as Fails` is off, and so does a point whose `Footprint` check trips its `Fail Metric`.",
           "interacts_with": [
             "SuccessAttributeName",
-            "bProcessFilteredOutAsFails"
+            "bProcessFilteredOutAsFails",
+            "Footprint"
           ]
         },
         "bProcessFilteredOutAsFails": {
@@ -62301,8 +63156,13 @@
       "hints": [
         {
           "style": "warning",
-          "text": "Textures, volumes, splines, primitives, collision shapes and meshes move nothing. The node only learns whether each point passes against them, so under the defaults it removes the points that fail and leaves the rest exactly where they were.",
+          "text": "Textures, volumes, splines, primitives, collision shapes and meshes move nothing. The node only learns whether each point passes against them, so under the defaults it removes the points that fail and leaves the rest where they were.",
           "anchor": "pins"
+        },
+        {
+          "style": "warning",
+          "text": "Point data answers a corner probe only when that corner lies inside one of its points' bounds, so on a point target most corners miss: with `Fail Metric` set that fails the point, and without it the corner is skipped. Textures, volumes and the other targets that move nothing return every corner where it is, so both offsets read 0 and a push goes nowhere.",
+          "anchor": "Footprint"
         }
       ],
       "addenda": [
@@ -62328,6 +63188,10 @@
           "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/data-utils/forward-details"
         },
         {
+          "path": "working-with-pcgex/filters/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/filters"
+        },
+        {
           "path": "node-library/sampling/nearest/sample-nearest-surface.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-surface"
         }
@@ -62335,7 +63199,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/projection",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExProjection.h",
-        "hash": "e53da3ddc3ed1b565cbd8caf7a666ce7b831b0df"
+        "hash": "152fce125fc2aa02dcfcca0f565cb8fa1e949455"
       }
     },
     "UPCGExPropertyBlueprintLibrary": {
@@ -67835,7 +68699,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/sample-sockets",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleSockets.h",
-        "hash": "989d831d02d49c8f2961e1f8a268678309196996"
+        "hash": "efb64bc69155fb28378b6a399c8057b8a4baa3da"
       }
     },
     "UPCGExSampleStampPointsSettings": {
@@ -71641,15 +72505,19 @@
         "FPCGExSetCachedDataContext",
         "FPCGExSetCachedDataElement"
       ],
-      "purpose": "Stores whatever arrives on its data pins on an actor, under a cache ID, so a later generation of this graph, or any other graph running against that actor, can read it back with **Get Cached Data**. The store is a **PCGEx Data Cache** component the node adds to the target actor, saved with the level the way a PCG component saves its generated output and left alone by cleanup and regeneration. Inputs pass straight through to same-labelled outputs, so the node sits inline on a wire. `Mode` also turns it into the eraser: Clear drops one entry and Clear All empties the cache, and the palette carries each mode as its own entry, Set Cached Data : Replace, Set Cached Data : Append, Set Cached Data : Clear and Set Cached Data : Clear All.",
+      "purpose": "Stores whatever arrives on its data pins on an actor, under a cache ID, so a later generation of this graph, or any other graph that can name that actor, can read it back with **Get Cached Data**. The store is a **PCGEx Data Cache** component the node adds to the target actor, saved with the level the way a PCG component saves its generated output and left alone by cleanup and regeneration. Inputs pass straight through to same-labelled outputs, so the node sits inline on a wire. `Prefix with Partition Id` adds the partition cell to the key, so every cell of a partitioned generation keeps its own entry on one shared actor. `Mode` also turns it into the eraser: Clear drops one entry and Clear All empties the cache, and the palette carries each mode as its own entry, Set Cached Data : Replace, Set Cached Data : Append, Set Cached Data : Clear and Set Cached Data : Clear All.",
       "situation": "A result from one generation that the next generation has to read back, when nothing in vanilla PCG survives from one to the other.",
       "mechanism": {
-        "text": "Each run resolves its target actors, from the Target Actor pin when it carries data and from `Target` otherwise, and finds or creates the cache component on each one. Every dataset on the data pins is duplicated per target and adopted by that target's component under `Cache ID`, replacing the entry or appending to it, and the inputs themselves are forwarded unchanged. Data that references other data or cannot be serialized is refused, and when nothing adoptable remains the entry is left as it was. The node never reuses a cached result of its own, so it writes on every generation it takes part in."
+        "text": "Each run resolves its target actors from `Target` and finds or creates the cache component on each one. Every dataset on the data pins is duplicated per target and adopted by that target's component under `Cache ID`, replacing the entry or appending to it, and the inputs themselves are forwarded unchanged. Data that references other data or cannot be serialized is refused, and when nothing adoptable remains the entry is left as it was. The node never reuses a cached result of its own, so it writes on every generation it takes part in."
       },
       "off_label": [
         {
           "claim": "With `Target` on PCG World Actor the cache becomes a level-wide mailbox: any component in the world can read what any other wrote, with no actor reference passed between them.",
           "grounded_in": "the WorldActor branch of UPCGExDataCacheSettingsBase::ResolveTargets, which resolves the level's single PCG World Actor for every component that asks, spawning it from a writer when absent"
+        },
+        {
+          "claim": "With `Mode` on Append and a `Partition` query one grid step coarser, every cell adds its data to the entry of the coarser cell that contains it, which gathers what sibling cells produced under one key on the shared host.",
+          "grounded_in": "FPCGExSetCachedDataElement::Boot resolves the key from the query alone, whichever cell executes, and UPCGExDataCacheComponent::Write appends to the existing entry when the mode is Append"
         }
       ],
       "pins": {
@@ -71667,8 +72535,9 @@
           },
           {
             "label": "Target Actor",
-            "note": "Actor references naming the actors that host the cache; when connected it overrides Target. Every unique actor referenced becomes a target. Absent in Clear and Clear All modes, which resolve through Target alone.",
-            "required": "optional"
+            "note": "Actor references naming the actors that host the cache. Every unique reference becomes a target, and each one receives its own copy of the data. The pin exists only while Target is Input. In Replace and Append modes it is optional, so the node keeps forwarding its inputs when no host is named; in Clear and Clear All modes it is the only input and is required.",
+            "required": "conditional",
+            "condition": "in Clear and Clear All modes"
           }
         ],
         "outputs": [
@@ -71682,7 +72551,7 @@
             "condition": "in Replace and Append modes"
           }
         ],
-        "dynamic": "The pin set follows Mode and Custom Input Pins: Clear and Clear All strip every data pin and leave one dependency-only output, and each declared custom input pin appears twice, as an input and as its same-labelled pass-through output."
+        "dynamic": "The pin set follows Mode, Custom Input Pins and Target: Clear and Clear All strip every data pin and leave one dependency-only output, each declared custom input pin appears twice, as an input and as its same-labelled pass-through output, and the Target Actor input exists only while Target is Input."
       },
       "settings": {
         "CacheID": {
@@ -71694,6 +72563,75 @@
           "edit_condition": "Mode != EPCGExDataCacheWriteMode::ClearAll",
           "semantics": "The key both nodes agree on, so a Get with a different ID sees nothing and reports a miss. Left as None the node errors out before resolving any target, in every mode but Clear All, which ignores it.",
           "interacts_with": [
+            "Mode",
+            "bPrefixWithPartitionId"
+          ]
+        },
+        "bPrefixWithPartitionId": {
+          "display": "└─ Prefix with Partition Id",
+          "type": "bool",
+          "tooltip": "Store under '<PartitionId>_<CacheID>' instead of the bare ID, so each partition keeps its own entry on a shared host. Only the key changes; the host is still the Target.",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "Mode != EPCGExDataCacheWriteMode::ClearAll",
+          "semantics": "The key is the partition id and the cache ID joined by an underscore: 25600_0_0_Default for cell 0, 0 of a two-dimensional 25600 grid. The partition id is the one **Partition Identifier** writes for the same query when it reads the executing component. Replace, Append and Clear act on the prefixed entry, and Clear All ignores the setting along with the cache ID. Under Executing Actor a partitioned component already writes to the partition actor of its own cell, so the prefix does its work on a host that cells share: Original Actor, PCG World Actor, or an actor named on the Target Actor pin.",
+          "trap": "When the partition cannot be resolved, because the run has no execution source or its bounds are invalid, the node warns, leaves the cache untouched and still forwards its inputs. The bare cache ID is never used in its place.",
+          "interacts_with": [
+            "CacheID",
+            "Partition",
+            "Mode",
+            "Target"
+          ]
+        },
+        "Partition": {
+          "display": "Partition",
+          "type": "FPCGExPartitionQuery",
+          "tooltip": "Partition the prefix is resolved from, relative to the executing component's own cell. 2D and 3D ids differ ('size_x_y' vs 'size_x_y_z'): force one here when the matching Get runs with another 2D setting.",
+          "edit_condition": "IsPartitionEditable()",
+          "edit_condition_hides": true,
+          "fields": [
+            {
+              "name": "Offset",
+              "display": "Offset",
+              "type": "FIntVector",
+              "tooltip": "Integer cell offset from the resolved cell. (0,0,0) is the cell itself, (1,0,0) the next cell along X, etc. In 2D the Z offset is ignored.",
+              "default": "FIntVector::ZeroValue"
+            },
+            {
+              "name": "GridSizeResolution",
+              "display": "Grid Size Resolution",
+              "type": "EPCGExPartitionResolution",
+              "tooltip": "How this entry's grid size is resolved.",
+              "default": "EPCGExPartitionResolution::FromComponent",
+              "enum": "EPCGExPartitionResolution"
+            },
+            {
+              "name": "ExplicitGrid",
+              "display": "Explicit Grid",
+              "type": "EPCGHiGenGrid",
+              "tooltip": "Grid size for this entry. Used when resolution is Explicit, and as the fallback when From Component has no partitioned component.",
+              "default": "EPCGHiGenGrid::Grid256"
+            },
+            {
+              "name": "GridSizeOffset",
+              "display": "Grid Size Offset",
+              "type": "int32",
+              "tooltip": "Steps the resolved grid size along the power-of-two grid ladder: positive = coarser, negative = finer (e.g. -1 turns 800 into 400). Clamped to the exposed range (400 .. 204800). 0 leaves the resolved size untouched. Applies in both resolution modes.",
+              "default": "0"
+            },
+            {
+              "name": "Grid2D",
+              "display": "Grid 2D",
+              "type": "EPCGExGrid2DMode",
+              "tooltip": "2D/3D handling.",
+              "default": "EPCGExGrid2DMode::Auto",
+              "enum": "EPCGExGrid2DMode"
+            }
+          ],
+          "semantics": "One query, resolved from the centre of the executing component's bounds. The default names the cell the component generates in, an Offset names a neighbour of it, and a Grid Size Offset or an explicit grid names the cell of another grid size that the same centre falls in, so a coarser grid gives the cell containing the executing one. A component that is not partitioned still resolves a key, with Explicit Grid as its grid size. The row shows while Prefix with Partition Id is on or driven through its override pin, in every mode but Clear All.",
+          "trap": "A two-dimensional id carries no Z coordinate and a three-dimensional one does, so 25600_0_0 and 25600_0_0_0 are different keys. Under Auto the choice follows the executing component's graph, and a Get running from a graph with the other setting misses the entry unless Grid 2D is forced to the same value on both nodes.",
+          "interacts_with": [
+            "bPrefixWithPartitionId",
             "Mode"
           ]
         },
@@ -71703,18 +72641,20 @@
           "tooltip": "What to do with the target entry. Drives the pin layout, so not overridable.",
           "default": "EPCGExDataCacheWriteMode::Replace",
           "enum": "EPCGExDataCacheWriteMode",
-          "semantics": "Replace swaps the whole entry for this run's data and Append adds to whatever the entry already holds, so an Append on every generation accumulates without bound until something clears it. Clear and Clear All remove entries and never create a component to do so; on an actor with no cache they do nothing at all. Both clear modes take away every data pin, which leaves the execution dependency as the only way to order the node, and the node requires one for that reason. From a preview-mode generation a clear only hides the entry from readers and leaves the saved data intact.",
-          "trap": "A Set with nothing wired into In is culled and never runs, which is fine for a store and wrong for a clear: pick Clear or Clear All and wire its execution dependency, or the entry stays.",
+          "semantics": "Replace swaps the whole entry for this run's data and Append adds to whatever the entry already holds, so an Append on every generation accumulates without bound until something clears it. A Replace or an Append with no data on any data pin touches no host: no cache component is created, the PCG World Actor is not spawned, and no target warning is raised. Clear and Clear All remove entries and never create a component to do so; on an actor with no cache they do nothing at all. Both clear modes take away every data pin, so the node requires its execution dependency to be ordered, unless Target is Input, where the required Target Actor pin orders it and the dependency becomes optional. From a preview-mode generation a clear only hides the entry from readers and leaves the saved data intact.",
+          "trap": "A Set with nothing wired into In is culled and never runs, which is fine for a store and wrong for a clear: pick Clear or Clear All and wire its execution dependency, or its Target Actor pin under Target Input, or the entry stays.",
           "interacts_with": [
             "CacheID",
             "CustomInputPins",
-            "bNotifyChange"
+            "bNotifyChange",
+            "bPrefixWithPartitionId",
+            "Target"
           ]
         },
         "CustomInputPins": {
           "display": "Custom Input Pins",
           "type": "TArray<FPCGPinProperties>",
-          "tooltip": "Extra input pins, stored with their label so a Get with the same pins routes by name; copy-paste the array onto the Get node. In, Out and Target Actor are reserved. Declaring any makes In optional.",
+          "tooltip": "Extra input pins, stored with their label so a Get with the same pins routes by name; copy-paste the array onto the Get node. In, Out and Target Actor are reserved, whatever Target is. Declaring any makes In optional.",
           "edit_condition": "!IsClearMode()",
           "edit_condition_hides": true,
           "semantics": "Each entry adds an input pin and a same-labelled pass-through output, and the data it carries is stored with that label so a Get Cached Data declaring the same Custom Output Pins routes it by name. Entries labelled None, labelled In, Out or Target Actor, or repeating an earlier label are dropped from the pin set. Declaring any makes In optional, and a run with nothing on any data pin leaves the entry untouched.",
@@ -71727,6 +72667,7 @@
           "type": "bool",
           "tooltip": "Editor only. Notify PCG components tracking the target actor so they refresh from the new contents; the writer never refreshes itself. No effect on the PCG World Actor. Off by default: a cache is passive.",
           "default": "false",
+          "advanced": true,
           "semantics": "Editor only. After a write or a clear that changed something, PCG components tracking the target actor are told the actor changed, so they refresh and pick up the new contents; the writer's own component is excluded, so it does not regenerate itself. Nothing reacts on the PCG World Actor, which PCG tracking ignores.",
           "trap": "Two writers on one actor that both notify refresh each other on every generation, which is a loop with no exit.",
           "interacts_with": [
@@ -71738,26 +72679,44 @@
           "display": "Target",
           "type": "EPCGExDataCacheTarget",
           "from": "UPCGExDataCacheSettingsBase",
-          "tooltip": "Which actor hosts the cache. Ignored when the Target Actor pin is connected.",
+          "tooltip": "Which actor hosts the cache. Input adds the Target Actor pin, so not overridable.",
           "default": "EPCGExDataCacheTarget::ExecutingActor",
           "enum": "EPCGExDataCacheTarget",
-          "overridable": true,
-          "edit_condition": "IsTargetPinUnconnected()",
-          "semantics": "Read only while the Target Actor pin is unconnected. Executing Actor is the partition actor of the current grid cell when the component is partitioned, so a partitioned graph writes one cache per cell; Original Actor is the actor of the unpartitioned component in that case and the same actor otherwise. PCG World Actor is spawned by this node when the level has none.",
+          "semantics": "Executing Actor is the partition actor of the current grid cell when the component is partitioned, so a partitioned graph writes one cache per cell; Original Actor is the actor of the unpartitioned component in that case and the same actor otherwise. PCG World Actor is spawned by a write when the level has none, and never by a clear. Under Input every referenced actor receives its own copy of the data, and an empty pin names no host: nothing is written, the missing target warning is raised, the inputs still pass through, and no other value is fallen back to.",
           "interacts_with": [
             "ActorReferenceAttribute",
-            "bNotifyChange"
+            "PartitionIdAttribute",
+            "bNotifyChange",
+            "bPrefixWithPartitionId"
           ]
         },
         "ActorReferenceAttribute": {
           "display": "Actor Reference Attribute",
           "type": "FName",
           "from": "UPCGExDataCacheSettingsBase",
-          "tooltip": "'FSoftObjectPath' attribute read on the Target Actor pin when it is connected. A component reference resolves to its owner.",
+          "tooltip": "'FSoftObjectPath' attribute read on the Target Actor pin. A component reference resolves to its owner.",
           "default": "FName(\"ActorReference\")",
           "overridable": true,
-          "semantics": "Read on every dataset reaching the Target Actor pin, as soft object paths; a path naming a component resolves to the component's owner, and duplicates collapse to one target. A dataset with rows but no readable attribute of that name logs a warning; an empty dataset is passed over in silence.",
+          "edit_condition": "Target == EPCGExDataCacheTarget::Input",
+          "edit_condition_hides": true,
+          "semantics": "Read on every dataset reaching the Target Actor pin, and duplicates collapse to one target. A reference is used only while its actor is loaded: the node never loads one. A dataset with rows but no readable attribute of that name logs a warning; an empty dataset is passed over in silence.",
           "interacts_with": [
+            "Target",
+            "PartitionIdAttribute"
+          ]
+        },
+        "PartitionIdAttribute": {
+          "display": "Partition Id Attribute",
+          "type": "FName",
+          "from": "UPCGExDataCacheSettingsBase",
+          "tooltip": "'FString' attribute read next to each reference, as written by Get Partition Actor. A referenced partition actor must still stand for that partition: runtime generated ones are pooled and reused. None skips the check.",
+          "default": "PCGExPartitionActors::PartitionIdAttributeName",
+          "overridable": true,
+          "edit_condition": "Target == EPCGExDataCacheTarget::Input",
+          "edit_condition_hides": true,
+          "semantics": "The check applies to a reference that resolves to a partition actor, on a row whose value is not empty: any other actor, an empty value, or data without the attribute is taken as it comes. A partition actor that no longer stands for the partition its row names is skipped, so data meant for one cell is never stored on, or cleared from, an actor that has since been handed to another. The attribute, under this default name, is what **Get Partition Actor** writes next to each reference.",
+          "interacts_with": [
+            "ActorReferenceAttribute",
             "Target"
           ]
         }
@@ -71778,8 +72737,18 @@
         },
         {
           "style": "info",
-          "text": "The node title carries the cache ID, or Clear and the ID, or Clear All, so a graph with several caches can be read without selecting each node.",
+          "text": "The node title carries the cache ID, or Clear and the ID, or Clear All, so a graph with several caches can be read without selecting each node. With Prefix with Partition Id on, the ID follows a {Partition} placeholder, as in {Partition}_Default, since the partition cell is only known when the node runs.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "In the details panel the row is named by what the query resolves to: Self for the executing cell, Neighbor once Offset is set, followed by the grid step when Grid Size Offset is set, as in Self +1, or by the stepped grid size when the grid is explicit, as in Self @ 25600.",
+          "anchor": "Partition"
+        },
+        {
+          "style": "info",
+          "text": "On a runtime generated partition actor, which is what Executing Actor names for a partitioned graph generating at runtime, the cache belongs to the cell it was written in. Those actors are pooled and reused with their components intact, so the entries are dropped when the actor returns to the pool or is handed to another cell. The component itself stays, empty.",
+          "anchor": "Target"
         }
       ],
       "related": [
@@ -71790,6 +72759,14 @@
         {
           "path": "node-library/utilities/data-cache/get-cached-data.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data"
+        },
+        {
+          "path": "node-library/utilities/get-partition-actor.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/get-partition-actor"
+        },
+        {
+          "path": "node-library/utilities/partition-identifier.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/partition-identifier"
         },
         {
           "path": "node-library/utilities/control-flow/wait-for-pcg-data.md",
@@ -71803,7 +72780,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExSetCachedData.h",
-        "hash": "eec7e1461c22c02d8d46c162b0dbc83eabe5e641"
+        "hash": "dd6fd907028869a1761b49733ec73af3dd33e329"
       }
     },
     "UPCGExSettings": {
@@ -71815,9 +72792,28 @@
       "purpose": "The settings every PCGEx node carries, whatever it does. They are about how a node executes rather than what it computes: how its data is prepared, how it threads, what it protects, and how loudly it complains. A node's own page describes what it does; this page describes what it shares with every other one.",
       "situation": "A node behaving oddly around threading, caching or warnings, where the cause is in the shared block rather than in the node.",
       "mechanism": {
-        "text": "These settings sit beneath every node's own, in an Inherited group, and are read before the node's work begins. Most are performance choices whose only visible effect is time. Two are not: the protected attributes list changes what a node may overwrite, and the consumable cleanup setting changes what survives the node at all. Those two alter results, and the rest alter cost."
+        "text": "These settings sit beneath every node's own, in an Inherited group, and are read before the node's work begins. Most are performance choices whose only visible effect is time. The exceptions change what the node does: the protected attributes list changes what a node may overwrite, the consumable cleanup setting changes what survives the node at all, and Struct Overrides changes which override pins the node offers."
       },
       "settings": {
+        "bStructOverrides": {
+          "display": "Struct Overrides",
+          "type": "bool",
+          "tooltip": "Exposes an override param (and pin) for every overridable struct, so a struct-typed attribute can replace one whole. Off by default: each param adds a pin and a per-execution lookup. Turning it off removes those pins and their connections.",
+          "default": "false",
+          "advanced": true,
+          "semantics": "A struct pin sits ahead of the pins of that struct's own members, and overrides are applied in pin order, so with both wired the member's value wins over the one inside the struct. A struct pin whose label is already taken is labelled with its full property path instead, and with that path followed by (Struct) when the path is taken too.",
+          "interacts_with": [
+            "bExpandNestedStructs"
+          ]
+        },
+        "bExpandNestedStructs": {
+          "display": "Expand Nested Structs",
+          "type": "bool",
+          "tooltip": "Also exposes nested struct members that opt in with the PCGExNestedStructOverridable meta. Untagged nested structs never get a pin.",
+          "default": "false",
+          "edit_condition": "bStructOverrides",
+          "advanced": true
+        },
         "BulkInitData": {
           "display": "Bulk Init Data",
           "type": "EPCGExOptionState",
@@ -71857,7 +72853,11 @@
         "bForceOffThreadPrepare": {
           "display": "Force Off Thread Prepare",
           "type": "bool",
-          "default": "false"
+          "default": "false",
+          "semantics": "Runs the node's preparation off the game thread, and Force Off Thread Execute does the same for its execution. Both phases are also moved without these settings: for components generated at runtime while the plugin's Runtime Always Off Thread setting is on, and on every node while the console variable pcgex.ForceOffThread is on.",
+          "interacts_with": [
+            "bForceOffThreadExecute"
+          ]
         },
         "bForceOffThreadExecute": {
           "display": "Force Off Thread Execute",
@@ -71942,7 +72942,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/shared-settings",
       "source": {
         "file": "PCGExCore/Public/Core/PCGExSettings.h",
-        "hash": "1e2ca641895e3e3f5d5c874743db800988db1f6e"
+        "hash": "72cad57b15924d1151685ac933fde665441cbb9e"
       }
     },
     "UPCGExShapeBuilderFactoryProviderSettings": {
@@ -73909,7 +74909,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/spawn-dynamic-mesh",
       "source": {
         "file": "PCGExElementsTopology/Public/Elements/PCGExSpawnDynamicMesh.h",
-        "hash": "046c2e13c90242f0926201ece18251f7ef7bac3c"
+        "hash": "2bd7cd15fc6065ca60627660b63b14d9ea5595d5"
       }
     },
     "UPCGExSplineToPathSettings": {
@@ -74952,7 +75952,7 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "node",
-      "purpose": "Staged points know which entry they picked and nothing else. This node reads the entry back and writes what it holds onto the points: the custom properties the collection declares, the entry's own data (weight, category, tags, bounds, asset path, and the two type ids), and its grammar block, for graphs feeding vanilla PCG subdivision. Sampleable properties go one step further: a curve authored on the entry is evaluated at a per-point time, so one authored curve becomes a per-point value. A property can also be a pick of its own: a Collection Entry property writes a second pick hash onto the points, on a staging layer named after the output it was mapped to, and the node's Map output carries the collection that resolves it.",
+      "purpose": "Staged points know which entry they picked and nothing else. This node reads the entry back and writes what it holds onto the points: the custom properties the collection declares, the entry's own data (weight, category, tags, bounds, asset path and a stable integer ID of it, and the two type ids), and its grammar block, for graphs feeding vanilla PCG subdivision. Sampleable properties go one step further: a curve authored on the entry is evaluated at a per-point time, so one authored curve becomes a per-point value. A property can also be a pick of its own: a Collection Entry property writes a second pick hash onto the points, on a staging layer named after the output it was mapped to, and the node's Map output carries the collection that resolves it.",
       "situation": "A cost, a curve or a footprint authored on the collection entries has to drive point math downstream, and the points carry only their pick.",
       "mechanism": {
         "text": "Each point's pick hash is resolved against the Collection Map, and the requested values are read off the entry it names. Resolution runs once per distinct pick and fans out to every point sharing it, so the work tracks how many distinct entries are in play rather than the point count. Every configured output becomes an attribute across the whole dataset: points whose pick does not resolve, and points the filter rejected, keep that attribute's default value. Point count, order and existing attributes are untouched, and the values come from the collections and their staging data, so none of the assets the entries reference are loaded."
@@ -75054,6 +76054,14 @@
           "default": "FName(\"AssetPath\")",
           "overridable": true,
           "edit_condition": "bWriteAssetPath"
+        },
+        "AssetIdAttributeName": {
+          "display": "Asset Id Attribute Name",
+          "type": "FName",
+          "default": "FName(\"AssetId\")",
+          "overridable": true,
+          "edit_condition": "bWriteAssetId",
+          "semantics": "An int32 hash of the entry's asset path: the same value on every machine and in every session, and 0 for an entry with no asset. The Kweave bridge's Mesh List computes the same ID for a mesh, so points stamped here match what the Kweave mesh nodes key on. Redirectors are not followed, so a moved asset keeps the ID of the path the entry stores."
         },
         "WeightAttributeName": {
           "display": "Weight Attribute Name",
@@ -75209,7 +76217,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-properties",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadProperties.h",
-        "hash": "9d2233373d5e50fbf3feffaf693add4dc70f441b"
+        "hash": "1796cfc3047e159a4b70daaede217140f783cdb7"
       }
     },
     "UPCGExStagingSpawnActorsSettings": {
@@ -75510,7 +76518,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-actors",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSpawnActors.h",
-        "hash": "a8cc77ff496a4e85f55fa56d1a593b647d47e824"
+        "hash": "e2268f2d823174fca05f40c5318febe4a9581ca0"
       }
     },
     "UPCGExStagingSwapSettings": {

@@ -1,7 +1,14 @@
 {
   "bundle_schema": "2.1.0",
-  "generated": "2026-09-27",
+  "generated": "2026-10-05",
   "plugins": [
+    {
+      "plugin": "KweaveBridge",
+      "version": "2.0.0",
+      "file": "KweaveBridge.json",
+      "entries": 7,
+      "concepts": 0
+    },
     {
       "plugin": "PCGExElementsClustersSketch",
       "version": "0.1",
@@ -25,9 +32,9 @@
     },
     {
       "plugin": "PCGExtendedToolkit",
-      "version": "0.79",
+      "version": "0.79.1",
       "file": "PCGExtendedToolkit.json",
-      "entries": 494,
+      "entries": 495,
       "concepts": 38
     }
   ]

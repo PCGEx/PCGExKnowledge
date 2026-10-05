@@ -9752,7 +9752,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias-channel",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyChannelBias.h",
-        "hash": "2ca20a1ec330b4920bcac7322e0f4b76d295c283"
+        "hash": "494d964ea98bfa3412fb9388b3d482c351837215"
       }
     },
     "UPCGExGrammarGraphNodeBase": {
@@ -9981,7 +9981,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/strategies/grammar-growth",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExGrowthGrammar.h",
-        "hash": "1d9105ed45ec5e6ab6d80587d86ccb0f530e44e1"
+        "hash": "fed8f9c7ef80bb9fd663f159963b79abd5bf141f"
       }
     },
     "UPCGExGrammarSpawnNodeBase": {
@@ -10963,7 +10963,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-cluster",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingClusterGrowth.h",
-        "hash": "d3c977c4bc71a510fdfa11529f44ed34b499d3b2"
+        "hash": "9afd0386c3496d5d34c9f5013c9e45bb666ecd7d"
       }
     },
     "UPCGExValencyBondingGenerativeSettings": {
@@ -11396,7 +11396,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-grow-points",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyBondingGenerative.h",
-        "hash": "b9522af7530aa0a33f1a9ab5c07979211b3c219c"
+        "hash": "710924b4a6f1c3f3b08776d771a77fdfafba708e"
       }
     },
     "UPCGExValencyBondingRules": {
@@ -11893,7 +11893,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/solve",
       "source": {
         "file": "PCGExValencySolvers/Public/Elements/PCGExValencyBonding.h",
-        "hash": "d707248866874a647997c4bf5e03957e3bdbe092"
+        "hash": "20287710219c6dff7eb040b28ae0fdf68a38a952"
       }
     },
     "UPCGExValencyConnectorFilterProviderSettings": {
@@ -12502,7 +12502,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grow/valency-find-bridges",
       "source": {
         "file": "PCGExValencyGrowth/Public/Elements/PCGExValencyFindBridges.h",
-        "hash": "b88d33656e0bc1b4ba85d3138d134ec8d58c3f04"
+        "hash": "b00cb139ed6d0d0566b898aae8f090a58e3f82e7"
       }
     },
     "UPCGExValencyGrowthBFSFactory": {
@@ -14141,7 +14141,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/patterns/valency-find-patterns",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyFindPatterns.h",
-        "hash": "2ae130a6a7029c71b73784d96cbc387808501ba8"
+        "hash": "110e8eac2ddebf9233c9e5fc909c40285a79f21c"
       }
     },
     "UPCGExValencyPlanarPartitionSettings": {

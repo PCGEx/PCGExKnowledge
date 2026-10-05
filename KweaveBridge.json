@@ -1,0 +1,1372 @@
+{
+  "plugin": "KweaveBridge",
+  "version": "2.0.0",
+  "aliases": {
+    "FKweaveTagFilter": "UKweaveGetMeshPointsSettings"
+  },
+  "enums": {
+    "EKweaveGPUDispatchThreadCount": {
+      "values": [
+        {
+          "name": "FromFirstOutputPin",
+          "display_name": "From First Output Pin",
+          "tooltip": "One thread per pin data element."
+        },
+        {
+          "name": "Fixed",
+          "display_name": "Fixed Thread Count"
+        },
+        {
+          "name": "FromProductOfInputPins",
+          "display_name": "From Product Of Input Pins",
+          "tooltip": "Dispatches a thread per element in the product of one or more pins. So if there are 4 data elements in pin A and 6 data elements in pin B, 24 threads will be dispatched."
+        }
+      ]
+    },
+    "EKweaveGPUKernelType": {
+      "values": [
+        {
+          "name": "PointProcessor",
+          "display_name": "Point Processor",
+          "tooltip": "Kernel executes on each point in first input pin."
+        },
+        {
+          "name": "PointGenerator",
+          "display_name": "Point Generator",
+          "tooltip": "Kernel executes for fixed number of points, configurable on node."
+        },
+        {
+          "name": "TextureProcessor",
+          "display_name": "Texture Processor",
+          "tooltip": "Kernel executes on each texel in the first input pin."
+        },
+        {
+          "name": "TextureGenerator",
+          "display_name": "Texture Generator",
+          "tooltip": "Kernel executes for each texel in a fixed size texture, configurable on node."
+        },
+        {
+          "name": "Custom",
+          "display_name": "Custom",
+          "tooltip": "Execution thread counts and output buffer sizes configurable on node. All data read/write indices must be manually bounds checked."
+        },
+        {
+          "name": "AttributeSetProcessor",
+          "display_name": "Attribute Set Processor",
+          "tooltip": "Kernel executes on each element of the attribute sets in the first input pin."
+        },
+        {
+          "name": "AttributeSetGenerator",
+          "display_name": "Attribute Set Generator",
+          "tooltip": "Kernel executes on an attribute set with a fixed number of elements, configurable on node."
+        },
+        {
+          "name": "TextureArrayGenerator",
+          "display_name": "Texture Array Generator",
+          "tooltip": "Kernel executes for each texel-slice in a fixed size Texture2DArray, configurable on node."
+        },
+        {
+          "name": "TextureArrayProcessor",
+          "display_name": "Texture Array Processor",
+          "tooltip": "Kernel executes on each texel-slice in the first input Texture2DArray pin."
+        }
+      ]
+    },
+    "EKweaveMeshSamplingMode": {
+      "values": [
+        {
+          "name": "PerVertex",
+          "display_name": "Per Vertex",
+          "tooltip": "One point per vertex, oriented by the vertex basis."
+        },
+        {
+          "name": "PerTriangle",
+          "display_name": "Per Triangle",
+          "tooltip": "One point at the centroid of each triangle."
+        },
+        {
+          "name": "PointsPerTriangle",
+          "display_name": "Points Per Triangle",
+          "tooltip": "Points Per Triangle random points on every triangle."
+        },
+        {
+          "name": "Density",
+          "display_name": "Density",
+          "tooltip": "Random points spread uniformly by area, Density points per square meter, optionally blue-noise filtered."
+        }
+      ]
+    },
+    "EKweaveMeshScanInclusion": {
+      "values": [
+        {
+          "name": "PivotInside",
+          "display_name": "Pivot Inside",
+          "tooltip": "Keep a mesh whose pivot lies inside the bounds, upper faces excluded: adjacent bounds never both keep the same mesh."
+        },
+        {
+          "name": "BoundsOverlap",
+          "display_name": "Inside or Overlapping",
+          "tooltip": "Keep a mesh whose own bounds reach into the bounds: every bounds a mesh overlaps keeps it, so adjacent bounds can both keep the same mesh."
+        }
+      ]
+    },
+    "EKweaveStampKeySource": {
+      "values": [
+        {
+          "name": "DataIndex",
+          "display_name": "Data Index",
+          "tooltip": "Key = the data's index on the input pin."
+        },
+        {
+          "name": "AttributeSetRow",
+          "display_name": "Attribute Set Row",
+          "tooltip": "Key = row i of the Keys attribute set, read from Key Column, for data i."
+        },
+        {
+          "name": "Constant",
+          "display_name": "Constant",
+          "tooltip": "The same key for every data."
+        }
+      ]
+    }
+  },
+  "entries": {
+    "UKweaveAssetPathIdSettings": {
+      "id": "UKweaveAssetPathIdSettings",
+      "name": "Asset Path ID",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "purpose": "Computes on the CPU the mesh ID the GPU nodes use, and writes it on every point or attribute set row that names a mesh by its path. On the GPU, **Mesh Sampler** stamps a mesh ID on each point it produces, and a mesh list returns one from `GetMeshId`. Data that only carries a path needs this node before the two sides can be paired: points then serve as **Copy Points** targets, and an attribute set of paths becomes the key table **Stamp Data Key** reads row by row. **Get Mesh Points** already writes the ID on both of its outputs.",
+      "situation": "Points that each name a mesh in a path attribute have to receive what **Mesh Sampler** produced for that same mesh.",
+      "mechanism": {
+        "text": "Each data on **In** leaves on **Out** as a copy carrying one int32 ID per point or attribute set row. The ID depends on the path alone: no asset is loaded, and the same path gives the same ID in every session and on every machine. Letter case is ignored, and a package-only path such as `/Game/Meshes/SM_Rock` counts as `/Game/Meshes/SM_Rock.SM_Rock`. A redirector is not followed, so the old path of a moved asset and its new path are two IDs. A null or empty path gets `0`."
+      },
+      "off_label": [
+        {
+          "claim": "Every object path gets an ID, whatever it names: the node never looks at the asset. It doubles as a stable int32 key for any asset path attribute, and **Copy Points** matches on any int32 key.",
+          "grounded_in": "KweaveMeshList::ComputeMeshId in Compute/MeshList/MeshListId.h hashes the canonical path text with no load, class check or registry lookup, and KweaveAssetPathId::StampIds never resolves the path; UKweaveCopyPointsSettings class comment: any int32 key works"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "Point data or attribute sets carrying a path attribute. Each data is processed on its own.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "One data per input, in input order: the copy carrying the ID attribute, or the input itself, with an error on the node, when it could not be processed."
+          }
+        ],
+        "dynamic": "**Out** takes the type of whatever is wired into **In**: a point pin with point data, an attribute set pin with attribute sets."
+      },
+      "settings": {
+        "PathAttribute": {
+          "display": "Path Attribute",
+          "type": "FPCGAttributePropertyInputSelector",
+          "tooltip": "Column holding each row's mesh path (soft object path or string).",
+          "overridable": true,
+          "semantics": "Defaults to `@Last`, resolved on each input separately. A soft object path, a string or a name attribute is read as a path.",
+          "trap": "The path a string or name holds has to be a full object path, starting with `/`. A bare asset name such as `SM_Rock` counts as a null path and gets `0`."
+        },
+        "OutputAttributeName": {
+          "display": "Output Attribute Name",
+          "type": "FName",
+          "tooltip": "Int32 column receiving the mesh ID; created, or overwritten when it exists. Null paths get 0.",
+          "default": "TEXT(\"AssetId\")",
+          "overridable": true,
+          "semantics": "`AssetId` is also the default on the nodes this one pairs with, so they connect without configuration.",
+          "trap": "Writing the IDs makes this attribute the last one written on the data, so a selector left on `@Last` further down reads the ID. If a table of mesh paths passes through this node on its way to the vanilla Get Static Mesh Resource Data node, name the path attribute on that node."
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "The vanilla Hash Attribute node computes a different hash, so its result is not a mesh ID. On a soft object path that hash only holds inside the running process: the same path can hash differently in the next session.",
+          "anchor": "whats_it_for"
+        },
+        {
+          "style": "warning",
+          "text": "The ID is a 32-bit hash of the path, so two different paths can land on one ID. The node warns when that happens inside one input and still writes the shared ID on both, which leaves the two meshes indistinguishable to anything matching on it.",
+          "anchor": "mechanism"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/asset-path-id",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/KweaveAssetPathIdSettings.h",
+        "hash": "a47b70f86e661b2794493f941ba9f591ce1b9850"
+      }
+    },
+    "UKweaveCopyPointsSettings": {
+      "id": "UKweaveCopyPointsSettings",
+      "name": "Copy Points",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "purpose": "Copies onto each target point the one source data that carries the same int32 key, on the GPU. The vanilla Copy Points node pairs data with data, so every point of a target data receives the same source data. This node chooses per point, by a key read on both sides. It was built to bring the points **Mesh Sampler** produces for each mesh onto every placement of that mesh, with the mesh ID as the key and **Get Mesh Points** supplying the target points. Any int32 works as a key, and source data that carries none can take one from **Stamp Data Key**.",
+      "situation": "A level holds many placed meshes of several kinds, and each placement has to receive the points sampled on its own mesh.",
+      "mechanism": {
+        "text": "One execution emits one point data per target data, in the same order. Each target point copies the whole source data whose key equals its own, with source positions read as offsets from the target point. A target point that is removed, or whose key no source data carries, produces no copies and no warning. Bounds, density and steepness always come from the source point; everything else follows the inheritance settings, which are the vanilla Copy Points node's."
+      },
+      "off_label": [
+        {
+          "claim": "With a single source data, the key works as a per-point switch: a target point carrying that data's key receives the copy, and a point carrying any other value receives nothing.",
+          "grounded_in": "KweaveCopyPointsMatch.usf stores 0 for a target point whose key equals no source key; KweaveCopyPoints::ComputePairing gives such a point no output width, so no copy is emitted for it"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Targets",
+            "note": "The points to copy onto. Each target data gets an output data of its own.",
+            "required": "always"
+          },
+          {
+            "label": "Sources",
+            "note": "The point data to copy, as any number of data on one wire.",
+            "required": "always"
+          },
+          {
+            "label": "Source Keys",
+            "note": "One attribute set whose row i holds the key of source data i.",
+            "required": "conditional",
+            "condition": "when Source Keys from Attribute Set is on"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "One point data per target data, in the same order, holding the copies made on that data's points."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "MatchAttribute": {
+          "display": "Match Attribute",
+          "type": "FName",
+          "tooltip": "Int32 attribute present on every target point and on every source data; a target copies the source data whose key matches.",
+          "default": "TEXT(\"AssetId\")",
+          "semantics": "On the source side the key is read once per source data, on its first point, so a source data with no points is never matched. When several source data carry the same key, the first one on the pin is the one copied."
+        },
+        "bSourceKeysFromAttributeSet": {
+          "display": "Source Keys from Attribute Set",
+          "type": "bool",
+          "tooltip": "Take each source data's key from row i of the Source Keys attribute set instead of the source points. Lets any GPU point data be a source without a stamped key.",
+          "default": "false",
+          "semantics": "Source data then need no `Match Attribute`, while target points still do. Rows pair with source data by position.",
+          "trap": "Order is the only link between a row and a source data, and a table with rows to spare is accepted. A table out of step with the source data keys them wrongly and raises nothing."
+        },
+        "SourceKeyColumnName": {
+          "display": "Source Key Column Name",
+          "type": "FName",
+          "tooltip": "Int32 column of Source Keys holding the key of source data i at row i.",
+          "default": "TEXT(\"AssetId\")",
+          "edit_condition": "bSourceKeysFromAttributeSet",
+          "edit_condition_hides": true
+        },
+        "RotationInheritance": {
+          "display": "Rotation Inheritance",
+          "type": "EPCGCopyPointsInheritanceMode",
+          "tooltip": "Rotation of a copy: source and target combined (Relative), or the source's or target's alone.",
+          "default": "EPCGCopyPointsInheritanceMode::Relative"
+        },
+        "bApplyTargetRotationToPositions": {
+          "display": "Apply Target Rotation to Positions",
+          "type": "bool",
+          "tooltip": "With Source rotation inheritance, still rotate the copied positions by the target rotation.",
+          "default": "true",
+          "overridable": true,
+          "edit_condition": "RotationInheritance == EPCGCopyPointsInheritanceMode::Source",
+          "edit_condition_hides": true
+        },
+        "ScaleInheritance": {
+          "display": "Scale Inheritance",
+          "type": "EPCGCopyPointsInheritanceMode",
+          "tooltip": "Scale of a copy: source and target multiplied (Relative), or the source's or target's alone.",
+          "default": "EPCGCopyPointsInheritanceMode::Relative"
+        },
+        "bApplyTargetScaleToPositions": {
+          "display": "Apply Target Scale to Positions",
+          "type": "bool",
+          "tooltip": "With Source scale inheritance, still scale the copied positions by the target scale.",
+          "default": "true",
+          "overridable": true,
+          "edit_condition": "ScaleInheritance == EPCGCopyPointsInheritanceMode::Source",
+          "edit_condition_hides": true
+        },
+        "ColorInheritance": {
+          "display": "Color Inheritance",
+          "type": "EPCGCopyPointsInheritanceMode",
+          "tooltip": "Color of a copy: source and target multiplied (Relative), or the source's or target's alone.",
+          "default": "EPCGCopyPointsInheritanceMode::Relative"
+        },
+        "SeedInheritance": {
+          "display": "Seed Inheritance",
+          "type": "EPCGCopyPointsInheritanceMode",
+          "tooltip": "Seed of a copy: source and target hashed together (Relative), or the source's or target's alone.",
+          "default": "EPCGCopyPointsInheritanceMode::Relative"
+        },
+        "AttributeInheritance": {
+          "display": "Attribute Inheritance",
+          "type": "EPCGCopyPointsMetadataInheritanceMode",
+          "tooltip": "Also shapes the output attribute layout.",
+          "default": "EPCGCopyPointsMetadataInheritanceMode::SourceFirst",
+          "semantics": "`Source First` and `Target First` output the attributes of both sides, and where both carry the same attribute give the value of the side they name. `Source Only` and `Target Only` keep one side's attributes, and `None` keeps none. The source side is the union of the attributes of every source data on the pin, so a copy whose own source data lacks one of them reads the target point's value when there is one, and zero otherwise."
+        },
+        "TagInheritance": {
+          "display": "Tag Inheritance",
+          "type": "EPCGCopyPointsTagInheritanceMode",
+          "tooltip": "Tags of an output data: its target data's, every source data's, or both.",
+          "default": "EPCGCopyPointsTagInheritanceMode::Both"
+        },
+        "NormalizedPositionAttributeName": {
+          "display": "Normalized Position Attribute Name",
+          "type": "FName",
+          "tooltip": "Vector attribute receiving where the copy sits in the world-aligned box of its target point's copies, 0 to 1 per axis: every target spans the full range whatever its rotation. Adds one pass over the output points.",
+          "default": "TEXT(\"NormalizedPosition\")",
+          "edit_condition": "bOutputNormalizedPosition",
+          "semantics": "The box is the tight one around the copies made on one target point, measured along the world axes after the target point has turned and scaled the positions. The same source point therefore reads differently on two target points that are turned differently. An axis the copies do not spread along reads 0.5.",
+          "trap": "The attribute replaces anything the source data or the target points carried under the same name, whatever its type. **Mesh Sampler** writes a normalized position of its own under the same default name, measured in mesh local space: rename one of the two to keep both."
+        }
+      },
+      "hints": [
+        {
+          "style": "info",
+          "text": "Sizing the output costs one readback on every execution: which source data each target point matched comes back to the CPU before any point is copied.",
+          "anchor": "mechanism"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/copy-points",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/CopyPoints/KweaveCopyPointsSettings.h",
+        "hash": "431f3c6a5bee10297957cd789215a1ab8d2e144b"
+      }
+    },
+    "UKweaveGetMeshPointsSettings": {
+      "id": "UKweaveGetMeshPointsSettings",
+      "name": "Get Mesh Points",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "covers": [
+        "FKweaveTagFilter"
+      ],
+      "purpose": "One point per static mesh placed inside a box, each carrying its mesh ID, plus a table of the distinct meshes. The two outputs are the two halves of scattering on meshes a level already holds. **Out** feeds **Copy Points** as its targets. **Meshes**, made into a mesh list by the vanilla Get Static Mesh Resource Data node, feeds **Mesh Sampler**, whose samples **Copy Points** then copies onto every target point carrying the same mesh ID.",
+      "situation": "A level already dressed with rocks, walls and props has to receive points on the surface of every one of them.",
+      "mechanism": {
+        "text": "One execution sweeps, on the CPU, the static mesh components loaded in the world against the bounding box of the data on **Bounds**. A finding is one component, or one instance of an instanced one, that the box keeps. Each finding becomes one point on **Out**, carrying its world transform and its mesh ID, and each distinct mesh one row on **Meshes**. Nothing is cached: every execution sweeps the world again, and a sweep that finds nothing emits no data."
+      },
+      "off_label": [
+        {
+          "claim": "**Out** needs nothing from **Meshes**: one point per placed mesh, carrying that mesh's bounds, is an inventory of a region that any CPU node can read.",
+          "grounded_in": "FKweaveGetMeshPointsElement is a plain IPCGElement: KweaveGetMeshPoints::CreateOutputs in KweaveGetMeshPointsSettings.cpp emits a UPCGBasePointData with no GPU dependency, and KweaveMeshScan::WritePoints in KweaveMeshScan.cpp sets Transform, BoundsMin, BoundsMax and Seed for every finding"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Bounds",
+            "note": "Any spatial data, read for the bounding box of its first data alone.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "One point per finding, grouped by mesh in the row order of **Meshes**. The transform is the component's or instance's, the bounds are the mesh's, and `AssetId` holds the mesh ID."
+          },
+          {
+            "label": "Meshes",
+            "note": "An attribute set with one row per distinct mesh: `AssetId`, then `MeshPath`. Rows are sorted by mesh ID, and row i is `DataIndex` i of the mesh list built from it."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Inclusion": {
+          "display": "Inclusion",
+          "type": "EKweaveMeshScanInclusion",
+          "tooltip": "What ties a mesh to the Bounds input.",
+          "default": "EKweaveMeshScanInclusion::PivotInside",
+          "enum": "EKweaveMeshScanInclusion",
+          "overridable": true,
+          "semantics": "**Pivot Inside** reads the origin of the component or instance and nothing of its extent: a mesh overhanging a box that does not hold its pivot is not kept, and a box that is flat on an axis keeps nothing. **Inside or Overlapping** never reads the pivot: it tests the world-aligned box around the mesh's bounds, so the point it outputs can lie outside the **Bounds** box.",
+          "trap": "In a partitioned graph that feeds each cell its own bounds, **Inside or Overlapping** gives a mesh reaching into several cells to each of them, and **Copy Points** then copies a full set of samples onto it once per cell. **Pivot Inside** gives each mesh to one cell."
+        },
+        "ActorClass": {
+          "display": "Actor Class",
+          "type": "TSubclassOf<AActor>",
+          "tooltip": "Actor class to keep; subclasses match. A child actor's meshes also match through its parent actors.",
+          "overridable": true,
+          "edit_condition": "bFilterByClass",
+          "semantics": "The filter ships off, with the class set to Static Mesh Actor: turned on as is, it drops instanced foliage and Blueprint actors that do not derive from Static Mesh Actor.",
+          "trap": "The class and `Actor Tags` are read on one actor at a time. A mesh is kept when a single actor of its chain, its own or a parent, passes both."
+        },
+        "ActorTags": {
+          "display": "Actor Tags",
+          "type": "FKweaveTagFilter",
+          "tooltip": "Tested against the tags of the actor owning the mesh, and of its parent actors when it is a child actor.",
+          "overridable": true,
+          "see": "FKweaveTagFilter",
+          "semantics": "Tags are whole names, compared without regard to case and with no wildcard. A parent actor is the owner of the Child Actor Component that spawned this one; attaching one actor to another in the outliner makes no parent.",
+          "trap": "`Exclude` rules out the actor that carries the tag, and that actor only: a mesh is still kept when another actor of its chain passes the filter."
+        },
+        "ComponentTags": {
+          "display": "Component Tags",
+          "type": "FKweaveTagFilter",
+          "tooltip": "Tested against the tags of the static mesh component itself.",
+          "overridable": true,
+          "see": "FKweaveTagFilter",
+          "semantics": "The same rules, read on the component alone. An instanced component is one component, so its tags decide for all of its instances."
+        },
+        "bIgnoreSelf": {
+          "display": "Ignore Self",
+          "type": "bool",
+          "tooltip": "Skip the meshes of the actor owning the PCG component; the original one when the component is partitioned.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "In a partitioned graph the partition actors are other actors: `Ignore PCGGenerated` is what keeps the graph's own output out of the sweep there."
+        },
+        "bIgnorePCGGenerated": {
+          "display": "Ignore PCGGenerated",
+          "type": "bool",
+          "tooltip": "Skip components and actors PCG generated, so generated content never feeds back into its own inputs.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "Hides the output of every PCG graph in the world, this graph's and any other's. Turn it off to find generated meshes; the graph then also finds what it spawned itself on an earlier run."
+        },
+        "bIgnoreHidden": {
+          "display": "Ignore Hidden",
+          "type": "bool",
+          "tooltip": "Skip components that are hidden in game, and every component of a hidden actor.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "Reads `Hidden in Game` and `Visible` on the component, and `Actor Hidden In Game` on its own actor.",
+          "trap": "The eye icon of the outliner hides an actor in the editor viewport and sets none of these flags: its meshes are still found."
+        },
+        "bIgnoreLandscapeGrass": {
+          "display": "Ignore Landscape Grass",
+          "type": "bool",
+          "tooltip": "Skip the grass the landscape spawns.",
+          "default": "true",
+          "overridable": true,
+          "semantics": "Instanced foliage is another kind of component, and is found like any instanced one."
+        },
+        "bIgnoreHLOD": {
+          "display": "Ignore HLOD",
+          "type": "bool",
+          "tooltip": "Skip World Partition HLOD actors: they stand in for the meshes of cells that are not loaded.",
+          "default": "true",
+          "overridable": true
+        },
+        "MaxPoints": {
+          "display": "Max Points",
+          "type": "int32",
+          "tooltip": "The sweep stops once it holds this many points and warns; which meshes are left out is then arbitrary. 0 = no limit.",
+          "default": "1000000",
+          "overridable": true,
+          "semantics": "The cap is per execution, so each cell of a partitioned graph counts on its own."
+        },
+        "bTimeSliced": {
+          "display": "Time Sliced",
+          "type": "bool",
+          "tooltip": "Spread the world sweep over several frames within the PCG frame budget instead of finishing it in one call. Smoother, but the world can change between two slices: a mesh that moves or streams meanwhile may be missed.",
+          "default": "true",
+          "overridable": true
+        },
+        "MeshIdAttributeName": {
+          "display": "Mesh Id Attribute Name",
+          "type": "FName",
+          "tooltip": "Int32 attribute receiving the mesh ID, on the points and in the mesh table. Same ID as the Kweave Mesh List's GetMeshId.",
+          "default": "TEXT(\"AssetId\")",
+          "semantics": "**Mesh Sampler** writes its mesh ID under the same default name and **Copy Points** matches on it: rename one and the others have to follow."
+        },
+        "MeshPathAttributeName": {
+          "display": "Mesh Path Attribute Name",
+          "type": "FName",
+          "tooltip": "Soft object path attribute of the mesh table receiving each distinct mesh.",
+          "default": "TEXT(\"MeshPath\")"
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "Left out whatever the settings say: spline mesh components, editor-only components and actors, and components whose mesh is missing or still compiling.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "In the editor the node tracks the actors its filters could match: adding, moving or deleting one inside the box regenerates the graph.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "The vanilla Get Static Mesh Resource Data node has no input pin until its `Override from Input` is on. Its `Mesh Attribute` can stay at `@Last`: the path column is the last attribute this node writes.",
+          "anchor": "pins"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/get-mesh-points",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/MeshScan/KweaveGetMeshPointsSettings.h",
+        "hash": "27915902608c32f796483d8aba5ee74cac7a61d4"
+      }
+    },
+    "UKweaveGPUSettings": {
+      "id": "UKweaveGPUSettings",
+      "name": "HLSL",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "presets": [
+        "Point Processor",
+        "Point Generator",
+        "Texture Processor",
+        "Texture Generator",
+        "Custom",
+        "Attribute Set Processor",
+        "Attribute Set Generator",
+        "Texture Array Generator",
+        "Texture Array Processor"
+      ],
+      "purpose": "The plugin's own copy of the vanilla Custom HLSL node: kernels call scene queries with no setup, and the Kweave web app can push to it and pull from it. Each kind of scene data has its own toggle under Editor Preferences, Plugins, Kweave GPU: the global distance field, per-mesh distance fields, the sky atmosphere, foliage instances, the GPU scene's instance data, and landscape layer weights, the one that starts off. Two buttons at the top of the node's settings open the web app: **Open Kweave**, and **Open + Attach in Kweave**, which also attaches a graph to this node, reusing the one already bound to it or creating one. The rest is the vanilla node.",
+      "situation": "A kernel can react to what already stands in the level, such as the nearest surface or the foliage around a point, without a data interface written in C++ for the purpose.",
+      "mechanism": {
+        "text": "The kernel body runs once per element, and `Kernel Type` decides what an element is, how many there are and how the first output pin is sized. The palette lists the node through its kernel types, under GPU, Kweave, HLSL: each entry creates it with `Kernel Type` already set, the generator entries without an input pin. A scene data interface is attached only while its toggle is on and the kernel's text names one of its functions, so a kernel pays for what it calls. Where this node departs from the vanilla one: `Additional Sources` compile ahead of the Functions pane, an output pin the kernel type does not size mirrors one input pin, and input pins are read-only."
+      },
+      "off_label": [
+        {
+          "claim": "The Declarations pane doubles as a readout of the scene toggles: a data interface switched off in the current user's preferences is missing from the list.",
+          "grounded_in": "KweaveDataInjection::GetDeclarationsText appends each interface's block only when its UKweaveGPUDeveloperSettings flag is set, and UKweaveGPUSettings::GetDeclarationsText prepends that text to the vanilla declarations"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The primary input of a processor kernel: the data the kernel runs over. The generator palette entries create the node without it.",
+            "required": "conditional",
+            "condition": "on processor and Custom kernels"
+          },
+          {
+            "label": "Authored input pins",
+            "note": "Every pin listed in `Input Pins`. Each takes a single connection, and the node does not execute while one of them is unconnected.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The primary output of processor and generator kernels: `Kernel Type` sets its type and its size."
+          },
+          {
+            "label": "Authored output pins",
+            "note": "Every pin listed in `Output Pins`."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "KernelType": {
+          "display": "Kernel Type",
+          "type": "EKweaveGPUKernelType",
+          "default": "EKweaveGPUKernelType::PointProcessor",
+          "enum": "EKweaveGPUKernelType",
+          "semantics": "The processor types run once per element of the first input pin and give the first output pin the same data, element counts and attributes. The generator types run a set number of times and emit a single data on the first output pin. **Custom** types no pin: the Thread Count group sets how many times its kernel runs, and each of its output pins mirrors an input pin.",
+          "trap": "Switching an existing node to a generator leaves its input pins in place, and an unconnected input pin keeps the node from executing. The generator palette entries create the node without one."
+        },
+        "NumElements": {
+          "display": "Num Elements",
+          "type": "int",
+          "default": "256",
+          "overridable": true,
+          "edit_condition": "DisplayNumElements1D()",
+          "edit_condition_hides": true,
+          "semantics": "The run count on **Point Generator** and **Attribute Set Generator**, and the element count of the data they emit. An override wired from a GPU node costs a readback."
+        },
+        "NumElementsX": {
+          "display": "Num Elements X",
+          "type": "int",
+          "default": "64",
+          "overridable": true,
+          "edit_condition": "DisplayNumElements2D() || DisplayNumElements3D()",
+          "edit_condition_hides": true,
+          "semantics": "With `Num Elements Y`, the size of the generated texture in texels. `Num Elements Z` is the slice count of a texture array."
+        },
+        "NumElementsY": {
+          "display": "Num Elements Y",
+          "type": "int",
+          "default": "64",
+          "overridable": true,
+          "edit_condition": "DisplayNumElements2D() || DisplayNumElements3D()",
+          "edit_condition_hides": true
+        },
+        "NumElementsZ": {
+          "display": "Num Elements Z",
+          "type": "int",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "DisplayNumElements3D()",
+          "edit_condition_hides": true
+        },
+        "TextureFormat": {
+          "display": "Texture Format",
+          "type": "EPCGRenderTargetFormat",
+          "default": "EPCGRenderTargetFormat::RGBA16f",
+          "overridable": true,
+          "edit_condition": "KernelType == EKweaveGPUKernelType::TextureGenerator || KernelType == EKweaveGPUKernelType::TextureArrayGenerator",
+          "edit_condition_hides": true
+        },
+        "TextureFilter": {
+          "display": "Texture Filter",
+          "type": "EPCGTextureFilter",
+          "default": "EPCGTextureFilter::Bilinear",
+          "overridable": true,
+          "edit_condition": "KernelType == EKweaveGPUKernelType::TextureGenerator || KernelType == EKweaveGPUKernelType::TextureArrayGenerator",
+          "edit_condition_hides": true
+        },
+        "bOverrideTextureTransform": {
+          "display": "Override Texture Transform",
+          "type": "bool",
+          "default": "false",
+          "edit_condition": "KernelType == EKweaveGPUKernelType::TextureGenerator || KernelType == EKweaveGPUKernelType::TextureArrayGenerator",
+          "edit_condition_hides": true,
+          "semantics": "Off, the generated texture is laid over the bounds the graph executes in. On, it takes `Texture Transform` as written."
+        },
+        "TextureTransform": {
+          "display": "Texture Transform",
+          "type": "FTransform",
+          "default": "FTransform::Identity",
+          "edit_condition": "(KernelType == EKweaveGPUKernelType::TextureGenerator || KernelType == EKweaveGPUKernelType::TextureArrayGenerator) && bOverrideTextureTransform",
+          "edit_condition_hides": true
+        },
+        "DispatchThreadCount": {
+          "display": "Dispatch Thread Count",
+          "type": "EKweaveGPUDispatchThreadCount",
+          "default": "EKweaveGPUDispatchThreadCount::FromFirstOutputPin",
+          "enum": "EKweaveGPUDispatchThreadCount",
+          "edit_condition": "KernelType == EKweaveGPUKernelType::Custom",
+          "edit_condition_hides": true,
+          "semantics": "On this node the first output pin mirrors an input pin, so **From First Output Pin** counts the elements of that input pin. **Fixed Thread Count** runs the number set in the field of the same name."
+        },
+        "ThreadCountMultiplier": {
+          "display": "Thread Count Multiplier",
+          "type": "int",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "KernelType == EKweaveGPUKernelType::Custom && DispatchThreadCount != EKweaveGPUDispatchThreadCount::Fixed",
+          "edit_condition_hides": true
+        },
+        "FixedThreadCount": {
+          "display": "Fixed Thread Count",
+          "type": "int",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "KernelType == EKweaveGPUKernelType::Custom && DispatchThreadCount == EKweaveGPUDispatchThreadCount::Fixed",
+          "edit_condition_hides": true
+        },
+        "ThreadCountInputPinLabels": {
+          "display": "Input Pins",
+          "type": "TArray<FName>",
+          "edit_condition": "KernelType == EKweaveGPUKernelType::Custom && DispatchThreadCount == EKweaveGPUDispatchThreadCount::FromProductOfInputPins",
+          "edit_condition_hides": true,
+          "semantics": "The input pins whose element totals **From Product Of Input Pins** multiplies together. It shares its panel label with the node's pin list and sits in the Thread Count group."
+        },
+        "bEnableMeshDFGridCulling": {
+          "display": "Enable Mesh DFGrid Culling",
+          "type": "bool",
+          "tooltip": "Build a spatial grid on CPU to accelerate per-mesh distance field queries. Faster for scenes with many mesh actors (50+), but adds CPU build cost.",
+          "default": "false",
+          "semantics": "Off, every query tests every distance-field mesh in the scene. On, a query tests only the meshes near it, among those whose bounds reach the executing component's bounds grown by `Mesh DFBounds Expansion`: a mesh outside the padded bounds is never seen."
+        },
+        "MeshDFBoundsExpansion": {
+          "display": "Mesh DFBounds Expansion",
+          "type": "float",
+          "tooltip": "Padding added to execution bounds when building the mesh DF spatial grid (cm).",
+          "default": "1000.0f",
+          "edit_condition": "bEnableMeshDFGridCulling"
+        },
+        "bEnableFoliageGridCulling": {
+          "display": "Enable Foliage Grid Culling",
+          "type": "bool",
+          "tooltip": "Build a spatial grid on CPU to accelerate foliage instance queries.",
+          "default": "true",
+          "semantics": "Changes speed alone: foliage queries return the same values with it on or off."
+        },
+        "FoliageBoundsExpansion": {
+          "display": "Foliage Bounds Expansion",
+          "type": "float",
+          "tooltip": "Padding added to execution bounds when collecting foliage instances (cm).",
+          "default": "1000.0f",
+          "semantics": "An instance outside the executing component's bounds grown by this padding is not captured, so no query can find it. `GetFoliageDensity` divides its count by the number of captured instances, so a wider padding can only lower the values it returns."
+        },
+        "LandscapeLayersBoundsExpansion": {
+          "display": "Landscape Layers Bounds Expansion",
+          "type": "float",
+          "tooltip": "Padding added to execution bounds when capturing landscape layer weights (cm).",
+          "default": "1000.0f",
+          "semantics": "A landscape component the padded bounds touch is captured whole. A position over a component that was not captured reads zero on every layer."
+        },
+        "LandscapeLayersResolution": {
+          "display": "Landscape Layers Resolution",
+          "type": "int32",
+          "tooltip": "Sample resolution per landscape component side. Range 4-256.",
+          "default": "64",
+          "semantics": "Each captured component is resampled to this many samples per side. Past 256 MB in total the capture is abandoned and every layer reads zero."
+        },
+        "InputPins": {
+          "display": "Input Pins",
+          "type": "TArray<FPCGPinProperties>",
+          "default": "Super::DefaultPointInputPinProperties()",
+          "semantics": "A pin's label prefixes its functions in the kernel (`In_GetPosition`). Renaming a pin leaves the kernel text untouched, so calls written against the old label stop resolving. On a processor kernel the first pin's type belongs to `Kernel Type`."
+        },
+        "OutputPins": {
+          "display": "Output Pins",
+          "type": "TArray<FPCGPinPropertiesGPU>",
+          "default": "{ FPCGPinPropertiesGPU(PCGPinConstants::DefaultOutputLabel, FPCGDataTypeIdentifier{EPCGDataType::Point}) }",
+          "semantics": "On a processor or generator kernel the first pin is sized by `Kernel Type`. Every other pin, and every pin of a **Custom** kernel, mirrors one input pin: the first entry of `Pins to Inititalize From` that names an existing input pin gives it its data count, element counts and attributes. The other properties the vanilla node sizes such a pin with (data count, element count, multiplicity, attribute inheritance) have no effect here.",
+          "trap": "On this node an output pin whose `Initialization Mode` is **Custom** is given no data. The vanilla node gives it `Data Count` data."
+        },
+        "KernelSourceOverride": {
+          "display": "Kernel Source Override",
+          "type": "TObjectPtr<UComputeSource>",
+          "tooltip": "Override your kernel with a PCG compute source asset.",
+          "semantics": "The asset's text counts when the node looks for scene functions to attach."
+        },
+        "AdditionalSources": {
+          "display": "Additional Sources",
+          "type": "TArray<TObjectPtr<UComputeSource>>",
+          "tooltip": "Additional source files to use in your kernel.",
+          "semantics": "Compiled ahead of the node's Functions pane, where the vanilla node compiles the pane first: a function in the pane can call into these assets, and an asset cannot call a function defined in the pane."
+        },
+        "bMuteUnwrittenPinDataErrors": {
+          "display": "Mute Unwritten Pin Data Errors",
+          "type": "bool",
+          "tooltip": "Mute uninitialized data errors.",
+          "default": "false"
+        },
+        "bPerPinAttributeCreationSettings": {
+          "display": "Per Pin Attribute Creation Settings",
+          "type": "bool",
+          "tooltip": "Expose a per-pin \"Attributes to Create\" array so attributes can be manually specified. Attributes written via Set calls in HLSL (e.g. Out_SetFloat) are now inferred automatically, so this is no longer required.",
+          "default": "false",
+          "advanced": true
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "The toggles are editor preferences, saved per user: each person on the project sets their own. With a data interface switched off, its functions are not attached, so a kernel that still calls one is calling a function that does not exist.",
+          "anchor": "whats_it_for"
+        },
+        {
+          "style": "warning",
+          "text": "Input pins expose read functions only. The vanilla node keeps a fallback for kernels saved before the engine split pin functions by direction; this node has none, so a kernel that writes through an input pin (`In_SetPosition`, `In_RemovePoint`) has to move the write to an output pin.",
+          "anchor": "InputPins"
+        },
+        {
+          "style": "warning",
+          "text": "Landscape layer weights are read through an editor-only path. In a packaged build nothing is captured and the layer functions return zero.",
+          "anchor": "LandscapeLayersBoundsExpansion"
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        },
+        {
+          "path": "kweave-bridge/data-interfaces/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge/data-interfaces"
+        },
+        {
+          "path": "kweave-bridge/live-editing.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge/live-editing"
+        },
+        {
+          "path": "using-kweave/kernel-types.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/using-kweave/kernel-types"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/hlsl",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/KweaveGPUSettings.h",
+        "hash": "b11e001e8298e36da4894700c16c7ff791c9491c"
+      }
+    },
+    "UKweaveMeshListSettings": {
+      "id": "UKweaveMeshListSettings",
+      "name": "Mesh List",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "purpose": "Makes several static meshes readable by one GPU node, each picked by its DataIndex. Wired straight from a CPU node, a static mesh pin on **HLSL** or on the vanilla Custom HLSL node binds a single mesh. With this node in between, the same pin reads a whole mesh list through the same functions, so HLSL written for one mesh reaches any mesh of the list by passing its index. The list adds functions of its own, listed below. When the goal is points on those meshes, **Mesh Sampler** ingests the list the same way, samples it, and passes it on.",
+      "situation": "One **HLSL** node works on points that each refer to a different mesh, and has to read the right mesh for every point.",
+      "mechanism": {
+        "text": "Each static mesh resource data on **In** is one slot, and its position on the pin, counted from zero, is its `DataIndex`. Nothing shifts that index: a slot whose path is null, or whose mesh cannot be read, stays in place as an empty slot and reads as a mesh with no vertices. Slots that name the same mesh share one copy of its geometry. Geometry is the mesh's LOD 0, in its local space."
+      },
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "Static mesh resource data, one slot each, on a single wire. The source has to be a CPU node, such as the vanilla Get Static Mesh Resource Data node: the **Meshes** output of **Mesh Sampler** is already a mesh list, and goes to its reader directly.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The mesh list. A GPU node wired here reads it through the static mesh functions of its own pin, each prefixed with that pin's label. A CPU node receives the input unchanged."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Streams": {
+          "display": "Streams",
+          "type": "int32",
+          "tooltip": "Optional streams to gather; disabled streams cost no memory and read as if the mesh lacked them.",
+          "default": "KweaveMeshList::AllStreams",
+          "semantics": "The default is every flag except `Triangle Areas`. Positions, vertex counts and bounds are always gathered and have no flag. The function tables above say what each read returns when its stream is off.",
+          "trap": "`Triangle Areas` needs `Triangles`. With `Triangles` off it gathers nothing and raises no warning."
+        },
+        "bCacheGeometry": {
+          "display": "Cache Geometry",
+          "type": "bool",
+          "tooltip": "Read the meshes from the shared geometry cache: each mesh is gathered once for every list and kept between executions. Off: this list is gathered into buffers of its own on every execution.",
+          "default": "true",
+          "semantics": "The cache is shared with every **Mesh Sampler**, and holds GPU memory while nothing executes, up to the budget the console variables below set."
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "The vanilla Get Static Mesh Resource Data node skips an empty path instead of emitting a placeholder for it. Fed from an attribute set, it leaves row N and `DataIndex` N disagreeing from the first empty row on, and nothing is logged. Where a row can be empty, carry the mesh ID that **Asset Path ID** writes and find the slot with `FindMeshById`.",
+          "anchor": "pins"
+        },
+        {
+          "style": "info",
+          "text": "The declarations **HLSL** generates for a static mesh pin list the vanilla functions only. The added ones are called the same way. One vanilla function returns a different result here: `SampleTriangle` blends the normal, tangent and bitangent with the weights of all three vertices, where the vanilla function applies the first vertex's weight to the third vertex as well.",
+          "anchor": "pins"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        },
+        {
+          "title": "Vanilla functions",
+          "text": "The functions a static mesh pin already offers, with their names and signatures unchanged. A GPU node reading the list calls each with its own pin's label in front: a pin named `Meshes` calls `Meshes_GetNumVertices(DataIndex)`. A `DataIndex` outside the list reads like an empty slot, and vertex, triangle and UV set indices are clamped to what the mesh holds.",
+          "items": [
+            {
+              "term": "int GetNumVertices(int DataIndex)",
+              "note": "Vertex count of LOD 0. 0 for an empty slot."
+            },
+            {
+              "term": "void GetVertex(int DataIndex, int VertexIndex, out float3 OutPosition, out float3 OutNormal, out float3 OutTangent, out float3 OutBitangent)",
+              "note": "Position and tangent basis, in mesh local space. Without Tangents, or on a mesh that carries none, the basis is the identity: normal +Z, tangent +X, bitangent +Y."
+            },
+            {
+              "term": "float4 GetVertexColor(int DataIndex, int VertexIndex)",
+              "note": "Vertex color. White without Colors, or on a mesh that carries none."
+            },
+            {
+              "term": "float2 GetVertexUV(int DataIndex, int VertexIndex, int UVSet)",
+              "note": "UV of one set. (0, 0) without UVs, or on a mesh that carries none."
+            },
+            {
+              "term": "int GetNumTriangles(int DataIndex)",
+              "note": "Triangle count. 0 without Triangles."
+            },
+            {
+              "term": "void GetTriangleIndices(int DataIndex, int TriangleIndex, out int OutIndex0, out int OutIndex1, out int OutIndex2)",
+              "note": "The three vertex indices of a triangle, local to the mesh. All 0 when the mesh reports no triangles."
+            },
+            {
+              "term": "void SampleTriangle(int DataIndex, int TriangleIndex, float3 BaryCoord, out float3 OutPosition, out float3 OutNormal, out float3 OutTangent, out float3 OutBitangent)",
+              "note": "Position and basis blended across a triangle by the barycentric weights. The blended basis is not normalized."
+            },
+            {
+              "term": "float4 SampleTriangleColor(int DataIndex, int TriangleIndex, float3 BaryCoord)",
+              "note": "Blended vertex color. White without Triangles or Colors."
+            },
+            {
+              "term": "float2 SampleTriangleUV(int DataIndex, int TriangleIndex, float3 BaryCoord, int UVSet)",
+              "note": "Blended UV. (0, 0) without Triangles or UVs."
+            },
+            {
+              "term": "float3 GetMeshBoundsExtents(int DataIndex)",
+              "note": "Half size of the mesh bounds."
+            }
+          ],
+          "anchor": "pins",
+          "grounded_in": "Shaders/Private/KweaveMeshList.ush, registered in UKweaveMeshListDataInterface::GetSupportedInputs (Compute/MeshList/MeshListDataInterface.cpp); vanilla set compared against the engine's PCGStaticMeshDataInterface.ush. Read 2026-10-03."
+        },
+        {
+          "title": "Added functions",
+          "text": "What the list offers beyond the vanilla set, called the same way.",
+          "items": [
+            {
+              "term": "uint GetNumData()",
+              "note": "Number of slots in the list, empty ones included."
+            },
+            {
+              "term": "int GetMeshId(int DataIndex)",
+              "note": "Mesh ID of the slot's path. A slot whose mesh could not be read still reports it. 0 for a null path."
+            },
+            {
+              "term": "int FindMeshById(int MeshId)",
+              "note": "First slot holding that mesh ID, or -1 when none does. 0 never matches."
+            },
+            {
+              "term": "float3 GetVertexPosition(int DataIndex, int VertexIndex)",
+              "note": "Position alone, for when the basis is not needed."
+            },
+            {
+              "term": "float3 SampleTrianglePosition(int DataIndex, int TriangleIndex, float3 BaryCoord)",
+              "note": "Blended position alone."
+            },
+            {
+              "term": "float3 GetMeshBoundsOrigin(int DataIndex)",
+              "note": "Center of the mesh bounds, in mesh local space. The box is the origin plus and minus the extents."
+            },
+            {
+              "term": "float GetMeshArea(int DataIndex)",
+              "note": "Surface area of LOD 0 in square centimeters. 0 without Triangle Areas."
+            },
+            {
+              "term": "int FindTriangleByArea(int DataIndex, float U)",
+              "note": "The triangle U lands on, with U from 0 to 1 running across the mesh's whole area, so a uniform U picks triangles in proportion to their area. -1 without Triangle Areas."
+            }
+          ],
+          "anchor": "pins",
+          "grounded_in": "Shaders/Private/KweaveMeshList.ush, registered in UKweaveMeshListDataInterface::GetSupportedInputs (Compute/MeshList/MeshListDataInterface.cpp). Read 2026-10-03."
+        },
+        {
+          "title": "Console",
+          "text": "The geometry cache is shared by every list in the running editor or game, so its limits are console variables and not node settings.",
+          "items": [
+            {
+              "term": "kweave.MeshList.GeometryCache.BudgetMB",
+              "note": "Default 128. GPU memory, in MB, of geometry kept between executions. A list that would exceed it has the least recently used meshes of other lists dropped first. 0 keeps nothing: geometry is freed 30 seconds after its last use."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.IdleSeconds",
+              "note": "Default 60. How long a kept mesh may go unused before it is freed. 0 or less keeps meshes until the budget evicts them."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.Flush",
+              "note": "Command. Frees everything the cache holds, and logs how many meshes and MB that was."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.Stats",
+              "note": "Command. Logs the mesh count and the MB in use, kept and allocated."
+            }
+          ],
+          "anchor": "bCacheGeometry",
+          "grounded_in": "Compute/MeshList/MeshListGeometryCache.cpp: CVarBudgetMB, CVarIdleSeconds, FlushCommand, StatsCommand, TransientSeconds. Read 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-list",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/MeshList/KweaveMeshListSettings.h",
+        "hash": "69de920c66360d47b70b9c5348b3bbd70f34276b"
+      }
+    },
+    "UKweaveMeshSamplerSettings": {
+      "id": "UKweaveMeshSamplerSettings",
+      "name": "Mesh Sampler",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "purpose": "Samples points on every static mesh of a mesh list, on the GPU, and outputs one point data per mesh. The sampled points are in mesh local space and each carries its mesh ID, so placing them is a second step: **Copy Points** copies a mesh's points onto every target point that holds the same ID. `Mode` decides where the points go: on the vertices, at the triangle centroids, a fixed number on every triangle, or spread evenly over the surface by area. The mesh list leaves again on a second output, so GPU nodes downstream read the same meshes without a **Mesh List** of their own.",
+      "situation": "The same meshes are placed many times across a level, and every placement needs points on its surface.",
+      "mechanism": {
+        "text": "Each slot of the mesh list gets one point data on **Out**, in the same order, and an empty slot gets an empty one: the point data at a given index always belongs to the mesh at that `DataIndex`. Every point sits on its mesh's LOD 0 surface in mesh local space, Z along the surface normal and X along the tangent, at scale 1, with the vertex color found there. Random draws are keyed on the node's seed, the mesh ID and the point's index, so a mesh draws the same points wherever it is listed."
+      },
+      "off_label": [
+        {
+          "claim": "In `Per Vertex` and `Per Triangle`, a point's index within its data is the index of its vertex or triangle in the mesh. A GPU node wired to both **Out** and **Meshes** can use it to read anything else about that vertex or triangle from the mesh list.",
+          "grounded_in": "KweaveSampler_Pick (KweaveMeshSamplerCommon.ush) sets the vertex or triangle to the local candidate index in those two modes; KweaveMeshSamplerCS writes candidate (DataIndex, Local) to output element (DataIndex, Local), and UKweaveMeshSamplerKernel::ComputeOutputBindingDataDesc sizes output data i to the candidates of slot i"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The mesh list, as several data on a single wire: from a CPU node such as the vanilla Get Static Mesh Resource Data node, from **Mesh List**, or from the **Meshes** pin of another sampler.",
+            "required": "always"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "One point data per slot of the mesh list, in list order, holding that mesh's points in mesh local space."
+          },
+          {
+            "label": "Meshes",
+            "note": "The mesh list again, for GPU nodes downstream: slot `DataIndex` there owns point data `DataIndex` on **Out**. A CPU node receives the input data unchanged."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Mode": {
+          "display": "Mode",
+          "type": "EKweaveMeshSamplingMode",
+          "default": "EKweaveMeshSamplingMode::PerTriangle",
+          "enum": "EKweaveMeshSamplingMode",
+          "semantics": "Each count is per mesh, taken on LOD 0, and stops at `Max Points Per Mesh`. `Per Vertex` uses the vertices the mesh renders with, which are split wherever a hard edge or a UV seam needs two values at one position: a hard-edged cube returns three coincident points at each corner, one facing each face. `Per Vertex` and `Per Triangle` involve no random draw, so their points stay where they are when `Seed` changes.",
+          "trap": "`Points Per Triangle` follows the tessellation: points crowd where the triangles are small, whatever the value. `Density` is the mode that covers a surface evenly."
+        },
+        "PointsPerTriangle": {
+          "display": "Points Per Triangle",
+          "type": "int32",
+          "tooltip": "Random points per triangle.",
+          "default": "1",
+          "overridable": true,
+          "edit_condition": "Mode == EKweaveMeshSamplingMode::PointsPerTriangle",
+          "edit_condition_hides": true
+        },
+        "Density": {
+          "display": "Density",
+          "type": "float",
+          "tooltip": "Candidate points per square meter of surface, spread uniformly by area.",
+          "default": "1.0f",
+          "overridable": true,
+          "edit_condition": "Mode == EKweaveMeshSamplingMode::Density",
+          "edit_condition_hides": true,
+          "semantics": "The area is measured on LOD 0 in mesh local space, so a copy its target scales up ends with fewer points per square meter than asked. A candidate's position depends on its index and never on the count: raising the value adds candidates and leaves the earlier ones in place."
+        },
+        "bBlueNoise": {
+          "display": "Blue Noise",
+          "type": "bool",
+          "tooltip": "Reject candidates closer than Min Distance to a better-ranked one. Fewer points come out than Density asks for.",
+          "default": "false",
+          "edit_condition": "Mode == EKweaveMeshSamplingMode::Density",
+          "edit_condition_hides": true,
+          "semantics": "`Density` sets how many candidates compete, and `Min Distance` how many can survive. The selection does not go on to fill the room that is left: a spot where one more point would still fit can stay empty.",
+          "trap": "Rejected candidates are only marked removed and leave at the first readback. Until then a GPU node downstream receives all of them: **Copy Points** carries the removal over to its copies, and a kernel that reads the points itself has to test `IsPointRemoved`."
+        },
+        "MinDistance": {
+          "display": "Min Distance",
+          "type": "float",
+          "tooltip": "Minimum distance between kept points, in cm.",
+          "default": "50.0f",
+          "overridable": true,
+          "edit_condition": "Mode == EKweaveMeshSamplingMode::Density && bBlueNoise",
+          "edit_condition_hides": true,
+          "semantics": "A straight-line distance in mesh local units, before any target scales the copy: two candidates on either side of a thin wall are close by that measure and compete."
+        },
+        "MaxPointsPerMesh": {
+          "display": "Max Points Per Mesh",
+          "type": "int32",
+          "tooltip": "Hard cap on the points (candidates, for density) generated per mesh; the output buffer is sized from it.",
+          "default": "1000000",
+          "overridable": true,
+          "semantics": "In `Density` a mesh over the cap loses candidates evenly over its surface and comes out thinner.",
+          "trap": "In the other modes the points are dealt in vertex or triangle order until the cap is reached. A mesh over the cap is then covered only where its first vertices or triangles are, and nothing warns about it."
+        },
+        "PointExtents": {
+          "display": "Point Extents",
+          "type": "FVector",
+          "tooltip": "Half extents of every sampled point.",
+          "default": "FVector(50.0, 50.0, 50.0)",
+          "overridable": true
+        },
+        "PointSteepness": {
+          "display": "Point Steepness",
+          "type": "float",
+          "default": "0.5f",
+          "overridable": true
+        },
+        "MeshIdAttributeName": {
+          "display": "Mesh Id Attribute Name",
+          "type": "FName",
+          "tooltip": "Int32 attribute receiving each point's mesh ID (the Mesh List GetMeshId value; Kweave Asset Path ID yields the same on CPU).",
+          "default": "TEXT(\"AssetId\")",
+          "semantics": "`AssetId` is also the default `Match Attribute` of **Copy Points**, so the two connect as they ship. The ID is written on every point, removed ones included."
+        },
+        "TriangleIdAttributeName": {
+          "display": "Triangle Id Attribute Name",
+          "type": "FName",
+          "tooltip": "Int32 attribute receiving the triangle each point was sampled from. Not written in Per Vertex mode.",
+          "default": "TEXT(\"TriangleId\")",
+          "edit_condition": "bOutputTriangleId"
+        },
+        "UVAttributeName": {
+          "display": "UVAttribute Name",
+          "type": "FName",
+          "tooltip": "Vector2 attribute receiving the interpolated UV of UV Channel at each point.",
+          "default": "TEXT(\"UV\")",
+          "edit_condition": "bOutputUV"
+        },
+        "UVChannel": {
+          "display": "UVChannel",
+          "type": "int32",
+          "default": "0",
+          "overridable": true,
+          "edit_condition": "bOutputUV",
+          "semantics": "A channel past the mesh's last one reads that last one, and a mesh with no UVs reads (0, 0), so a list that mixes meshes with different channel counts still samples."
+        },
+        "NormalizedPositionAttributeName": {
+          "display": "Normalized Position Attribute Name",
+          "type": "FName",
+          "tooltip": "Vector attribute receiving the point's position inside the mesh bounds, 0 to 1 per axis.",
+          "default": "TEXT(\"NormalizedPosition\")",
+          "edit_condition": "bOutputNormalizedPosition",
+          "semantics": "Measured against the mesh's own bounds, along its local axes. An axis along which the mesh is flat reads 0.5.",
+          "trap": "**Copy Points** can write a normalized position of its own under the same default name, and its value replaces this one on the copies. Rename one of the two to keep both."
+        },
+        "Streams": {
+          "display": "Streams",
+          "type": "int32",
+          "tooltip": "Streams gathered for the Meshes output; the sampler adds the ones it needs itself.",
+          "default": "KweaveMeshList::AllStreams",
+          "semantics": "The default ticks every stream but `Triangle Areas`, and the sampler gathers the ones it needs whatever is ticked. The setting only decides what else a GPU node reading **Meshes** finds there."
+        },
+        "bCacheGeometry": {
+          "display": "Cache Geometry",
+          "type": "bool",
+          "tooltip": "Keep this list's meshes in the shared geometry cache between executions, where every list holding a mesh reads the same copy. Off: they are freed shortly after the execution.",
+          "default": "true"
+        }
+      },
+      "hints": [
+        {
+          "style": "info",
+          "text": "The vanilla Mesh Sampler node shares this node's name. It runs on the CPU and its points carry no mesh ID.",
+          "anchor": "whats_it_for"
+        },
+        {
+          "style": "warning",
+          "text": "LOD 0 of a Nanite mesh is its fallback mesh, never the Nanite geometry: the vertex count, the triangle count and the surface area the modes work from are the fallback's.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "Every setting in the panel is compiled into the node, so editing one triggers a recompile, while a value on an override pin is read when the node runs. An override of `Points Per Triangle`, `Density`, `Min Distance` or `Max Points Per Mesh` that comes from a GPU node is read back to the CPU first.",
+          "anchor": "pins"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        },
+        {
+          "title": "Console",
+          "text": "The geometry cache is shared by every list in the running editor or game, so its limits are console variables and not node settings.",
+          "items": [
+            {
+              "term": "kweave.MeshList.GeometryCache.BudgetMB",
+              "note": "Default 128. GPU memory, in MB, of geometry kept between executions. A list that would exceed it has the least recently used meshes of other lists dropped first. 0 keeps nothing: geometry is freed 30 seconds after its last use."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.IdleSeconds",
+              "note": "Default 60. How long a kept mesh may go unused before it is freed. 0 or less keeps meshes until the budget evicts them."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.Flush",
+              "note": "Command. Frees everything the cache holds, and logs how many meshes and MB that was."
+            },
+            {
+              "term": "kweave.MeshList.GeometryCache.Stats",
+              "note": "Command. Logs the mesh count and the MB in use, kept and allocated."
+            }
+          ],
+          "anchor": "bCacheGeometry",
+          "grounded_in": "Compute/MeshList/MeshListGeometryCache.cpp: CVarBudgetMB, CVarIdleSeconds, FlushCommand, StatsCommand, TransientSeconds. Read 2026-10-03."
+        },
+        {
+          "title": "Very large lists",
+          "text": "Blue Noise sorts the candidates of the whole list into one table, and that table stops growing at 524,288 candidates. Past that count, candidates collide in it and are dropped on top of the ones `Min Distance` removes, and one execution can never keep more than 2,097,152 points.",
+          "anchor": "bBlueNoise",
+          "style": "warning",
+          "grounded_in": "Compute/MeshSampler/MeshSamplerShared.h: MaxGridSize = 1 << 21 slots, GridSlotsPerCandidate = 4; KweaveMeshSampler::ComputeGridSize in MeshSamplerShared.cpp; one record per slot in KweaveMeshSamplerClaim.usf. Read 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        },
+        {
+          "path": "node-library/get-mesh-points.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/get-mesh-points"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-sampler",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/MeshSampler/KweaveMeshSamplerSettings.h",
+        "hash": "a835109deb1d557b3b45490594dec00b97a6f703"
+      }
+    },
+    "UKweaveStampKeySettings": {
+      "id": "UKweaveStampKeySettings",
+      "name": "Stamp Data Key",
+      "plugin": "KweaveBridge",
+      "module": "KweaveGPU",
+      "classification": "node",
+      "purpose": "Writes a key onto point data on the GPU: one int32 per data, repeated on every point of that data, with no readback. In **Copy Points** a target point copies the source data carrying the same key, and this node is how point data that has none gets one. The key is the data's index on the pin, a row of an attribute set, or a single constant. The attribute set is the source that carries mesh IDs onto the points, with **Asset Path ID** turning a column of mesh paths into the table. Source data can do without this node: **Copy Points** reads their keys from the same kind of table on a pin of its own.",
+      "situation": "A GPU node has produced one point data per mesh with no mesh ID on the points, and those data have to be matched in **Copy Points**.",
+      "mechanism": {
+        "text": "One execution returns every point data on **In** in the same order, with the same points, each point now carrying the key as an int32 attribute. A key belongs to a data: every point of one data carries the same value, and `Key Source` decides what that value is. Everything else passes through, and the points never leave the GPU."
+      },
+      "off_label": [
+        {
+          "claim": "Stamp with Data Index ahead of anything that merges its inputs into one data, and each point still says which data it came from.",
+          "grounded_in": "KweaveStampKey.usf: under KWEAVE_STAMP_SOURCE_DATA_INDEX the key is the thread's decoded data index, written per point through Out_SetInt, so it stays on the point once the data boundary is gone"
+        },
+        {
+          "claim": "Constant, under any `Key Attribute Name`, adds a one-value int32 attribute to point data on the GPU with no HLSL to write.",
+          "grounded_in": "KweaveStampKey.usf: the constant branch stamps ConstantKey_GetOverridableValue() into the attribute that UKweaveStampKeyKernel::ComputeOutputBindingDataDesc adds to every data under KeyAttributeName; ConstantKey carries PCG_OverridableCPUAndGPU"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The point data to key, as any number of data on one wire.",
+            "required": "always"
+          },
+          {
+            "label": "Keys",
+            "note": "One attribute set whose row i holds the key of data i.",
+            "required": "conditional",
+            "condition": "when Key Source is Attribute Set Row"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The same data in the same order, every point carrying the key."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "KeySource": {
+          "display": "Key Source",
+          "type": "EKweaveStampKeySource",
+          "default": "EKweaveStampKeySource::AttributeSetRow",
+          "enum": "EKweaveStampKeySource",
+          "semantics": "Data Index and Attribute Set Row both count data from zero in the order they sit on **In**, and a data with no points still holds its index and its row.",
+          "trap": "Order is the only link between a row and a data, and a table with rows to spare is accepted. A table out of step with the data stamps the wrong keys and raises nothing. The vanilla Get Static Mesh Resource Data node skips empty paths, so data built one per mesh from its output stop lining up, at the first empty path, with a key table made from the same paths."
+        },
+        "KeyAttributeName": {
+          "display": "Key Attribute Name",
+          "type": "FName",
+          "tooltip": "Int32 attribute written on every point; created, or overwritten when it exists.",
+          "default": "TEXT(\"AssetId\")"
+        },
+        "KeyColumnName": {
+          "display": "Key Column Name",
+          "type": "FName",
+          "tooltip": "Int32 column of the Keys attribute set holding the key of data i at row i.",
+          "default": "TEXT(\"AssetId\")",
+          "edit_condition": "KeySource == EKweaveStampKeySource::AttributeSetRow",
+          "edit_condition_hides": true
+        },
+        "ConstantKey": {
+          "display": "Constant Key",
+          "type": "int32",
+          "default": "0",
+          "overridable": true,
+          "edit_condition": "KeySource == EKweaveStampKeySource::Constant",
+          "edit_condition_hides": true,
+          "semantics": "An override wired to its pin is read on the GPU and costs no readback."
+        }
+      },
+      "hints": [
+        {
+          "style": "warning",
+          "text": "**Mesh Sampler** and **Get Mesh Points** write their mesh ID under the same default name. Stamping their points without renaming replaces the mesh ID with the stamped key.",
+          "anchor": "KeyAttributeName"
+        }
+      ],
+      "addenda": [
+        {
+          "title": "Needs Unreal Engine 5.8",
+          "text": "The 5.7 build of the plugin does not include this node.",
+          "anchor": "whats_it_for",
+          "style": "info",
+          "grounded_in": "The plugin's 5.7 branch (D:\\GIT\\PCGExWorkbench_57\\Plugins\\KweaveBridge) holds the HLSL node alone under Source/KweaveGPU/Private/Elements; checked 2026-10-03."
+        }
+      ],
+      "related": [
+        {
+          "path": "kweave-bridge/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/stamp-data-key",
+      "source": {
+        "file": "KweaveGPU/Private/Elements/StampKey/KweaveStampKeySettings.h",
+        "hash": "750bf8b39f9f896ce96a435ac363853990620dc2"
+      }
+    }
+  }
+}

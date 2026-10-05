@@ -233,7 +233,6 @@
     "purpose": "Collections can be authored row by row, and they can also be captured: from actors you configured in a viewport, from levels you dressed by hand.",
     "outline": [
       "Actors that remember their settings",
-      "Harvesting a level",
       "Level to PCG data",
       "Keeping capture cheap at runtime"
     ],
@@ -259,7 +258,7 @@
     "name": "Collections",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "The collection asset model: seven types, one entry anatomy, sub-collections, and the staging data baked into every row.",
+    "purpose": "The collection asset model: the collection types, the anatomy every entry shares, sub-collections, and the staging data baked into every row.",
     "outline": [
       "Anatomy of an entry",
       "Staging data"
@@ -327,14 +326,13 @@
     "name": "Staging & Spawning",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Staging decides and records the pick; spawning happens later, in vanilla mesh spawners driven by PCGEx Mesh Selector Staged, or in the dedicated Staging : spawn nodes for actors, levels and PCG data.",
+    "purpose": "Turning staged picks into scene content: the spawn route for each entry type, and sockets as attachment points.",
     "outline": [
       "Routing by type",
       "Mixed picks need no splitting to work",
       "Meshes",
       "The Map goes into the spawner's override pin",
       "Actors",
-      "Levels",
       "PCG data",
       "Along paths",
       "Sockets"
@@ -361,7 +359,7 @@
     "name": "The Collection Map",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Once a pick is made, it has to travel: through filters, transforms, merges, and whatever else the graph does before spawning.",
+    "purpose": "The pick hash and the Map: how a staged point stays resolvable, and the contract every downstream staging node shares.",
     "outline": [
       "The pick hash",
       "The Map",
@@ -3052,6 +3050,87 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/collection-staging-pipeline/switch-on-collection-type"
   },
   {
+    "id": "UKweaveAssetPathIdSettings",
+    "name": "Asset Path ID",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Computes on the CPU the mesh ID the GPU nodes use, and writes it on every point or attribute set row that names a mesh by its path.",
+    "situation": "Points that each name a mesh in a path attribute have to receive what **Mesh Sampler** produced for that same mesh.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/asset-path-id"
+  },
+  {
+    "id": "UKweaveCopyPointsSettings",
+    "name": "Copy Points",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Copies onto each target point the one source data that carries the same int32 key, on the GPU.",
+    "situation": "A level holds many placed meshes of several kinds, and each placement has to receive the points sampled on its own mesh.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/copy-points"
+  },
+  {
+    "id": "UKweaveGetMeshPointsSettings",
+    "name": "Get Mesh Points",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "One point per static mesh placed inside a box, each carrying its mesh ID, plus a table of the distinct meshes.",
+    "situation": "A level already dressed with rocks, walls and props has to receive points on the surface of every one of them.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/get-mesh-points"
+  },
+  {
+    "id": "UKweaveGPUSettings",
+    "name": "HLSL",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "presets": [
+      "Point Processor",
+      "Point Generator",
+      "Texture Processor",
+      "Texture Generator",
+      "Custom",
+      "Attribute Set Processor",
+      "Attribute Set Generator",
+      "Texture Array Generator",
+      "Texture Array Processor"
+    ],
+    "purpose": "The plugin's own copy of the vanilla Custom HLSL node: kernels call scene queries with no setup, and the Kweave web app can push to it and pull from it.",
+    "situation": "A kernel can react to what already stands in the level, such as the nearest surface or the foliage around a point, without a data interface written in C++ for the purpose.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/hlsl"
+  },
+  {
+    "id": "UKweaveMeshListSettings",
+    "name": "Mesh List",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Makes several static meshes readable by one GPU node, each picked by its DataIndex.",
+    "situation": "One **HLSL** node works on points that each refer to a different mesh, and has to read the right mesh for every point.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-list"
+  },
+  {
+    "id": "UKweaveMeshSamplerSettings",
+    "name": "Mesh Sampler",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Samples points on every static mesh of a mesh list, on the GPU, and outputs one point data per mesh.",
+    "situation": "The same meshes are placed many times across a level, and every placement needs points on its surface.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-sampler"
+  },
+  {
+    "id": "UKweaveStampKeySettings",
+    "name": "Stamp Data Key",
+    "plugin": "KweaveBridge",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Writes a key onto point data on the GPU: one int32 per data, repeated on every point of that data, with no readback.",
+    "situation": "A GPU node has produced one point data per mesh with no mesh ID on the points, and those data have to be matched in **Copy Points**.",
+    "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/stamp-data-key"
+  },
+  {
     "id": "UPCGExActionProviderSettings",
     "name": "Action : Abstract",
     "category": "Action",
@@ -5315,7 +5394,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "node",
-    "purpose": "Gathers the loaded actors that match a class or a set of tags and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data.",
+    "purpose": "Gathers the loaded actors that pass a class filter and a set of tag clauses and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data.",
     "situation": "A level of placed props and blockers that a scatter has to stay clear of, where the filter needs only where each actor is and how big it is.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds"
   },
@@ -5338,7 +5417,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "node",
-    "purpose": "Reads back what Set Cached Data stored on an actor's PCGEx Data Cache component: one cache ID, or every entry the component holds.",
+    "purpose": "Reads back what Set Cached Data stored on an actor's PCGEx Data Cache component: one cache ID, that ID across a list of partition cells, or every entry the component holds.",
     "situation": "A graph on its second generation that has to pick up where the previous one left off, on an actor whose generated output has since been cleaned up.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data"
   },
@@ -5365,6 +5444,16 @@
     "purpose": "Reads the identity of one point instead of stamping every point with its own.",
     "situation": "One value out of a dataset that has to seed or key something else in the graph, taken from a known position rather than from every point.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/get-guid"
+  },
+  {
+    "id": "UPCGExGetPartitionActorSettings",
+    "name": "Get Partition Actor",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Finds the PCG partition actors behind a list of grid cells and outputs a reference to each one it finds, with the partition id that actor stands for.",
+    "situation": "A graph that reads or writes data hosted on the partition actors of a partitioned generation, in a world where only some of those actors exist at any moment.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/get-partition-actor"
   },
   {
     "id": "UPCGExGetPathDataSettings",
@@ -7347,7 +7436,7 @@
       "Set Cached Data : Clear",
       "Set Cached Data : Clear All"
     ],
-    "purpose": "Stores whatever arrives on its data pins on an actor, under a cache ID, so a later generation of this graph, or any other graph running against that actor, can read it back with Get Cached Data.",
+    "purpose": "Stores whatever arrives on its data pins on an actor, under a cache ID, so a later generation of this graph, or any other graph that can name that actor, can read it back with Get Cached Data.",
     "situation": "A result from one generation that the next generation has to read back, when nothing in vanilla PCG survives from one to the other.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data"
   },
