@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExElementsClustersSketch",
-  "version": "0.1",
+  "version": "0.2",
   "aliases": {
     "FPCGExClusterSketchCollectionEntry": "UPCGExClusterSketchCollection"
   },
@@ -70,8 +70,8 @@
       "values": [
         {
           "name": "Selector",
-          "display_name": "Actor Selector",
-          "tooltip": "Find actors in the level with the standard PCG actor selector."
+          "display_name": "Actor Selection",
+          "tooltip": "Select actors by scope, class and tag clauses."
         },
         {
           "name": "Input",
@@ -181,8 +181,8 @@
       "mechanism": {
         "text": "Actors are found, their sketch components collected, and each component's sketch in force (inline payload, own asset, or class default) is snapshotted on the game thread so the print runs off-thread against a stable copy. Each snapshot then prints one Vtx / Edges pair through the shared sketch print path, transformed by its component's world transform; the only thing this node adds over the asset's own print is discovery and placement.",
         "steps": [
-          "Find actors: the standard PCG actor selector, or actor references read from the References pin.",
-          "Collect their Cluster Sketch components, narrowed by the Component Selector; components PCG itself spawned are skipped by default.",
+          "Find actors: the shared actor selection, the owning actor by default, or actor references read from the References pin.",
+          "Collect their Cluster Sketch components, narrowed by the Component Tags clauses; components PCG itself spawned are skipped by default.",
           "Snapshot each component's sketch and basis on the game thread.",
           "Print one cluster per snapshot, writing authored sketch properties as attributes and the source actor as a @Data attribute.",
           "Print sites as plain points on the Sites pin, independent of whether the cluster itself printed."
@@ -233,13 +233,19 @@
           "default": "EPCGExSketchActorSource::Selector",
           "enum": "EPCGExSketchActorSource"
         },
-        "ActorSelector": {
-          "display": "Actor Selector",
-          "type": "FPCGActorSelectorSettings",
-          "tooltip": "Standard PCG actor selection.",
+        "Selection": {
+          "display": "Selection",
+          "type": "FPCGExActorSelectionDetails",
+          "tooltip": "Which actors to look for sketch components on. Defaults to the owning actor; Must Overlap Self adds the component bounds to the cache key, so each partitioned cell executes on its own.",
+          "overridable": true,
           "edit_condition": "ActorSource == EPCGExSketchActorSource::Selector",
           "edit_condition_hides": true,
-          "inlined_in_panel": true
+          "see": "FPCGExActorSelectionDetails",
+          "semantics": "Ships in Self scope, so a fresh node reads the actor owning the executing component, or the partition actor during a partitioned run, and nothing else. World sweeps the level by class and tag clauses, Parent, Root and Original take one actor from the component, and Include Children extends any of those to the attached actors; the full grammar is on the Actor Selection Details page of the PCGEx book. A selection that can gather nothing warns and stages nothing, and so does a required tag that is also excluded. Must Overlap Self adds the component bounds to the cache key, so each partitioned cell executes on its own. The node subtitle shows the scope, the class and the clauses.",
+          "interacts_with": [
+            "ActorSource",
+            "ComponentTags"
+          ]
         },
         "ActorReferenceAttribute": {
           "display": "Actor Reference Attribute",
@@ -249,11 +255,16 @@
           "edit_condition": "ActorSource == EPCGExSketchActorSource::Input",
           "edit_condition_hides": true
         },
-        "ComponentSelector": {
-          "display": "Component Selector",
-          "type": "FPCGComponentSelectorSettings",
-          "tooltip": "Narrows which components on the found actors are considered.",
-          "inlined_in_panel": true
+        "ComponentTags": {
+          "display": "Component Tags",
+          "type": "FPCGExTagFilterDetails",
+          "tooltip": "Narrows the sketch components on the found actors by their component tags. Blank clauses keep every component.",
+          "overridable": true,
+          "see": "FPCGExTagFilterDetails",
+          "semantics": "Applied to each found actor's components before the sketch component cast, so a sketch component whose tags fail the clauses is skipped silently; blank clauses keep every component. `Ignore PCGGenerated Components` is folded into the same test, so a sketch component PCG spawned is skipped whatever the clauses say. A required tag that is also excluded warns, since no component can be kept; an entry too long to be a tag warns and stages nothing.",
+          "interacts_with": [
+            "bIgnorePCGGeneratedComponents"
+          ]
         },
         "bIgnorePCGGeneratedComponents": {
           "display": "Ignore PCGGenerated Components",
@@ -352,7 +363,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/get-sketch-data",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExGetSketchData.h",
-        "hash": "85f823e839509c37fafeb3ac544b3cc21fb9c9a4"
+        "hash": "bb5a030d0eac37168cb8b5a086afb6f340666d52"
       }
     },
     "UPCGExStagingLoadSketchSettings": {

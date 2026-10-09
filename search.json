@@ -1930,6 +1930,16 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/socket-provider"
   },
   {
+    "id": "FPCGExActorSelectionDetails",
+    "name": "Actor Selection Details",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Which actors a node gathers from the level: a scope, then a class filter and three tag clauses, shared by every node that reads actors.",
+    "situation": "A node that has to find actors in the level by where they sit relative to the executing component, what class they are, or which tags they carry.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/actor-selection-details"
+  },
+  {
     "id": "FPCGExApplySamplingDetails",
     "name": "Apply Sampling Details",
     "plugin": "PCGExtendedToolkit",
@@ -2968,6 +2978,16 @@
     "purpose": "One shared block for turning sockets into points, carried by the nodes that emit a Sockets pin.",
     "situation": "An asset carries more sockets than the graph wants, or the socket points need to say which socket and which asset they came from.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/socket-output-details"
+  },
+  {
+    "id": "FPCGExTagFilterDetails",
+    "name": "Tag Filter Details",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "Three tag clauses over a component's tags, for the nodes that pick components off actors they have already found.",
+    "situation": "Actors carrying several components of the same kind, where only the ones tagged a certain way should be read.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/tag-filter-details"
   },
   {
     "id": "FPCGExTensorHandlerDetails",
@@ -5394,7 +5414,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "node",
-    "purpose": "Gathers the loaded actors that pass a class filter and a set of tag clauses and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data.",
+    "purpose": "Gathers the actors an Actor Selection Details block picks out of the level, by default every loaded actor that passes its class filter and tag clauses, and returns one point per actor, carrying the actor's transform and bounds and nothing else, all in one point data.",
     "situation": "A level of placed props and blockers that a scatter has to stay clear of, where the filter needs only where each actor is and how big it is.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/generate/get-actor-bounds"
   },
@@ -5461,7 +5481,7 @@
     "plugin": "PCGExtendedToolkit",
     "kind": "entry",
     "classification": "node",
-    "purpose": "Reads spline components straight off selected actors and hands back a path per component, with the actor it came from recorded on the data.",
+    "purpose": "Reads spline components off selected actors as paths that remember their actor, either as control points or as evenly spaced samples of the spline's footprint.",
     "situation": "Splines authored on level actors have to become paths, and something further down still needs to know which actor each one belongs to.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/get-path-data"
   },
@@ -7968,6 +7988,16 @@
     "purpose": "Turns a loose scatter into a surface, by triangulating the points themselves.",
     "situation": "Scattered points that should read as ground, water or any continuous sheet, without a cluster having been built first.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/topology-point-surface"
+  },
+  {
+    "id": "UPCGExTransformBoundsSettings",
+    "name": "Transform Bounds",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Grows or shrinks point bounds by a random amount within a range you set, the way Transform Points varies position, rotation and scale.",
+    "situation": "Points whose bounds should vary in size for a spawner or a bounds-driven sampler, without their position or rotation being touched.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/transform/transform-bounds"
   },
   {
     "id": "UPCGExTransformPointsSettings",

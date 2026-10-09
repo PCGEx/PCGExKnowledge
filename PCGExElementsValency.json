@@ -9646,7 +9646,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyBias.h",
-        "hash": "b9139199cae460ab00ff6760609890d625500a53"
+        "hash": "b9139199cae460ab00ff6760609890d625500a53",
+        "stale": true
       }
     },
     "UPCGExCreateValencyChannelBiasSettings": {
@@ -10340,7 +10341,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExStructuralGrammar.h",
-        "hash": "e45a27e14615602fd48b91018acfc4ecd2ff6d59"
+        "hash": "e45a27e14615602fd48b91018acfc4ecd2ff6d59",
+        "stale": true
       }
     },
     "UPCGExValencyAssetStagingSettings": {
@@ -14816,7 +14818,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-connectors",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteConnectors.h",
-        "hash": "c53899ed7ec5ffa9a7da1316debf4b2c9e2be9c4"
+        "hash": "c53899ed7ec5ffa9a7da1316debf4b2c9e2be9c4",
+        "stale": true
       }
     },
     "UPCGExValencyWriteJunctionsSettings": {

@@ -833,8 +833,8 @@
           "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-bridge/live-editing"
         },
         {
-          "path": "using-kweave/kernel-types.md",
-          "url": "https://pcgex.gitbook.io/pcgex/kweave/using-kweave/kernel-types"
+          "path": "kweave-editor/using-kweave/kernel-types.md",
+          "url": "https://pcgex.gitbook.io/pcgex/kweave/kweave-editor/using-kweave/kernel-types"
         }
       ],
       "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/hlsl",
@@ -1121,7 +1121,7 @@
           "display": "Max Points Per Mesh",
           "type": "int32",
           "tooltip": "Hard cap on the points (candidates, for density) generated per mesh; the output buffer is sized from it.",
-          "default": "1000000",
+          "default": "5000",
           "overridable": true,
           "semantics": "In `Density` a mesh over the cap loses candidates evenly over its surface and comes out thinner.",
           "trap": "In the other modes the points are dealt in vertex or triangle order until the cap is reached. A mesh over the cap is then covered only where its first vertices or triangles are, and nothing warns about it."
@@ -1261,7 +1261,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-sampler",
       "source": {
         "file": "KweaveGPU/Private/Elements/MeshSampler/KweaveMeshSamplerSettings.h",
-        "hash": "a835109deb1d557b3b45490594dec00b97a6f703"
+        "hash": "a835109deb1d557b3b45490594dec00b97a6f703",
+        "stale": true
       }
     },
     "UKweaveStampKeySettings": {

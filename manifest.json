@@ -1,17 +1,18 @@
 {
   "bundle_schema": "2.1.0",
-  "generated": "2026-10-05",
+  "generated": "2026-10-09",
   "plugins": [
     {
       "plugin": "KweaveBridge",
       "version": "2.0.0",
       "file": "KweaveBridge.json",
       "entries": 7,
-      "concepts": 0
+      "concepts": 0,
+      "stale": 1
     },
     {
       "plugin": "PCGExElementsClustersSketch",
-      "version": "0.1",
+      "version": "0.2",
       "file": "PCGExElementsClustersSketch.json",
       "entries": 3,
       "concepts": 6
@@ -21,7 +22,8 @@
       "version": "0.8",
       "file": "PCGExElementsValency.json",
       "entries": 111,
-      "concepts": 69
+      "concepts": 69,
+      "stale": 3
     },
     {
       "plugin": "PCGExElementsZoneGraph",
@@ -34,8 +36,9 @@
       "plugin": "PCGExtendedToolkit",
       "version": "0.79.1",
       "file": "PCGExtendedToolkit.json",
-      "entries": 495,
-      "concepts": 38
+      "entries": 498,
+      "concepts": 38,
+      "stale": 187
     }
   ]
 }
