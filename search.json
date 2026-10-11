@@ -243,7 +243,7 @@
     "name": "Collection Properties",
     "plugin": "PCGExtendedToolkit",
     "kind": "concept",
-    "purpose": "Entries carry whatever data you declare on them: costs, gameplay tags, curve profiles, footprint hints, anything typed.",
+    "purpose": "Typed custom data on entries: declaring properties, the three-tier override resolution, and reading values back onto points.",
     "outline": [
       "Declaring properties",
       "Three tiers, one resolution",
@@ -580,6 +580,70 @@
     "kind": "concept",
     "purpose": "A task-oriented index into the path nodes. Being rewritten once the path nodes themselves are documented.",
     "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/paths/common-path-operations"
+  },
+  {
+    "id": "working-with-pcgex/properties",
+    "name": "Properties",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "property schema"
+    ],
+    "purpose": "Named, typed values declared once and authored on collections, nodes and actors: what a property is, where it lives, and how its value reaches a graph.",
+    "outline": [
+      "What a property is",
+      "Where properties are declared",
+      "Who hosts them",
+      "Getting values into a graph"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+  },
+  {
+    "id": "working-with-pcgex/properties/property-choices",
+    "name": "Property Choices",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "presets",
+      "dropdown",
+      "allowed",
+      "restrict",
+      "favourites",
+      "favorites"
+    ],
+    "purpose": "Named values a property offers its editors: authoring the list, picking from it, locking rows to it, and adjusting it from an importer.",
+    "outline": [
+      "The list",
+      "Picking binds the row",
+      "Only a pick binds",
+      "Locking",
+      "The lock lives in the details panel",
+      "Adjusting an imported list",
+      "Aligning rows"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+  },
+  {
+    "id": "working-with-pcgex/properties/schemas-and-overrides",
+    "name": "Schemas & Overrides",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "imported schemas",
+      "inheritance",
+      "precedence",
+      "nested"
+    ],
+    "purpose": "How declarations from several schema assets merge into one list, and which layer answers when a property is given a value in more than one place.",
+    "outline": [
+      "Sharing declarations",
+      "Which declaration wins",
+      "An asset is walked once",
+      "Which value wins",
+      "What a host adds on top",
+      "Editing a declaration in use"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/schemas-and-overrides"
   },
   {
     "id": "working-with-pcgex/tips-and-tricks",
@@ -2958,6 +3022,16 @@
     "purpose": "The shared answer to which declared properties get written out, and under what attribute names.",
     "situation": "A schema declares more than this graph wants on its points, or one of its properties needs a different attribute name here than everywhere else.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/common-settings/property-output-settings"
+  },
+  {
+    "id": "FPCGExPropertySchemaCollection",
+    "name": "Property Schema Collection",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "shared_struct",
+    "purpose": "The property block every host carries: local declarations, imported schema assets, and the rows that override what was imported.",
+    "situation": "Several collections, nodes and actors need the same named fields, and each still has to set its own values for them.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
   },
   {
     "id": "FPCGExSelectorFactoryBaseConfig",

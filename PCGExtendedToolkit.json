@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExtendedToolkit",
-  "version": "0.79.1",
+  "version": "0.79.2",
   "aliases": {
     "FPCGExAdjacencyStateConfigBase": "UPCGExAdjacencyStateFactoryProviderSettings",
     "FPCGExAmplitudeConfig": "UPCGExVtxPropertyAmplitudeSettings",
@@ -67,7 +67,11 @@
     "FPCGExPartitionOutputs": "UPCGExPartitionIdentifierSettings",
     "FPCGExPickerFilterConfig": "UPCGExPickerFilterProviderSettings",
     "FPCGExPrimitiveFilterConfig": "UPCGExPrimitiveFilterProviderSettings",
+    "FPCGExPropertyChoice": "FPCGExPropertySchemaCollection",
+    "FPCGExPropertyChoices": "FPCGExPropertySchemaCollection",
+    "FPCGExPropertyChoicesPatch": "FPCGExPropertySchemaCollection",
     "FPCGExPropertyOutputConfig": "FPCGExPropertyOutputSettings",
+    "FPCGExPropertyOverrideEntry": "FPCGExPropertySchemaCollection",
     "FPCGExPropertySampledOutputConfig": "FPCGExPropertyOutputSettings",
     "FPCGExRandomFilterConfig": "UPCGExRandomFilterProviderSettings",
     "FPCGExRandomRatioFilterConfig": "UPCGExRandomRatioFilterProviderSettings",
@@ -10709,6 +10713,113 @@
         "hash": "4094eff752e297d44777df2434f4da998d920bd6"
       }
     },
+    "FPCGExPropertySchemaCollection": {
+      "id": "FPCGExPropertySchemaCollection",
+      "name": "Property Schema Collection",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExProperties",
+      "classification": "shared_struct",
+      "covers": [
+        "FPCGExPropertyChoices",
+        "FPCGExPropertyChoice",
+        "FPCGExPropertyChoicesPatch",
+        "FPCGExPropertyOverrideEntry"
+      ],
+      "purpose": "The property block every host carries: local declarations, imported schema assets, and the rows that override what was imported. Every host shows this block under a label of its own: `Composition` on **Tuple** and **Tuple : Distribute**, `Properties` on the **PCGEx Property Collection** component, `Collection` on a **Property Schema** asset, `Collection Properties` on an **Asset Collection**. Valency and Cluster Sketch host it too, on bonding rules, grammars and sketches. It settles two things for its host: which declarations exist, and what each one is worth before any of the host's own rows are read.",
+      "situation": "Several collections, nodes and actors need the same named fields, and each still has to set its own values for them.",
+      "mechanism": {
+        "text": "The block resolves to one list of declarations, built by a single walk: the local ones first, then each imported asset in list order, going down into an asset's own imports before moving to the next. The first declaration to claim a name keeps it, type included, so a local beats an import and an earlier import beats a later one. A local declaration has one value, the one authored on it. An imported one is given an import row on every importer, and its value is read from the host down: the host's own row, then each schema asset along the import path, then the declaring asset's default. A component reads its Blueprint class chain right after its own row. The nearest enabled row answers, and a row left off defers to the layer below it."
+      },
+      "off_label": [
+        {
+          "claim": "Declaring a local property under the name of an imported one replaces that declaration for this host, type included, without touching the asset. The import row the property had here goes away with it.",
+          "grounded_in": "PCGExPropertySchemaResolve::Walk adds every local name to Seen before any imported asset is visited, so the imported entry never reaches the resolved list; ReconcileImportOverrides builds its imports-only schema from that list and SyncToSchema drops the unmatched row."
+        }
+      ],
+      "settings": {
+        "Schemas": {
+          "display": "Schemas",
+          "type": "TArray<FPCGExPropertySchema>",
+          "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)",
+          "fields": [
+            {
+              "name": "Name",
+              "display": "Name",
+              "type": "FName",
+              "tooltip": "Property name (shown in UI, used for attribute output)",
+              "default": "NAME_None"
+            },
+            {
+              "name": "Property",
+              "display": "Property",
+              "type": "FInstancedStruct",
+              "tooltip": "NoResetToDefault: same reasoning as FPCGExPropertyOverrideEntry::Value."
+            }
+          ],
+          "semantics": "A declaration is also where a property's choices are authored: the arrow ending its row opens **Edit Choices...**, and ticking `Locked` there swaps the value editor on every row of that property for a dropdown. Rows follow a declaration by identity: a rename or a reorder keeps authored values attached, and a type change keeps rows enabled but resets their values.",
+          "trap": "The lock restricts the details panel and nothing else. A Blueprint Set Property call, or any other scripted write, can store a value that is on no list, and a locked row holding one reads `Custom` until a choice is picked for it.",
+          "interacts_with": [
+            "ImportOverrides"
+          ]
+        },
+        "ImportedSchemas": {
+          "display": "Imported Schemas",
+          "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
+          "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection.",
+          "semantics": "An asset is walked once. Reaching it a second time is skipped, whether through a cycle or because two branches of the tree import it, so two libraries can share a base at no cost.",
+          "trap": "Listing an asset twice to move its declarations later in the order does nothing: its names were claimed the first time."
+        },
+        "ImportOverrides": {
+          "display": "Import Overrides",
+          "type": "FPCGExPropertyOverrides",
+          "tooltip": "Per-property value overrides for imported properties, each with its own enable toggle. Locals are edited in place on Schemas.",
+          "fields": [
+            {
+              "name": "Overrides",
+              "display": "Overrides",
+              "type": "TArray<FPCGExPropertyOverrideEntry>",
+              "tooltip": "Overrides array - parallel with schema (same size, same order)"
+            }
+          ],
+          "semantics": "The panel never shows this as a list. Each imported property is an import row under its asset's name, and the row's checkbox is the override toggle. A schema asset that overrides a property it imports sets what everything importing that asset resolves, until one of them overrides in turn.\n\nOn an import row, **Edit Choices...** opens a choices patch in place of the list editor, and the declaring asset is never written. `Mode` keeps the imported list (`Inherit`), removes and adds on top of it (`Modify`), or discards it for this importer's own (`Replace`). `Lock` keeps the imported lock state (`Inherit`) or forces it (`Locked`, `Unlocked`).",
+          "trap": "A patch does not follow the checkbox. It applies whether or not the row overrides the value, and every layer's patch applies in turn, from the declaring asset outward, where a value takes the nearest enabled row alone.",
+          "interacts_with": [
+            "Schemas",
+            "ImportedSchemas"
+          ]
+        }
+      },
+      "hints": [
+        {
+          "style": "info",
+          "text": "Choices are editor data. They are absent from cooked builds and nothing in a graph reads them: a node sees the value a row holds, never the choice it came from.",
+          "anchor": "Schemas"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/properties/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+        },
+        {
+          "path": "working-with-pcgex/properties/schemas-and-overrides.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/schemas-and-overrides"
+        },
+        {
+          "path": "working-with-pcgex/properties/property-choices.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+        },
+        {
+          "path": "working-with-pcgex/asset-staging/collection-properties.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection",
+      "source": {
+        "file": "PCGExProperties/Public/PCGExPropertySchema.h",
+        "hash": "20752de7e8f0ca45326b4c6894ee613941325609"
+      }
+    },
     "FPCGExSelectorFactoryBaseConfig": {
       "id": "FPCGExSelectorFactoryBaseConfig",
       "name": "Selector Base Config",
@@ -13163,28 +13274,8 @@
           "display": "Collection Properties",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Collection-level properties with default values. Entries inherit these unless they provide overrides.",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "Declarations, not values: what an entry ends up with is resolved in three tiers, the entry's own enabled override first, then the row its category has under Category Overrides, then the default declared here. Imported Schemas resolve after the local list and dedupe by name with the first occurrence winning, so a local declaration always beats an imported one of the same name, and an earlier import beats a later one. Imports recurse through the imported assets' own imports, with cycles skipped.",
-          "trap": "Imported schemas are hard references, so every schema asset a collection imports stays loaded for as long as the collection does.",
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "Declarations, not values: what an entry ends up with is resolved in three tiers, the entry's own enabled override first, then the row its category has under Category Overrides, then the default declared here. That default is what **Property Schema Collection** resolves, imports and import overrides included.",
           "interacts_with": [
             "CategoryOverrides"
           ]
@@ -13244,6 +13335,10 @@
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
         },
         {
+          "path": "node-library/common-settings/property-schema-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
+        },
+        {
           "path": "working-with-pcgex/asset-staging/staging-pipelines.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-pipelines"
         },
@@ -13259,7 +13354,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "42816c76fedc3ea4a3d0e673c0aa523375a05673"
+        "hash": "db7c12658ba54e136d77dcf5d58070c95c4e2140"
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -33547,27 +33642,8 @@
           "display": "Composition",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Tuple composition defines the columns (property types and names).",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "A column's Name names the attribute it writes, one attribute per column; a Collection Entry column writes under a staging-layer name built from it. Columns come from the schemas authored here and from any imported Property Schema assets, locals first, and a local column overrides an imported one of the same name. A shared schema can supply the whole table to several nodes at once. A Float Curve column has no attribute form and is skipped, writing nothing for any row.",
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "A column's Name names the attribute it writes, one attribute per column; a Collection Entry column writes under a staging-layer name built from it. A Float Curve column has no attribute form and is skipped, writing nothing for any row. Declarations, imports, import overrides and choices work as on every host: see **Property Schema Collection**.",
           "trap": "Two local columns sharing a name is an execution error, and the message reports that duplicates exist without naming which.",
           "interacts_with": [
             "Values",
@@ -33719,6 +33795,18 @@
       ],
       "related": [
         {
+          "path": "working-with-pcgex/properties/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+        },
+        {
+          "path": "working-with-pcgex/properties/property-choices.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+        },
+        {
+          "path": "node-library/common-settings/property-schema-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
+        },
+        {
           "path": "working-with-pcgex/asset-staging/collection-properties.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
         },
@@ -33734,8 +33822,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/tuple-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExDistributeTuple.h",
-        "hash": "66230abf8c6bfae7db2826d80c6990a6da3ac132",
-        "stale": true
+        "hash": "72a80013e5f0ad0c1f14cdf982a5f2315c063b3a"
       }
     },
     "UPCGExDotFilterProviderSettings": {
@@ -46343,7 +46430,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/level-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExLevelCollection.h",
-        "hash": "cf66744e4a89970dd71d952df8ab6ca8fdd38ff4"
+        "hash": "cf66744e4a89970dd71d952df8ab6ca8fdd38ff4",
+        "stale": true
       }
     },
     "UPCGExLevelDataExporter": {
@@ -59753,7 +59841,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExPCGDataAssetCollection.h",
-        "hash": "038a8d8a8904c7fc0e7681ee2539a5eb4ddd82d8"
+        "hash": "038a8d8a8904c7fc0e7681ee2539a5eb4ddd82d8",
+        "stale": true
       }
     },
     "UPCGExPCGDataAssetLoaderSettings": {
@@ -63738,7 +63827,7 @@
       "purpose": "Puts a property collection on an actor. The component declares the same named, typed properties a collection declares, locally or by importing Property Schema assets, so an actor can carry data that something else reads later: rebuilding an Actor Collection merges each source actor's properties into the entry built from it, level and data asset export carries them into the exported entries, and Get Properties Data reads them off actors it resolves during a graph run. Blueprint reads and writes the same values by name through the Get Property and Set Property nodes. It is an ordinary actor component with no editor gating, so a spawned actor carries it as readily as a placed one.",
       "situation": "A placed or spawned actor should carry typed data that the collection built from it, or a graph that resolves it, can read back.",
       "mechanism": {
-        "text": "The component holds one property collection, locally declared properties plus imported Property Schema assets, and does nothing with it on its own: every value it carries is read by something that came looking for the actor. A local declaration is edited on the component in front of you. An imported one resolves through a chain of override layers, first enabled one wins: the instance's own, then each Blueprint class above it in inheritance order, then the imported asset's authored default. Override toggles are instance state and start off on a freshly added component, so an untouched instance surfaces whatever its Blueprint class authored. Readers that capture an actor into a collection or an export fire the prepare event first, which is where a value computed from the world belongs."
+        "text": "The component holds one property collection, locally declared properties plus imported Property Schema assets, and does nothing with it on its own: every value it carries is read by something that came looking for the actor. A local declaration is edited on the component in front of you. An imported one resolves through a chain of override layers, first enabled one wins: the instance's own, then each Blueprint class above it in inheritance order, then the Import Overrides of each schema asset along the import path, nearest the component first, then the declaring asset's authored default. Override toggles are instance state and start off on a freshly added component, so an untouched instance surfaces whatever its Blueprint class authored. Readers that capture an actor into a collection or an export fire the prepare event first, which is where a value computed from the world belongs."
       },
       "off_label": [
         {
@@ -63751,27 +63840,8 @@
           "display": "Properties",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Property collection with schema definitions and default values. These compile into runtime property data during cage/pattern builds.",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "On a Blueprint's component template this is the authored layer instances of that Blueprint fall back to. On a placed instance each imported row carries its own toggle, and the toggle is instance-owned: turning it on pins that value on this actor, turning it back off hands the property to the class chain again. Editing the template's schema re-syncs every loaded instance to the new shape, so an instance never drifts out of step with the Blueprint it came from.\n\nWhenever the editor reconstructs a placed actor, the values its instance has authored are restored before the construction script runs, so the script reads them, and restored again after it, so they win over anything the script writes to the same property. The field stays editable in the details panel even when the construction script writes to it.",
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "On a Blueprint's component template this is the authored layer instances of that Blueprint fall back to. On a placed instance each imported row carries its own toggle, and the toggle is instance-owned: turning it on pins that value on this actor, turning it back off hands the property to the class chain again, and the row's reset arrow lands on the value it would surface with its own override off. Editing the template's schema re-syncs every loaded instance to the new shape, so an instance never drifts out of step with the Blueprint it came from.\n\nWhenever the editor reconstructs a placed actor, the values its instance has authored are restored before the construction script runs, so the script reads them, and restored again after it, so they win over anything the script writes to the same property. The field stays editable in the details panel even when the construction script writes to it.\n\nA component an actor inherits from its class offers a property's choices and never the choices editor: authoring the list stays with the Blueprint and the schema asset. Declarations, imports and import overrides otherwise work as on every host: see **Property Schema Collection**.",
           "trap": "A value written from a construction script counts as instance authoring once it differs from the class default, and it then survives Blueprint recompiles, outliving edits to the script that wrote it. Resetting the field back to its class value is what hands control to the script again."
         }
       },
@@ -63783,11 +63853,27 @@
         },
         {
           "style": "warning",
-          "text": "The Blueprint Get Property node reads this component alone. A property that came from an imported schema, was given a value on a parent Blueprint class, and has not been toggled on this instance, answers there with the schema asset's default while a capture of the same actor answers with the parent's value.",
+          "text": "The Blueprint Get Property node reads this component alone. A property that came from an imported schema, was given a value on a parent Blueprint class, and has not been toggled on this instance, answers there with what the imported schemas resolve on their own, an override authored on a schema asset along the import path included, while a capture of the same actor answers with the parent's value.",
           "anchor": "Properties"
         }
       ],
       "related": [
+        {
+          "path": "working-with-pcgex/properties/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+        },
+        {
+          "path": "working-with-pcgex/properties/schemas-and-overrides.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/schemas-and-overrides"
+        },
+        {
+          "path": "working-with-pcgex/properties/property-choices.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+        },
+        {
+          "path": "node-library/common-settings/property-schema-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
+        },
         {
           "path": "working-with-pcgex/asset-staging/collection-properties.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
@@ -63812,7 +63898,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/property-collection-component",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertyCollectionComponent.h",
-        "hash": "2d125b41cb0ce737a5e7341064874f51c5aea2bb"
+        "hash": "b5a0cc71cb66b4176a43225cc55f9496ebe26c47"
       }
     },
     "UPCGExPropertySchemaAsset": {
@@ -63824,7 +63910,7 @@
       "purpose": "Declares a set of named, typed properties once so several collections, components and nodes can carry the same fields without redeclaring them. Every consumer holding a property collection has an Imported Schemas list, and listing this asset there merges its declarations into that consumer's own, deduped by name. Schema assets import each other the same way, so a project-wide base library can sit under narrower ones. Two nodes take schema assets directly instead of importing them: Promote Attributes reads one as a list of attribute names, and Get Properties Data uses one as a membership test on the components it resolves.",
       "situation": "Several collections or components need the same property fields, and the declaration should live in one place instead of being copied into each of them.",
       "mechanism": {
-        "text": "A schema asset is a list of named, typed property declarations with default values, plus its own list of imported schema assets, so libraries stack. Nothing reads it on its own: a collection, a component or a node lists it under Imported Schemas, and resolution walks that consumer's local declarations first, then each imported asset in array order, descending into an asset's own imports before moving to the next entry of the list. Names dedupe as the walk goes and the first occurrence wins, so a local declaration beats an imported one and an earlier import beats a later one. An asset reached a second time, whether by a cycle or by being listed twice, is skipped and logged. What the asset supplies is the shape and the default; the value an entry ends up with is resolved on the consumer."
+        "text": "A schema asset is a list of named, typed property declarations with default values, plus its own list of imported schema assets, so libraries stack. Nothing reads it on its own: a collection, a component or a node lists it under Imported Schemas, and resolution walks that consumer's local declarations first, then each imported asset in array order, descending into an asset's own imports before moving to the next entry of the list. Names dedupe as the walk goes and the first occurrence wins, so a local declaration beats an imported one and an earlier import beats a later one. An asset reached a second time, whether by a cycle or by being listed twice, is skipped and logged. What the asset supplies is the shape, the default, and any override it authors on a declaration it imports. The value an entry ends up with is resolved on the consumer."
       },
       "off_label": [
         {
@@ -63846,28 +63932,8 @@
           "display": "Collection",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Schemas (and further imports) carried by this asset.",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "Three surfaces in one: the local declarations, the Imported Schemas list, and a section per imported asset. Imported declarations are never edited in place here; each gets a row with its own enable toggle, so this asset can ship a different default for an imported property without touching the asset it came from. Renaming a local declaration carries every consumer's authored override with it, and changing a declaration's type keeps those overrides enabled while resetting their value to the new default.",
-          "trap": "Listing the same asset twice in one import tree does nothing the second time. The second reach is skipped exactly as a cycle is, so a duplicate import is never a way to re-order or re-apply its declarations."
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "This is the block other hosts import: every declaration it resolves, local or imported in turn, joins the list of whatever names this asset under `Imported Schemas`. An override placed here on a property this asset imports is the default its importers resolve, until one of them overrides in turn. A choices patch authored here applies for every importer too.\n\nThe walk order, the override layers and choices work as on every host: see **Property Schema Collection**."
         }
       },
       "hints": [
@@ -63888,6 +63954,22 @@
         }
       ],
       "related": [
+        {
+          "path": "working-with-pcgex/properties/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+        },
+        {
+          "path": "working-with-pcgex/properties/schemas-and-overrides.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/schemas-and-overrides"
+        },
+        {
+          "path": "working-with-pcgex/properties/property-choices.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+        },
+        {
+          "path": "node-library/common-settings/property-schema-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
+        },
         {
           "path": "working-with-pcgex/asset-staging/collection-properties.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
@@ -63920,7 +64002,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/property-schema-asset",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertySchemaAsset.h",
-        "hash": "4d01ee01f4937d4cc76af730808e61961491320d"
+        "hash": "b39dedbf7cf77ed8f6297d5d642e3c0c3e6c9876"
       }
     },
     "UPCGExRadiusFittingRelax": {
@@ -80846,27 +80928,8 @@
           "display": "Composition",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Tuple composition defines the columns (property types and names).",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "Each column contributes one attribute named after the column and typed by the property it holds, and the value authored here is that attribute's default, which is what an entry carries when its row leaves the column disabled. Columns come from the schemas authored here and from any imported Property Schema assets, locals first, so a local column and an imported one sharing a name is the ordinary locals-win override rather than a collision. A Float Curve column has no attribute form and is skipped, contributing nothing for any row.",
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "Each column contributes one attribute named after the column and typed by the property it holds, and the value authored here is that attribute's default, which is what an entry carries when its row leaves the column disabled. A Float Curve column has no attribute form and is skipped, contributing nothing for any row. Declarations, imports, import overrides and choices work as on every host: see **Property Schema Collection**.",
           "trap": "Two local columns sharing a name stop the node before it runs, with an error naming the duplicate and no output at all. The collision that survives that check is between resolved names: a Collection Entry column resolves to a derived staging-layer attribute, so a plain column spelled the same way as that derived name collides with it, and whichever the Composition resolves second is skipped with an error of its own.",
           "interacts_with": [
             "Values",
@@ -80928,6 +80991,18 @@
       ],
       "related": [
         {
+          "path": "working-with-pcgex/properties/README.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties"
+        },
+        {
+          "path": "working-with-pcgex/properties/property-choices.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/properties/property-choices"
+        },
+        {
+          "path": "node-library/common-settings/property-schema-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection"
+        },
+        {
           "path": "working-with-pcgex/asset-staging/collection-properties.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/collection-properties"
         },
@@ -80947,7 +81022,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/tuple",
       "source": {
         "file": "PCGExProperties/Public/Elements/PCGExTuple.h",
-        "hash": "367491d402b996f5885b9795bad7041fcaa28c73"
+        "hash": "c346e7cf32c65692336f6e22f2166072dbf00515"
       }
     },
     "UPCGExUberBranchSettings": {

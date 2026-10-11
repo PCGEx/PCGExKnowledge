@@ -15,7 +15,7 @@
       "description": { "type": "string" },
       "outline": { "type": "array", "items": { "type": "string" }, "description": "The page's H2 headings, in order." },
       "url": { "type": "string", "description": "The live documentation page." },
-      "body": { "type": "string", "description": "The page prose as markdown, GitBook syntax flattened: **Bold Name** references a node entry by display name, [Title](concept:<id>) references another concept page, hints are blockquotes opening with a bold label (Note, Warning, Danger, Tip), figures are reduced to their alt text. Absent when the page has no prose of its own." }
+      "body": { "type": "string", "description": "The page prose as markdown, GitBook syntax flattened: **Bold Name** references a node entry by display name, [Title](concept:<id>) references another concept page, hints are blockquotes opening with a bold label (Note, Warning, Danger, Tip), figures are reduced to their alt text, and since 2.2.0 a figure that is not produced yet is reduced to one or two sentences saying what it shows. Absent when the page has no prose of its own." }
     }
   }
 }

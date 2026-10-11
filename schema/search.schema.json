@@ -14,7 +14,7 @@
       "plugin": { "type": "string" },
       "kind": { "enum": ["entry", "concept"] },
       "classification": { "type": "string", "description": "node / provider / instanced_factory / factory_data / shared_struct / asset / blueprint_node. Entry rows only; this is the real taxonomy, and only node and provider are placeable in a PCG graph." },
-      "aliases": { "type": "array", "items": { "type": "string" }, "description": "Alternative palette names this node is findable under." },
+      "aliases": { "type": "array", "items": { "type": "string" }, "description": "Entry rows: alternative palette names this node is findable under. Concept rows, since bundle_schema 2.2.0: synonyms a reader would search the page by." },
       "presets": { "type": "array", "items": { "type": "string" }, "description": "Preconfigured palette entries of this node." },
       "purpose": { "type": "string", "description": "One flattened sentence: what this is for." },
       "situation": { "type": "string", "description": "The kind of problem that calls for it. Entry rows only." },

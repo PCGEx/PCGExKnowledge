@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExElementsValency",
-  "version": "0.8",
+  "version": "0.9",
   "aliases": {
     "UPCGExProbeFactoryValency": "UPCGExProbeValencyProviderSettings",
     "UPCGExValencyBiasFactoryData": "UPCGExCreateValencyBiasSettings",
@@ -10280,27 +10280,8 @@
           "display": "Grammar Properties",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "Property schema module-placing nodes can override per node (same machinery as collection properties: inline declaration + imported schema assets). Compile bakes a name-deduped prototype registry into CompiledData; per-point resolution happens in Valency : Load Properties through the node-property provider interface.",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "The schema every module-placing node in this graph can override per node, declared inline or imported from Property Schema assets. Its defaults are one of the two tiers **Valency : Load Properties** consults, which is how a value authored here reaches the points."
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "The schema every module-placing node in this graph can override per node, declared inline or imported from Property Schema assets. Its defaults are one of the two tiers **Valency : Load Properties** consults, which is how a value authored here reaches the points. The block is the one every PCGEx property host carries, described in the PCGEx book under [Property Schema Collection](https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection)."
         },
         "PreviewBondingRules": {
           "display": "Preview Bonding Rules",
@@ -10341,8 +10322,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/grammar",
       "source": {
         "file": "PCGExValencyGrammar/Public/PCGExStructuralGrammar.h",
-        "hash": "e45a27e14615602fd48b91018acfc4ecd2ff6d59",
-        "stale": true
+        "hash": "569691a4db061e2a0542766a00fe263e568bda72"
       }
     },
     "UPCGExValencyAssetStagingSettings": {
@@ -11486,27 +11466,8 @@
           "display": "Default Properties",
           "type": "FPCGExPropertySchemaCollection",
           "tooltip": "========== Default Properties ==========",
-          "fields": [
-            {
-              "name": "Schemas",
-              "display": "Schemas",
-              "type": "TArray<FPCGExPropertySchema>",
-              "tooltip": "Schema array (locals -- always take precedence over imported entries with matching names)"
-            },
-            {
-              "name": "ImportedSchemas",
-              "display": "Imported Schemas",
-              "type": "TArray<TObjectPtr<UPCGExPropertySchemaAsset>>",
-              "tooltip": "Imported schema assets, resolved in array order after locals. Hard refs -- assets stay loaded as long as the owning collection exists. Recursion through imported assets' own ImportedSchemas is supported with cycle detection."
-            },
-            {
-              "name": "ImportOverrides",
-              "display": "Import Overrides",
-              "type": "FPCGExPropertyOverrides",
-              "tooltip": "Per-entry value overrides for imported entries. EditAnywhere is required so the detail panel's GetChildHandle can reach this property's children -- the registered FPCGExPropertySchemaCollectionCustomization takes over rendering entirely (CustomizeChildren controls every visible row), so this never appears as a top-level array editor in the inspector. The array is kept parallel with the imports-only schema via ReconcileImportOverrides (which delegates to FPCGExPropertyOverrides::SyncToSchema). UE per-instance UPROPERTY delta serialization handles three-layer composition: asset default -> template (collection on CDO) -> instance (collection on actor instance). Each layer overrides the previous via bEnabled toggles on individual entries. Locals do not appear here -- they are edited in-place on Schemas."
-            }
-          ],
-          "semantics": "The values a module falls back to when its cage authored none. Valency : Load Properties reads this as one of its two defaults tiers, which is what lets a property exist on every point without being authored on every cage."
+          "see": "FPCGExPropertySchemaCollection",
+          "semantics": "The values a module falls back to when its cage authored none. Valency : Load Properties reads this as one of its two defaults tiers, which is what lets a property exist on every point without being authored on every cage. The block is the one every PCGEx property host carries, described in the PCGEx book under [Property Schema Collection](https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection)."
         },
         "bCompileOnRebuild": {
           "display": "Compile on Rebuild",
@@ -11567,7 +11528,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bonding-rules-asset",
       "source": {
         "file": "PCGExValencyFoundations/Public/PCGExBondingRules.h",
-        "hash": "bf7c43b5b1e409c1626d8e49b4a64c74af81e2b7"
+        "hash": "dddbe46305d2b161059fb5cd356a59485c21ec4f"
       }
     },
     "UPCGExValencyBondingSettings": {
