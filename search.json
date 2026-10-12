@@ -1,5 +1,80 @@
 [
   {
+    "id": "developers-area/authoring-with-an-agent",
+    "name": "Authoring with an Agent",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "agent",
+      "assistant",
+      "ai",
+      "llm",
+      "mcp",
+      "json",
+      "import",
+      "export",
+      "automate",
+      "automation",
+      "script",
+      "scripting",
+      "programmatic"
+    ],
+    "purpose": "PCGEx data authored as JSON documents by an AI assistant: the tool chain, the document envelope, the merge rules, and every bound host, format and action the installed toolkit registers.",
+    "outline": [
+      "The chain",
+      "The document",
+      "Merge rules",
+      "Bound hosts",
+      "Formats",
+      "Actions",
+      "Guides"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent"
+  },
+  {
+    "id": "developers-area/authoring-with-an-agent/collections",
+    "name": "Collections",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "agent",
+      "json",
+      "import",
+      "export",
+      "distribute",
+      "tuple"
+    ],
+    "purpose": "Collections data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
+    "outline": [
+      "Hosts",
+      "Rules",
+      "Example documents"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/collections"
+  },
+  {
+    "id": "developers-area/authoring-with-an-agent/properties",
+    "name": "Properties",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "concept",
+    "aliases": [
+      "agent",
+      "json",
+      "import",
+      "export",
+      "property",
+      "schema",
+      "tuple"
+    ],
+    "purpose": "Properties data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
+    "outline": [
+      "Hosts",
+      "Rules",
+      "Example documents"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/properties"
+  },
+  {
     "id": "working-with-cluster-sketch/authoring",
     "name": "Authoring",
     "plugin": "PCGExElementsClustersSketch",
