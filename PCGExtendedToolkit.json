@@ -7396,8 +7396,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/common-settings/apply-sampling-details",
       "source": {
         "file": "PCGExBlending/Public/Sampling/PCGExApplySamplingDetails.h",
-        "hash": "6856fe7ad7ad3a1c49ba8bbc17b5241910dcd9ed",
-        "stale": true
+        "hash": "9d86567a5fa531081c588d4d08dbed5a71ee4f0e"
       }
     },
     "FPCGExAttachmentRules": {
@@ -7576,7 +7575,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/data-utils/attribute-to-tag-details",
       "source": {
         "file": "PCGExCore/Public/Data/Utils/PCGExDataForwardDetails.h",
-        "hash": "00aaefecb38e77c6e0c8700ce550c9cdd20757ec"
+        "hash": "a14495c5969404a7bc084d71b309c8eb062ccc5f"
       }
     },
     "FPCGExBlendingDetails": {
@@ -7715,8 +7714,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/blending-details-monolithic",
       "source": {
         "file": "PCGExBlending/Public/Details/PCGExBlendingDetails.h",
-        "hash": "bc822d5ad62ad332ed3b23a32e26722a61dfe58b",
-        "stale": true
+        "hash": "57a8bf8e8e0c7a9173f201ce1eba8627b67f1911"
       }
     },
     "FPCGExCellArtifactsDetails": {
@@ -7949,8 +7947,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-artifacts-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e",
-        "stale": true
+        "hash": "422967a8dd173c5de5be2972ec698dd286b3cfb0"
       }
     },
     "FPCGExCellConstraintsDetails": {
@@ -8216,8 +8213,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-constraints-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e",
-        "stale": true
+        "hash": "422967a8dd173c5de5be2972ec698dd286b3cfb0"
       }
     },
     "FPCGExCellGrowthDetails": {
@@ -8328,8 +8324,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-growth-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e",
-        "stale": true
+        "hash": "422967a8dd173c5de5be2972ec698dd286b3cfb0"
       }
     },
     "FPCGExCellSeedMutationDetails": {
@@ -8477,8 +8472,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/common-settings/cell-seed-mutation-details",
       "source": {
         "file": "PCGExGraphs/Public/Clusters/Artifacts/PCGExCellDetails.h",
-        "hash": "7f6ca2ed2039492c320c6d55e184c5b4714cbd0e",
-        "stale": true
+        "hash": "422967a8dd173c5de5be2972ec698dd286b3cfb0"
       }
     },
     "FPCGExCollisionDetails": {
@@ -8829,8 +8823,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/dot-comparison-details",
       "source": {
         "file": "PCGExCore/Public/Utils/PCGExCompare.h",
-        "hash": "90060876aee84f5d7c9b00813a1b5b377345f257",
-        "stale": true
+        "hash": "ea2644ccac20fbd06742f6c6dadc7289576f27ab"
       }
     },
     "FPCGExEdgeDirectionSettings": {
@@ -9190,8 +9183,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-result-details",
       "source": {
         "file": "PCGExFilters/Public/Details/PCGExFilterDetails.h",
-        "hash": "6c33432979ef588d0bb9955b2aac7569a7a2efb7",
-        "stale": true
+        "hash": "8eac09f86a30c5ac44e6d623ef9243c8296324a4"
       }
     },
     "FPCGExFloodFillEdgeDirectionDetails": {
@@ -9375,8 +9367,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/projection-details",
       "source": {
         "file": "PCGExCore/Public/Math/PCGExProjectionDetails.h",
-        "hash": "0f9946c665ed15f2b25172a9e480be766eb5d9b3",
-        "stale": true
+        "hash": "edd09431d1b1a08b69fb7a5a0ec5e08f26e89a7a"
       }
     },
     "FPCGExGeoMeshImportDetails": {
@@ -10100,8 +10091,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/manhattan-details",
       "source": {
         "file": "PCGExFoundations/Public/Details/PCGExSubdivisionDetails.h",
-        "hash": "c951e915ca582610efe48f5adbcae04d5574877d",
-        "stale": true
+        "hash": "250e9ae314fcf6fe4844e9ff606fd7a776e5b230"
       }
     },
     "FPCGExMatchingDetails": {
@@ -10110,7 +10100,7 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExMatching",
       "classification": "shared_struct",
-      "purpose": "The block a node embeds to accept match rules. It adds the Match Rules pin, decides how the verdicts of the rules on that pin combine, caps how many matches a target may take, and says where data that matched nothing goes. The same block appears on the samplers, on Copy to Points and Cluster : Copy to Points, on Copy to Path, Path : Insert, Path : Stitch and Path × Bounds Intersection, on Copy Tags, Merge Points, Best Match Axis, Pathfinding : Plot Edges and the Clipper2 nodes, and it hides different parts of itself depending on which kind of node it landed on.",
+      "purpose": "The block a node embeds to accept match rules. It adds the Match Rules pin, decides how the verdicts of the rules on that pin combine, caps how many matches a target may take, and says where data that matched nothing goes. The same block appears on the samplers, on Copy to Points and Cluster : Copy to Points, on Copy to Path, Path : Insert, Path : Stitch and Path × Bounds Intersection, on Copy Tags, Merge Points, Best Match Axis, Pathfinding : Plot Edges, Pathfinding : Find Cells and Pathfinding : Find Cells (Bounded), and the Clipper2 nodes, and it hides different parts of itself depending on which kind of node it landed on.",
       "situation": "A node showing a Mode dropdown and a Match Rules pin, and the question of what the settings under it do once rules are attached.",
       "mechanism": {
         "text": "Mode is the switch. Left Disabled, the block does nothing: the Match Rules pin drops to advanced and every input is paired with every target. Set to All or Any it becomes required, and each candidate is tested against each target through the rules on that pin, All needing every rule to pass and Any needing one Optional rule to pass before the Required ones are checked. What matched goes on to the work the node exists for. What matched nothing is routed by Split Unmatched, either onto an Unmatched pin or back into the ordinary output."
@@ -10159,9 +10149,9 @@
           "tooltip": "Which cluster component must match the tags",
           "default": "EPCGExClusterComponentTagMatchMode::Vtx",
           "enum": "EPCGExClusterComponentTagMatchMode",
-          "edit_condition": "Usage == EPCGExMatchingDetailsUsage::Cluster",
+          "edit_condition": "Usage == EPCGExMatchingDetailsUsage::ClusterToPoint || Usage == EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
-          "semantics": "It decides which half of a cluster the rules are asked about, and the word tags in the tooltip is narrower than the behaviour: every rule kind applies, not only the tag rules. Vtx and Edges tests both halves and needs both to pass. Any tests either and needs one. Separate is the only value that changes the pin set, adding Match Rules (Edges) so the two halves can be given different rules.",
+          "semantics": "It decides which half of a cluster the rules are asked about, and the word tags in the tooltip is narrower than the behaviour: every rule kind applies, not only the tag rules. Vtx and Edges tests both halves and needs both to pass. Any tests either and needs one. Separate is the only value that changes the pin set, adding Match Rules (Edges) so the two halves can be given different rules. On Pathfinding : Find Cells and Pathfinding : Find Cells (Bounded) the block matches seeds to clusters, and Mode and this setting are all it offers there: nothing is redirected, output or capped.",
           "trap": "Under Any the test is short-circuited on the Vtx side, so a target matched there never registers against the edge side. With Limit Matches on, the cap therefore counts edge-side matches only.",
           "interacts_with": [
             "bLimitMatches"
@@ -10172,9 +10162,9 @@
           "type": "bool",
           "tooltip": "Whether to output unmatched data in a separate pin",
           "default": "true",
-          "edit_condition": "Usage != EPCGExMatchingDetailsUsage::Filter",
+          "edit_condition": "Usage != EPCGExMatchingDetailsUsage::Filter && Usage != EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
-          "semantics": "On, unmatched data is redirected to the Unmatched pin. Off, it reveals the two settings below it, which decide whether that data reaches the ordinary output and whether anything is said about it.",
+          "semantics": "On, unmatched data is redirected to the Unmatched pin. Off, it reveals the two settings below it, which decide whether that data reaches the ordinary output and whether anything is said about it. Hidden, and never applied, where the block matches seeds to clusters on the Find Cells nodes.",
           "trap": "It also gates the match cap. With Split Unmatched off, Limit Matches and its Limit stay visible and stop having any effect."
         },
         "bOutputUnmatched": {
@@ -10182,7 +10172,7 @@
           "type": "bool",
           "tooltip": "If enabled, outputs data that got no valid matches. Not all nodes support this options.",
           "default": "true",
-          "edit_condition": "!bSplitUnmatched && Usage != EPCGExMatchingDetailsUsage::Filter",
+          "edit_condition": "!bSplitUnmatched && Usage != EPCGExMatchingDetailsUsage::Filter && Usage != EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
           "semantics": "It is read whether or not it is visible. Turning it off while Split Unmatched is off, then turning Split Unmatched back on, leaves the setting hidden at its off value and the Unmatched pin permanently empty."
         },
@@ -10191,7 +10181,7 @@
           "type": "bool",
           "tooltip": "If enabled, suppresses the warning thrown when an input has no valid target match.",
           "default": "true",
-          "edit_condition": "!bSplitUnmatched && Usage != EPCGExMatchingDetailsUsage::Filter",
+          "edit_condition": "!bSplitUnmatched && Usage != EPCGExMatchingDetailsUsage::Filter && Usage != EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
           "semantics": "The name is the behaviour and the tooltip has it backwards: on, the warning is suppressed. It defaults to on, so with Split Unmatched off nothing at all is reported about data that matched nothing.",
           "trap": "Between that default and unmatched data being dropped, a rule that can never match looks exactly like a rule that works and found nothing."
@@ -10201,7 +10191,7 @@
           "type": "bool",
           "tooltip": "Whether to limit the number of matches or not",
           "default": "false",
-          "edit_condition": "Mode != EPCGExMapMatchMode::Disabled && Usage != EPCGExMatchingDetailsUsage::Sampling && Usage != EPCGExMatchingDetailsUsage::Filter",
+          "edit_condition": "Mode != EPCGExMapMatchMode::Disabled && Usage != EPCGExMatchingDetailsUsage::Sampling && Usage != EPCGExMatchingDetailsUsage::Filter && Usage != EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
           "semantics": "The cap is per target rather than per graph, and only Copy to Points and Cluster : Copy to Points honour it. Copy Tags, Merge Points, Path : Stitch, Pathfinding : Plot Edges and the Clipper2 nodes run their matching uncapped, so the setting is visible and inert on all of them.",
           "interacts_with": [
@@ -10215,7 +10205,7 @@
           "tooltip": "Maximum number of matches allowed.",
           "default": "FPCGExInputShorthandSelectorInteger32(FName(\"@Last\"), 1, false)",
           "overridable": true,
-          "edit_condition": "bLimitMatches && Mode != EPCGExMapMatchMode::Disabled && Usage != EPCGExMatchingDetailsUsage::Sampling && Usage != EPCGExMatchingDetailsUsage::Filter",
+          "edit_condition": "bLimitMatches && Mode != EPCGExMapMatchMode::Disabled && Usage != EPCGExMatchingDetailsUsage::Sampling && Usage != EPCGExMatchingDetailsUsage::Filter && Usage != EPCGExMatchingDetailsUsage::PointToCluster",
           "edit_condition_hides": true,
           "fields": [
             {
@@ -10286,7 +10276,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/matching-details",
       "source": {
         "file": "PCGExMatching/Public/Details/PCGExMatchingDetails.h",
-        "hash": "5f908d4da9450e7a6711995c4ec2928ec0db81f0"
+        "hash": "45b910c85578857af8616b1070f1798c59f5995a"
       }
     },
     "FPCGExNodeSelectionDetails": {
@@ -10753,7 +10743,7 @@
               "name": "Property",
               "display": "Property",
               "type": "FInstancedStruct",
-              "tooltip": "NoResetToDefault: same reasoning as FPCGExPropertyOverrideEntry::Value."
+              "tooltip": "Property type and default value"
             }
           ],
           "semantics": "A declaration is also where a property's choices are authored: the arrow ending its row opens **Edit Choices...**, and ticking `Locked` there swaps the value editor on every row of that property for a dropdown. Rows follow a declaration by identity: a rename or a reorder keeps authored values attached, and a type change keeps rows enabled but resets their values.",
@@ -10817,7 +10807,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertySchema.h",
-        "hash": "20752de7e8f0ca45326b4c6894ee613941325609"
+        "hash": "2eb81fa90e70294ece1677acfe83dcf0041baecb"
       }
     },
     "FPCGExSelectorFactoryBaseConfig": {
@@ -11626,8 +11616,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/common-settings/tensor-sampling-mutations-details",
       "source": {
         "file": "PCGExElementsTensors/Public/Core/PCGExTensor.h",
-        "hash": "c1fe401fe12f5c4dd05920eaab27cb335b16ba4b",
-        "stale": true
+        "hash": "cd84b3bda2cbf4f1b1d87098e4e471476c04334d"
       }
     },
     "FPCGExTopologyDetails": {
@@ -11744,8 +11733,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/common-settings/topology-details",
       "source": {
         "file": "PCGExElementsTopology/Public/PCGExTopology.h",
-        "hash": "f461a9269d167efe171ad5dc8b145566e64e104c",
-        "stale": true
+        "hash": "e3d89cbcca32f3c5b0fcaf6b619e3c64505021b4"
       }
     },
     "FPCGExTransformDetails": {
@@ -11986,8 +11974,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/uvw",
       "source": {
         "file": "PCGExCore/Public/Math/PCGExUVW.h",
-        "hash": "2ed7fc2419496fe7df7f6aa0288bb53f2611ca61",
-        "stale": true
+        "hash": "a7a928bbb5576f84a3536952f397c8145f99260e"
       }
     },
     "UK2Node_GetPCGExEntryProperty": {
@@ -12622,7 +12609,7 @@
               "tooltip": "Optional: a placed actor to capture the property delta from (its class must match Actor). During UpdateStaging the delta is computed from that instance vs its CDO. Its level must not be World Partition: a closed partitioned level cannot be read."
             }
           ],
-          "semantics": "The collection editor's own actions author this list rather than the array widget. Add Selected Actors and the actor-name search mint entries keyed on their delta source actor, so re-running either over the same actors updates the existing rows instead of appending duplicates. Remove Missing drops entries whose source actor is gone from the level currently open and leaves entries pointing at other levels alone; Cleanup drops entries whose source actor's level no longer exists, and entries that name neither an actor class nor a sub-collection. Delta Source Actor is one reference to a placed actor, stored as its path. The row's use-selected button fills it from the viewport selection and sets Actor to that actor's class when the two differ; the browse button opens the actor's level when another one is current, then selects and frames it. At rebuild, a live actor is read directly and a closed level is loaded on demand, except a World Partition level, which loads with no actors and is refused: the entry then keeps its previous delta and warns. The found actor must be of the entry's Actor class, or the delta is skipped with a warning; an entry with no class takes the found actor's class and its delta in the same pass.",
+          "semantics": "The collection editor's own actions author this list rather than the array widget. Add Selected Actors and the actor-name search mint entries keyed on their delta source actor, so re-running either over the same actors updates the existing rows instead of appending duplicates. Remove Missing drops entries whose source actor is gone from the level currently open and leaves entries pointing at other levels alone; Cleanup drops entries whose source actor's level no longer exists, and entries that name neither an actor class nor a sub-collection. Delta Source Actor is one reference to a placed actor, stored as its path; the picker refuses a group actor. The row's use-selected button fills it from the viewport selection and sets Actor to that actor's class when the two differ; the browse button opens the actor's level when another one is current, then selects and frames it. At rebuild, a live actor is read directly and a closed level is loaded on demand, except a World Partition level, which loads with no actors and is refused: the entry then keeps its previous delta and warns. The found actor must be of the entry's Actor class, or the delta is skipped with a warning; an entry with no class takes the found actor's class and its delta in the same pass.",
           "trap": "An entry with a weight but no actor class and no sub-collection stays in the pick pool and produces nothing at spawn. Do Not Ignore Invalid Entries is the toggle that refuses it instead.",
           "interacts_with": [
             "BoundsEvaluator"
@@ -12652,6 +12639,11 @@
         {
           "style": "warning",
           "text": "The bounds pass runs before the delta capture. An entry that names a delta source but no actor class has its class filled in from the found actor during the rebuild, by which point the bounds pass has already been skipped, so its staging bounds stay empty until a second rebuild.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "An entry whose class is editor-only, a Blueprint with Is Editor Only Actor set or a native class from an editor module, stays usable in the editor and is cut from the cook: the cooked collection keeps the row as a weighted slot that spawns nothing, and neither the class, its property delta nor its PCG graph is cooked. The flag is set when the entry stages, and a cook refreshes it for classes already loaded, so a collection saved before the flag existed still gets it.",
           "anchor": "mechanism"
         },
         {
@@ -12689,7 +12681,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/actor-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExActorCollection.h",
-        "hash": "913e4aacd40a70818045f3f8268a8c5c074a9338"
+        "hash": "9a862bbd61d9647c1f9fc7d0f0e048b6a812486c"
       }
     },
     "UPCGExAdjacencyStateFactoryProviderSettings": {
@@ -13319,6 +13311,16 @@
           "style": "warning",
           "text": "Entry identities are minted rather than authored, so a collection whose rows have none yet gets them the first time something asks: on any staging rebuild, when the editor opens it, or when an entry picker is pointed at it, which announces the mint in a toast. Each of those marks the asset dirty, and until it is saved a reference from another asset to one of its rows does not survive a restart.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "A copied entry owns its state. Grid Duplicate, a drag from another collection, an Omni merge, variant seeding and the details panel's array Duplicate and Paste each give the copy its own instanced subobjects and a fresh entry identity, and an entry type that keeps working objects between rebuilds, a PCG data asset row's export among them, starts the copy from nothing rather than sharing them.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "info",
+          "text": "An entry type can declare an entry editor-only, as an actor row does when its class is: the cook then writes the row without its asset, a weighted slot that spawns nothing in game, and reports none of its paths as cook dependencies.",
+          "anchor": "mechanism"
         }
       ],
       "related": [
@@ -13354,7 +13356,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "db7c12658ba54e136d77dcf5d58070c95c4e2140"
+        "hash": "b1ff911053e4c3ff865386a5e79e3931670437ad"
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -13928,8 +13930,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-distribute",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingDistribute.h",
-        "hash": "cff683e04061776146798173b2037ecfcce50d8d",
-        "stale": true
+        "hash": "2578907c9862b1fa492a97405d4cfda3f64f466b"
       }
     },
     "UPCGExAttributeCheckFilterProviderSettings": {
@@ -14257,8 +14258,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/modify/attribute-remap",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExAttributeRemap.h",
-        "hash": "89feda30f4cce3521007ae65791d1af51ec3144e",
-        "stale": true
+        "hash": "c2390ae1c0b8445ef6e3d15df64b86d0e59dd38f"
       }
     },
     "UPCGExAttributeRollingSettings": {
@@ -15060,8 +15060,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/hoist-attributes",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExPromoteAttributes.h",
-        "hash": "5cc9a17495bdac4da90e0b5eb376c3fc59be59db",
-        "stale": true
+        "hash": "541491fa867da5e053ff7a9648c64a730d15335d"
       }
     },
     "UPCGExAutoTangents": {
@@ -15707,7 +15706,7 @@
           "overridable": true,
           "see": "FPCGExNodeSelectionDetails",
           "semantics": "A seed claims one Vtx and only one, so seeds are start points rather than a region. Closest edge finds the nearest edge first and then takes one of its endpoints, which lands differently from Closest vtx when a seed sits beside a long edge. Max Distance is a hard cut at 200 by default: a seed further than that from anything claims nothing, and a cluster left with no seed at all is dropped from the output with a warning.",
-          "trap": "Two seeds resolving to the same Vtx do not both take it. One claims it and the other is discarded, and which of the two wins is not fixed between runs, so Seed Index and any forwarded seed attribute can change there without the graph changing."
+          "trap": "Two seeds resolving to the same Vtx do not both take it. The one earlier in the Seeds dataset claims it and the other is discarded, so the loser's Seed Index and forwarded attributes appear nowhere."
         },
         "DepthAttributeName": {
           "display": "Depth",
@@ -15934,8 +15933,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-bfs-depth",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Elements/PCGExBFSDepth.h",
-        "hash": "122c92c545c752e6a170e346f2af3d59471ed1ed",
-        "stale": true
+        "hash": "817f757a6a132989542f83240343feefc2ce73b6"
       }
     },
     "UPCGExBinPacking3DSettings": {
@@ -16413,8 +16411,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/bin-packing-3d-q4realbpp",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Layout/PCGExBinPacking3D.h",
-        "hash": "6ab1235de772e9fbe314421ffdfba0633cb532f1",
-        "stale": true
+        "hash": "e8854c9d34717b32420ea203b52772ef9c444262"
       }
     },
     "UPCGExBinPackingSettings": {
@@ -16649,8 +16646,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/bin-packing",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/Layout/PCGExBinPacking.h",
-        "hash": "460749362c67ac56f588fbc65c6deef655d4e8ca",
-        "stale": true
+        "hash": "21b9ee317d097e1edaf3cd521dddf0858bfc3ad8"
       }
     },
     "UPCGExBitmaskCollection": {
@@ -16724,8 +16720,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/bitmasks/bitmask-collection",
       "source": {
         "file": "PCGExCore/Public/Data/Bitmasks/PCGExBitmaskCollection.h",
-        "hash": "0051f7aaaa2ad075361c82f86fc3eccb248e27bd",
-        "stale": true
+        "hash": "af707b1836175c3b172b0a8f088c06189f273e53"
       }
     },
     "UPCGExBitmaskFilterProviderSettings": {
@@ -16800,8 +16795,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/math/filter-bitmask",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExBitmaskFilter.h",
-        "hash": "8360219d27e1798b72714645ab55052475a4404e",
-        "stale": true
+        "hash": "f22c46dcf468ef1654b99b27ae31c090593c4608"
       }
     },
     "UPCGExBitmaskMergeSettings": {
@@ -16876,8 +16870,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/bitmasks/bitmask-merge",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Bitmasks/PCGExBitmaskMerge.h",
-        "hash": "cfe06553be2fd3e360dfd059af380db69b1064d2",
-        "stale": true
+        "hash": "3f9a083cc117f09618a126b8756013e0ed402c59"
       }
     },
     "UPCGExBitmaskSettings": {
@@ -17270,8 +17263,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/blending/blend-op-factory",
       "source": {
         "file": "PCGExBlending/Public/Core/PCGExBlendOpFactory.h",
-        "hash": "b74673fc50d4728c927e1177ab9dc2f7fc7deb76",
-        "stale": true
+        "hash": "e3b89c784c77cce2ec65950b385d1fb5387cc374"
       }
     },
     "UPCGExBlendOpFactoryProviderSettings": {
@@ -17747,8 +17739,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-bool-compare",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExBooleanCompareFilter.h",
-        "hash": "491d906c4601b97d3eb9a04d15c1ed459a301046",
-        "stale": true
+        "hash": "f84ec5cebe9eaa2c3afa092f0390e35f2f0407a2"
       }
     },
     "UPCGExBoundsAxisToPointsSettings": {
@@ -18228,8 +18219,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/intersect/path-bounds-intersection",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExBoundsPathIntersection.h",
-        "hash": "b57719980d49122a20df53607ebf360fd2e1cd39",
-        "stale": true
+        "hash": "701e94ab40024a1e9246d0d2e9a9d5f1bcba6174"
       }
     },
     "UPCGExBoundsToPointsSettings": {
@@ -18649,8 +18639,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/branch-on-data",
       "source": {
         "file": "PCGExFoundations/Public/Elements/ControlFlow/PCGExBranchOnDataAttribute.h",
-        "hash": "f0c4099d7f679fd3aa7a9bd76b38a5f15c47fb60",
-        "stale": true
+        "hash": "3ec11fd7c5a29913e83ab9e3bb2322edee5e0737"
       }
     },
     "UPCGExBreakClustersToPathsSettings": {
@@ -18865,8 +18854,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/interop/cluster-break-to-paths",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Paths/PCGExBreakClustersToPaths.h",
-        "hash": "5bd6d3a50d68fbf6d7d6f46271697b7fa60d697b",
-        "stale": true
+        "hash": "50c6ae08b403b30d867447a24217e3f450c8c6c4"
       }
     },
     "UPCGExBuildAssetCollectionSettings": {
@@ -19045,8 +19033,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/build-asset-collection",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExBuildAssetCollection.h",
-        "hash": "bc90b3cc44b59744645f62769f04c1133643a938",
-        "stale": true
+        "hash": "c2d167db992ae911ff6829289ec7682ce3507b68"
       }
     },
     "UPCGExBuildCellDiagramSettings": {
@@ -19695,8 +19682,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/build-custom-graph",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExBuildCustomGraph.h",
-        "hash": "4c5d81b105e596dd9d7d33c6e47c37bcf69f9c4c",
-        "stale": true
+        "hash": "7a638d51c52d4de1e1f82ebaf2898ab8d6534575"
       }
     },
     "UPCGExBuildDelaunayGraph2DSettings": {
@@ -20013,8 +19999,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-delaunay-3d",
       "source": {
         "file": "PCGExElementsClustersDiagrams/Public/Elements/PCGExBuildDelaunayGraph.h",
-        "hash": "a79d539fdbb48026d9e48884588c5d4d26df4868",
-        "stale": true
+        "hash": "8ba1a11df5cbe3f3713e69cf09438205aafe0236"
       }
     },
     "UPCGExBuildDualGraphSettings": {
@@ -21414,7 +21399,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/clipper2-offset",
       "source": {
         "file": "PCGExElementsClipper2/Public/Elements/PCGExClipper2Offset.h",
-        "hash": "6f417bb6b93694d5ae12f770721da9e6fb2fc869"
+        "hash": "a0bd2464087b35112bdc94eead445b09bebd3e4e"
       }
     },
     "UPCGExClipper2ProcessorSettings": {
@@ -22412,8 +22397,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/clipper2-volume",
       "source": {
         "file": "PCGExElementsClipper2/Public/Elements/PCGExClipper2Volume.h",
-        "hash": "2f5377d2c115d85ec93ff88e6022e4db95747672",
-        "stale": true
+        "hash": "0b0b64e7a5f25c63bca38461da2c7489c35400cc"
       }
     },
     "UPCGExClusterCentralitySettings": {
@@ -23249,8 +23233,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-diffuse",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Elements/PCGExClusterDiffuse.h",
-        "hash": "30b7455d44c78cf9394d6395f0c89c1ad2b9b536",
-        "stale": true
+        "hash": "089ddb61ae182f3efa3e3b8ebb6722ce65cae524"
       }
     },
     "UPCGExClusterDiffusionSettings": {
@@ -23676,8 +23659,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Elements/PCGExFloodFillClusters.h",
-        "hash": "e63bf33eea1190dea4e528c55bd2cec8467f4f5e",
-        "stale": true
+        "hash": "a4fb9f6fd128250f5da092f120700af60df19a06"
       }
     },
     "UPCGExClusterFilterFactoryData": {
@@ -25288,7 +25270,7 @@
           "display": "Data Matching",
           "type": "FPCGExMatchingDetails",
           "tooltip": "If enabled, allows you to pick which input gets copied to which target point.",
-          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::Cluster)",
+          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::ClusterToPoint)",
           "see": "FPCGExMatchingDetails",
           "semantics": "`Cluster Match Mode` decides which half of the pair the rules are tested against, and the choice is about more than cost. **Vtx** tests the Vtx data alone and lets its Edges follow. **Edges** tests the Edges data alone, so a cluster tagged only on its Vtx matches nothing. **Any** accepts the target if either half passes. **Vtx and Edges** tests both halves against the same rules and needs each to pass. **Separate** puts a second rule set on its own pin and tests each half against its own. The limit inside the block caps how many targets one cluster may reach, which is what turns a library of pieces into a distribution rather than a broadcast.",
           "trap": "**Any** tests the Vtx half first and stops there once it passes, and that first test is exempt from the limit. With **Limit Matches** on, the limit under **Any** therefore counts edge-side matches alone, and a cluster reaching its targets through their Vtx data goes uncapped.",
@@ -25407,7 +25389,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/transform/cluster-copy-to-points",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExCopyClustersToPoints.h",
-        "hash": "bbe05bf33aa910985889e494a2cbaea276865968"
+        "hash": "6991508037370edb4adb34fb8c832cadbef89089"
       }
     },
     "UPCGExCopyTagsSettings": {
@@ -25560,8 +25542,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/copy-tags",
       "source": {
         "file": "PCGExFoundations/Public/Elements/PCGExCopyTags.h",
-        "hash": "9f1c3a7884c91efebbaa822cf2a85227fa223b5c",
-        "stale": true
+        "hash": "f6535458820dfd8e1b8902530901af101ebfa1fb"
       }
     },
     "UPCGExCopyToPathsSettings": {
@@ -25951,8 +25932,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/copy-to-path",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExCopyToPaths.h",
-        "hash": "63c15c55ac05f74ef151eac34de5b1ba7a910d1a",
-        "stale": true
+        "hash": "8ca19fa477c9a0fadf29212202c54ed022d8c9c8"
       }
     },
     "UPCGExCopyToPointsSettings": {
@@ -26854,7 +26834,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-shared-tag",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchSharedTag.h",
-        "hash": "56002d8e8fa5a689328d0b1079b7e5c391816ee9"
+        "hash": "d12f02a9b42983459c783b7ae6166c8c7f4a81ec"
       }
     },
     "UPCGExCreateMatchTagToAttrSettings": {
@@ -26988,7 +26968,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-matching/match-tags-attributes",
       "source": {
         "file": "PCGExMatching/Public/Matching/PCGExMatchTagToAttr.h",
-        "hash": "c7d4cc13ff1fde6f0efbc831a949f2e4420f47f3"
+        "hash": "84f51744600ab2ff28fa6b7f59a6d7ef2f729ac4"
       }
     },
     "UPCGExCreateShapeCircleSettings": {
@@ -27170,8 +27150,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-circle",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeCircle.h",
-        "hash": "545ca5111dafbc2eec32f0c10aed92bd69279df9",
-        "stale": true
+        "hash": "4b596c898da07a7bfd000454d30c3aafb7f389c2"
       }
     },
     "UPCGExCreateShapeFiblatSettings": {
@@ -27354,8 +27333,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-sphere",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeFiblat.h",
-        "hash": "97782a1f88160ec21a53ecad0116150c7e0fd320",
-        "stale": true
+        "hash": "151f8bae24e5a75545013caed2a56db3b205504d"
       }
     },
     "UPCGExCreateShapeGridSettings": {
@@ -27799,8 +27777,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-polygon",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapePolygon.h",
-        "hash": "3a5f817422f94d846a26910179991185b6b6ce58",
-        "stale": true
+        "hash": "4a36f46f6ac44800cf0a6bc8126a0cfe99c93790"
       }
     },
     "UPCGExCreateShapesSettings": {
@@ -27916,8 +27893,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/create-shapes",
       "source": {
         "file": "PCGExElementsShapes/Public/Elements/PCGExCreateShapes.h",
-        "hash": "4bbe350b129dbde3e3992b18cf5037762b40ec1f",
-        "stale": true
+        "hash": "32366c66319829c41f486651e38f7bf60922ed9f"
       }
     },
     "UPCGExCreateSplineSettings": {
@@ -28072,8 +28048,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/create-spline",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExCreateSpline.h",
-        "hash": "a4e45d508727178c9eb9e440f262e6ad54316a89",
-        "stale": true
+        "hash": "f430b1c682d6d40418d1a15fdc5098c62c78bd16"
       }
     },
     "UPCGExCreateTensorConstantSettings": {
@@ -28935,8 +28910,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/tensors/tensors/tensor-noise-bounded",
       "source": {
         "file": "PCGExElementsTensors/Public/Tensors/PCGExTensorNoiseBounded.h",
-        "hash": "2249fae9c901a3efec997bdd11e94c1e1cad322f",
-        "stale": true
+        "hash": "4cc8ee66ecc2f63fa41e086eff210e21f7cc30b4"
       }
     },
     "UPCGExCreateTensorNoiseSettings": {
@@ -30972,8 +30946,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-hash",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExDataHash.h",
-        "hash": "5b1d5690ae55a89b1348269033fb8a8ddfb297a4",
-        "stale": true
+        "hash": "acea4dbc9ff151699f8df2ee41bc3eecb68315f8"
       }
     },
     "UPCGExDataMatchFilterProviderSettings": {
@@ -31242,8 +31215,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/data-uniques",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExDataUniques.h",
-        "hash": "389614290626ec21d724e63b10e96feae072a673",
-        "stale": true
+        "hash": "518e75d0eb8085d507ed7b87f7b61e91e460d632"
       }
     },
     "UPCGExDebugSettings": {
@@ -32030,8 +32002,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-decomposition/decomp-max-boxes-extended",
       "source": {
         "file": "PCGExElementsClustersDecomp/Public/Decompositions/PCGExDecompMaxBoxesExt.h",
-        "hash": "6edba7423bace19fff1fdd788709f201cf448a1a",
-        "stale": true
+        "hash": "656bd2ebbca4e3a947e5539a4592e3fae5ebde74"
       }
     },
     "UPCGExDecompositionInstancedFactory": {
@@ -32324,7 +32295,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "A Blueprint subclass that overrides Passes Filter replaces the infrastructure rejection rather than adding to it. Hidden actors, editor-only actors, main-world-only actors, level script actors, Info actors, non-volume brushes, navigation data and registered system actor classes all start counting again unless the subclass rejects them itself. Default Actor Content Filter keeps them out because its own implementation runs that rejection first.",
+          "text": "A Blueprint subclass that overrides Passes Filter replaces the infrastructure rejection rather than adding to it. Hidden actors, editor-only actors (group actors among them), main-world-only actors, level script actors, Info actors, non-volume brushes, navigation data and registered system actor classes all start counting again unless the subclass rejects them itself. Default Actor Content Filter keeps them out because its own implementation runs that rejection first.",
           "anchor": "mechanism"
         },
         {
@@ -32354,7 +32325,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/helpers/actor-content-filter",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExActorContentFilter.h",
-        "hash": "6b1bf9a1214d8ea29f28b7a65c1d612746daa3ca"
+        "hash": "b9e66e22f78bb3261ab950cb54af869f44980e3f"
       }
     },
     "UPCGExDefaultActorMeshClassificator": {
@@ -32663,7 +32634,7 @@
           "tooltip": "Controls how Name:Value tags are handled -- on actors, and on each mesh component of a mesh actor.",
           "default": "EPCGExValueTagMode::Parse",
           "enum": "EPCGExValueTagMode",
-          "semantics": "Tag names become attribute names, and the first actor to declare a name fixes that attribute's type for the whole export: a later actor giving the same name a different type has its value discarded with a warning. Tags are parsed for mesh and level points too, from their source actor, not only for actor points. The mode also decides which tags reach the generated actor entries, and only tags carried by every actor behind an entry survive, so a tag placed on some instances of a class is dropped from it. Under Parse the name part of a `Name:Value` tag is not among the tags considered, under Parse and Keep it is, and under No Parsing the actor's raw tags are.",
+          "semantics": "Tag names become attribute names, and one name has one type for the whole export. A mesh component's own tags reach its points as value tags too, ahead of any actor's: on a shared name the component's type and value win, and an actor giving that name another type has its value discarded with a warning; between actors, the first to declare a name fixes the type. Names the export writes itself, `ActorName`, the pick hash attribute and whatever a handler writes on the pin, are never taken by a tag. Tags are parsed for mesh and level points too, from their source actor, and a mesh component's tags join its actor's in deciding which components share an entry. The mode also decides which tags reach the generated actor entries, and only tags carried by every actor behind an entry survive, so a tag placed on some instances of a class is dropped from it. Under Parse the name part of a `Name:Value` tag is not among the tags considered, under Parse and Keep it is, and under No Parsing the actor's raw tags are.",
           "interacts_with": [
             "bGenerateCollections"
           ]
@@ -32712,8 +32683,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter-default",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExDefaultLevelDataExporter.h",
-        "hash": "85008fb9b8cd16b1622487e19052562d73db2e5d",
-        "stale": true
+        "hash": "6b53531e9ae255987ae877759d0ebdc4f9832e87"
       }
     },
     "UPCGExDestroyActorSettings": {
@@ -33008,8 +32978,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/discard-by-overlap",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExDiscardByOverlap.h",
-        "hash": "b60d3189c4a3398dbf2c1ff517e25c11469f5f04",
-        "stale": true
+        "hash": "0cc17f0a64877ead4eaa8724c1bd1ac66f25129b"
       }
     },
     "UPCGExDiscardByPointCountSettings": {
@@ -33493,8 +33462,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/dispatch-subgraphs",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExDispatchSubgraph.h",
-        "hash": "94e9a253416faf8ac2468dba75c3681ea2557c36",
-        "stale": true
+        "hash": "0d5833babdb661a99c131dd29998e9631e37e562"
       }
     },
     "UPCGExDistanceFilterProviderSettings": {
@@ -33594,8 +33562,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-distance",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExDistanceFilter.h",
-        "hash": "f3ac4892e0c1088e987781c3cb98736ab5824445",
-        "stale": true
+        "hash": "0205f71ab0e36fc0ea435b873af567bcd8d76973"
       }
     },
     "UPCGExDistributeTupleSettings": {
@@ -33898,8 +33865,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/math/filter-dot",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExDotFilter.h",
-        "hash": "170be8a5c03c9f06628f4633c89333eba44aaee8",
-        "stale": true
+        "hash": "2c566475d401132475a0d03e0ca237e11ecfd8f3"
       }
     },
     "UPCGExDrawAttributesSettings": {
@@ -34157,8 +34123,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-inclusion-dynamic-mesh",
       "source": {
         "file": "PCGExElementsTopology/Public/Filters/Points/PCGExDynamicMeshFilter.h",
-        "hash": "6dfa3dea74c3e729a0181a882a7f4ae90362299d",
-        "stale": true
+        "hash": "13b790559fc9a4a69fbe8b0725cbacc5080c5521"
       }
     },
     "UPCGExDynamicMeshToClustersSettings": {
@@ -34451,8 +34416,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/edge-filters/edge-filter-endpoints-check",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Edges/PCGExEdgeEndpointsCheckFilter.h",
-        "hash": "5aa3c00e5437acfe026a9574306394560ff44ece",
-        "stale": true
+        "hash": "001f32e3639ea524386a3540e5791cc3a4224a67"
       }
     },
     "UPCGExEdgeEndpointsCompareNumFilterProviderSettings": {
@@ -35038,8 +35002,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/edge-filters/edge-filter-length",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Edges/PCGExEdgeLengthFilter.h",
-        "hash": "95c173f578d1b00e4fade8b051aef822cdefaa73",
-        "stale": true
+        "hash": "e8831d4538a90741b0840e992e215e8865275978"
       }
     },
     "UPCGExEdgeNeighborsCountFilterProviderSettings": {
@@ -35156,8 +35119,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/edge-filters/edge-filter-num-vtx",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Edges/PCGExEdgeNeighborsCountFilter.h",
-        "hash": "d8a72d20f5a599f60de9ee07a6d2a2b88c713f22",
-        "stale": true
+        "hash": "6276ffde9d02f192a611a04d22080fa8c316b21a"
       }
     },
     "UPCGExEdgeOrderSettings": {
@@ -35250,7 +35212,7 @@
           "edit_condition": "Mode != EPCGExEdgeOrderMode::DirectionSettings",
           "edit_condition_hides": true,
           "see": "FPCGExNodeSelectionDetails",
-          "semantics": "Each seed claims one Vtx and that Vtx becomes a root of the traversal, so seeds set where the flow originates rather than which edges are touched. Max Distance is a hard cut at 200 by default, and a cluster left with no seed within range is dropped from the output with a warning rather than passed through unordered.",
+          "semantics": "Each seed claims one Vtx and that Vtx becomes a root of the traversal, so seeds set where the flow originates rather than which edges are touched. Two seeds resolving to the same Vtx do not both take it: the one earlier in the Seeds dataset keeps it. Max Distance is a hard cut at 200 by default, and a cluster left with no seed within range is dropped from the output with a warning rather than passed through unordered.",
           "interacts_with": [
             "Mode"
           ]
@@ -35319,8 +35281,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-edge-order",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExEdgeOrder.h",
-        "hash": "25ab7b6ec00bfe617280a485be02d68825e5bc8d",
-        "stale": true
+        "hash": "092cafdee2dca1f209287053d30c262b7034c376"
       }
     },
     "UPCGExEdgeRefineByFilter": {
@@ -37402,8 +37363,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/shared-settings/factory-provider-base",
       "source": {
         "file": "PCGExCore/Public/Factories/PCGExFactoryProvider.h",
-        "hash": "7efc2edcca5f699dfa64f0784b561c83f7e70f2b",
-        "stale": true
+        "hash": "fb60fc50a1cf37815c71b585734626d4ec4aa7ae"
       }
     },
     "UPCGExFillControlsAttributeAccumulationProviderSettings": {
@@ -37519,8 +37479,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-attribute-accumulation",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlAttributeAccumulation.h",
-        "hash": "2641ea0905595ea0b42881f2c79ad56c662b4809",
-        "stale": true
+        "hash": "424c3acd18382eb1de0f87f6a5c8b41aebbcf7f8"
       }
     },
     "UPCGExFillControlsAttributeThresholdProviderSettings": {
@@ -37629,8 +37588,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-attribute-threshold",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlAttributeThreshold.h",
-        "hash": "f82931fcb2334d21a81f92513dd13f15f0349403",
-        "stale": true
+        "hash": "d13336c30d9476a32477dcb6724517c59c73914d"
       }
     },
     "UPCGExFillControlsBranchLimitProviderSettings": {
@@ -37725,8 +37683,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-branch-limit",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlBranchLimit.h",
-        "hash": "14d0f5f21a68f4ad226eb505897b4a735436bdd4",
-        "stale": true
+        "hash": "d2ee0d234d8def0392c80494e7e37597c4e81c85"
       }
     },
     "UPCGExFillControlsCountProviderSettings": {
@@ -37813,8 +37770,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-count",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlCount.h",
-        "hash": "78f2735e53e9e3a89c1d2b3bec768925acaadf6c",
-        "stale": true
+        "hash": "f4dfe914f966f61918284fe207728a595be1e5bf"
       }
     },
     "UPCGExFillControlsDepthProviderSettings": {
@@ -37901,8 +37857,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-depth",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlDepth.h",
-        "hash": "5df5b63354739927e2325f0bd6edd66783f21154",
-        "stale": true
+        "hash": "72ae0076df09de7e63a6ea8d0766228d262e2c40"
       }
     },
     "UPCGExFillControlsEdgeFiltersProviderSettings": {
@@ -38094,8 +38049,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fill-control",
       "source": {
         "file": "PCGExElementsFloodFill/Public/Core/PCGExFillControlsFactoryProvider.h",
-        "hash": "7ec61ba175f74cc0418f405da60a60b3e2af39f7",
-        "stale": true
+        "hash": "88894333d96c20f7309440fed954df7379cbad66"
       }
     },
     "UPCGExFillControlsHeuristicsBudgetProviderSettings": {
@@ -38227,8 +38181,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-heuristics-budget",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlHxBudget.h",
-        "hash": "ccccd2d3b60241dac470edd9d26278fff0b7d59c",
-        "stale": true
+        "hash": "36d2205800282485b24a98d4577a07ed289b8aa5"
       }
     },
     "UPCGExFillControlsHeuristicsScoringProviderSettings": {
@@ -38365,8 +38318,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-heuristics-scoring",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlHxScoring.h",
-        "hash": "3cb3a562d27c2b51e9ce852d05c365adb6e2cd81",
-        "stale": true
+        "hash": "e021d9368c68e3070680ae8986ce1c3ee940450f"
       }
     },
     "UPCGExFillControlsHeuristicsThresholdProviderSettings": {
@@ -38513,8 +38465,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-heuristics-threshold",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlHxThreshold.h",
-        "hash": "d01ea3690f7e33a49265f75f892cf2196c4a35c1",
-        "stale": true
+        "hash": "2b5d324ef5d476938fffbbb4fe9cd341b8869b4f"
       }
     },
     "UPCGExFillControlsKeepDirectionProviderSettings": {
@@ -38608,8 +38559,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-keep-direction",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlKeepDirection.h",
-        "hash": "209b6f4ad8b955f1398601fcc7233ecd783fe81d",
-        "stale": true
+        "hash": "61b6d0adfffe4cf82cc7bf191d0f41c823249f5c"
       }
     },
     "UPCGExFillControlsLengthProviderSettings": {
@@ -38703,8 +38653,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-length",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlLength.h",
-        "hash": "48c619ab2dcaa9fc40a32c1b44fb85cdcf5f08c3",
-        "stale": true
+        "hash": "a634ee646395df0eb2d309984d42e9e625fb1ca5"
       }
     },
     "UPCGExFillControlsRunningAverageProviderSettings": {
@@ -38804,8 +38753,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-running-average",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlRunningAverage.h",
-        "hash": "cd9683b85687ed255adf038fec43ddbb543607c1",
-        "stale": true
+        "hash": "ebfec3f0126882437f0a33ff73998271bd50ef58"
       }
     },
     "UPCGExFillControlsVtxFiltersProviderSettings": {
@@ -38912,8 +38860,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cluster-flood-fill/fc-vtx-filters",
       "source": {
         "file": "PCGExElementsFloodFill/Public/FillControls/PCGExFillControlVtxFilters.h",
-        "hash": "74ae18b38f2c492fbd9e5a557f7e25e11af80c87",
-        "stale": true
+        "hash": "081a2f16dda0c8a5507852e7455cb33f6cbb2acd"
       }
     },
     "UPCGExFilterFactoryData": {
@@ -38980,8 +38927,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/common-settings/filter-definition/point-filter-definition",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExPointFilter.h",
-        "hash": "3f5c14e1dbb50e87d218dc8c33405e83b2980c6b",
-        "stale": true
+        "hash": "97f8f9c9562ea177abfb0bc44f055a5ada8f2259"
       }
     },
     "UPCGExFilterGroupProviderSettings": {
@@ -39500,11 +39446,11 @@
           },
           {
             "label": "CellBounds",
-            "note": "The oriented box points, one dataset per cluster per category, tagged the same way.",
+            "note": "The oriented box points, one dataset per cluster per category, tagged the same way and ordered inside, touching, outside within each cluster.",
             "condition": "Combined mode, with Output Cell Bounds on"
           }
         ],
-        "dynamic": "The output pin set is computed from `Output Mode` and the two `Artifacts` switches, so it changes as the node is configured. In Separate mode all six category pins exist whatever `Triage Flags` says, and the ones for categories that are switched off are marked advanced rather than removed."
+        "dynamic": "The output pin set is computed from `Output Mode` and the two `Artifacts` switches, so it changes as the node is configured. In Separate mode every category pin of an enabled artifact exists whatever `Triage Flags` says, and the ones for categories that are switched off are marked advanced rather than removed."
       },
       "settings": {
         "OutputMode": {
@@ -39537,7 +39483,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "Applied before the sort, so a cell that failed a size or shape limit never reaches a category at all. `Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for; `Keep if Sole` puts it back when nothing else survived, and it is then sorted like any other cell.",
+          "semantics": "Applied before the sort, so a cell that failed a size or shape limit never reaches a category at all. `Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for; `Keep if Sole` puts it back when nothing else survived, skipping the merge, and it is then sorted like any other cell.",
           "interacts_with": [
             "TriageFlags"
           ]
@@ -39559,8 +39505,12 @@
           "tooltip": "Hole growth settings. Expands hole exclusion to adjacent cells.",
           "overridable": true,
           "see": "FPCGExCellGrowthDetails",
-          "semantics": "`Growth` reaches out from a hole point, removing the cells around the one it landed in, counted in cells, and it does nothing without a **Holes** dataset.",
-          "trap": "`Merge Adjacent Cells` on this node is not the setting its own description promises. There are no seeds here, and it is not gated on `Growth`: turning it on fuses every surviving cell into one path per connected run of them, before the sort, so what gets classified is the fused outlines rather than the original cells."
+          "semantics": "`Growth` reaches out from a hole point: the cell it lands in is dropped whatever the depth, and the depth then removes the cells around it, counted in cells. It does nothing without a **Holes** dataset.",
+          "trap": "`Merge Adjacent Cells` fuses every surviving cell before the sort, into one closed path per connected region plus one per gap enclosed inside it, and each merged outline is then classified by its own centre and extent. With `Outside` off, cells clear of the box are never built, so an outline stops at them. It needs the outer boundary out of the set: with `Omit Wrapping Bounds` off and that boundary among the survivors nothing merges, without a warning.",
+          "interacts_with": [
+            "Constraints",
+            "TriageFlags"
+          ]
         },
         "ProjectionDetails": {
           "display": "Projection Details",
@@ -39580,7 +39530,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "The **Bounds** pin uses one box and nothing else: the first dataset on the pin, reduced to its overall axis-aligned extent. A rotated volume is tested as the upright box containing it, a sphere as the cube around it, and a second dataset wired alongside the first is ignored. Combine several regions into one dataset upstream, or run the node once per region.",
+          "text": "The **Bounds** pin uses one box and nothing else: the first dataset on the pin, reduced to its overall axis-aligned extent. A rotated volume is tested as the upright box containing it, a sphere as the cube around it, and a second dataset wired alongside the first is ignored. Point data is measured by its density bounds, each point's bounds scaled by two minus its Steepness, so at the default Steepness of 0.5 the box is one and a half times the points' own bounds; Steepness 1 makes the two agree. Combine several regions into one dataset upstream, or run the node once per region.",
           "anchor": "pins"
         }
       ],
@@ -39609,8 +39559,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-all-cells-bounded",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindAllCellsBounded.h",
-        "hash": "0385362b3d490edd3f52a0dc7e61f035ef1241cc",
-        "stale": true
+        "hash": "9321e5f036ac395cf5c2cdcaa028c2a74184d393"
       }
     },
     "UPCGExFindAllCellsSettings": {
@@ -39620,15 +39569,15 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsPathfinding",
       "classification": "node",
-      "purpose": "The whole decomposition at once: every region the cluster's edges enclose, without anything having to point at them. That makes it the node for treating a network as a set of tiles rather than picking out particular rooms, which is what **Pathfinding : Find Cells** is for. A **Holes** input subtracts from the result, dropping any cell one of those points falls inside, so regions something else already occupies come out of the set before it is handed on.",
+      "purpose": "The whole decomposition at once: every region the cluster's edges enclose, without anything having to point at them. That makes it the node for treating a network as a set of tiles rather than picking out particular rooms, which is what **Pathfinding : Find Cells** is for. A **Holes** input subtracts from the result, dropping any cell one of those points falls inside, so regions something else already occupies come out of the set before it is handed on. With `Merge Adjacent Cells` on it outlines instead of tiling: the surviving cells fuse into one closed path per connected region, plus one per gap enclosed inside it.",
       "situation": "A planar cluster whose faces are the point of it, and every one of them is wanted.",
       "mechanism": {
         "text": "The cluster is flattened onto the projection plane and every closed loop of edges in it is traced, once each. The constraints decide which of those survive, a wired **Holes** dataset then removes any surviving cell that one of its points falls inside, and what remains is the cluster's complete decomposition minus those removals. Nothing here selects regions, so the number of cells out follows the cluster's own structure rather than anything supplied alongside it. What each cell becomes, a closed path or a point carrying its box, is the `Artifacts` block's decision."
       },
       "off_label": [
         {
-          "claim": "Turn `Merge Adjacent Cells` on with no **Holes** wired and the node stops decomposing and starts outlining: every cell that survived the constraints is fused into one path per connected run of them. A constraint that removes cells in the middle is then what decides where the outlines break apart.",
-          "grounded_in": "The MergeAdjacentCells call in PCGExFindAllCells::FProcessor::Process is gated on bMergeAdjacentCells alone, with no test on hole presence or growth depth."
+          "claim": "Wire **Holes** and turn `Merge Adjacent Cells` on, and a removed cell enclosed by surviving ones comes back as its own closed path: the outline of the gap. The hole points then double as a way to cut openings into the merged outline, one per enclosed gap, each shaped by the cluster's own edges.",
+          "grounded_in": "PCGExClusters::MergeAdjacentCells traces every boundary loop of the merged face set through FPlanarFaceEnumerator::TraceRegionBoundaries, where a half-edge is a boundary whenever its twin's face is outside the set; a gap's rim qualifies the same way as the outer rim, and each loop becomes one output cell."
         }
       ],
       "pins": {
@@ -39652,12 +39601,12 @@
         "outputs": [
           {
             "label": "Paths",
-            "note": "One closed path per surviving cell. Staged inactive when Output Paths is off or nothing survived.",
+            "note": "One closed path per surviving cell, or per merged outline when Merge Adjacent Cells is on. Staged inactive when Output Paths is off or nothing survived.",
             "condition": "when Output Paths is on"
           },
           {
             "label": "CellBounds",
-            "note": "One dataset per cluster, holding one point per surviving cell with that cell's oriented box. Staged inactive when Output Cell Bounds is off or nothing survived.",
+            "note": "One dataset per cluster, holding one point per surviving cell, or per merged outline, with its oriented box. Staged inactive when Output Cell Bounds is off or nothing survived.",
             "condition": "when Output Cell Bounds is on"
           }
         ],
@@ -39670,7 +39619,7 @@
           "default": "FPCGExCellConstraintsDetails(true)",
           "overridable": true,
           "see": "FPCGExCellConstraintsDetails",
-          "semantics": "`Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for at all, not merely whether it is kept, so with it off the boundary comes out as one more cell alongside the interior ones. `Keep if Sole` matters on a cluster with no interior faces, where it is the difference between one boundary path and nothing.",
+          "semantics": "`Omit Wrapping Bounds` decides whether the cluster's outer boundary is looked for at all, not merely whether it is kept, so with it off the boundary comes out as one more cell alongside the interior ones. `Keep if Sole` puts the boundary back whenever nothing else survived, whether the cluster had no interior faces or holes and limits removed them all, and it never goes through the merge.",
           "interacts_with": [
             "Artifacts"
           ]
@@ -39692,8 +39641,8 @@
           "tooltip": "Hole growth settings. Expands hole exclusion to adjacent cells.",
           "overridable": true,
           "see": "FPCGExCellGrowthDetails",
-          "semantics": "`Growth` reaches out from a hole rather than from a seed: it removes the cells around the one the hole point landed in, counted in cells, and the depth can differ per hole point when it is read from an attribute. It does nothing without a **Holes** dataset, since there is no hole to grow from.",
-          "trap": "`Merge Adjacent Cells` on this node is not the setting its own description promises. There are no seeds here, and it is not gated on `Growth`: turning it on fuses every surviving cell into one path per connected run of them, which on an ordinary decomposition means the entire output collapses to a single outline.",
+          "semantics": "`Growth` reaches out from a hole rather than from a seed: the cell a hole point lands in is dropped whatever the depth, and the depth then removes the cells around it, counted in cells, differing per hole point when it is read from an attribute. It does nothing without a **Holes** dataset, since there is no hole to grow from.",
+          "trap": "`Merge Adjacent Cells` fuses every surviving cell into one closed path per connected region, plus one per gap enclosed inside it, so on an ordinary decomposition the entire output collapses to a single outline per cluster, and a cell removed by a hole or a constraint in the middle comes back as the outline of its gap. It needs the outer boundary out of the set: with `Omit Wrapping Bounds` off and that boundary among the survivors there is no rim left to trace, and the cells come out unmerged, without a warning.",
           "interacts_with": [
             "Constraints"
           ]
@@ -39749,8 +39698,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-all-cells",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindAllCells.h",
-        "hash": "226cdbbf91c77457fbc84bc908409eb559da3c68",
-        "stale": true
+        "hash": "2b4513f1a4d0e66deaf0133132257fe8dc8cec8a"
       }
     },
     "UPCGExFindClusterHullSettings": {
@@ -39867,8 +39815,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cluster-hull",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindClusterHull.h",
-        "hash": "d766c2ec9e47236b5ea93ebf9d05b2f0bb2de9ea",
-        "stale": true
+        "hash": "c0c1b87e9c67a3314356aa468068b2e1b0997dfc"
       }
     },
     "UPCGExFindClustersDataSettings": {
@@ -40005,10 +39952,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsPathfinding",
       "classification": "node",
-      "purpose": "**Pathfinding : Find Cells** with the cells the seeds claimed sorted by how each one sits against a box. The bound sorts rather than cuts, so a claimed cell that hangs over the edge arrives whole on the touching route instead of being trimmed to fit. Seeds still decide which regions are taken at all, which is the difference from **Pathfinding : Find All Cells (Bounded)**, where every region in the cluster is sorted.",
+      "purpose": "**Pathfinding : Find Cells** with the cells the seeds claimed sorted by how each one sits against a box. The bound sorts rather than cuts, so a claimed cell that hangs over the edge arrives whole on the touching route instead of being trimmed to fit. Seeds still decide which regions are taken at all, and `Seed Matching` still restricts each seed to the clusters it matches, which is the difference from **Pathfinding : Find All Cells (Bounded)**, where every region in the cluster is sorted.",
       "situation": "Seeded regions near the edge of a working area, where the ones that spill past it have to be handled differently from the ones that do not.",
       "mechanism": {
-        "text": "The cluster is flattened, its cells are traced, and the constraints thin them, exactly as **Pathfinding : Find Cells** does. A cell is then kept when a seed's projected position falls inside it, with `Seed Ownership` settling contested cells and `Seed Growth` extending a claim to neighbouring cells. Each kept cell is then sorted against the bounds: inside when its centre lies within them, touching when its centre is outside but the cell still reaches in, outside when it does not reach them at all. `Triage Flags` says which of the three are wanted and the rest are dropped, and `Output Mode` decides whether they leave on a pin each or share one pin carrying a tag. No cell is cut by the bounds."
+        "text": "The cluster is flattened, its cells are traced, and the constraints thin them, exactly as **Pathfinding : Find Cells** does. `Seed Matching` decides which seeds take part in this cluster, a cell is kept when one of them falls inside it once projected, `Seed Ownership` settles contested cells and `Seed Growth` extends a claim to neighbouring cells. Each kept cell is then sorted against the bounds: inside when its centre lies within them, touching when its centre is outside but the cell still reaches in, outside when it does not reach them at all. `Triage Flags` says which of the three are wanted and the rest are dropped, and `Output Mode` decides whether they leave on a pin each or share one pin carrying a tag. No cell is cut by the bounds."
       },
       "pins": {
         "inputs": [
@@ -40037,6 +39984,18 @@
             "note": "Sorting rules ranking the seeds against each other.",
             "required": "conditional",
             "condition": "when Seed Ownership is Best Candidate, and advanced otherwise"
+          },
+          {
+            "label": "Match Rules",
+            "note": "The rules each seed is tested against, cluster by cluster. Required once `Seed Matching` is enabled, and tucked under Advanced while it is not.",
+            "required": "conditional",
+            "condition": "when Seed Matching's Mode is All or Any; advanced otherwise"
+          },
+          {
+            "label": "Match Rules (Edges)",
+            "note": "A second rule set tested against the Edges half alone, so a cluster can be matched on different criteria for each half.",
+            "required": "conditional",
+            "condition": "when Cluster Match Mode is Separate and Seed Matching's Mode is All or Any; the pin exists only under Separate"
           }
         ],
         "outputs": [
@@ -40091,7 +40050,7 @@
             "condition": "when Output Filtered Seeds is on"
           }
         ],
-        "dynamic": "The output pin set is computed from `Output Mode`, the two `Artifacts` switches and `Output Filtered Seeds`, so it changes as the node is configured. In Separate mode all six category pins exist whatever `Triage Flags` says, and the ones for categories that are switched off are marked advanced rather than removed."
+        "dynamic": "The output pin set is computed from `Output Mode`, the two `Artifacts` switches and `Output Filtered Seeds`, so it changes as the node is configured. In Separate mode all six category pins exist whatever `Triage Flags` says, and the ones for categories that are switched off are marked advanced rather than removed. On the input side, **Match Rules (Edges)** appears only while `Seed Matching` is set to Separate."
       },
       "settings": {
         "OutputMode": {
@@ -40125,10 +40084,24 @@
           "tooltip": "Drive how a seed selects a node.",
           "overridable": true,
           "see": "FPCGExNodeSelectionDetails",
-          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed. At the default of -1 neither cap applies.",
+          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`, and `Seed Matching` removes seeds from the run the same way. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed. At the default of -1 neither cap applies.",
           "trap": "`Picking Method` is not consulted here. A seed reaches a cell by falling inside it once both are flattened, never by being nearest a Vtx or an edge.",
           "interacts_with": [
-            "ProjectionDetails"
+            "ProjectionDetails",
+            "SeedMatching"
+          ]
+        },
+        "SeedMatching": {
+          "display": "Seed Matching",
+          "type": "FPCGExMatchingDetails",
+          "tooltip": "Restrict each seed to the clusters it matches: the seed point is the per-point side, the cluster's vtx/edges tags and @Data the candidate. A Match : Tags × Attributes rule pairs a seed's Island attribute with an `island:` tag.",
+          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::PointToCluster)",
+          "see": "FPCGExMatchingDetails",
+          "semantics": "Each seed is tested against each cluster, and the two sides of a rule are fixed: the seed point is the side a rule reads per point, and the cluster's dataset, with its tags and @Data values, is the candidate it is compared against. `Cluster Match Mode` says which dataset: `Vtx` tests the Vtx half, `Edges` the Edges half, `Any` passes if either does, `Vtx and Edges` needs both to pass the same rules, and `Separate` puts the rules for the Edges half on their own pin. A seed that does not match a cluster is left out of that cluster's run as though it sat outside its bounds: it claims no cell there and cannot claim the outer boundary. The same seed still competes in every cluster it does match, which is what lets one seeds dataset serve a stack of islands at once. There is no unmatched output and no match limit on this block; a seed that matches no cluster anywhere is reported on **SeedGenFailed** with the seeds that landed nowhere. Matching runs before any cell is looked at, so a cell of a cluster a seed does not match never reaches a category through that seed.",
+          "trap": "A `Mode` other than Disabled with nothing wired on **Match Rules** is a missing-input error, and the node emits nothing at all; it does not fall back to letting every seed through.",
+          "interacts_with": [
+            "SeedPicking",
+            "bOutputFilteredSeeds"
           ]
         },
         "SeedOwnership": {
@@ -40222,10 +40195,11 @@
           "tooltip": "Output a filtered set of points containing only seeds that claimed a valid cell, merged cells included.",
           "default": "false",
           "overridable": true,
-          "semantics": "The two pins arrive together and between them carry every seed point. Success means this seed owns at least one cell in a category `Triage Flags` keeps, or had its cell fused into a merged one there, so switching a category off can take success away from it.",
+          "semantics": "The two pins arrive together and between them carry every seed point. Success means this seed owns at least one cell in a category `Triage Flags` keeps, or had its cell fused into a merged one there, so switching a category off can take success away from it. A seed that `Seed Matching` kept out of every cluster is on **SeedGenFailed** like one that landed on empty space.",
           "interacts_with": [
             "TriageFlags",
-            "Artifacts"
+            "Artifacts",
+            "SeedMatching"
           ]
         },
         "SeedMutations": {
@@ -40359,8 +40333,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells-bounded",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCellsBounded.h",
-        "hash": "258f393d7c302c88d3c55de01da3d627b2a49a64",
-        "stale": true
+        "hash": "6f322ede1298d8f24386346027660b0613ec7f89"
       }
     },
     "UPCGExFindContoursSettings": {
@@ -40370,10 +40343,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExElementsPathfinding",
       "classification": "node",
-      "purpose": "Takes the cell around each seed you hand it, and nothing else. Every closed region a cluster's edges enclose is found first, and a seed's projected position is what picks one out, so this is the node for naming the regions you want by dropping points in them. **Pathfinding : Find All Cells** is the exhaustive counterpart, taking every region whether anything points at it or not, and **Pathfinding : Find Cells (Bounded)** is this same seeded pick with a spatial classification added on top.",
+      "purpose": "Takes the cell around each seed you hand it, and nothing else. Every closed region a cluster's edges enclose is found first, and a seed's projected position is what picks one out, so this is the node for naming the regions you want by dropping points in them. When one seeds dataset serves several clusters, `Seed Matching` restricts each seed to the clusters it matches by tag or @Data, so a seed only claims where it belongs. **Pathfinding : Find All Cells** is the exhaustive counterpart, taking every region whether anything points at it or not, and **Pathfinding : Find Cells (Bounded)** is this same seeded pick with a spatial classification added on top.",
       "situation": "A cluster whose interior regions matter one at a time, and points already sitting in the ones that matter.",
       "mechanism": {
-        "text": "The cluster is flattened onto the projection plane, and every closed loop of edges in it becomes a candidate cell. The constraints decide which of those survive, then a survivor is kept when at least one seed's projected position falls inside it, with `Seed Ownership` settling a cell that several fall into. A seed landing in no surviving cell claims nothing, and a cell no seed landed in is dropped, so at most one cell comes out per seed until `Seed Growth` lets a seed claim its cell's neighbours as well. What each owned cell then becomes, a closed path or a point carrying its box, is the `Artifacts` block's decision."
+        "text": "The cluster is flattened onto the projection plane, and every closed loop of edges in it becomes a candidate cell. The constraints decide which of those survive, and `Seed Matching` decides which seeds take part in this cluster at all. A survivor is then kept when at least one taking-part seed's projected position falls inside it, with `Seed Ownership` settling a cell that several fall into. A seed landing in no surviving cell claims nothing, and a cell no seed landed in is dropped, so at most one cell comes out per seed until `Seed Growth` lets a seed claim its cell's neighbours as well. What each owned cell then becomes, a closed path or a point carrying its box, is the `Artifacts` block's decision."
       },
       "off_label": [
         {
@@ -40403,6 +40376,18 @@
             "note": "Sorting rules ranking the seeds against each other.",
             "required": "conditional",
             "condition": "when Seed Ownership is Best Candidate, and advanced otherwise"
+          },
+          {
+            "label": "Match Rules",
+            "note": "The rules each seed is tested against, cluster by cluster. Required once `Seed Matching` is enabled, and tucked under Advanced while it is not.",
+            "required": "conditional",
+            "condition": "when Seed Matching's Mode is All or Any; advanced otherwise"
+          },
+          {
+            "label": "Match Rules (Edges)",
+            "note": "A second rule set tested against the Edges half alone, so a cluster can be matched on different criteria for each half.",
+            "required": "conditional",
+            "condition": "when Cluster Match Mode is Separate and Seed Matching's Mode is All or Any; the pin exists only under Separate"
           }
         ],
         "outputs": [
@@ -40436,11 +40421,25 @@
           "tooltip": "Drive how a seed selects a node.",
           "overridable": true,
           "see": "FPCGExNodeSelectionDetails",
-          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and it caps how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed at all. At the default of -1 neither cap applies.",
+          "semantics": "`Within Cluster Bounds` and `Max Distance` are the fields this node reads. The first takes a seed out of a cluster's run before any cell is tested when it sits outside that cluster's box grown by `Bounds Inclusion Offset`, and `Seed Matching` removes seeds from the run the same way. `Max Distance` caps how far a seed may sit off a cell's own plane before that cell will claim it, and it caps how far outside the cluster a seed may sit and still claim the outer boundary in the case where no interior cell was claimed at all. At the default of -1 neither cap applies.",
           "trap": "`Picking Method` is not consulted here. A seed reaches a cell by falling inside it once both are flattened, never by being nearest a Vtx or an edge, so changing the method changes nothing.",
           "interacts_with": [
             "ProjectionDetails",
-            "Constraints"
+            "Constraints",
+            "SeedMatching"
+          ]
+        },
+        "SeedMatching": {
+          "display": "Seed Matching",
+          "type": "FPCGExMatchingDetails",
+          "tooltip": "Restrict each seed to the clusters it matches: the seed point is the per-point side, the cluster's vtx/edges tags and @Data the candidate. A Match : Tags × Attributes rule pairs a seed's Island attribute with an `island:` tag.",
+          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::PointToCluster)",
+          "see": "FPCGExMatchingDetails",
+          "semantics": "Each seed is tested against each cluster, and the two sides of a rule are fixed: the seed point is the side a rule reads per point, and the cluster's dataset, with its tags and @Data values, is the candidate it is compared against. `Cluster Match Mode` says which dataset: `Vtx` tests the Vtx half, `Edges` the Edges half, `Any` passes if either does, `Vtx and Edges` needs both to pass the same rules, and `Separate` puts the rules for the Edges half on their own pin. A seed that does not match a cluster is left out of that cluster's run as though it sat outside its bounds: it claims no cell there and cannot claim the outer boundary. The same seed still competes in every cluster it does match, which is what lets one seeds dataset serve a stack of islands at once. There is no unmatched output and no match limit on this block; a seed that matches no cluster anywhere is reported on **SeedGenFailed** with the seeds that landed nowhere.",
+          "trap": "A `Mode` other than Disabled with nothing wired on **Match Rules** is a missing-input error, and the node emits nothing at all; it does not fall back to letting every seed through.",
+          "interacts_with": [
+            "SeedPicking",
+            "bOutputFilteredSeeds"
           ]
         },
         "SeedOwnership": {
@@ -40532,7 +40531,10 @@
           "tooltip": "Output a filtered set of points containing only seeds that claimed a valid cell, merged cells included.",
           "default": "false",
           "overridable": true,
-          "semantics": "The two pins arrive together and between them carry every seed point, so the pair partitions the input rather than trimming it."
+          "semantics": "The two pins arrive together and between them carry every seed point, so the pair partitions the input rather than trimming it. A seed that `Seed Matching` kept out of every cluster is on **SeedGenFailed** like one that landed on empty space.",
+          "interacts_with": [
+            "SeedMatching"
+          ]
         },
         "SeedMutations": {
           "display": "Seed Mutations",
@@ -40632,7 +40634,7 @@
       "hints": [
         {
           "style": "warning",
-          "text": "A cluster where no cell was claimed emits nothing for that cluster, and a run where no cluster claimed anything emits nothing at all. There is no warning for either, so **SeedGenFailed** is the way to tell a bad seed placement from a cluster that produced no cells to begin with.",
+          "text": "A cluster where no cell was claimed emits nothing for that cluster, and a run where no cluster claimed anything emits nothing at all. There is no warning for either, so **SeedGenFailed** is the way to tell a bad seed placement, or a seed that `Seed Matching` kept out of every cluster, from a cluster that produced no cells to begin with.",
           "anchor": "mechanism"
         }
       ],
@@ -40665,8 +40667,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/cells/find-cells",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingFindCells.h",
-        "hash": "12d1d99a853b6214b4425405c68d400e0df05cd5",
-        "stale": true
+        "hash": "d01cfd4b33315965c0a6be5d0e63fcff4bd648a4"
       }
     },
     "UPCGExFindPointOnBoundsClustersSettings": {
@@ -41712,8 +41713,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/modify/format-attributes",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExFormatAttributes.h",
-        "hash": "351c31583b4437a01d39499b82315527fe22ed71",
-        "stale": true
+        "hash": "21cc326534e6c5ab1bd564c3526cd4f4008f81bf"
       }
     },
     "UPCGExFromNeighborsTangents": {
@@ -42430,8 +42430,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-fuse-collinear",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExFuseCollinear.h",
-        "hash": "a787e95e6e8b0997470d8198e898582481c15b31",
-        "stale": true
+        "hash": "6f8094b7f16de00dfe48fb87709dac66c4fec721"
       }
     },
     "UPCGExFusePointsSettings": {
@@ -43312,7 +43311,7 @@
         },
         {
           "style": "info",
-          "text": "Entries written by a preview-mode generation shadow persisted ones of the same ID for every reader, and an entry hidden by a preview clear reads as absent, until a non-preview write replaces them.",
+          "text": "What a read finds follows the host actor, not the editing mode of whoever wrote it. On an actor that can be saved every write persists, preview generations included, so a read after a reload still finds what a preview generation stored. A host that can never be saved, a pooled runtime partition actor or a preview-spawned actor, holds transient entries that last the session at most.",
           "anchor": "mechanism"
         },
         {
@@ -43374,8 +43373,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/get-cached-data",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExGetCachedData.h",
-        "hash": "5a4f7096398661983f28d258deec8e763f77aabf",
-        "stale": true
+        "hash": "d83d1340f853c151cf9e9b48d5c285eeaef0457e"
       }
     },
     "UPCGExGetCollectionDataSettings": {
@@ -43918,8 +43916,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/get-collection-data",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExGetCollectionData.h",
-        "hash": "a904edb897e548f89258c8ad21ff585f40f81719",
-        "stale": true
+        "hash": "0bfce3360c1d9ff57a6d728fd6e0c0d865eba2e2"
       }
     },
     "UPCGExGetGUIDSettings": {
@@ -44233,8 +44230,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/get-partition-actor",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExGetPartitionActor.h",
-        "hash": "5acbf7953cae478aee57e5d959af3080f9200a47",
-        "stale": true
+        "hash": "dccfac6c4e6e3e6df196bdea9585a68879bdad4d"
       }
     },
     "UPCGExGetPathDataSettings": {
@@ -44685,8 +44681,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/get-properties-data",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExGetPropertiesData.h",
-        "hash": "f6ef19d49ef8b4fe28cd0fded64e6672d94da148",
-        "stale": true
+        "hash": "f5ef5e18baa7a89ae83b0e7d5dba360dab688ecb"
       }
     },
     "UPCGExGetTextureDataSettings": {
@@ -44844,8 +44839,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/textures/get-texture-data",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExGetTextureData.h",
-        "hash": "662fc78e281e5f28c3b094661567a3855c6e2d92",
-        "stale": true
+        "hash": "c93116e3fc52b55e79e72da3a00532c33cbdd49c"
       }
     },
     "UPCGExGoalPicker": {
@@ -45437,8 +45431,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/heuristics/heuristics-definition",
       "source": {
         "file": "PCGExHeuristics/Public/Core/PCGExHeuristicsFactoryProvider.h",
-        "hash": "c6560bbce69344fc0f98eb2d79dfc52b65e8549e",
-        "stale": true
+        "hash": "abc6d8dac4bdd7651dfd0b184676769cde7b079c"
       }
     },
     "UPCGExHeuristicsGradientProviderSettings": {
@@ -46179,8 +46172,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/edge-filters/edge-filter-edge-direction",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Edges/PCGExIsoEdgeDirectionFilter.h",
-        "hash": "971ad4853cf023f288338b224c868748b4d688a7",
-        "stale": true
+        "hash": "e0da097c9353cd7a28a866237d762d6dc35dcad4"
       }
     },
     "UPCGExIterationsSettings": {
@@ -46430,8 +46422,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/level-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExLevelCollection.h",
-        "hash": "cf66744e4a89970dd71d952df8ab6ca8fdd38ff4",
-        "stale": true
+        "hash": "8f6d4396773bfa193ba9433558e7b6b8981765e8"
       }
     },
     "UPCGExLevelDataExporter": {
@@ -46443,7 +46434,7 @@
       "purpose": "Level export is a replaceable step, and this is the class that replaces it. One exporter instance sits on a PCG Data Asset Collection and serves every Level and Actor row on it, so what a subclass decides here is what capture means for that whole collection: which actors count, what shape the data comes out in, what runs alongside. A subclass declares its own settings, and they appear in the collection's details panel underneath the exporter field. The class is abstract, so something always stands in it: the shipped Default Level Data Exporter when nothing else is assigned.",
       "situation": "A project needs its levels captured on its own terms, and the shipped exporter's rules are not those terms.",
       "mechanism": {
-        "text": "Rebuilding staging hands the exporter an export source and one empty PCG data asset, and expects tagged data on that asset in return. The source is a loaded world, the actors to consider and the frame the output is expressed in: the whole persistent level at the world origin for a Level row, or the root's attached descendants relative to the root for an Actor row, the root itself never exported. The row stages what came back, the asset's path and the combined bounds of its spatial data; a failed export leaves it staging nothing. Two entry points do the same job: the simple one, which a Blueprint subclass overrides and receives the world alone, and the full one, a C++ override that receives the source and also reports which meshes and nested level instances were contributed, so the collection can pool storage across rows, write the pick hashes and build the Collection Map afterwards."
+        "text": "Rebuilding staging hands the exporter an export source and one empty PCG data asset, and expects tagged data on that asset in return. The source is a loaded world, the actors to consider and the frame the output is expressed in: the whole persistent level in level space for a Level row, or the root's attached descendants and group members relative to it for an Actor row, the root never exported. The row stages what came back, the asset's path and the combined bounds of its spatial data; a failed export leaves it staging nothing. Two entry points do the same job: the simple one, which a Blueprint subclass overrides and receives the world alone, and the full one, a C++ override that receives the source and also reports which meshes and nested level instances were contributed, so the collection can pool storage across rows, write the pick hashes and build the Collection Map afterwards."
       },
       "hints": [
         {
@@ -46453,7 +46444,7 @@
         },
         {
           "style": "info",
-          "text": "## For C++ overrides\n\nThe full entry point takes an export source, the world plus the actors to consider plus the frame. An override iterates the source's actor list and passes every transform it writes through the source's frame conversion, or a subtree stops being a level; the default exporter does both. A subtree source is built from the root's attached descendants. A root actor implementing `IPCGExAssemblyRoot` bounds that descent with its own prune predicate and can supply the frame; a root without it exports every descendant relative to its actor transform.",
+          "text": "## For C++ overrides\n\nThe full entry point takes an export source, the world plus the actors to consider plus the frame. An override iterates the source's actor list and passes every transform it writes through the source's frame conversion, or a subtree stops being a level; the default exporter does both. A Level Instance open in place is read in level space, without its instance transform. A subtree source is built from the root's attached descendants and, in the editor, the members of any group actor among them, each actor once. A root actor implementing `IPCGExAssemblyRoot` bounds that descent with its own prune predicate and can supply the frame; a root without it exports every descendant relative to its actor transform.",
           "anchor": "mechanism"
         },
         {
@@ -46479,7 +46470,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection/level-data-exporter",
       "source": {
         "file": "PCGExCollections/Public/Helpers/PCGExLevelDataExporter.h",
-        "hash": "62628a75a8835152750e38dd81bf9712f1db026f"
+        "hash": "b6877c5224424f4c31560eb230a2460d72d32e0b"
       }
     },
     "UPCGExLloydRelax2DSettings": {
@@ -46547,8 +46538,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/transform/lloyd-relax-2d",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/PCGExLloydRelax2D.h",
-        "hash": "c78d7994ccffa7bc830f15dda9d08ee1535341e5",
-        "stale": true
+        "hash": "a0ec07b4ff1e575fee9c224187dc038b7c785ee5"
       }
     },
     "UPCGExLloydRelaxSettings": {
@@ -47207,10 +47197,10 @@
         "FPCGExMaterialOverrideCollection",
         "FPCGExMaterialOverrideEntry"
       ],
-      "purpose": "A weighted list of static meshes, where each entry also carries the component settings and the material variants its mesh spawns with. That payload is the whole difference from the other collection types: a Static Mesh reference, an ISM and an SM descriptor, and an optional set of weighted material overrides picked alongside the entry itself. Weights, categories, tags, sub-collections, fitting and properties are the shared collection anatomy and behave here exactly as they do everywhere else.",
+      "purpose": "A weighted list of static meshes, where each entry also carries the component settings and the material variants its mesh spawns with. That payload is the whole difference from the other collection types: a Static Mesh reference, component settings in two halves (`ISM Settings` shared by every spawn route, `SM Settings` for what only a spline mesh component has), and an optional set of weighted material overrides picked alongside the entry itself. Weights, categories, tags, sub-collections, fitting and properties are the shared collection anatomy and behave here as they do everywhere else.",
       "situation": "A prop library that scatters as instanced meshes, where a handful of entries need to come out in more than one material.",
       "mechanism": {
-        "text": "Entries arrive by dropping meshes onto the collection, and a mesh some entry already references is skipped rather than added a second time. Two batch tools act on the whole list at once: one clears collision on every entry's descriptors, the other sets every entry's `Descriptor Source`. A staging rebuild loads each entry's mesh once, bakes its bounding box as the entry's bounds and one managed socket per mesh socket, then releases it; a socket added to a mesh asset afterwards appears on the next rebuild, not before. A pick names the entry and, when that entry has variants, one of them, both travelling in the same hash. At spawn the entry's descriptor is what configures the component: the mesh spawner route builds its instances from ISM Settings with the picked materials applied on top, while Staging : Spline Mesh builds its components from SM Settings."
+        "text": "Entries arrive by dropping meshes onto the collection, and a mesh some entry already references is skipped rather than added a second time. Two batch tools act on the whole list at once: one clears collision on every entry's `ISM Settings`, the other sets every entry's `Descriptor Source`. A staging rebuild loads each entry's mesh once, bakes its bounding box as the entry's bounds and one managed socket per mesh socket, then releases it; a socket added to a mesh asset afterwards appears on the next rebuild, not before. A pick names the entry and, when that entry has variants, one of them, both travelling in the same hash. At spawn the entry's descriptors configure the component, resolved through `Descriptor Source` and `Global Descriptor Mode` on every route: instances from `ISM Settings` with the picked materials on top, spline meshes from `ISM Settings` plus `SM Settings`."
       },
       "settings": {
         "GlobalDescriptorMode": {
@@ -47219,29 +47209,22 @@
           "tooltip": "Mesh-Specific Properties",
           "default": "EPCGExGlobalVariationRule::PerEntry",
           "enum": "EPCGExGlobalVariationRule",
-          "semantics": "Overrule forces every entry through the collection's globals, and an individual entry can also opt in on its own by setting its `Descriptor Source` to `Global` while this rule stays on `Per Entry`. Resolving through the globals additionally appends the collection's `Collection Tags` to the spawned component's tags, which an entry spawning from its own descriptor does not do.",
-          "trap": "Overrule reaches the mesh spawner route only. Staging : Spline Mesh builds its components straight from the entry's own SM Settings without consulting the collection, so the global descriptors never change what it spawns.",
+          "semantics": "Overrule forces every entry through the collection's globals, and an individual entry can also opt in on its own by setting its `Descriptor Source` to `Global` while this rule stays on `Per Entry`. Both spawn routes follow the same resolution: instances take `Global ISM Settings`, and Staging : Spline Mesh takes `Global ISM Settings` plus `Global SM Settings`. Resolving through the globals additionally appends the collection's `Collection Tags` to an instanced component's tags; spline mesh components take no collection tags either way.",
           "interacts_with": [
             "GlobalISMDescriptor",
-            "GlobalSMDescriptor"
+            "GlobalSMExtras"
           ]
         },
         "GlobalISMDescriptor": {
           "display": "├─ Global ISM Settings",
           "type": "FSoftISMComponentDescriptor",
-          "semantics": "The globals carry no asset of their own, so an entry resolving through them still spawns its own `Static Mesh`: a mesh set in this descriptor's own mesh field is overwritten during resolution and never spawns."
+          "semantics": "The shared half for every spawn route, spline meshes included: collision, shadows, lighting, materials and virtual textures all live here. The globals carry no asset of their own, so an entry resolving through them still spawns its own `Static Mesh`: a mesh set in this descriptor's own mesh field is overwritten during resolution and never spawns."
         },
-        "GlobalSMDescriptor": {
+        "GlobalSMExtras": {
           "display": "└─ Global SM Settings",
-          "type": "FPCGExStaticMeshComponentDescriptor",
+          "type": "FPCGExStaticMeshDescriptorExtras",
+          "tooltip": "Static-mesh-only settings for spline meshes; everything else comes from the global ISM settings.",
           "fields": [
-            {
-              "name": "bVisible",
-              "display": "Visible",
-              "type": "bool",
-              "tooltip": "Controls whether the component is rendered in the scene.",
-              "default": "true"
-            },
             {
               "name": "MinDrawDistance",
               "display": "Min Draw Distance",
@@ -47263,66 +47246,16 @@
               "tooltip": "Quality of indirect lighting for Movable primitives.  This has a large effect on Indirect Lighting Cache update time."
             },
             {
-              "name": "LightmapType",
-              "display": "Lightmap Type",
-              "type": "ELightmapType",
-              "tooltip": "Controls the type of lightmap used for this component.",
-              "default": "ELightmapType::Default"
-            },
-            {
-              "name": "HLODBatchingPolicy",
-              "display": "HLOD Batching Policy",
-              "type": "EHLODBatchingPolicy",
-              "tooltip": "Determines how the geometry of a component will be incorporated in proxy (simplified) HLODs.",
-              "default": "EHLODBatchingPolicy::None"
-            },
-            {
               "name": "1",
-              "display": "1",
-              "type": "uint8 bReverseCulling :",
-              "tooltip": "Controls whether the static mesh component's backface culling should be reversed"
-            },
-            {
-              "name": "BodyInstance",
-              "display": "Body Instance",
-              "type": "FBodyInstance",
-              "tooltip": "Physics scene information for this component, holds a single rigid body with multiple shapes."
-            },
-            {
-              "name": "ShadowCacheInvalidationBehavior",
-              "display": "Shadow Cache Invalidation Behavior",
-              "type": "EShadowCacheInvalidationBehavior",
-              "tooltip": "Control shadow invalidation behavior, in particular with respect to Virtual Shadow Maps and material effects like World Position Offset."
+              "display": "Sort Triangles",
+              "type": "uint8 bSortTriangles :",
+              "tooltip": "Enable dynamic sort mesh's triangles to remove ordering issue when rendered with a translucent material"
             },
             {
               "name": "CanCharacterStepUpOn",
               "display": "Can Character Step Up On",
               "type": "TEnumAsByte<ECanBeCharacterBase>",
               "tooltip": "Determine whether a Character can step up onto this component. This controls whether they can try to step up on it when they bump in to it, not whether they can walk on it after landing on it. @see FWalkableSlopeOverride"
-            },
-            {
-              "name": "LightingChannels",
-              "display": "Lighting Channels",
-              "type": "FLightingChannels",
-              "tooltip": "Channels that this component should be in.  Lights with matching channels will affect the component. These channels only apply to opaque materials, direct lighting, and dynamic lighting and shadowing."
-            },
-            {
-              "name": "RayTracingGroupId",
-              "display": "Ray Tracing Group Id",
-              "type": "int32",
-              "tooltip": "Defines run-time groups of components. For example allows to assemble multiple parts of a building at runtime. -1 means that component doesn't belong to any group."
-            },
-            {
-              "name": "CustomDepthStencilValue",
-              "display": "CustomDepth Stencil Value",
-              "type": "int32",
-              "tooltip": "Optionally write this 0-255 value to the stencil buffer in CustomDepth pass (Requires project setting or r.CustomDepth == 3)"
-            },
-            {
-              "name": "TranslucencySortPriority",
-              "display": "Translucency Sort Priority",
-              "type": "int32",
-              "tooltip": "Translucent objects with a lower sort priority draw behind objects with a higher priority. Translucent objects with the same priority are rendered from back-to-front based on their bounds origin. This setting is also used to sort objects being drawn into a runtime virtual texture. Ignored if the object is not translucent.  The default priority is zero. Warning: This should never be set to a non-default value unless you know what you are doing, as it will prevent the renderer from sorting correctly. It is especially problematic on dynamic gameplay effects."
             },
             {
               "name": "TranslucencySortDistanceOffset",
@@ -47332,23 +47265,10 @@
               "default": "0.0f"
             },
             {
-              "name": "RuntimeVirtualTextures",
-              "display": "Draw in Virtual Textures",
-              "type": "TArray<TSoftObjectPtr<URuntimeVirtualTexture>>",
-              "tooltip": "Array of runtime virtual textures into which we draw the mesh for this actor. The material also needs to be set up to output to a virtual texture."
-            },
-            {
               "name": "VirtualTextureLodBias",
               "display": "Virtual Texture LOD Bias",
               "type": "int8",
               "tooltip": "Bias to the LOD selected for rendering to runtime virtual textures.",
-              "default": "0"
-            },
-            {
-              "name": "VirtualTextureCullMips",
-              "display": "Virtual Texture Skip Mips",
-              "type": "int8",
-              "tooltip": "Number of lower mips in the runtime virtual texture to skip for rendering this primitive. Larger values reduce the effective draw distance in the runtime virtual texture. This culling method doesn't take into account primitive size or virtual texture size.",
               "default": "0"
             },
             {
@@ -47359,41 +47279,10 @@
               "default": "0"
             },
             {
-              "name": "VirtualTextureRenderPassType",
-              "display": "Draw in Main Pass",
-              "type": "ERuntimeVirtualTextureMainPassType",
-              "tooltip": "Controls if this component draws in the main pass as well as in the virtual texture.",
-              "default": "ERuntimeVirtualTextureMainPassType::Exclusive"
-            },
-            {
               "name": "BoundsScale",
               "display": "Bounds Scale",
               "type": "float",
               "tooltip": "Scales the bounds of the object. This is useful when using World Position Offset to animate the vertices of the object outside of its bounds. Warning: Increasing the bounds of an object will reduce performance and shadow quality! Currently only used by StaticMeshComponent and SkeletalMeshComponent."
-            },
-            {
-              "name": "RayTracingGroupCullingPriority",
-              "display": "Ray Tracing Group Culling Priority",
-              "type": "ERayTracingGroupCullingPriority",
-              "tooltip": "Defines how quickly it should be culled. For example buildings should have a low priority, but small dressing should have a high priority."
-            },
-            {
-              "name": "CustomDepthStencilWriteMask",
-              "display": "Custom Depth Stencil Write Mask",
-              "type": "ERendererStencilMask",
-              "tooltip": "Mask used for stencil buffer writes."
-            },
-            {
-              "name": "OverrideMaterials",
-              "display": "Override Materials",
-              "type": "TArray<TSoftObjectPtr<UMaterialInterface>>",
-              "tooltip": "Material overrides."
-            },
-            {
-              "name": "OverlayMaterial",
-              "display": "Overlay Material",
-              "type": "TSoftObjectPtr<UMaterialInterface>",
-              "tooltip": "Translucent material to blend on top of this mesh. Mesh will be rendered twice - once with a base material and once with overlay material"
             },
             {
               "name": "OverlayMaterialMaxDrawDistance",
@@ -47429,19 +47318,6 @@
               "tooltip": "Wireframe color to use if bOverrideWireframeColor is true"
             },
             {
-              "name": "WorldPositionOffsetDisableDistance",
-              "display": "World Position Offset Disable Distance",
-              "type": "int32",
-              "tooltip": "Distance at which to disable World Position Offset for an entire instance (0 = Never disable WPO).",
-              "default": "0"
-            },
-            {
-              "name": "OverriddenLightMapRes",
-              "display": "Overridden Light Map Res",
-              "type": "int32",
-              "tooltip": "Light map resolution to use on this component, used if bOverrideLightMapRes is true and there is a valid StaticMesh."
-            },
-            {
               "name": "DistanceFieldIndirectShadowMinVisibility",
               "display": "Distance Field Indirect Shadow Min Visibility",
               "type": "float",
@@ -47465,6 +47341,10 @@
               "type": "FLightmassPrimitiveSettings",
               "tooltip": "The Lightmass settings for this object."
             }
+          ],
+          "semantics": "Read by Staging : Spline Mesh alone, for the members a spline mesh component has and an instanced component lacks: `Spline Mesh Axis`, LOD overrides, Nanite flags, distance-field shadowing, lightmass settings and the primitive flags the ISM descriptor never exposed. Nothing here reaches the mesh spawner route.",
+          "interacts_with": [
+            "GlobalDescriptorMode"
           ]
         },
         "Entries": {
@@ -47472,7 +47352,7 @@
           "type": "TArray<FPCGExMeshCollectionEntry>",
           "tooltip": "Entries Array",
           "see": "FPCGExMeshCollectionEntry",
-          "semantics": "On top of the shared entry fields, a mesh entry adds `Static Mesh`, its material variants, and a pair of component descriptors. `Single Slot` holds a flat weighted list of materials, all written to the one slot named by `Slot Index`; `Multi Slots` makes each weighted variant a small list of slot-and-material pairs, so a single roll can restyle several slots at once. The variant is rolled per point at pick time and rides in the same hash as the entry, which is what lets materials be re-rolled later without disturbing which mesh was chosen.",
+          "semantics": "On top of the shared entry fields, a mesh entry adds `Static Mesh`, its material variants, and two descriptor halves. `ISM Settings` is the shared half every spawn route reads: collision, shadows, lighting, materials, virtual textures. `SM Settings` holds only what a spline mesh component has on top of that (`Spline Mesh Axis`, LOD overrides, Nanite flags, distance-field shadowing, lightmass settings and the remaining primitive flags), and nothing in it reaches an instanced component. `Single Slot` holds a flat weighted list of materials, all written to the one slot named by `Slot Index`; `Multi Slots` makes each weighted variant a small list of slot-and-material pairs, so a single roll can restyle several slots at once. The variant is rolled per point at pick time and rides in the same hash as the entry, which is what lets materials be re-rolled later without disturbing which mesh was chosen.",
           "trap": "A `Multi Slots` override row left at the default `Slot Index` of -1 writes to slot 0 rather than to its position in the row list, so a variant authored without setting indices puts every material on slot 0 and the last row wins."
         }
       },
@@ -47482,8 +47362,13 @@
       "hints": [
         {
           "style": "warning",
-          "text": "The first time an entry is staged its ISM and SM collision is forced to No Collision, once, because the `Disable Collision By Default` project setting in the plugin's Collections section is on out of the box. Later rebuilds leave it alone, so collision re-enabled on an entry sticks; only an entry that has never been staged starts from No Collision.",
+          "text": "The first time an entry is staged its collision is forced to No Collision, once, on the `Body Instance` of its `ISM Settings`, because the `Disable Collision By Default` project setting in the plugin's Collections section is on out of the box. Later rebuilds leave it alone, so collision re-enabled on an entry sticks; only an entry that has never been staged starts from No Collision.",
           "anchor": "mechanism"
+        },
+        {
+          "style": "warning",
+          "text": "A collection saved before `SM Settings` was slimmed folds its old SM descriptor into the new shape the first time it loads, and is marked dirty so it re-saves that way. Shared settings now come from `ISM Settings`: where the author had changed one on the SM side to a value the ISM side does not match, the ISM value wins, and one warning per entry names the properties to re-apply. Collision is named only when it was changed on the SM side: an SM side left at its default follows the ISM value silently, and since the ISM default has collision on where the SM default had it off, check spline meshes that relied on having none. A sub-collection row is folded without a warning, and the collection's `Global SM Settings` are judged only when some entry follows them. An entry resolving through the globals gets a second warning naming the local `SM Settings` that no longer reach its spline meshes. Member paths on **Get Entry Member** and **Set Entry Member** that start with `SMDescriptor.` no longer resolve; shared members live under `ISMDescriptor.`, the rest under `SMExtras.`.",
+          "anchor": "Entries"
         }
       ],
       "related": [
@@ -47503,8 +47388,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/mesh-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExMeshCollection.h",
-        "hash": "fd6f882fffc6a8b0f5637e62eaeb58d8c0a5769a",
-        "stale": true
+        "hash": "8440611330e43bc73fd9a89b527292b6e917ec55"
       }
     },
     "UPCGExMeshSelectorStaged": {
@@ -48197,8 +48081,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/math/filter-modulo-compare",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExModuloCompareFilter.h",
-        "hash": "d8dd1819a133769aad15406147b744879613a361",
-        "stale": true
+        "hash": "fee8b8b3e9e0e153b811f3fe39438b52a2ee1390"
       }
     },
     "UPCGExMovePivotSettings": {
@@ -48250,8 +48133,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/transform/move-pivot",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/PCGExMovePivot.h",
-        "hash": "7cc9c69232518762c184b04e1b443d63951287b4",
-        "stale": true
+        "hash": "427e597566192ca97118f28e99a7824765be1924"
       }
     },
     "UPCGExMovingAverageSmoothing": {
@@ -48787,8 +48669,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/cluster-sample-neighbors/neighbor-sampler",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/NeighborSamplers/PCGExNeighborSampleFactoryProvider.h",
-        "hash": "24741eab38a4dff3827f07f1be4f74f8545d2425",
-        "stale": true
+        "hash": "611b3d4daa344db31ea230a557cb16b650afb2a3"
       }
     },
     "UPCGExNodeAdjacencyFilterProviderSettings": {
@@ -48872,8 +48753,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/vtx-filters/vtx-filter-adjacency",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Nodes/PCGExNodeAdjacencyFilter.h",
-        "hash": "5bfbad2a34eefd38b9558d7dba236e3a7cb6aa75",
-        "stale": true
+        "hash": "6e9e0cfd7049ef940e4fd158c20f7e2f13b94330"
       }
     },
     "UPCGExNodeEdgeAngleFilterProviderSettings": {
@@ -49030,8 +48910,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/vtx-filters/vtx-filter-edge-direction",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Nodes/PCGExNodeEdgeDirectionFilter.h",
-        "hash": "a817497c33651d61b1a28e966ab1a1729a33c828",
-        "stale": true
+        "hash": "664fb2515a5677de17cb2c1b80cbe83f03fed29c"
       }
     },
     "UPCGExNodeNeighborsCountFilterProviderSettings": {
@@ -49109,8 +48988,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/vtx-filters/vtx-filter-num-edges",
       "source": {
         "file": "PCGExElementsClusters/Public/Filters/Nodes/PCGExNodeNeighborsCountFilter.h",
-        "hash": "84ed8ccac8942dbe09de090f762a28a5f9cfc9d8",
-        "stale": true
+        "hash": "2f0830f03017a8fd39399fa72ae5aeea85afe389"
       }
     },
     "UPCGExNoise3DCausticProviderSettings": {
@@ -49464,8 +49342,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-curl",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseCurl.h",
-        "hash": "d8a5ee4a49945246bedf402465ecfb1a6e0919b1",
-        "stale": true
+        "hash": "5d7ff957ad7f71e98c7807d9ec26d9cdd5b86012"
       }
     },
     "UPCGExNoise3DFactoryProviderSettings": {
@@ -49570,8 +49447,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-3d",
       "source": {
         "file": "PCGExNoise3D/Public/Core/PCGExNoise3DFactoryProvider.h",
-        "hash": "eb8fe2e46f6d90a160b2dbeda07ec9b4578fcc7b",
-        "stale": true
+        "hash": "409a2d70c307deb3d9e490b8897ba12fc41b187c"
       }
     },
     "UPCGExNoise3DFBMProviderSettings": {
@@ -49752,8 +49628,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-fbm",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseFBM.h",
-        "hash": "dd17ae1a94e76693b3e6ad495812c71f34b54e1b",
-        "stale": true
+        "hash": "37a3fac1ac7c06d6fca41dfdf4e903b14b808aed"
       }
     },
     "UPCGExNoise3DFlowProviderSettings": {
@@ -50272,8 +50147,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-marble",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseMarble.h",
-        "hash": "286b3abc964f5afb62b3fc3a00644b4ca5c89d73",
-        "stale": true
+        "hash": "2d6d05b6d234398a65e9ee05d1440f2c7b29dfc5"
       }
     },
     "UPCGExNoise3DOpenSimplex2ProviderSettings": {
@@ -51102,13 +50976,6 @@
         "UPCGExFactoryProviderSettings",
         "UPCGExSettings"
       ],
-      "hints": [
-        {
-          "style": "warning",
-          "text": "This node ignores Apply Transform. Its sampling path never applies the transform, so setting one changes nothing about the result. Use Frequency to set the scale here.",
-          "anchor": "mechanism"
-        }
-      ],
       "related": [
         {
           "path": "working-with-pcgex/what-pcgex-adds/README.md",
@@ -51134,8 +51001,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-swiss-erosion",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseSwiss.h",
-        "hash": "a4a45364cb6e91fd6f906fa2cb652544efc7f294",
-        "stale": true
+        "hash": "90e1697c1a54a6a48d95f5a1dd21d50136beecdd"
       }
     },
     "UPCGExNoise3DTilingProviderSettings": {
@@ -51317,8 +51183,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-tiling",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseTiling.h",
-        "hash": "6543469c874592360181a72c38bab8aa5c011d91",
-        "stale": true
+        "hash": "d733c95796af2b07d47b5265e851180f69bf734e"
       }
     },
     "UPCGExNoise3DValueProviderSettings": {
@@ -51492,10 +51357,10 @@
       "covers": [
         "UPCGExNoise3DFactoryVoronoi"
       ],
-      "purpose": "The same cellular lattice as Noise : Worley, Euclidean only, with four output modes and one setting Worley does not have: Smoothness, which blends the competing cell distances into each other instead of taking the nearest outright. Pick this one when the soft version of a cell field is wanted, and Worley when a distance metric or an F1 and F2 combination is.",
+      "purpose": "The same cellular lattice as Noise : Worley, Euclidean only, with four output modes and one setting Worley does not have: Smoothness, which blends the competing cell distances into each other instead of taking the nearest outright, for the Distance to Center output. Pick this one when the soft version of a cell field is wanted, and Worley when a distance metric or an F1 and F2 combination is.",
       "situation": "Cell-shaped structure whose boundaries should be soft rather than creased, or a flat random value per cell.",
       "mechanism": {
-        "text": "One feature point sits in every lattice cell, offset from the cell centre by up to half a cell according to Jitter. Each sample measures the 27 cells around it. At Smoothness 0 it keeps the nearest distance and the second nearest and Output Type decides what those become. Above 0 it takes a smooth minimum across all 27 instead, which rounds off the creases where cells meet and never records which cell won."
+        "text": "One feature point sits in every lattice cell, offset from the cell centre by up to half a cell according to Jitter. Each sample measures the 27 cells around it, keeps the nearest distance and the second nearest, and Output Type decides what those become. Distance to Center alone has a second path: with Smoothness above 0 it takes a smooth minimum across all 27 instead, which rounds off the creases where cells meet."
       },
       "pins": {
         "inputs": [],
@@ -51617,13 +51482,6 @@
         "UPCGExFactoryProviderSettings",
         "UPCGExSettings"
       ],
-      "hints": [
-        {
-          "style": "warning",
-          "text": "Leaving Output Type at its default of Cell Value and raising Smoothness produces a field of zeroes, with no warning and no error. The two settings are exclusive in practice: Smoothness is only usable with Distance to Center.",
-          "anchor": "Smoothness"
-        }
-      ],
       "related": [
         {
           "path": "working-with-pcgex/what-pcgex-adds/README.md",
@@ -51645,8 +51503,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-voronoi",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseVoronoi.h",
-        "hash": "01110db0f3241d6f1936f58da77c36dfcc6364c4",
-        "stale": true
+        "hash": "a18fd00aac2f86b70471c2e5fa4375cd6acf0e1f"
       }
     },
     "UPCGExNoise3DWhiteProviderSettings": {
@@ -51966,8 +51823,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/noise/noise-worley",
       "source": {
         "file": "PCGExNoise3D/Public/Noises/PCGExNoiseWorley.h",
-        "hash": "bbd0ddc95fa0c8cf7e65260a7c9e40215b1801ff",
-        "stale": true
+        "hash": "50caf2af54efca2182f82832d0e409fde92e04a3"
       }
     },
     "UPCGExNoiseFilterProviderSettings": {
@@ -52055,8 +51911,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-noise",
       "source": {
         "file": "PCGExElementsMeta/Public/Filters/Points/PCGExNoiseFilter.h",
-        "hash": "ff5897cb8b6bffb5b3b097286f292fe4a66c9867",
-        "stale": true
+        "hash": "9d2b05a1b21807a8059bb99732cfb4a58e4abee4"
       }
     },
     "UPCGExNormalizeSettings": {
@@ -52203,8 +52058,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/analyze/normalize",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/PCGExNormalize.h",
-        "hash": "17a304f08220ddf81e84719d936d75e8fc6ecf43",
-        "stale": true
+        "hash": "4ca7cabd6222ea78811ab7522cce7f14f2044819"
       }
     },
     "UPCGExNumericCompareFilterProviderSettings": {
@@ -52314,8 +52168,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-numeric",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExNumericCompareFilter.h",
-        "hash": "a2fca6ccaa1c15034b2f4e2b2f3615ff7900c4ce",
-        "stale": true
+        "hash": "349cbc5574da2513d574599004bad523a3c1d6fb"
       }
     },
     "UPCGExNumericCompareNearestFilterProviderSettings": {
@@ -52464,8 +52317,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-nearest-numeric",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExNumericCompareNearestFilter.h",
-        "hash": "68ec4ab35c347dae235b4020a5a48b71346c7782",
-        "stale": true
+        "hash": "02f244f8ffd65b8fe2183d30dea57c1716d78a5b"
       }
     },
     "UPCGExNumericSelfCompareFilterProviderSettings": {
@@ -52595,8 +52447,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-self-compare-numeric",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExNumericSelfCompareFilter.h",
-        "hash": "8d262db3f77991183ab71b484e894bd452cb11c6",
-        "stale": true
+        "hash": "320b6726067ca71db2dba1856c97d28e61be3e09"
       }
     },
     "UPCGExOffsetPathSettings": {
@@ -52881,8 +52732,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/transform/path-offset",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExOffsetPath.h",
-        "hash": "59ccf162b29a6276e9a469c335edeb7b07cb303d",
-        "stale": true
+        "hash": "2ba6063b5bb21e836e07c98581e632a666ee54ec"
       }
     },
     "UPCGExOmniCollection": {
@@ -52911,7 +52761,7 @@
           "type": "TArray<FPCGExOmniCollectionEntry>",
           "tooltip": "Entries Array",
           "see": "FPCGExOmniCollectionEntry",
-          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first, Generic among the choices; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints and actor classes to actor rows, PCG data assets to data asset rows and anything no other type claims to Generic rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset; a Blueprint whose parent is not an actor falls through to a Generic row referencing the Blueprint asset itself. A dropped level asset becomes a PCG data asset row with its Source set to Level, which exports the level to embedded PCG data; a Level row comes only from the add flow.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
+          "semantics": "A row's entry type is fixed when the row is created. The add flow asks for the type first, Generic among the choices; dropping assets from the Content Browser answers by inspection instead, routing static meshes to mesh rows, skinned assets to skinned mesh rows, actor blueprints and actor classes to actor rows, PCG data assets to data asset rows and anything no other type claims to Generic rows, and skipping any asset a row of that same type already references. An actor row made this way references the blueprint's generated class, not the blueprint asset; a Blueprint whose parent is not an actor falls through to a Generic row referencing the Blueprint asset itself. A dropped level asset becomes a PCG data asset row with its Source set to Level, which exports the level to embedded PCG data; a Level row comes only from the add flow.\n\nDropping a collection asset makes a sub-collection row instead, and the row takes the referenced collection's entry type when that collection has one, so clearing its sub-collection flag later reveals that type's asset picker. A source with no single type of its own, another Omni Collection among them, leaves a typeless row that shows no picker at all.\n\nThe merge action appends entries from other collections and leaves the sources untouched. Each entry arrives as a row of its exact type with a fresh identity, the source collection's own tags baked onto the copied entry's tags, and sub-collection rows keeping the collection they reference. A copied row shares nothing with its source: a PCG data asset row exported from a level or an actor re-exports on its own instead of pointing into the source's export. Category override rows travel only with entries that carry their category, and a category this collection already overrides keeps its existing row. Once the append finishes the property schema is re-derived and staging rebuilt. A Variant Collection has no per-entry payloads to copy, so nothing can be merged out of one; merge its source collections instead.",
           "interacts_with": [
             "TypeGlobals",
             "TypeStates"
@@ -52966,8 +52816,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/omni-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExOmniCollection.h",
-        "hash": "0ec13376aaa3702f29648e3b3922d99a57e58008",
-        "stale": true
+        "hash": "570bd757754b2d2240f261781ce0a6fbc8611a64"
       }
     },
     "UPCGExOrientAverage": {
@@ -53099,8 +52948,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/transform/path-orient/orient-look-at",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/Orient/PCGExOrientLookAt.h",
-        "hash": "62590ac8d4fdad45675f1e1392c5bc92ab1650ec",
-        "stale": true
+        "hash": "c96fa1806194733dcab699649978272ba6cc2bca"
       }
     },
     "UPCGExOrientSettings": {
@@ -53248,8 +53096,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/transform/path-orient",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExOrient.h",
-        "hash": "0fdc656d4f068e1f973e5a3622314a2c7b38d705",
-        "stale": true
+        "hash": "bfba3ab183f6f20e2ca52fa4d08ae0473771bca0"
       }
     },
     "UPCGExOrientWeighted": {
@@ -53420,8 +53267,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/utilities/pack-and-unpack/cluster-pack",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExPackClusters.h",
-        "hash": "c53fecd68088baccf917869c49cfbe49d873e58d",
-        "stale": true
+        "hash": "089dc10c6c9f0ebb50705fac2a0e8ef371a404e6"
       }
     },
     "UPCGExPartitionIdentifierSettings": {
@@ -54897,8 +54743,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/pathfinding-grow-paths",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingGrowPaths.h",
-        "hash": "4668a4036b5edaf3bf721aeedec53e139378cf93",
-        "stale": true
+        "hash": "ba79497e58d51e8d08addeacffb5d058f1cf8ec1"
       }
     },
     "UPCGExPathfindingNavmeshSettings": {
@@ -55306,7 +55151,7 @@
           "display": "Data Matching",
           "type": "FPCGExMatchingDetails",
           "tooltip": "If enabled, allows you to filter out which plots get associated to which clusters",
-          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::Cluster)",
+          "default": "FPCGExMatchingDetails(EPCGExMatchingDetailsUsage::ClusterToPoint)",
           "see": "FPCGExMatchingDetails",
           "semantics": "Decides which plots are attempted on which clusters, which is what turns a batch of plots and a batch of clusters into a pairing rather than a cross product. A cluster no plot matches is skipped, and under `Visited` its Edges are still emitted carrying an all-zero count so the output stays uniform.",
           "interacts_with": [
@@ -55516,7 +55361,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/pathfinding-plot-edges",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Elements/PCGExPathfindingPlotEdges.h",
-        "hash": "007cf459cf4ef8d69aea58c4aa77835302fd6c13"
+        "hash": "b629657be21b1dc6ac4d14e94f41aca071165746"
       }
     },
     "UPCGExPathfindingPlotNavmeshSettings": {
@@ -56673,8 +56518,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-insert",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathInsert.h",
-        "hash": "aff17e1e8c9d5a053bce065176981cde11a42a43",
-        "stale": true
+        "hash": "4044c7979f9b309617e423aa501c8e91e5ceccf9"
       }
     },
     "UPCGExPathProcessorSettings": {
@@ -58325,7 +58169,7 @@
               "tooltip": "The Lightmass settings for this object."
             }
           ],
-          "semantics": "Its Spline Mesh Axis decides which of the mesh's axes runs along the segment, but only as a fallback: the picked entry's own descriptor answers first, this answers when the entry leaves it unset, and X answers when neither does. Every other field here reaches a component only through Force Default Descriptor.",
+          "semantics": "Its Spline Mesh Axis decides which of the mesh's axes runs along the segment, but only as a fallback: the picked entry answers first, through its `SM Settings` resolved by its `Descriptor Source` and the collection's `Global Descriptor Mode`, this answers when the entry leaves the axis at `Default`, and X answers when neither says. Every other field here reaches a component only through Force Default Descriptor.",
           "interacts_with": [
             "bForceDefaultDescriptor"
           ]
@@ -58337,7 +58181,7 @@
           "default": "false",
           "overridable": true,
           "edit_condition": "CollectionSource != EPCGExCollectionSource::AttributeSet",
-          "semantics": "Component settings normally come from the picked entry's own descriptor, so two entries in one collection can differ in collision, shadows or LOD. This replaces all of that with the node's Default Descriptor for every segment. The forward axis is the exception and keeps reading the entry first either way, so a mesh authored along Y stays correct with this on.",
+          "semantics": "Component settings normally come from the picked entry: its `ISM Settings` for everything a spline mesh shares with an instance (collision, shadows, materials), its `SM Settings` for the static-mesh-only rest (LOD overrides, Nanite, distance-field shadowing), both resolved through the entry's `Descriptor Source` and the collection's `Global Descriptor Mode`, so two entries in one collection can differ in collision, shadows or LOD. This replaces all of that with the node's Default Descriptor for every segment. The forward axis is the exception and keeps reading the entry's own `SM Settings` first either way, so a mesh authored along Y stays correct with this on.",
           "interacts_with": [
             "DefaultDescriptor",
             "CollectionSource"
@@ -58403,8 +58247,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/staging-spline-mesh",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSplineMesh.h",
-        "hash": "828c694c2dd331a2318f3fffeb93ad671597d1e1",
-        "stale": true
+        "hash": "4b44051a43f283e9805d266bf4aba0b299970481"
       }
     },
     "UPCGExPathSplineMeshSimpleSettings": {
@@ -58994,8 +58837,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/output/path-spline-mesh-simple",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathSplineMeshSimple.h",
-        "hash": "2fcebfb9fce5534be4084d33dc62fe9c51141810",
-        "stale": true
+        "hash": "64a26fa035a8fa33cc193a1a3e823da2f9238aad"
       }
     },
     "UPCGExPathStitchSettings": {
@@ -59310,8 +59152,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-stitch",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathStitch.h",
-        "hash": "ff8c3f8c60bf1dd03f12d6ee16f9268a58608ead",
-        "stale": true
+        "hash": "96c7468b43982a6048aff5d4c78e152866cfc265"
       }
     },
     "UPCGExPathToClustersSettings": {
@@ -59770,7 +59611,7 @@
               "tooltip": "Root actor whose attached subtree is exported (used when Source == Actor). Its level must not be World Partition: a closed partitioned level cannot be read."
             }
           ],
-          "semantics": "Source decides what a row stages, and the modes have little in common. Data Asset points at a finished PCG data asset and generates nothing: the row stages that asset's path and the combined bounds of its spatial data. Level points at a world, and every staging rebuild loads it, hands its persistent level to the exporter, and replaces the row's generated asset with a fresh one, so the row stages the generated asset instead. Actor points at one actor placed in a level and exports everything attached under it as if that subtree were a level of its own: the actor itself is never exported, and every point comes out relative to the actor's full transform, scale included, so the arrangement carries no trace of where it stood. Both exporting modes also scan the exported actors for socket-provider actors and bake what they find as managed sockets on the row, in the same frame as the points. An Actor row reports no source level of its own, so tooling that reads levels out of a collection's rows treats its host level as a container and never as content. Switching a row back to Data Asset discards its generated asset and everything captured with it. A row flagged as a sub-collection ignores Source and accepts a collection of any type, not only another PCGDataAsset Collection.",
+          "semantics": "Source decides what a row stages, and the modes have little in common. Data Asset points at a finished PCG data asset and generates nothing: the row stages that asset's path and the combined bounds of its spatial data. Level points at a world, and every staging rebuild loads it, hands its persistent level to the exporter, and replaces the row's generated asset with a fresh one, so the row stages the generated asset instead. Actor points at one actor placed in a level and exports everything attached under it, the members of any group actor among them, as if that subtree were a level of its own: the actor itself is never exported, a group actor is refused as the root, and every point comes out relative to the actor's full transform, scale included, so the arrangement carries no trace of where it stood. Both exporting modes also scan the exported actors for socket-provider actors and bake what they find as managed sockets on the row, in the same frame as the points. An Actor row reports no source level of its own, so tooling that reads levels out of a collection's rows treats its host level as a container and never as content. Switching a row back to Data Asset discards its generated asset and everything captured with it. On the grid, a Level row shows the level's captured thumbnail when the level has one, and the export's render otherwise. A row flagged as a sub-collection ignores Source and accepts a collection of any type, not only another PCGDataAsset Collection.",
           "trap": "The Source tooltip says the default is Data Asset. The code default is Level, so a row added by hand starts pointing at a world.",
           "interacts_with": [
             "LevelExporter",
@@ -59803,8 +59644,13 @@
           "anchor": "Entries"
         },
         {
+          "style": "warning",
+          "text": "## A copied row starts from nothing\n\nGrid Duplicate, a drag from another collection, an Omni merge, variant seeding and the details panel's Duplicate and Paste all detach the copy from its original, so a copied Level or Actor row re-exports on its own instead of pointing into the original's export. Rows saved before this could hold a slot collection, an export or an external package in common, and the last row to rebuild took the shared object over. Such a collection is repaired on its next editor re-stage: the rows that did not own the state drop it, with one warning each naming what was dropped, and re-export. Save the collection to keep the repair; until then the warning returns on every rebuild.",
+          "anchor": "Entries"
+        },
+        {
           "style": "info",
-          "text": "Exporting is authoring work: it runs in the editor at staging-rebuild time, and what ships is the baked result. Duplicating the collection re-runs the merge so the copy's hashes are stamped against its own identifiers.",
+          "text": "Exporting is authoring work: it runs in the editor at staging-rebuild time, and what ships is the baked result. Duplicating the collection copies the source's external packages in, gives every slot collection a fresh identity and re-stamps the copy's hashes against it, then re-runs the merge, so the duplicate never writes into the source's files.",
           "anchor": "mechanism"
         }
       ],
@@ -59841,8 +59687,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/pcg-data-asset-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExPCGDataAssetCollection.h",
-        "hash": "038a8d8a8904c7fc0e7681ee2539a5eb4ddd82d8",
-        "stale": true
+        "hash": "c31230564937a8a9ab2b96621bd221e9b22eb676"
       }
     },
     "UPCGExPCGDataAssetLoaderSettings": {
@@ -60104,8 +59949,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-pcgdata",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadPCGData.h",
-        "hash": "37e877ed1f1fc79f93729a3cf13a710694534a6f",
-        "stale": true
+        "hash": "3b17a84d69d1673c57c38cffc543bca2fd060228"
       }
     },
     "UPCGExPickClosestClustersSettings": {
@@ -60902,8 +60746,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/filter-picker",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExPickerFilter.h",
-        "hash": "ce1f27b620df2a41e25da36dfd2b758feb0704f1",
-        "stale": true
+        "hash": "b44fae7156a0572ef93db6af22b3a1c87f747b5c"
       }
     },
     "UPCGExPointsProcessorSettings": {
@@ -61118,8 +60961,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/points-to-bounds",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/PCGExPointsToBounds.h",
-        "hash": "a6714c51e984b90c3b4a40d3229de9c14dd2ab81",
-        "stale": true
+        "hash": "aa4adfaea3a58132d07163c1b598fdb91daa05f0"
       }
     },
     "UPCGExPreloadResourcesSettings": {
@@ -61816,8 +61658,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-closest",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeClosest.h",
-        "hash": "017edd12e0f8881bb66864ceea59939565247cc4",
-        "stale": true
+        "hash": "370f4209e538ef5dbbde8e363b43925b09901f6a"
       }
     },
     "UPCGExProbeDBSCANProviderSettings": {
@@ -62072,8 +61913,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-direction",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeDirection.h",
-        "hash": "a242158b112d1551b11d099d75a084c844428aab",
-        "stale": true
+        "hash": "04bddad6930742de0e5bba23e8e3068b6b0ddaa3"
       }
     },
     "UPCGExProbeFactoryProviderSettings": {
@@ -62607,8 +62447,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-index",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeIndex.h",
-        "hash": "09f832a36311c9eef06bc1ed0a35f2c47f8c8f8f",
-        "stale": true
+        "hash": "3efeb2f78ae488af68246d81bd09aea2f7cb52ae"
       }
     },
     "UPCGExProbeKNNProviderSettings": {
@@ -62710,8 +62549,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/g-probe-knn",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExGlobalProbeKNN.h",
-        "hash": "962b16354053dee7e508c0ed3ecb78ae342f7ec2",
-        "stale": true
+        "hash": "2cab0ab2fb0b056b8b91c8f7cc39c9baa4f49ca7"
       }
     },
     "UPCGExProbeLevelSetProviderSettings": {
@@ -62949,8 +62787,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/generate/cluster-connect-points/probe-numeric-compare",
       "source": {
         "file": "PCGExElementsProbing/Public/Probes/PCGExProbeNumericCompare.h",
-        "hash": "772fc4a6606e760f07599b920bdd0e0f82c4bf9d",
-        "stale": true
+        "hash": "8eea4614135b719e64aabf3de787b65eeba10558"
       }
     },
     "UPCGExProbeRNGProviderSettings": {
@@ -63814,8 +63651,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/property-schema-asset/property-blueprint-library-internal",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertyBlueprintLibrary.h",
-        "hash": "9e4e9c0f82800f3acc403705c44c4c876773d63b",
-        "stale": true
+        "hash": "c229a747934d92a6313382595ae8e93898cd367f"
       }
     },
     "UPCGExPropertyCollectionComponent": {
@@ -64213,8 +64049,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/filter-random",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExRandomFilter.h",
-        "hash": "37864c9e2cde753de6556412b8abf247bdac67f2",
-        "stale": true
+        "hash": "e747bba87809f7ffee70bfcf5081eac89a21ff32"
       }
     },
     "UPCGExRandomRatioFilterProviderSettings": {
@@ -64704,8 +64539,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/control-flow/break",
       "source": {
         "file": "PCGExFoundations/Public/Elements/ControlFlow/PCGExFlowBreak.h",
-        "hash": "b57d3386d22e015d3ff8f61384bbfabde2320c7d",
-        "stale": true
+        "hash": "0e9230ea79102f265ceede0f0f4a13612a0be2bd"
       }
     },
     "UPCGExReduceDataAttributeSettings": {
@@ -64839,8 +64673,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/analyze/reduce-data",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExReduceDataAttribute.h",
-        "hash": "1674fab874ce1c6f76b4fb332944ecf051438107",
-        "stale": true
+        "hash": "0df64d5359f7c74aa96d8a0df178fcedc6db29fd"
       }
     },
     "UPCGExRefineEdgesSettings": {
@@ -65085,8 +64918,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/refine/cluster-refine",
       "source": {
         "file": "PCGExElementsClustersRefine/Public/Elements/PCGExRefineEdges.h",
-        "hash": "03d931e86bcb8eac2889365a023a13507613d851",
-        "stale": true
+        "hash": "f8ba487c9b145a8b8081707e3502e7613d05e648"
       }
     },
     "UPCGExRefreshSeedSettings": {
@@ -65357,8 +65189,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/transform/cluster-relax",
       "source": {
         "file": "PCGExElementsClustersRelax/Public/Elements/PCGExRelaxClusters.h",
-        "hash": "39fd939e40d5ff4666d05d86686980362fc5d517",
-        "stale": true
+        "hash": "76ea01d5d111c86bb01d6aee3ed9410600fcd17a"
       }
     },
     "UPCGExResamplePathSettings": {
@@ -65565,8 +65396,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-resample",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathResample.h",
-        "hash": "6c958f338fd42eb8cf55fdd4a7a1f905264c7dfc",
-        "stale": true
+        "hash": "f11fa2e82fb3f2e10ee92d97a9e594889a4d7525"
       }
     },
     "UPCGExReversePointOrderSettings": {
@@ -66093,8 +65923,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-inside-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleInsidePath.h",
-        "hash": "b7e4d98ddcbea0aed03d66225e7be838137e0198",
-        "stale": true
+        "hash": "6ff7fc6d79d11010596b9cfcb21bad411cefccc1"
       }
     },
     "UPCGExSampleNearestBoundsSettings": {
@@ -66592,8 +66421,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-bounds",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestBounds.h",
-        "hash": "0091ecdffc2a7daca253e24300593f04271cc406",
-        "stale": true
+        "hash": "ce7310708444c8e33676866b723dae3278a8e2fe"
       }
     },
     "UPCGExSampleNearestPathSettings": {
@@ -67285,8 +67113,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-path",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestPath.h",
-        "hash": "38050ab3bc25601fd3a1df80519c161eee31d9e7",
-        "stale": true
+        "hash": "3fbb4f635eef6b69e78a5d80841b13c5d2ad8066"
       }
     },
     "UPCGExSampleNearestPointSettings": {
@@ -67925,8 +67752,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-point",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestPoint.h",
-        "hash": "b2637d77caeafca3db9506501158a4957c622e06",
-        "stale": true
+        "hash": "dd5f65ac032ffc0e250bf5f7b696fa8f152082f3"
       }
     },
     "UPCGExSampleNearestSplineSettings": {
@@ -68602,8 +68428,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/nearest/sample-nearest-spline",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleNearestSpline.h",
-        "hash": "b31618c25402812503329ea53877e4d7b2f0f24d",
-        "stale": true
+        "hash": "86f4b3320237c7ab41da0eccd85c922fd21a1f8d"
       }
     },
     "UPCGExSampleNearestSurfaceSettings": {
@@ -69152,8 +68977,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/sample-overlap-stats",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleOverlapStats.h",
-        "hash": "c5062d6a737a04913f10a24d23c8f689001187ea",
-        "stale": true
+        "hash": "be2423504f2f82c5ecf835b2aaaa17db049f034d"
       }
     },
     "UPCGExSampleSocketsSettings": {
@@ -70082,8 +69906,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/sample-stamp-points",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleStampPoints.h",
-        "hash": "7a42a035844ea38c426c40db96f628870e536dfe",
-        "stale": true
+        "hash": "f6e114b7a2ab201a619ba13069ecbce965c8d500"
       }
     },
     "UPCGExSampleSurfaceGuidedSettings": {
@@ -70673,8 +70496,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/textures/sample-texture",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSampleTexture.h",
-        "hash": "b745410011478a5cd17c8d018cf3fe7fbfd0b0c1",
-        "stale": true
+        "hash": "f56d604a3c0ac4f9a961702f3d4ed178020f1c65"
       }
     },
     "UPCGExSampleVtxByIDSettings": {
@@ -70854,8 +70676,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/utilities/sample-vtx-by-id",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExSampleVtxByID.h",
-        "hash": "abf2467d9a01232eb0efd168e21c6e6e2a391320",
-        "stale": true
+        "hash": "ca2aaf82af80f3018c52a148cbb5867a90cd473d"
       }
     },
     "UPCGExSanitizeClustersSettings": {
@@ -71011,8 +70832,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/algorithms/search-a",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Search/PCGExSearchAStar.h",
-        "hash": "7eecbc3c84c89a7a789439869957850facf2d7cf",
-        "stale": true
+        "hash": "0777da4a04748eed8bcc29b197012bf1872cfaed"
       }
     },
     "UPCGExSearchBellmanFord": {
@@ -71095,8 +70915,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/algorithms/search-bellman-ford",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Search/PCGExSearchBellmanFord.h",
-        "hash": "c707fe41b29e73459be5aabfa54a9055b74eb484",
-        "stale": true
+        "hash": "357bab9a98c85fd568f11e10bbb4166b72160047"
       }
     },
     "UPCGExSearchBidirectional": {
@@ -71158,8 +70977,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/algorithms/search-bidirectional",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Search/PCGExSearchBidirectional.h",
-        "hash": "02282b76b2b708099070ee8e998693088ba3ca61",
-        "stale": true
+        "hash": "ad24df34470f8fccf2d27c540a0f2c2306409583"
       }
     },
     "UPCGExSearchDijkstra": {
@@ -71223,8 +71041,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/pathfinding/algorithms/search-dijkstra",
       "source": {
         "file": "PCGExElementsPathfinding/Public/Search/PCGExSearchDijkstra.h",
-        "hash": "38fbcb2ca1c53028e0f49999c84726bde33f794f",
-        "stale": true
+        "hash": "f1171eece93b9f2a6c64df4dddf848170aa3b2d2"
       }
     },
     "UPCGExSegmentCrossFilterProviderSettings": {
@@ -71402,8 +71219,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/math/filter-segment-length",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExSegmentLengthFilter.h",
-        "hash": "6c0dbb71366da57f9d9b5abf1785dbe647b1bf18",
-        "stale": true
+        "hash": "4ffdbb0574ed02ac44784fc87b6c191ea4aedf99"
       }
     },
     "UPCGExSelectorAntiRepeatFactoryProviderSettings": {
@@ -71528,8 +71344,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/mod-anti-repeat",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorAntiRepeat.h",
-        "hash": "8bc39ff047f7ce2ccdb620d05d72810f62e2f4f3",
-        "stale": true
+        "hash": "e7ee88d8c15afbe3fbe2dd549147325239680597"
       }
     },
     "UPCGExSelectorBestFitFactoryProviderSettings": {
@@ -71693,8 +71508,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-best-fit",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorBestFit.h",
-        "hash": "4ec2284b8917231c0a64e55ea3957a0fea077ff2",
-        "stale": true
+        "hash": "2fc6fa7a3e78ef7f2813177bd610cf615e5eac0c"
       }
     },
     "UPCGExSelectorCascadeFactoryProviderSettings": {
@@ -71804,8 +71618,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/mod-cascade",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorCascade.h",
-        "hash": "9d562e708fb7efabd6add2e2e4250d971c5382a1",
-        "stale": true
+        "hash": "955ba1992fb21cc6d942391c2bdf5480395eb848"
       }
     },
     "UPCGExSelectorClassicFactoryProviderSettings": {
@@ -72153,8 +71966,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-curve-remapped-weight",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorCurveRemapped.h",
-        "hash": "be455ce6d4302deb25dcc77ec680b6e86e76831a",
-        "stale": true
+        "hash": "1d9fabea8192af4ec409402a76db25ac414eb0c4"
       }
     },
     "UPCGExSelectorDensityWeightedFactoryProviderSettings": {
@@ -72275,8 +72087,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-density-weighted",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorDensityWeighted.h",
-        "hash": "77b1b6dd1fadc76535fef3379866f31f932b76eb",
-        "stale": true
+        "hash": "d2ca5c65aa4478de67f94ac8c48a36021261307e"
       }
     },
     "UPCGExSelectorFactoryProviderSettings": {
@@ -72465,8 +72276,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-interleaved",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorInterleaved.h",
-        "hash": "16eb949939718d2c0e1026161aad9c075fc019b1",
-        "stale": true
+        "hash": "6d518a2175f9965f1b84934ccde00a436e5ba191"
       }
     },
     "UPCGExSelectorNoiseFieldFactoryProviderSettings": {
@@ -72706,8 +72516,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/mod-quota",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorQuota.h",
-        "hash": "bc7402c6e11537aa340ed2c92bdfc445d42a50c1",
-        "stale": true
+        "hash": "9ea733bd93b2473898621fca00ff15b5db80dd2a"
       }
     },
     "UPCGExSelectorRangeBasedFactoryProviderSettings": {
@@ -72826,8 +72635,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/selectors/selector-range-based",
       "source": {
         "file": "PCGExCollections/Public/Selectors/PCGExSelectorRangeBased.h",
-        "hash": "231d9d527dadf4ced185ab56668bb267fc72c4f5",
-        "stale": true
+        "hash": "ceb6e2099055d9fb242f54b3cf11c50ee42a0782"
       }
     },
     "UPCGExSelfPruningSettings": {
@@ -73074,8 +72882,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/sampling/self-pruning",
       "source": {
         "file": "PCGExElementsSampling/Public/Elements/PCGExSelfPruning.h",
-        "hash": "8c0628cbdd620fbb323fdfcd243aaf4ad556543c",
-        "stale": true
+        "hash": "9c558e600cf63e1330e29e3565bf2a94e2c40ee8"
       }
     },
     "UPCGExSetCachedDataSettings": {
@@ -73230,7 +73037,7 @@
           "tooltip": "What to do with the target entry. Drives the pin layout, so not overridable.",
           "default": "EPCGExDataCacheWriteMode::Replace",
           "enum": "EPCGExDataCacheWriteMode",
-          "semantics": "Replace swaps the whole entry for this run's data and Append adds to whatever the entry already holds, so an Append on every generation accumulates without bound until something clears it. A Replace or an Append with no data on any data pin touches no host: no cache component is created, the PCG World Actor is not spawned, and no target warning is raised. Clear and Clear All remove entries and never create a component to do so; on an actor with no cache they do nothing at all. Both clear modes take away every data pin, so the node requires its execution dependency to be ordered, unless Target is Input, where the required Target Actor pin orders it and the dependency becomes optional. From a preview-mode generation a clear only hides the entry from readers and leaves the saved data intact.",
+          "semantics": "Replace swaps the whole entry for this run's data and Append adds to whatever the entry already holds, so an Append on every generation accumulates without bound until something clears it. A Replace or an Append with no data on any data pin touches no host: no cache component is created, the PCG World Actor is not spawned, and no target warning is raised. Clear and Clear All remove entries and never create a component to do so; on an actor with no cache they do nothing at all. Both clear modes take away every data pin, so the node requires its execution dependency to be ordered, unless Target is Input, where the required Target Actor pin orders it and the dependency becomes optional. On a host that cannot be saved, a clear drops that host's transient entries the same way.",
           "trap": "A Set with nothing wired into In is culled and never runs, which is fine for a store and wrong for a clear: pick Clear or Clear All and wire its execution dependency, or its Target Actor pin under Target Input, or the entry stays.",
           "interacts_with": [
             "CacheID",
@@ -73321,7 +73128,7 @@
         },
         {
           "style": "info",
-          "text": "A generation running in preview mode writes to a transient shadow of the cache that never saves. The shadow hides the persisted entry of the same ID from every reader until a non-preview write replaces it, and a preview clear hides an entry the same way without touching the saved data.",
+          "text": "Whether a write persists follows the host actor, not the editing mode of the generation that wrote it. An actor that can be saved keeps every write, preview generations included, and the entry saves with it. A host that can never be saved, a pooled runtime partition actor, a preview-spawned actor, anything in a transient package, gets transient entries instead: they never save, so they last the session at most.",
           "anchor": "mechanism"
         },
         {
@@ -73369,8 +73176,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/data-cache/set-cached-data",
       "source": {
         "file": "PCGExElementsBridges/Public/Elements/PCGExSetCachedData.h",
-        "hash": "dd6fd907028869a1761b49733ec73af3dd33e329",
-        "stale": true
+        "hash": "2a1cfaa1b6a9d2a119d4d13da2e234ab65f7b8d6"
       }
     },
     "UPCGExSettings": {
@@ -74065,8 +73871,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-shrink",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathShrink.h",
-        "hash": "e543a6a0934721af3ea01f649a170d93d1f5d7f5",
-        "stale": true
+        "hash": "ccaaf028f87552721a580dacd3cfe364c017a6b1"
       }
     },
     "UPCGExSimplifyClustersSettings": {
@@ -74354,8 +74159,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/refine/cluster-simplify",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/PCGExSimplifyClusters.h",
-        "hash": "3818d80f6e9430c981c692ef0a2ea19cba26178f",
-        "stale": true
+        "hash": "800ca290d51cc5d585442206c02a73dfcef478aa"
       }
     },
     "UPCGExSkinnedMeshCollection": {
@@ -74442,8 +74246,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/skinned-mesh-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExSkinnedMeshCollection.h",
-        "hash": "e6017560cb3f8692d59b529d5ecc9f3bbd73562c",
-        "stale": true
+        "hash": "f06ac985770e054f164ac1dae8e73c0527cf6194"
       }
     },
     "UPCGExSkinnedMeshSelectorStaged": {
@@ -74833,8 +74636,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/transform/path-smooth",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExSmooth.h",
-        "hash": "b2556087cff22e9c395aaefbc252bc4a0de36ac5",
-        "stale": true
+        "hash": "74699f3c39e833e5adbcdb46622316c964440d40"
       }
     },
     "UPCGExSocketStagingSettings": {
@@ -74939,8 +74741,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-load-sockets",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadSockets.h",
-        "hash": "7fee4dc57cd2c38786395912f8b01af9a1ca1210",
-        "stale": true
+        "hash": "a677c69505cebe0bdb0a8d330aa3ea5d1aa97bec"
       }
     },
     "UPCGExSortCollectionsSettings": {
@@ -75022,8 +74823,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/sorting/sort-data",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/Sorting/PCGExSortCollections.h",
-        "hash": "51474768ffe1186f2b2e0d270a78c1bc8aa37e49",
-        "stale": true
+        "hash": "9156978ebe8ce3829f80d036422c6abbb29cdbe2"
       }
     },
     "UPCGExSortingRuleProviderSettings": {
@@ -75116,8 +74916,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/sorting/sorting-rule",
       "source": {
         "file": "PCGExCore/Public/Sorting/PCGExSortingRuleProvider.h",
-        "hash": "e95aab522ac45a4412f6a3e335e534a7224b36ea",
-        "stale": true
+        "hash": "d4f3907db4bf25b5f8302c47d700636123a1a5da"
       }
     },
     "UPCGExSpatialTriageSettings": {
@@ -75197,8 +74996,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/discarding/spatial-triage",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExSpatialTriage.h",
-        "hash": "ab0b8162b46e32b15c6428f5b3b9864756b65c7c",
-        "stale": true
+        "hash": "ef97caf2d0470423674c3f07aaf675d6b37ff622"
       }
     },
     "UPCGExSpawnDynamicMeshSettings": {
@@ -75507,8 +75305,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/spawn-dynamic-mesh",
       "source": {
         "file": "PCGExElementsTopology/Public/Elements/PCGExSpawnDynamicMesh.h",
-        "hash": "2bd7cd15fc6065ca60627660b63b14d9ea5595d5",
-        "stale": true
+        "hash": "74b1a1795a3317a0b76d474366d02d9dc17adfec"
       }
     },
     "UPCGExSplineToPathSettings": {
@@ -75775,8 +75572,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/generate/spline-to-path",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExSplineToPath.h",
-        "hash": "61023a7297bfbc4662d55edd1835998edec61bd8",
-        "stale": true
+        "hash": "defa2f627da0ae216f5b4be6959559cdba50899d"
       }
     },
     "UPCGExSplitPathSettings": {
@@ -76101,8 +75897,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-type-filter",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingTypeFilter.h",
-        "hash": "08a277c838986bcf3c161929ed62085614c048c2",
-        "stale": true
+        "hash": "e544e3bd8ef8189de6c15a4006ff6790cf660c65"
       }
     },
     "UPCGExStagingFittingSettings": {
@@ -76543,8 +76338,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-level",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingLoadLevel.h",
-        "hash": "1341a23771a2404538b05130daa624ad608a22ee",
-        "stale": true
+        "hash": "b2a18802a1f866df469cebf0137cb357e94ef390"
       }
     },
     "UPCGExStagingLoadPropertiesSettings": {
@@ -76829,10 +76623,10 @@
       "plugin": "PCGExtendedToolkit",
       "module": "PCGExCollections",
       "classification": "node",
-      "purpose": "Puts real actors in the level from staged picks. Every point whose pick resolved to an Actor Collection entry spawns that entry's actor class at the point's transform; points that resolved to anything else are passed over, so one mixed staged dataset can feed this node and the other spawn routes in parallel. The spawned actors are registered as PCG-managed content, so the graph owns their cleanup, and every point comes back carrying a reference to the actor it produced. Entry tags, per-point tags, captured property deltas and generation on the spawned actors' PCG components are all applied here rather than by a follow-up pass.",
+      "purpose": "Puts real actors in the level from staged picks. Every point whose pick resolved to an Actor Collection entry spawns that entry's actor class at the point's transform; points that resolved to anything else are passed over, so one mixed staged dataset can feed this node and the other spawn routes in parallel. The spawned actors are registered as PCG-managed content, so the graph owns their cleanup, and every point comes back carrying a reference to the actor it produced. Entry tags, per-point tags, captured property deltas, per-point property overrides, post-process functions and generation on the spawned actors' PCG components are all applied here rather than by a follow-up pass.",
       "situation": "An Actor Collection has been staged over a point layout, and those actors now have to exist in the level as content the graph creates and cleans up.",
       "mechanism": {
-        "text": "Each point's pick is resolved against the Collection Map, and every point that landed on an Actor Collection entry spawns that entry's actor class at the point's transform, scale included. Point count and order are preserved, and each point leaves carrying the path of the actor it produced, empty where it produced none. Every spawned actor is parented to a resolved root actor, created in that actor's level, and registered on the PCG component as a managed resource, so the next generation destroys and replaces it like any other generated content. A re-run whose inputs and settings hash to the same value as the previous one keeps the actors already spawned and spawns nothing new. Nothing here fits or offsets anything: the transform the point arrives with is the transform the actor gets."
+        "text": "Each point's pick is resolved against the Collection Map, and every point that landed on an Actor Collection entry spawns that entry's actor class at the point's transform, scale included. Point count and order are preserved, and each point leaves carrying the path of the actor it produced, empty where it produced none. Every spawned actor is parented to a resolved root actor, created in that actor's level, and registered on the PCG component as a managed resource, so the next generation destroys and replaces it like any other generated content. An input whose points and settings hash as they did last time keeps the actors that run spawned and spawns nothing new, provided that run completed with one actor per resolved point. Nothing here fits or offsets anything: the transform the point arrives with is the transform the actor gets."
       },
       "off_label": [
         {
@@ -76940,18 +76734,34 @@
           "tooltip": "If enabled, apply per-instance property deltas stored on actor collection entries. Written after the actor is spawned: construction scripts, and BeginPlay at runtime, run before; see Post Process Function Names.",
           "default": "true",
           "overridable": true,
-          "semantics": "The delta lands on the actor after the spawn has finished building it, which is what lets it reach components declared in the Blueprint's Components panel and what makes a post-apply component fixup possible. The actor's own construction script therefore ran against class defaults, so a Blueprint that builds content out of a component it also captured, a spline it walks for instance, builds that content from the class version of the component rather than the captured one.",
-          "trap": "Construction scripts run before the delta lands, against class defaults. A Blueprint that generates content in construction from a component the capture also configured builds from the class version of that component, and only the component itself ends up carrying the captured values."
+          "semantics": "The delta lands on the actor after the spawn has finished building it, which is what lets it reach components declared in the Blueprint's Components panel and what makes a post-apply component fixup possible. The actor's own construction script therefore ran against class defaults, and so did BeginPlay in a world that has begun play; Post Process Function Names is the hook that runs once the captured values are on the actor.",
+          "trap": "Construction scripts run before the delta lands, against class defaults. A Blueprint that generates content in construction from a component the capture also configured builds from the class version of that component, and only the component itself ends up carrying the captured values.",
+          "interacts_with": [
+            "PropertyOverrideDescriptions",
+            "PostProcessFunctionNames"
+          ]
         },
         "PropertyOverrideDescriptions": {
           "display": "Property Override Descriptions",
           "type": "TArray<FPCGObjectPropertyOverrideDescription>",
-          "tooltip": "Per-point values written onto each spawned actor, after the collection's property delta. The target is an actor property, or Component.Property. Written after the actor is spawned: construction scripts, and BeginPlay at runtime, run before; see Post Process Function Names."
+          "tooltip": "Per-point values written onto each spawned actor, after the collection's property delta. The target is an actor property, or Component.Property. Written after the actor is spawned: construction scripts, and BeginPlay at runtime, run before; see Post Process Function Names.",
+          "semantics": "Each description names a target on the spawned actor, an actor property or `Component.Property`, and the attribute or property the value is read from, per point. The write happens after the collection's property delta, so a per-point value wins over one captured in the collection, and the point's transform is re-asserted afterwards, so an override cannot move the actor. A target the spawned class does not have, or that cannot be reached on that actor, is skipped for that actor; a component written to re-registers, so its render and physics state follow the new values. A string fed to an object or class target is read as an asset path, and the assets a hard-reference target needs are loaded before spawning begins.",
+          "trap": "Classes differ per point, so one description can apply on one entry's actors and be skipped on another's. The skip is reported once per class and target unless Quiet Missing Member Warnings is on, which makes those warnings the place to look when fewer actors than expected came out configured.",
+          "interacts_with": [
+            "bApplyPropertyDeltas",
+            "PostProcessFunctionNames",
+            "bQuietMissingMemberWarnings"
+          ]
         },
         "PostProcessFunctionNames": {
           "display": "Post Process Function Names",
           "type": "TArray<FName>",
-          "tooltip": "Functions called on each spawned actor, once property deltas and overrides are applied. Functions need to be parameter-less and with \"CallInEditor\" flag enabled."
+          "tooltip": "Functions called on each spawned actor, once property deltas and overrides are applied. Functions need to be parameter-less and with \"CallInEditor\" flag enabled.",
+          "semantics": "Called on each actor last, once the delta and the overrides are on it and it is tracked as managed content, so a function here sees the final state a construction script never did. Resolution is per actor class: a name the class has no matching parameter-less `CallInEditor` function for is reported once for that class, and the names that do resolve still run.",
+          "interacts_with": [
+            "bApplyPropertyDeltas",
+            "PropertyOverrideDescriptions"
+          ]
         },
         "bApplyEntryTags": {
           "display": "Apply Entry Tags",
@@ -77078,8 +76888,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-actors",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSpawnActors.h",
-        "hash": "e2268f2d823174fca05f40c5318febe4a9581ca0",
-        "stale": true
+        "hash": "921ec31f6b111a5c1a56cfdf5ea9a00731c920f1"
       }
     },
     "UPCGExStagingSwapSettings": {
@@ -77261,8 +77070,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-swap",
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSwap.h",
-        "hash": "e669b211acf6c252d00e13b82c404849e8bfb700",
-        "stale": true
+        "hash": "d7ce3fcb61e4fdd1ceb20dc44c0d428e24ae8805"
       }
     },
     "UPCGExStateFactoryProviderSettings": {
@@ -77387,8 +77195,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/bitmasks/write-states/state-point",
       "source": {
         "file": "PCGExFilters/Public/Core/PCGExPointStates.h",
-        "hash": "33d6c0df8f16dae3313ba596a924bb323789e494",
-        "stale": true
+        "hash": "59c6cc6000e1e3f1cabf31d61c26382dc991e3b8"
       }
     },
     "UPCGExStringCompareFilterProviderSettings": {
@@ -77488,8 +77295,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-string",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExStringCompareFilter.h",
-        "hash": "b521bb3819ce65e49b9bfdf39c26315438a9dd5a",
-        "stale": true
+        "hash": "216cd0fe590e7deda498f55a0e0e5d45cfaf5e55"
       }
     },
     "UPCGExStringCompareNearestFilterProviderSettings": {
@@ -77642,8 +77448,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-nearest-string",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExStringCompareNearestFilter.h",
-        "hash": "4ee0a6b81d599579f81d31ab7ed9f6462f501f06",
-        "stale": true
+        "hash": "42ce89fe1768ca8482049626bd9dd08ce8452d1f"
       }
     },
     "UPCGExStringRegexFilterProviderSettings": {
@@ -77862,8 +77667,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-self-compare-string",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExStringSelfCompareFilter.h",
-        "hash": "255f4e34ee33a495f0222be8ad8d5d7c1f6f4844",
-        "stale": true
+        "hash": "8a42b0952c08e7dc8d05b502e497dea604c14e8a"
       }
     },
     "UPCGExSubdivideSettings": {
@@ -78084,8 +77888,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-subdivide",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExSubdivide.h",
-        "hash": "fb76655b80fd65a0c2155a0c34374fcfffc84ed4",
-        "stale": true
+        "hash": "da962e652e0d228036cab08896c228e29b0302b3"
       }
     },
     "UPCGExSubPointsBlendInheritEnd": {
@@ -78676,8 +78479,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-tensor-dot",
       "source": {
         "file": "PCGExElementsTensors/Public/Filters/Points/PCGExTensorDotFilter.h",
-        "hash": "42026a72fab07a2041526295a33e6390f643dec4",
-        "stale": true
+        "hash": "859cd3517bd4603b8f4a8bc5402bb470cabbb6c9"
       }
     },
     "UPCGExTensorFactoryProviderSettings": {
@@ -79328,8 +79130,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/transform/tensors-transform",
       "source": {
         "file": "PCGExElementsTensors/Public/Elements/PCGExTensorsTransform.h",
-        "hash": "896c253b288722ed34c81db454d63e36c7e775d7",
-        "stale": true
+        "hash": "091dd11ce74c389af4a0545a62a0747555ab6671"
       }
     },
     "UPCGExTexParamProviderSettings": {
@@ -79529,8 +79330,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-time",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExTimeFilter.h",
-        "hash": "ad79fac79df0a862ad903efe3d67706635ec5a3e",
-        "stale": true
+        "hash": "3c0951f36a4b6196f98d2855d5d8bd11f47abf29"
       }
     },
     "UPCGExTopologyClusterSurfaceSettings": {
@@ -79655,8 +79455,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/topology-path-surface",
       "source": {
         "file": "PCGExElementsTopology/Public/Elements/PCGExTopologyPathSurface.h",
-        "hash": "0ae1f012c9f1d380f38e016b88cc211f6a43314b",
-        "stale": true
+        "hash": "0203505a3e9eca90b0e5db315c5fcc8e547cfe45"
       }
     },
     "UPCGExTopologyPointSurfaceSettings": {
@@ -79738,8 +79537,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/topology/topology-point-surface",
       "source": {
         "file": "PCGExElementsTopology/Public/Elements/PCGExTopologyPointSurface.h",
-        "hash": "8eb7ac878ab7610e1d17940af13dcb86fa79fccf",
-        "stale": true
+        "hash": "23451e3e0991fa7fac52638a82cc3231291d64c5"
       }
     },
     "UPCGExTransformBoundsSettings": {
@@ -81272,8 +81070,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/uber-filter-cascade",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExUberFilterCascade.h",
-        "hash": "7e4fa58428a36b2266bc5cde29a835b5dba2b8bc",
-        "stale": true
+        "hash": "e1a89e1c4cc1b6ab08858543b7ec58e0367ff3e0"
       }
     },
     "UPCGExUberFilterCollectionsSettings": {
@@ -81641,8 +81438,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/uber-filter",
       "source": {
         "file": "PCGExFoundations/Public/Elements/Filtering/PCGExUberFilter.h",
-        "hash": "d11cb43990ef0758bb7ff7d607ecbbb96b3e5a8a",
-        "stale": true
+        "hash": "2551d2f3ff0121223e43c699eedb472a4419008d"
       }
     },
     "UPCGExUberNoiseSettings": {
@@ -82399,8 +82195,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/spatial/filter-inclusion-volume",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExVolumeFilter.h",
-        "hash": "f64adade4e1285685696a9c0f09ede6bc3bc5e38",
-        "stale": true
+        "hash": "4435706c7d1ba373138bca1dcd2dad526580f139"
       }
     },
     "UPCGExVtxPropertyAmplitudeSettings": {
@@ -82471,8 +82266,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-vtx-properties/vtx-amplitude",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/VtxProperties/PCGExVtxPropertyAmplitude.h",
-        "hash": "14d60254d551280a0213a935ee07f6f5a8dc4cbf",
-        "stale": true
+        "hash": "00b0d302244797ba08d77af4b05c7a3e7d22a453"
       }
     },
     "UPCGExVtxPropertyEdgeAngleSettings": {
@@ -82574,8 +82368,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-vtx-properties/vtx-edge-angle",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/VtxProperties/PCGExVtxPropertyEdgeAngle.h",
-        "hash": "871e352b2fca25ab054522abd1f9914c3a17e3ee",
-        "stale": true
+        "hash": "9eb93f02ae795d7b8bb353ae904cb5e58463d897"
       }
     },
     "UPCGExVtxPropertyEdgeMatchSettings": {
@@ -82661,8 +82454,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-vtx-properties/vtx-edge-match",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/VtxProperties/PCGExVtxPropertyEdgeMatch.h",
-        "hash": "be40f2188c7378b9c071a1a3356a19fcfb89bd15",
-        "stale": true
+        "hash": "4da9c1c73d33298337ba798c20b6c7579ae36086"
       }
     },
     "UPCGExVtxPropertyProviderSettings": {
@@ -84957,8 +84749,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/analyze/path-properties",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExWritePathProperties.h",
-        "hash": "07fd249527f7398b2bc123ba107004be44913e30",
-        "stale": true
+        "hash": "bab9706b20dbb6480b542c10be9444776111c225"
       }
     },
     "UPCGExWriteStatesSettings": {
@@ -85286,8 +85077,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/analyze/path-write-tangents",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExWriteTangents.h",
-        "hash": "0e2ae384938a32bc90fed536f6f2b5d44eec0948",
-        "stale": true
+        "hash": "e06d8f979d0dce69f625497cd2611d44e66acb17"
       }
     },
     "UPCGExWriteVtxPropertiesSettings": {
@@ -85459,8 +85249,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/clusters/analyze/cluster-vtx-properties",
       "source": {
         "file": "PCGExElementsClusters/Public/Elements/Meta/PCGExWriteVtxProperties.h",
-        "hash": "173c596bf0effb217fe5a068f87904370403cb51",
-        "stale": true
+        "hash": "cf44018ec010998337778d200988c493b9a336b6"
       }
     },
     "UPCGExZeroTangents": {

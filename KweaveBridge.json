@@ -1261,8 +1261,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/kweave/node-library/mesh-sampler",
       "source": {
         "file": "KweaveGPU/Private/Elements/MeshSampler/KweaveMeshSamplerSettings.h",
-        "hash": "a835109deb1d557b3b45490594dec00b97a6f703",
-        "stale": true
+        "hash": "cb72e179336ac34bd8319641d17ec0366947e9c7"
       }
     },
     "UKweaveStampKeySettings": {

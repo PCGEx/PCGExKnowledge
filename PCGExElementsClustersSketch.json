@@ -198,7 +198,7 @@
         "inputs": [
           {
             "label": "References",
-            "note": "Actor references to read sketch components from, an attribute set or point data alike.",
+            "note": "Actor references to read sketch components from, an attribute set or point data alike. A soft object path attribute or a plain string holding the path both work.",
             "required": "conditional",
             "condition": "when Actor Source is Input References"
           }
@@ -316,8 +316,7 @@
               "tooltip": "Also emit the \"Map\" attribute set of referenced external resources; always on in AllFound mode.",
               "default": "false"
             }
-          ],
-          "inlined_in_panel": true
+          ]
         },
         "bQuiet": {
           "display": "Quiet",
@@ -363,7 +362,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/cluster-sketch/node-library/get-sketch-data",
       "source": {
         "file": "PCGExElementsClustersSketch/Public/Elements/PCGExGetSketchData.h",
-        "hash": "bb5a030d0eac37168cb8b5a086afb6f340666d52"
+        "hash": "122a1f1a2fff01af944ee4509c1ee5ee3981343a"
       }
     },
     "UPCGExStagingLoadSketchSettings": {

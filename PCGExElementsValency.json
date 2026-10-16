@@ -9646,8 +9646,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/bias/valency-bias",
       "source": {
         "file": "PCGExValencyFoundations/Public/Bias/PCGExValencyBias.h",
-        "hash": "b9139199cae460ab00ff6760609890d625500a53",
-        "stale": true
+        "hash": "2d8a1f5adf9549f73521c7948a7f1415036414e1"
       }
     },
     "UPCGExCreateValencyChannelBiasSettings": {
@@ -12103,7 +12102,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/connector-set",
       "source": {
         "file": "PCGExValencyConnectors/Public/PCGExConnectorSet.h",
-        "hash": "49615f7b181928098ded2d954949a8608623ba36"
+        "hash": "b931c30227bb08430a4d1a610187961741dcd0d4"
       }
     },
     "UPCGExValencyConstraintSolverFactory": {
@@ -13611,7 +13610,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/orbitals/orbital-set",
       "source": {
         "file": "PCGExValencyOrbitals/Public/PCGExValencyOrbitalSet.h",
-        "hash": "d0e3d86ab5884f8a5bc1b1b742e27f6bbd07c39b"
+        "hash": "27d38a2d819bbe6026cc79c57a3a10230930120a"
       }
     },
     "UPCGExValencyPatternAsset": {
@@ -14779,8 +14778,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/valency/node-library/connectors/valency-write-connectors",
       "source": {
         "file": "PCGExValencyFoundations/Public/Elements/PCGExValencyWriteConnectors.h",
-        "hash": "c53899ed7ec5ffa9a7da1316debf4b2c9e2be9c4",
-        "stale": true
+        "hash": "263310a24c84e147dad0e2c477b6ae4958d43485"
       }
     },
     "UPCGExValencyWriteJunctionsSettings": {
