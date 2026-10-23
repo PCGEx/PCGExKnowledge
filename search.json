@@ -1,8 +1,147 @@
 [
   {
-    "id": "developers-area/authoring-with-an-agent",
+    "id": "getting-started/from-fab",
+    "name": "From FAB",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "If PCGEx came from FAB, the setup is one more plugin and two switches.",
+    "outline": [
+      "Install the Assistant",
+      "Turn on the server",
+      "Tell your AI app",
+      "Try it"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/getting-started/from-fab"
+  },
+  {
+    "id": "getting-started/from-source",
+    "name": "From source",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "Assemble the agent stack from source: which repositories, on which branch, the one submodule that matters, and the Plugins tree that means you are done.",
+    "outline": [
+      "Before you start",
+      "The pieces",
+      "Checklist",
+      "Done looks like",
+      "Build, enable, connect",
+      "Check"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/getting-started/from-source"
+  },
+  {
+    "id": "pcgex-assistant",
+    "name": "Assistant",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "The companion plugin that hands AI agents the PCGEx knowledge base, the live editor, a way to place PCGEx nodes, and the JSON authoring tools, and how to wire it up.",
+    "outline": [
+      "Getting it",
+      "What the agent can do"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-assistant"
+  },
+  {
+    "id": "pcgex-toolset",
+    "name": "Toolset",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "The plugin that lets an agent write PCGEx data as JSON: what it needs, how an agent discovers what it can author, and the console commands and dump that work without one.",
+    "outline": [
+      "Requirements",
+      "Domain toolsets",
+      "How an agent finds what it can author",
+      "Without an agent",
+      "The dump"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset"
+  },
+  {
+    "id": "pcgex-toolset-cluster-sketch",
+    "name": "Toolset + Cluster Sketch",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "A sketch becomes something an agent builds and edits by ids and coordinates.",
+    "outline": [
+      "Requirements",
+      "What it registers"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset-cluster-sketch"
+  },
+  {
+    "id": "pcgex-toolset-cluster-sketch/cluster-sketch",
+    "name": "Cluster Sketch",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "aliases": [
+      "agent",
+      "json",
+      "import",
+      "export",
+      "cluster",
+      "sketch",
+      "payload"
+    ],
+    "purpose": "Cluster Sketch data authored as JSON by an assistant: the hosts, the rules Toolset + Cluster Sketch registers for them, and example documents.",
+    "outline": [
+      "Hosts",
+      "Rules",
+      "Example documents"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset-cluster-sketch/cluster-sketch"
+  },
+  {
+    "id": "pcgex-toolset-valency",
+    "name": "Toolset + Valency",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "purpose": "Machine authoring for PCGEx Valency: the sibling plugin that registers the Valency models with the Toolset hub, so an agent can read and author them as JSON.",
+    "outline": [
+      "Requirements",
+      "What it registers"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset-valency"
+  },
+  {
+    "id": "pcgex-toolset-valency/valency",
+    "name": "Valency",
+    "plugin": "PCGExToolset",
+    "kind": "concept",
+    "aliases": [
+      "agent",
+      "json",
+      "import",
+      "export",
+      "valency",
+      "orbital",
+      "set",
+      "connector",
+      "bonding",
+      "rules",
+      "structural",
+      "grammar",
+      "affinity",
+      "map",
+      "channel",
+      "context",
+      "volume",
+      "cage",
+      "simple",
+      "null",
+      "component"
+    ],
+    "purpose": "Valency data authored as JSON by an assistant: the hosts, the rules Toolset + Valency registers for them, and example documents.",
+    "outline": [
+      "Hosts",
+      "Rules",
+      "Example documents"
+    ],
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset-valency/valency"
+  },
+  {
+    "id": "pcgex-toolset/authoring-with-an-agent",
     "name": "Authoring with an Agent",
-    "plugin": "PCGExtendedToolkit",
+    "plugin": "PCGExToolset",
     "kind": "concept",
     "aliases": [
       "agent",
@@ -19,7 +158,7 @@
       "scripting",
       "programmatic"
     ],
-    "purpose": "PCGEx data authored as JSON documents by an AI assistant: the tool chain, the document envelope, the merge rules, and every bound host, format and action the installed toolkit registers.",
+    "purpose": "PCGEx data authored as JSON documents by an AI assistant: the tool chain, the document envelope, the merge rules, and every bound host, format and action the installed toolsets register.",
     "outline": [
       "The chain",
       "The document",
@@ -29,34 +168,12 @@
       "Actions",
       "Guides"
     ],
-    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent"
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset/authoring-with-an-agent"
   },
   {
-    "id": "developers-area/authoring-with-an-agent/cluster-sketch",
-    "name": "Cluster Sketch",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "concept",
-    "aliases": [
-      "agent",
-      "json",
-      "import",
-      "export",
-      "cluster",
-      "sketch",
-      "payload"
-    ],
-    "purpose": "Cluster Sketch data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
-    "outline": [
-      "Hosts",
-      "Rules",
-      "Example documents"
-    ],
-    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/cluster-sketch"
-  },
-  {
-    "id": "developers-area/authoring-with-an-agent/collections",
+    "id": "pcgex-toolset/collections",
     "name": "Collections",
-    "plugin": "PCGExtendedToolkit",
+    "plugin": "PCGExToolset",
     "kind": "concept",
     "aliases": [
       "agent",
@@ -66,18 +183,18 @@
       "distribute",
       "tuple"
     ],
-    "purpose": "Collections data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
+    "purpose": "Collections data authored as JSON by an assistant: the hosts, the rules Toolset registers for them, and example documents.",
     "outline": [
       "Hosts",
       "Rules",
       "Example documents"
     ],
-    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/collections"
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset/collections"
   },
   {
-    "id": "developers-area/authoring-with-an-agent/properties",
+    "id": "pcgex-toolset/properties",
     "name": "Properties",
-    "plugin": "PCGExtendedToolkit",
+    "plugin": "PCGExToolset",
     "kind": "concept",
     "aliases": [
       "agent",
@@ -88,40 +205,13 @@
       "schema",
       "tuple"
     ],
-    "purpose": "Properties data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
+    "purpose": "Properties data authored as JSON by an assistant: the hosts, the rules Toolset registers for them, and example documents.",
     "outline": [
       "Hosts",
       "Rules",
       "Example documents"
     ],
-    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/properties"
-  },
-  {
-    "id": "developers-area/authoring-with-an-agent/valency",
-    "name": "Valency",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "concept",
-    "aliases": [
-      "agent",
-      "json",
-      "import",
-      "export",
-      "valency",
-      "orbital",
-      "set",
-      "connector",
-      "bonding",
-      "rules",
-      "structural",
-      "grammar"
-    ],
-    "purpose": "Valency data authored as JSON by an assistant: the hosts, the rules the toolkit registers for them, and example documents.",
-    "outline": [
-      "Hosts",
-      "Rules",
-      "Example documents"
-    ],
-    "url": "https://pcgex.gitbook.io/pcgex/developers-area/authoring-with-an-agent/valency"
+    "url": "https://pcgex.gitbook.io/pcgex/ai/pcgex-toolset/properties"
   },
   {
     "id": "working-with-cluster-sketch/authoring",
@@ -286,7 +376,7 @@
     "outline": [
       "Fixed count, or fixed spacing",
       "One shape per seed, cut to the seed",
-      "The four builders",
+      "The builders",
       "φ Sphere is the fast one by a wide margin",
       "Related"
     ],
@@ -456,6 +546,7 @@
       "Mixed picks need no splitting to work",
       "Meshes",
       "The Map goes into the spawner's override pin",
+      "Skinned meshes",
       "Actors",
       "PCG data",
       "Along paths",
@@ -4372,6 +4463,28 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-circle"
   },
   {
+    "id": "UPCGExCreateShapeFiblatDiscSettings",
+    "name": "Shape : φ Disc",
+    "category": "Shape",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "provider",
+    "purpose": "Builds points filling a flat disc around each seed.",
+    "situation": "Seeds whose round footprint should be filled with evenly spread points, with no grid pattern showing through.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-disc"
+  },
+  {
+    "id": "UPCGExCreateShapeFiblatRectSettings",
+    "name": "Shape : φ Rect",
+    "category": "Shape",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "provider",
+    "purpose": "Builds points filling a flat rectangle around each seed, spread evenly with no grid showing through.",
+    "situation": "Seeds whose rectangular footprint should be covered by evenly spread points, without rows and columns.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-rect"
+  },
+  {
     "id": "UPCGExCreateShapeFiblatSettings",
     "name": "Shape : φ Sphere",
     "category": "Shape",
@@ -7722,16 +7835,6 @@
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/skinned-mesh-collection"
   },
   {
-    "id": "UPCGExSkinnedMeshSelectorStaged",
-    "name": "Staging Data (Skinned)",
-    "plugin": "PCGExtendedToolkit",
-    "kind": "entry",
-    "classification": "instanced_factory",
-    "purpose": "Skinned-mesh spawning is what the vanilla Skinned Mesh Spawner already does, and this is what teaches it to read staged picks.",
-    "situation": "A staged dataset reaches a Skinned Mesh Spawner, and the skeletal meshes have to come out with the descriptors and tags their collections authored.",
-    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/staging-data-skinned-mesh-selector"
-  },
-  {
     "id": "UPCGExSmoothingInstancedFactory",
     "name": "Smoothing",
     "plugin": "PCGExtendedToolkit",
@@ -7889,6 +7992,17 @@
     "purpose": "Puts real actors in the level from staged picks.",
     "situation": "An Actor Collection has been staged over a point layout, and those actors now have to exist in the level as content the graph creates and cleans up.",
     "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-actors"
+  },
+  {
+    "id": "UPCGExStagingSpawnSkinnedMeshesSettings",
+    "name": "Staging : Spawn Skinned Meshes",
+    "category": "Staging",
+    "plugin": "PCGExtendedToolkit",
+    "kind": "entry",
+    "classification": "node",
+    "purpose": "Puts skinned meshes in the level from staged picks, as instanced skinned mesh components on one target actor.",
+    "situation": "A Skinned Mesh Collection has been staged over a point layout, and those skeletal meshes now have to exist in the level as instanced, animated content the graph creates and cleans up.",
+    "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-skinned-meshes"
   },
   {
     "id": "UPCGExStagingSwapSettings",

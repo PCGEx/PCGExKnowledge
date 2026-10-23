@@ -1,6 +1,6 @@
 {
   "bundle_schema": "2.2.0",
-  "generated": "2026-10-16",
+  "generated": "2026-10-22",
   "plugins": [
     {
       "plugin": "KweaveBridge",
@@ -32,10 +32,11 @@
     },
     {
       "plugin": "PCGExtendedToolkit",
-      "version": "0.79.2",
+      "version": "0.79.3",
       "file": "PCGExtendedToolkit.json",
-      "entries": 499,
-      "concepts": 46
+      "entries": 501,
+      "concepts": 41,
+      "stale": 7
     }
   ]
 }

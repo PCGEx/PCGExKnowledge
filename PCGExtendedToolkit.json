@@ -1,6 +1,6 @@
 {
   "plugin": "PCGExtendedToolkit",
-  "version": "0.79.2",
+  "version": "0.79.3",
   "aliases": {
     "FPCGExAdjacencyStateConfigBase": "UPCGExAdjacencyStateFactoryProviderSettings",
     "FPCGExAmplitudeConfig": "UPCGExVtxPropertyAmplitudeSettings",
@@ -266,7 +266,9 @@
     "UPCGExSelectorRangeBasedFactoryData": "UPCGExSelectorRangeBasedFactoryProviderSettings",
     "UPCGExShapeBuilderFactoryData": "UPCGExShapeBuilderFactoryProviderSettings",
     "UPCGExShapeCircleFactory": "UPCGExCreateShapeCircleSettings",
+    "UPCGExShapeFiblatDiscFactory": "UPCGExCreateShapeFiblatDiscSettings",
     "UPCGExShapeFiblatFactory": "UPCGExCreateShapeFiblatSettings",
+    "UPCGExShapeFiblatRectFactory": "UPCGExCreateShapeFiblatRectSettings",
     "UPCGExShapeGridFactory": "UPCGExCreateShapeGridSettings",
     "UPCGExShapePolygonFactory": "UPCGExCreateShapePolygonSettings",
     "UPCGExSocketComponent": "APCGExSocketActor",
@@ -3308,6 +3310,11 @@
           "name": "MostCentral",
           "display_name": "Keep Most Central",
           "tooltip": "Keep the existing point that's most central to the sample group"
+        },
+        {
+          "name": "BestCandidate",
+          "display_name": "Keep Best Candidate",
+          "tooltip": "Keep the existing point that ranks first according to sorting rules. Ties fall back to most central, then lowest index."
         }
       ]
     },
@@ -5282,6 +5289,25 @@
           "name": "Redistribute",
           "display_name": "Redistribute",
           "tooltip": "Keep the input points and only move them, spreading them evenly along the original polyline. Point count and attributes are left alone, so the blending settings do not apply."
+        }
+      ]
+    },
+    "EPCGExResampleResolutionMode": {
+      "values": [
+        {
+          "name": "Distance",
+          "display_name": "Distance",
+          "tooltip": "Resolution is the spacing between samples. The point count is the number of whole steps that fit the path length (length / resolution), one fewer than needed to hold both endpoints of an open path at exactly that spacing."
+        },
+        {
+          "name": "Fixed",
+          "display_name": "Count",
+          "tooltip": "Resolution is a fixed number of output points, spread evenly along the path."
+        },
+        {
+          "name": "DistanceFencePost",
+          "display_name": "Distance (Fence-post)",
+          "tooltip": "Like Distance, but open paths get one extra point so N steps yield N+1 points and both endpoints sit at the requested spacing. Closed loops behave exactly like Distance."
         }
       ]
     },
@@ -10807,7 +10833,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/common-settings/property-schema-collection",
       "source": {
         "file": "PCGExProperties/Public/PCGExPropertySchema.h",
-        "hash": "2eb81fa90e70294ece1677acfe83dcf0041baecb"
+        "hash": "2eb81fa90e70294ece1677acfe83dcf0041baecb",
+        "stale": true
       }
     },
     "FPCGExSelectorFactoryBaseConfig": {
@@ -13356,7 +13383,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/asset-collection-base",
       "source": {
         "file": "PCGExCollections/Public/Core/PCGExAssetCollection.h",
-        "hash": "b1ff911053e4c3ff865386a5e79e3931670437ad"
+        "hash": "b1ff911053e4c3ff865386a5e79e3931670437ad",
+        "stale": true
       }
     },
     "UPCGExAssetStagingSettings": {
@@ -27153,6 +27181,388 @@
         "hash": "4b596c898da07a7bfd000454d30c3aafb7f389c2"
       }
     },
+    "UPCGExCreateShapeFiblatDiscSettings": {
+      "id": "UPCGExCreateShapeFiblatDiscSettings",
+      "name": "Shape : φ Disc",
+      "category": "Shape",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsShapes",
+      "classification": "provider",
+      "covers": [
+        "UPCGExShapeFiblatDiscFactory"
+      ],
+      "purpose": "Builds points filling a flat disc around each seed. **Shape : Circle** places points on the rim; this one covers the inside, winding a single spiral from the center to the edge so the density stays even across the whole area, with no rings and no spokes for the eye to catch.",
+      "situation": "Seeds whose round footprint should be filled with evenly spread points, with no grid pattern showing through.",
+      "mechanism": {
+        "text": "The disc is the seed's fitted footprint seen from above: an ellipse whose half-sizes are the fit's X and Y extents, laid in the seed's local XY plane through its center. Points are placed along one spiral, each turned from the last by the chosen constant and pushed outward so that every point owns the same share of area, which is what keeps the density flat from center to rim. In `Distance` resolution the count is the disc's area divided by the square of the spacing; in `Count` it is the number asked for. Each point takes the seed's rotation unless `Points Look At` turns it toward the center."
+      },
+      "pins": {
+        "inputs": [],
+        "outputs": [
+          {
+            "label": "Shape Builder",
+            "note": "The form definition, read by **Create Shapes**."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Config": {
+          "display": "Config",
+          "type": "FPCGExShapeFiblatConfig",
+          "tooltip": "Shape properties",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "ResolutionMode",
+              "display": "Resolution Mode",
+              "type": "EPCGExResolutionMode",
+              "tooltip": "Resolution mode",
+              "default": "EPCGExResolutionMode::Fixed",
+              "enum": "EPCGExResolutionMode"
+            },
+            {
+              "name": "Resolution",
+              "display": "Resolution",
+              "type": "FPCGExInputShorthandSelectorDoubleAbs",
+              "tooltip": "Resolution.",
+              "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"Resolution\"), 10, false)"
+            },
+            {
+              "name": "ResolutionVector",
+              "display": "Resolution Vector",
+              "type": "FPCGExInputShorthandSelectorVector",
+              "tooltip": "Resolution.",
+              "default": "FPCGExInputShorthandSelectorVector(FName(\"Resolution\"), FVector(10), false)"
+            },
+            {
+              "name": "Fitting",
+              "display": "Fitting",
+              "type": "FPCGExFittingDetailsHandler",
+              "tooltip": "Fitting details"
+            },
+            {
+              "name": "SourceAxis",
+              "display": "Source Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Axis on the source to remap to a target axis on the shape",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "TargetAxis",
+              "display": "Target Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Shape axis to align to the source axis",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "PointsLookAt",
+              "display": "Points Look At",
+              "type": "EPCGExShapePointLookAt",
+              "tooltip": "Points look at",
+              "default": "EPCGExShapePointLookAt::None",
+              "enum": "EPCGExShapePointLookAt"
+            },
+            {
+              "name": "LookAtAxis",
+              "display": "Look at Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Axis used to align the look at rotation",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "BoundsSource",
+              "display": "Bounds Source",
+              "type": "EPCGExShapeBoundsSource",
+              "tooltip": "How point bounds/extents are determined",
+              "default": "EPCGExShapeBoundsSource::Fit",
+              "enum": "EPCGExShapeBoundsSource"
+            },
+            {
+              "name": "DefaultExtents",
+              "display": "Default Extents",
+              "type": "FVector",
+              "tooltip": "Default point extents (used when BoundsSource is Constant)",
+              "default": "FVector::OneVector * 50"
+            },
+            {
+              "name": "ShapeId",
+              "display": "Shape Id",
+              "type": "int32",
+              "tooltip": "Shape ID used to identify this specific shape' points",
+              "default": "0"
+            },
+            {
+              "name": "MinPointCount",
+              "display": "Min Point Count",
+              "type": "int32",
+              "tooltip": "Discarded if point count is less than",
+              "default": "2"
+            },
+            {
+              "name": "MaxPointCount",
+              "display": "Max Point Count",
+              "type": "int32",
+              "tooltip": "Discarded if point count is more than",
+              "default": "500"
+            },
+            {
+              "name": "PhiConstant",
+              "display": "Phi Constant",
+              "type": "EPCGExFibPhiConstant",
+              "tooltip": "Irrational step between consecutive lattice points; the golden ratio gives the most even cover.",
+              "default": "EPCGExFibPhiConstant::GoldenRatio",
+              "enum": "EPCGExFibPhiConstant"
+            },
+            {
+              "name": "Phi",
+              "display": "Phi",
+              "type": "FPCGExInputShorthandNameDouble",
+              "tooltip": "Custom lattice step; only its fractional part matters.",
+              "default": "FPCGExInputShorthandNameDouble(FName(\"Phi\"), 0.724592938, false)"
+            },
+            {
+              "name": "Epsilon",
+              "display": "Epsilon",
+              "type": "double",
+              "tooltip": "Pulls the first and last lattice rows inward from the ends of the range; 0 puts them on the rim or poles.",
+              "default": "0"
+            }
+          ],
+          "inlined_in_panel": true
+        }
+      },
+      "inherits": [
+        "UPCGExShapeBuilderFactoryProviderSettings",
+        "UPCGExFactoryProviderSettings",
+        "UPCGExSettings"
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/additional-systems/shapes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/shapes"
+        },
+        {
+          "path": "node-library/shapes/shape.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape"
+        },
+        {
+          "path": "node-library/shapes/create-shapes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/create-shapes"
+        },
+        {
+          "path": "node-library/shapes/shape-f-sphere.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-sphere"
+        },
+        {
+          "path": "node-library/shapes/shape-f-rect.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-rect"
+        },
+        {
+          "path": "node-library/shapes/shape-circle.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-circle"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-disc",
+      "source": {
+        "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeFiblatDisc.h",
+        "hash": "b224b130bdd8aa4a1b184abfcb26cfcd282e7bef"
+      }
+    },
+    "UPCGExCreateShapeFiblatRectSettings": {
+      "id": "UPCGExCreateShapeFiblatRectSettings",
+      "name": "Shape : φ Rect",
+      "category": "Shape",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExElementsShapes",
+      "classification": "provider",
+      "covers": [
+        "UPCGExShapeFiblatRectFactory"
+      ],
+      "purpose": "Builds points filling a flat rectangle around each seed, spread evenly with no grid showing through. **Shape : 3D Grid** places points in rows and columns; here every point sits on its own row, shifted sideways from the previous one by an irrational step, so no column ever forms and the cover reads as even without being gridded.",
+      "situation": "Seeds whose rectangular footprint should be covered by evenly spread points, without rows and columns.",
+      "mechanism": {
+        "text": "The rectangle is the seed's fitted footprint: the fit's full X and Y extents, laid in the seed's local XY plane through its center. Points climb from one side of the footprint to the other along the seed's Y axis in even steps, each shifted along X by the chosen constant and wrapped around when it runs off the edge, so the sideways positions never repeat. In `Distance` resolution the count is the footprint's area divided by the square of the spacing; in `Count` it is the number asked for. Each point takes the seed's rotation unless `Points Look At` turns it toward the center."
+      },
+      "pins": {
+        "inputs": [],
+        "outputs": [
+          {
+            "label": "Shape Builder",
+            "note": "The form definition, read by **Create Shapes**."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "Config": {
+          "display": "Config",
+          "type": "FPCGExShapeFiblatConfig",
+          "tooltip": "Shape properties",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "ResolutionMode",
+              "display": "Resolution Mode",
+              "type": "EPCGExResolutionMode",
+              "tooltip": "Resolution mode",
+              "default": "EPCGExResolutionMode::Fixed",
+              "enum": "EPCGExResolutionMode"
+            },
+            {
+              "name": "Resolution",
+              "display": "Resolution",
+              "type": "FPCGExInputShorthandSelectorDoubleAbs",
+              "tooltip": "Resolution.",
+              "default": "FPCGExInputShorthandSelectorDoubleAbs(FName(\"Resolution\"), 10, false)"
+            },
+            {
+              "name": "ResolutionVector",
+              "display": "Resolution Vector",
+              "type": "FPCGExInputShorthandSelectorVector",
+              "tooltip": "Resolution.",
+              "default": "FPCGExInputShorthandSelectorVector(FName(\"Resolution\"), FVector(10), false)"
+            },
+            {
+              "name": "Fitting",
+              "display": "Fitting",
+              "type": "FPCGExFittingDetailsHandler",
+              "tooltip": "Fitting details"
+            },
+            {
+              "name": "SourceAxis",
+              "display": "Source Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Axis on the source to remap to a target axis on the shape",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "TargetAxis",
+              "display": "Target Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Shape axis to align to the source axis",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "PointsLookAt",
+              "display": "Points Look At",
+              "type": "EPCGExShapePointLookAt",
+              "tooltip": "Points look at",
+              "default": "EPCGExShapePointLookAt::None",
+              "enum": "EPCGExShapePointLookAt"
+            },
+            {
+              "name": "LookAtAxis",
+              "display": "Look at Axis",
+              "type": "EPCGExAxisAlign",
+              "tooltip": "Axis used to align the look at rotation",
+              "default": "EPCGExAxisAlign::Forward",
+              "enum": "EPCGExAxisAlign"
+            },
+            {
+              "name": "BoundsSource",
+              "display": "Bounds Source",
+              "type": "EPCGExShapeBoundsSource",
+              "tooltip": "How point bounds/extents are determined",
+              "default": "EPCGExShapeBoundsSource::Fit",
+              "enum": "EPCGExShapeBoundsSource"
+            },
+            {
+              "name": "DefaultExtents",
+              "display": "Default Extents",
+              "type": "FVector",
+              "tooltip": "Default point extents (used when BoundsSource is Constant)",
+              "default": "FVector::OneVector * 50"
+            },
+            {
+              "name": "ShapeId",
+              "display": "Shape Id",
+              "type": "int32",
+              "tooltip": "Shape ID used to identify this specific shape' points",
+              "default": "0"
+            },
+            {
+              "name": "MinPointCount",
+              "display": "Min Point Count",
+              "type": "int32",
+              "tooltip": "Discarded if point count is less than",
+              "default": "2"
+            },
+            {
+              "name": "MaxPointCount",
+              "display": "Max Point Count",
+              "type": "int32",
+              "tooltip": "Discarded if point count is more than",
+              "default": "500"
+            },
+            {
+              "name": "PhiConstant",
+              "display": "Phi Constant",
+              "type": "EPCGExFibPhiConstant",
+              "tooltip": "Irrational step between consecutive lattice points; the golden ratio gives the most even cover.",
+              "default": "EPCGExFibPhiConstant::GoldenRatio",
+              "enum": "EPCGExFibPhiConstant"
+            },
+            {
+              "name": "Phi",
+              "display": "Phi",
+              "type": "FPCGExInputShorthandNameDouble",
+              "tooltip": "Custom lattice step; only its fractional part matters.",
+              "default": "FPCGExInputShorthandNameDouble(FName(\"Phi\"), 0.724592938, false)"
+            },
+            {
+              "name": "Epsilon",
+              "display": "Epsilon",
+              "type": "double",
+              "tooltip": "Pulls the first and last lattice rows inward from the ends of the range; 0 puts them on the rim or poles.",
+              "default": "0"
+            }
+          ],
+          "inlined_in_panel": true
+        }
+      },
+      "inherits": [
+        "UPCGExShapeBuilderFactoryProviderSettings",
+        "UPCGExFactoryProviderSettings",
+        "UPCGExSettings"
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/additional-systems/shapes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/additional-systems/shapes"
+        },
+        {
+          "path": "node-library/shapes/shape.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape"
+        },
+        {
+          "path": "node-library/shapes/create-shapes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/create-shapes"
+        },
+        {
+          "path": "node-library/shapes/shape-f-sphere.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-sphere"
+        },
+        {
+          "path": "node-library/shapes/shape-f-disc.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-disc"
+        },
+        {
+          "path": "node-library/shapes/shape-3d-grid.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-3d-grid"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-rect",
+      "source": {
+        "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeFiblatRect.h",
+        "hash": "cf158194457bd83b473ff23691e5122ac4e54ee4"
+      }
+    },
     "UPCGExCreateShapeFiblatSettings": {
       "id": "UPCGExCreateShapeFiblatSettings",
       "name": "Shape : φ Sphere",
@@ -27163,7 +27573,7 @@
       "covers": [
         "UPCGExShapeFiblatFactory"
       ],
-      "purpose": "Builds points spread evenly over a sphere around each seed. Distributing points on a sphere is not something a grid can do without bunching at the poles; a Fibonacci lattice avoids that by walking a spiral whose turn angle never repeats a pattern, so the spacing stays near-uniform everywhere.",
+      "purpose": "Builds points spread evenly over a sphere around each seed. Distributing points on a sphere is not something a grid can do without bunching at the poles; a Fibonacci lattice avoids that by walking a spiral whose turn angle never repeats a pattern, so the spacing stays near-uniform everywhere. **Shape : φ Disc** and **Shape : φ Rect** apply the same lattice to a flat footprint.",
       "situation": "Seeds that need points spread over a sphere without the crowding a latitude and longitude grid produces.",
       "mechanism": {
         "text": "Points are placed one at a time along a spiral over the sphere's surface, each advanced from the last by a fixed turn. The value of that turn is what keeps successive points from lining up: an irrational proportion never closes into a repeating ring, which is why the constant matters more here than any other setting. `Epsilon` nudges the endpoints, which is where lattices of this kind are least even."
@@ -27285,7 +27695,7 @@
               "name": "PhiConstant",
               "display": "Phi Constant",
               "type": "EPCGExFibPhiConstant",
-              "tooltip": "Phi Constant",
+              "tooltip": "Irrational step between consecutive lattice points; the golden ratio gives the most even cover.",
               "default": "EPCGExFibPhiConstant::GoldenRatio",
               "enum": "EPCGExFibPhiConstant"
             },
@@ -27293,14 +27703,14 @@
               "name": "Phi",
               "display": "Phi",
               "type": "FPCGExInputShorthandNameDouble",
-              "tooltip": "Phi Custom Value",
+              "tooltip": "Custom lattice step; only its fractional part matters.",
               "default": "FPCGExInputShorthandNameDouble(FName(\"Phi\"), 0.724592938, false)"
             },
             {
               "name": "Epsilon",
               "display": "Epsilon",
               "type": "double",
-              "tooltip": "Epsilon",
+              "tooltip": "Pulls the first and last lattice rows inward from the ends of the range; 0 puts them on the rim or poles.",
               "default": "0"
             }
           ],
@@ -27326,6 +27736,14 @@
           "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/create-shapes"
         },
         {
+          "path": "node-library/shapes/shape-f-disc.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-disc"
+        },
+        {
+          "path": "node-library/shapes/shape-f-rect.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-rect"
+        },
+        {
           "path": "node-library/shapes/shape-3d-grid.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-3d-grid"
         }
@@ -27333,7 +27751,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/shapes/shape-f-sphere",
       "source": {
         "file": "PCGExElementsShapes/Public/Shapes/PCGExShapeFiblat.h",
-        "hash": "151f8bae24e5a75545013caed2a56db3b205504d"
+        "hash": "7ff50968bd847d00a601375bcc655a186d08d42f"
       }
     },
     "UPCGExCreateShapeGridSettings": {
@@ -42442,14 +42860,26 @@
       "purpose": "Merges points that sit close enough together into one. Where **Collocation Count** only reports coincident points and a filter only removes them, this combines them: a cluster within the fusing distance leaves as a single point carrying what the group added up to. That is the difference between deduplicating and consolidating.",
       "situation": "Points arriving from several sources that land near enough to each other to be the same thing, and should be treated as one.",
       "mechanism": {
-        "text": "Points within the fusing distance of each other form a group, and each group leaves as one point. `Mode` decides whether that point is a blend of the group or the existing member nearest its middle, which is the difference between a synthesised point and a real one. `Fused Bounds Mode` can grow the survivor's bounds to cover everything that went into it, so the merged point occupies the space its group did rather than only its own."
+        "text": "Points within the fusing distance of each other form a group, and each group leaves as one point. `Mode` decides what that point is: a blend of the group, the existing member nearest its middle, or the existing member the sorting rules rank first, which is the difference between a synthesised point and a real one picked on a criterion. `Fused Bounds Mode` can grow the survivor's bounds to cover everything that went into it, so the merged point occupies the space its group did rather than only its own."
       },
       "off_label": [
         {
-          "claim": "Keep Most Central with no bounds override is a sampling-free way to thin a set down to real members: nothing is synthesised, so attributes and references that only make sense on an authored point survive intact.",
-          "grounded_in": "The Keep Most Central mode selects an existing point from the group rather than blending a new one."
+          "claim": "Either keep mode with no bounds override is a sampling-free way to thin a set down to real members: nothing is synthesised, so attributes and references that only make sense on an authored point survive intact.",
+          "grounded_in": "Keep Most Central and Keep Best Candidate select an existing point from the group rather than blending a new one, and its attributes are copied as they were."
         }
       ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "Sorting Rules",
+            "note": "**Sorting Rule** sub-nodes deciding which member of a group survives. In the other modes the pin sits among the node's advanced pins and anything wired to it is ignored.",
+            "required": "conditional",
+            "condition": "in Keep Best Candidate mode"
+          }
+        ],
+        "outputs": [],
+        "dynamic": null
+      },
       "settings": {
         "Mode": {
           "display": "Mode",
@@ -42457,7 +42887,18 @@
           "tooltip": "Mode",
           "default": "EPCGExFusedPointOutput::Blend",
           "enum": "EPCGExFusedPointOutput",
-          "semantics": "`Blend` produces a new point whose attributes are the group's blended values, which is right when the attributes are quantities. `Keep Most Central` keeps one of the original points untouched, which is right when they carry things a blend would corrupt, like an asset path or an index into something else."
+          "semantics": "`Blend` produces a new point whose attributes are the group's blended values, which is right when the attributes are quantities. `Keep Most Central` keeps one of the original points untouched, which is right when they carry things a blend would corrupt, like an asset path or an index into something else. `Keep Best Candidate` also keeps an original, chosen by the wired sorting rules: the member that would sort first wins, a tie across every rule falls back to the most central, and a tie there to the lowest index. Both keep modes copy the survivor's attributes as they were, so the blending and carry-over blocks only apply under `Blend`."
+        },
+        "SortDirection": {
+          "display": "└─ Sort Direction",
+          "type": "EPCGExSortDirection",
+          "tooltip": "Sort direction applied to the sorting rules when keeping the best candidate.",
+          "default": "EPCGExSortDirection::Ascending",
+          "enum": "EPCGExSortDirection",
+          "overridable": true,
+          "edit_condition": "Mode == EPCGExFusedPointOutput::BestCandidate",
+          "edit_condition_hides": true,
+          "semantics": "Applied to the rule stack as a whole: `Ascending` keeps the member that sorts first, `Descending` the one that sorts last. A rule that needs to run against the others carries its own inversion, so mixed directions are expressed per rule rather than here."
         },
         "PointPointIntersectionDetails": {
           "display": "Point/Point Settings",
@@ -42608,6 +43049,11 @@
           "anchor": "mechanism",
           "style": "warning",
           "text": "Fusing changes the point count, so anything downstream pairing by index against the original data no longer lines up. `Preserve Order` keeps the survivors in their original relative order but does not keep their indices."
+        },
+        {
+          "anchor": "pins",
+          "style": "warning",
+          "text": "`Keep Best Candidate` with no sorting rules wired is an error: the node reports the missing input and produces nothing. A dataset whose points lack the attributes the rules name is left out of the output with a warning."
         }
       ],
       "related": [
@@ -42620,6 +43066,10 @@
           "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/points-to-bounds"
         },
         {
+          "path": "node-library/utilities/sorting/sorting-rule.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/utilities/sorting/sorting-rule"
+        },
+        {
           "path": "working-with-pcgex/what-pcgex-adds/README.md",
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/what-pcgex-adds"
         }
@@ -42627,7 +43077,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/transform/modify/fuse-points",
       "source": {
         "file": "PCGExElementsSpatial/Public/Elements/PCGExFusePoints.h",
-        "hash": "0a46c4df453389266dd13069f17b4168e49f85e4"
+        "hash": "48d380340049dd2eea386bff1bfb9df9fdd8f890"
       }
     },
     "UPCGExGameplayTagsFilterProviderSettings": {
@@ -47533,7 +47983,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/staging-data-mesh-selector",
       "source": {
         "file": "PCGExCollections/Public/MeshSelectors/PCGExMeshSelectorStaged.h",
-        "hash": "9f96e044ca1f2d5ef4870781470e650bdb2e8918"
+        "hash": "9f96e044ca1f2d5ef4870781470e650bdb2e8918",
+        "stale": true
       }
     },
     "UPCGExMeshToClustersSettings": {
@@ -52317,7 +52768,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/attribute/filter-compare-nearest-numeric",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExNumericCompareNearestFilter.h",
-        "hash": "02f244f8ffd65b8fe2183d30dea57c1716d78a5b"
+        "hash": "02f244f8ffd65b8fe2183d30dea57c1716d78a5b",
+        "stale": true
       }
     },
     "UPCGExNumericSelfCompareFilterProviderSettings": {
@@ -64063,10 +64515,10 @@
         "UPCGExRandomRatioFilterFactory",
         "FPCGExRandomRatioFilterConfig"
       ],
-      "purpose": "The count is settled before any element is looked at, as a share of the set or as a flat figure, and then that many are drawn. Filter : Random cannot promise that: it rolls each element on its own and lands near the requested share without ever committing to it. The price of the promise is that the draw belongs to the whole set, so adding or removing a single element redraws the entire selection. It also serves the consumers that judge whole datasets, where the share applies to the datasets on the pin instead of to the elements inside them.",
+      "purpose": "The count is settled before any element is looked at, as a share of the set or as a flat figure, and then that many are drawn. Filter : Random cannot promise that: it rolls each element on its own and lands near the requested share without ever committing to it. The price of the promise is that the draw belongs to the whole set, so adding or removing a single element redraws the entire selection. Switched to Weighted, the draw still lands on that exact count, but an attribute decides how likely each element is to be among the chosen: a density map can shape where the survivors fall without touching how many there are. It also serves the consumers that judge whole datasets, where the share applies to the datasets on the pin instead of to the elements inside them.",
       "situation": "Exactly a tenth of a set has to be marked, and which tenth does not matter as long as the count holds.",
       "mechanism": {
-        "text": "The count comes first: a share of the element count, rounded, or a flat figure, in either case trimmed to the size of the set and then held inside the optional clamps. Every index is then shuffled and the first however-many are the winners, so which elements are chosen depends on the element count and on their order in the data, not on anything they carry. The draw folds Base Seed together with the seed of the node running the filter and with the PCG component's own seed, so a single copy of this node feeding two consumers picks a different subset for each of them, and re-seeding either one redraws. Used on a whole dataset instead of an element, one shuffle covers every dataset on the pin and the share is a share of their number, and any input set to read an attribute reads it from the first dataset's @Data."
+        "text": "The count comes first: a share of the element count, rounded, or a flat figure, held inside the optional clamps. Unweighted, every index is then shuffled and the first however-many win, so which elements are chosen depends on the element count and their order in the data, not on anything they carry. Weighted, each element draws a random key scaled by its weight and the count of smallest keys wins: a draw without replacement where an element's odds at every step are its weight against what is still unpicked, while the count never moves. The draw folds Base Seed with the seed of the node running the filter and the PCG component's seed, so one copy of this node feeding two consumers picks a different subset for each. On datasets, one draw covers every dataset on the pin and the share is a share of their number; seed and amount read the first dataset's @Data, weights read each dataset's own."
       },
       "pins": {
         "inputs": [],
@@ -64122,7 +64574,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/filters/point-filters/filter-random-ratio",
       "source": {
         "file": "PCGExFilters/Public/Filters/Points/PCGExRandomRatioFilter.h",
-        "hash": "f56180fda1d0d2cf466b663450ea6577bc6490cd"
+        "hash": "6de4c9140e0da9dc60047aecf721febc9e5867a6",
+        "stale": true
       }
     },
     "UPCGExRaycastFilterProviderSettings": {
@@ -65237,10 +65690,10 @@
         },
         "ResolutionMode": {
           "display": "Resolution Mode",
-          "type": "EPCGExResolutionMode",
-          "tooltip": "Resolution mode",
-          "default": "EPCGExResolutionMode::Distance",
-          "enum": "EPCGExResolutionMode",
+          "type": "EPCGExResampleResolutionMode",
+          "tooltip": "How the Resolution value is read: a spacing between samples, a point count, or a spacing that also keeps the last point of open paths.",
+          "default": "EPCGExResampleResolutionMode::Distance",
+          "enum": "EPCGExResampleResolutionMode",
           "edit_condition": "Mode == EPCGExResampleMode::Sweep",
           "semantics": "How the resolution number is read under `Sweep`. `Distance` treats it as a spacing and works out the count from the path's length, so longer paths get more points. `Count` treats it as the number of points outright, so every path comes out with the same count whatever its length.",
           "interacts_with": [
@@ -65254,7 +65707,7 @@
           "tooltip": "Adjust sample spacing so all samples are evenly distributed across the path length.",
           "default": "true",
           "overridable": true,
-          "edit_condition": "Mode == EPCGExResampleMode::Sweep && ResolutionMode == EPCGExResolutionMode::Distance",
+          "edit_condition": "Mode == EPCGExResampleMode::Sweep && ResolutionMode != EPCGExResampleResolutionMode::Fixed",
           "edit_condition_hides": true,
           "semantics": "Ships on. It keeps the count the spacing worked out and then divides the path's length by that count exactly, so the last sample lands on the path's final point and every gap is equal. Turning it off marches the typed spacing from the start and stops wherever it runs out, leaving the end of the path unsampled.",
           "interacts_with": [
@@ -65268,7 +65721,7 @@
           "tooltip": "(ignored for closed loops)",
           "default": "false",
           "overridable": true,
-          "edit_condition": "!bRedistributeEvenly && Mode == EPCGExResampleMode::Sweep && ResolutionMode == EPCGExResolutionMode::Distance",
+          "edit_condition": "!bRedistributeEvenly && Mode == EPCGExResampleMode::Sweep && ResolutionMode != EPCGExResampleResolutionMode::Fixed",
           "edit_condition_hides": true,
           "semantics": "Drags the final sample onto the path's last point, which is the only way to reach that point while `Redistribute Evenly` is off.",
           "interacts_with": [
@@ -65330,6 +65783,15 @@
           "edit_condition_hides": true,
           "semantics": "Rounds the sample count that the spacing worked out, and ships on `Round` rather than on a floor, so a path that is a whisker over a multiple of the spacing gains a sample rather than losing one."
         },
+        "bKeepShortPaths": {
+          "display": "Keep Short Paths",
+          "type": "bool",
+          "tooltip": "Paths shorter than the resolution output their first and last point instead of being omitted.",
+          "default": "false",
+          "overridable": true,
+          "edit_condition": "Mode == EPCGExResampleMode::Sweep && ResolutionMode != EPCGExResampleResolutionMode::Fixed",
+          "edit_condition_hides": true
+        },
         "BlendingSettings": {
           "display": "Blending Settings",
           "type": "FPCGExBlendingDetails",
@@ -65348,6 +65810,12 @@
           "tooltip": "Ensure each resampled point gets a unique random seed.",
           "default": "true",
           "semantics": "Ships on, and rewrites each output point's seed from where it landed. Turning it off under `Sweep` leaves whichever seed the blend produced, which under a copying blend mode means whole runs of points sharing one seed."
+        },
+        "bQuietShortPathWarning": {
+          "display": "Quiet Short Path Warning",
+          "type": "bool",
+          "tooltip": "Suppress the warning raised when paths shorter than the resolution are omitted.",
+          "default": "false"
         },
         "bOmitInvalidPathsOutputs": {
           "display": "Omit Invalid Paths Outputs",
@@ -65396,7 +65864,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/paths/modify/path-resample",
       "source": {
         "file": "PCGExElementsPaths/Public/Elements/PCGExPathResample.h",
-        "hash": "f11fa2e82fb3f2e10ee92d97a9e594889a4d7525"
+        "hash": "f11fa2e82fb3f2e10ee92d97a9e594889a4d7525",
+        "stale": true
       }
     },
     "UPCGExReversePointOrderSettings": {
@@ -74172,10 +74641,10 @@
         "FPCGExSkinnedMeshCollectionEntry",
         "FPCGExSkinnedMeshCollectionGlobals"
       ],
-      "purpose": "A weighted library of skinned meshes, row for row the Mesh Collection with a skinned asset in place of the static one. Picking, staging and the pick hash are identical; spawning goes through the vanilla Skinned Mesh Spawner, driven by the Staging Data (Skinned) selector. What the type changes is the row: one skinned asset, one component descriptor where a mesh row carries an instanced one and a plain one, and sockets baked only when the asset is a skeletal mesh.",
+      "purpose": "A weighted library of skinned meshes, row for row the Mesh Collection with a skinned asset in place of the static one. Picking, staging and the pick hash are identical; spawning goes through **Staging : Spawn Skinned Meshes**, which turns the picks into instanced skinned mesh components. What the type changes is the row: one skinned asset, one component descriptor where a mesh row carries an instanced one and a plain one, and sockets baked only when the asset is a skeletal mesh.",
       "situation": "The library holds skeletal meshes, and the picks have to reach a spawner that renders skinned geometry.",
       "mechanism": {
-        "text": "Authoring is the Mesh Collection's: weighted rows, categories, tags, sub-collections, fitting and property overrides all behave as they do there. A staging rebuild loads each row's skinned asset to bake its path and bounds, and lifts sockets from it when the asset is a skeletal mesh, each socket carrying its source bone name as the socket tag. Consumption is the vanilla Skinned Mesh Spawner: the Staging Data (Skinned) selector reads the pick hash and the Collection Map, follows through on the rows that resolved to skinned entries, skips every other type, and hands the spawner one instance list per row. Hosted inside an Omni Collection, this type's collection-level settings appear as its Type Globals block, and skinned rows there resolve against that block instead."
+        "text": "Authoring is the Mesh Collection's: weighted rows, categories, tags, sub-collections, fitting and property overrides all behave as they do there. A staging rebuild loads each row's skinned asset to bake its path and bounds, and lifts sockets from it when the asset is a skeletal mesh, each socket carrying its source bone name as the socket tag. Consumption is **Staging : Spawn Skinned Meshes**: it reads the pick hash and the Collection Map, follows through on the rows that resolved to skinned entries, skips every other type, and spawns one instanced skinned mesh component per row and material variant, with the row's descriptor, its transform provider and its tags on it. Hosted inside an Omni Collection, this type's collection-level settings appear as its Type Globals block, and skinned rows there resolve against that block instead."
       },
       "off_label": [
         {
@@ -74195,7 +74664,7 @@
           "display": "└─ Global Skinned Mesh Settings",
           "type": "FPCGSoftSkinnedMeshComponentDescriptor",
           "semantics": "One descriptor covers this type where a Mesh Collection carries two, since skinned meshes spawn through a single component type. Rows read it when their Descriptor Source is Global, and every row reads it when Global Descriptor Mode is Overrule, whatever each row asked for.",
-          "trap": "Neither this block nor a row's own Skinned Mesh Settings reaches the spawned component while the staged selector keeps Use Template Descriptor enabled, which is its default: in that state the selector pushes only the asset and the row's tags onto its own template descriptor."
+          "trap": "Neither this block nor a row's own Skinned Mesh Settings reaches the spawned component while the spawn node's Descriptor Override is on: in that state the node pushes only the asset and the row's tags onto its own descriptor, transform provider included. It is off by default."
         },
         "Entries": {
           "display": "Entries",
@@ -74203,7 +74672,7 @@
           "tooltip": "Entries Array",
           "see": "FPCGExSkinnedMeshCollectionEntry",
           "semantics": "A skinned row holds one asset reference, the same weighted material variants a mesh row offers, and a single Skinned Mesh Settings block whose source Descriptor Source names: Local reads the row's own block, Global reads the collection's. Every other field on the row is the shared entry anatomy and behaves as it does on any collection type.",
-          "trap": "Material variants are rolled and packed into the pick hash, and nothing applies them: the descriptor skinned meshes spawn through carries no material overrides in this engine version, so a variant roll changes the recorded pick and never the rendered materials.",
+          "trap": "Material variants are rolled and packed into the pick hash, and reach the component only while the spawn node's Apply Material Overrides is on, which it is not by default: the descriptor skinned meshes spawn through carries no override materials on this engine version, so the node writes the variant onto the component's material slots itself.",
           "interacts_with": [
             "GlobalDescriptorMode",
             "GlobalDescriptor"
@@ -74214,11 +74683,6 @@
         "UPCGExAssetCollection"
       ],
       "hints": [
-        {
-          "style": "warning",
-          "text": "The Skinned Mesh Spawner has no Collection Map input of its own. The selector reads the Map from the node's override pin, the same wiring the static mesh route needs, and resolves nothing without it.",
-          "anchor": "mechanism"
-        },
         {
           "style": "warning",
           "text": "Descriptor Source offers None on a skinned row, and picking it hides the Skinned Mesh Settings block without clearing it. Descriptor resolution treats None exactly like Local, so the row still resolves to whatever the hidden block holds.",
@@ -74235,6 +74699,10 @@
           "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-spawning"
         },
         {
+          "path": "node-library/staging/staging-spawn-skinned-meshes.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-skinned-meshes"
+        },
+        {
           "path": "node-library/staging/collections/mesh-collection.md",
           "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/mesh-collection"
         },
@@ -74246,124 +74714,7 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/skinned-mesh-collection",
       "source": {
         "file": "PCGExCollections/Public/Collections/PCGExSkinnedMeshCollection.h",
-        "hash": "f06ac985770e054f164ac1dae8e73c0527cf6194"
-      }
-    },
-    "UPCGExSkinnedMeshSelectorStaged": {
-      "id": "UPCGExSkinnedMeshSelectorStaged",
-      "name": "Staging Data (Skinned)",
-      "plugin": "PCGExtendedToolkit",
-      "module": "PCGExCollections",
-      "classification": "instanced_factory",
-      "purpose": "Skinned-mesh spawning is what the vanilla Skinned Mesh Spawner already does, and this is what teaches it to read staged picks. It is not a node: it is the mesh selector the spawner runs, and from there it resolves every point's pick against the Collection Map and hands the spawner its instance lists, carrying the entry's skinned asset, its tags and its component descriptor. Picks that resolved to something other than a skinned mesh entry contribute nothing, so a mixed staged dataset can be wired straight in, and mesh entries have their own selector for the vanilla Static Mesh Spawner.",
-      "situation": "A staged dataset reaches a Skinned Mesh Spawner, and the skeletal meshes have to come out with the descriptors and tags their collections authored.",
-      "mechanism": {
-        "text": "One execution takes the points on the spawner's input and the Collection Map on the spawner's override pin: every attribute set wired there is examined, the ones carrying a Map are read, and anything else on that pin stays the spawner's business. Points are grouped by their pick, and the spawner receives one instance list per distinct pick, however many points share it. Picks that resolve to an entry which is not a skinned mesh contribute no instances, and their points are otherwise untouched.",
-        "steps": [
-          "The entry's component descriptor is resolved: the selector's own Template Descriptor while Use Template Descriptor is on, the entry's own descriptor (or its collection's globals) when it is off.",
-          "The entry's tags are appended to the component tags either way.",
-          "Force Disable Collisions clears collision on the resolved descriptor, so it wins over whichever descriptor supplied it."
-        ]
-      },
-      "settings": {
-        "StagingLayer": {
-          "display": "Staging Layer",
-          "type": "FName",
-          "tooltip": "Staging layer this selector reads staged picks from (and strips from output points). None = default layer (PCGEx/CollectionEntry); otherwise the layer name is appended (PCGEx/CollectionEntry/<layer>). Other layers' attributes pass through untouched.",
-          "default": "NAME_None",
-          "advanced": true
-        },
-        "bApplyMaterialOverrides": {
-          "display": "Apply Material Overrides",
-          "type": "bool",
-          "default": "true",
-          "semantics": "Skinned mesh entries author weighted material variants and the pick records which one was rolled, and the descriptor skinned meshes spawn through carries no material overrides in this engine version, so this setting changes nothing in either state. The By Attribute Material Overrides fields inherited from the vanilla selector are not read here either."
-        },
-        "bForceDisableCollisions": {
-          "display": "Force Disable Collisions",
-          "type": "bool",
-          "default": "false",
-          "semantics": "Applied after the descriptor is resolved, so it clears collision whichever descriptor supplied it, the selector's Template Descriptor or the entry's own."
-        },
-        "bUseTemplateDescriptor": {
-          "display": "Use Template Descriptor",
-          "type": "bool",
-          "tooltip": "If enabled, will ignore the collection descriptor details and only push asset, materials & tags from the collection. Uses the inherited TemplateDescriptor from UPCGSkinnedMeshSelector.",
-          "default": "true",
-          "semantics": "On, every instance is built from the Template Descriptor this selector inherits from the vanilla one, and the entry contributes only its skinned asset and its tags. Off, each entry brings its own component descriptor, or its collection's globals when the entry defers to them or the collection overrules, and its tags are appended to that.",
-          "trap": "Collections that author per-entry component details have every one of them ignored while this is on, and it is on by default. Template Descriptor stays editable in both states, since it belongs to the vanilla selector rather than to this one, and nothing in the panel greys out to signal that none of what it holds survives.",
-          "interacts_with": [
-            "bForceDisableCollisions"
-          ]
-        },
-        "bUseTimeSlicing": {
-          "display": "Use Time Slicing",
-          "type": "bool",
-          "default": "false",
-          "semantics": "Spreads the grouping of points across several executions instead of doing it in one pass, so a large staged dataset does not hold the editor for the duration. The result is identical either way."
-        },
-        "bOutputPoints": {
-          "display": "Output Points",
-          "type": "bool",
-          "default": "true",
-          "semantics": "On, the spawner's point output is a copy of its input with this layer's pick attribute removed. Picks on other layers survive, so points staged on several layers stay staged for the consumers of those layers.",
-          "trap": "Off leaves the output empty rather than passing the points through. The Skinned Mesh Spawner allocates an output holding no points and this selector is what fills it, so switching this off means the pin carries a dataset with zero points.",
-          "interacts_with": [
-            "StagingLayer"
-          ]
-        },
-        "bQuietMissingStagingDataWarning": {
-          "display": "Quiet Missing Staging Data Warning",
-          "type": "bool",
-          "tooltip": "When enabled, silently skips input data that is missing the staging hash attribute instead of logging an error.",
-          "default": "false",
-          "semantics": "Skipped data produces no instances and comes out with zero points, silently."
-        }
-      },
-      "hints": [
-        {
-          "style": "info",
-          "text": "A mesh selector is a vanilla concept: the swappable brain inside a mesh spawner. It is unrelated to the Selector sub-nodes that decide picks upstream, which are a PCGEx system of their own. The two meet in this one place.",
-          "anchor": "whats_it_for"
-        },
-        {
-          "style": "warning",
-          "text": "## The Skinned Mesh Spawner exposes no selector picker\n\nThe Static Mesh Spawner carries a Mesh Selector Type property, which is how the static counterpart gets installed. The Skinned Mesh Spawner has no equivalent in this engine version: its mesh selector is shown read-only in the details panel and stays the vanilla one. This page describes what this selector does once the spawner runs it.",
-          "anchor": "whats_it_for"
-        },
-        {
-          "style": "danger",
-          "text": "## The Map goes into the spawner's override pin\n\nThe Skinned Mesh Spawner has no Map input of its own, so wire the Collection Map into the node's override pin. Without it the selector resolves nothing, reports that it found no Map in the overrides, and spawns nothing, while its point output still carries the points as if the node had run.",
-          "anchor": "mechanism"
-        },
-        {
-          "style": "info",
-          "text": "The vanilla selector this one extends contributes Mesh Attribute and By Attribute Material Overrides to the details panel, and neither is read here: the staged pick decides the asset. Template Descriptor is the one inherited field this selector uses.",
-          "anchor": "mechanism"
-        }
-      ],
-      "related": [
-        {
-          "path": "working-with-pcgex/asset-staging/staging-spawning.md",
-          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-spawning"
-        },
-        {
-          "path": "working-with-pcgex/asset-staging/the-collection-map.md",
-          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/the-collection-map"
-        },
-        {
-          "path": "node-library/staging/utilities/staging-data-mesh-selector.md",
-          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/staging-data-mesh-selector"
-        },
-        {
-          "path": "node-library/staging/collections/skinned-mesh-collection.md",
-          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/skinned-mesh-collection"
-        }
-      ],
-      "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/utilities/staging-data-skinned-mesh-selector",
-      "source": {
-        "file": "PCGExCollections/Public/MeshSelectors/PCGExSkinnedMeshSelectorStaged.h",
-        "hash": "f064aeef68e97801688014345b5a838580881b9f"
+        "hash": "ed72e4710167c63f681e762fa9585d3f9f4b3958"
       }
     },
     "UPCGExSmoothingInstancedFactory": {
@@ -76889,6 +77240,256 @@
       "source": {
         "file": "PCGExCollections/Public/Elements/PCGExStagingSpawnActors.h",
         "hash": "921ec31f6b111a5c1a56cfdf5ea9a00731c920f1"
+      }
+    },
+    "UPCGExStagingSpawnSkinnedMeshesSettings": {
+      "id": "UPCGExStagingSpawnSkinnedMeshesSettings",
+      "name": "Staging : Spawn Skinned Meshes",
+      "category": "Staging",
+      "plugin": "PCGExtendedToolkit",
+      "module": "PCGExCollections",
+      "classification": "node",
+      "purpose": "Puts skinned meshes in the level from staged picks, as instanced skinned mesh components on one target actor. Every point whose pick resolved to a Skinned Mesh entry becomes an instance of that entry's asset; picks of any other type are passed over, so one mixed staged dataset can feed this node and the other spawn routes in parallel. The components are PCG-managed, so the graph owns their cleanup and their reuse across generations, and each instance can play an animation chosen per point, carry per-point attributes as instance custom data, and read the entry's collection properties from the component's custom primitive data. Mesh entries keep their own route, the vanilla Static Mesh Spawner driven by **Staging Data**; this node is the skinned counterpart of that pairing and of **Staging : Spawn Actors**.",
+      "situation": "A Skinned Mesh Collection has been staged over a point layout, and those skeletal meshes now have to exist in the level as instanced, animated content the graph creates and cleans up.",
+      "mechanism": {
+        "text": "Each point's pick is resolved against the Collection Map, and the points that landed on a Skinned Mesh entry are grouped by pick: one instanced skinned mesh component per distinct entry and material variant, per input, on the target actor, with one instance per point at the point's transform, scale included. The points come out as they went in, same count, same order, every attribute intact and the pick hash still in place. Every component is a managed resource of the PCG component, so the next generation replaces it like any other generated content, and an input whose points and settings hash as they did last time keeps its components and spawns nothing new, provided that run completed. Nothing here fits or offsets anything: the transform the point arrives with is the transform the instance gets."
+      },
+      "off_label": [
+        {
+          "claim": "Because the output is the input untouched, two of these nodes chained on different Staging Layers spawn two skinned picks per point, one per layer, from a single point set.",
+          "grounded_in": "PCGEX_INIT_IO with EIOInit::Forward in FProcessor::Process, and the entry hash read through GetEntryIdxAttributeName(StagingLayer) with nothing deleted afterwards"
+        }
+      ],
+      "pins": {
+        "inputs": [
+          {
+            "label": "In",
+            "note": "The staged points. A dataset carrying no pick hash for the chosen staging layer spawns nothing.",
+            "required": "always"
+          },
+          {
+            "label": "Map",
+            "note": "The Collection Map the picks resolve against, from a staging node or merged from several. The node errors out when the Map yields no valid mapping.",
+            "required": "always"
+          },
+          {
+            "label": "Point Filters",
+            "note": "Restricts which points spawn an instance. Rejected points stay in the output, untouched like every other point.",
+            "required": "optional"
+          }
+        ],
+        "outputs": [
+          {
+            "label": "Out",
+            "note": "The input points, forwarded as they are: nothing is written, and the pick hash stays on them."
+          }
+        ],
+        "dynamic": null
+      },
+      "settings": {
+        "StagingLayer": {
+          "display": "Staging Layer",
+          "type": "FName",
+          "tooltip": "Staging layer this node reads staged picks from. None = default layer (PCGEx/CollectionEntry); otherwise the layer name is appended (PCGEx/CollectionEntry/<layer>).",
+          "default": "NAME_None",
+          "overridable": true,
+          "advanced": true
+        },
+        "TargetActor": {
+          "display": "Target Actor",
+          "type": "TSoftObjectPtr<AActor>",
+          "tooltip": "Actor the components are added to. Null = the PCG component's target actor.",
+          "overridable": true,
+          "semantics": "One actor per node: every component this node creates lands on it, whatever actor each point came from, and the actor's root mobility is copied onto every component in place of the descriptor's own Mobility. A reference that does not resolve to a loaded actor behaves like an empty one and falls back to the PCG component's target actor, with nothing to say so; only when neither resolves does the input report an invalid target and spawn nothing.",
+          "interacts_with": [
+            "TemplateDescriptor",
+            "PostProcessFunctionNames"
+          ]
+        },
+        "TemplateDescriptor": {
+          "display": "Descriptor Override",
+          "type": "FPCGSoftSkinnedMeshComponentDescriptor",
+          "tooltip": "Ignores per-entry collection descriptors, pushing only the skinned asset and tags from the entry onto this descriptor.",
+          "edit_condition": "bUseTemplateDescriptor",
+          "semantics": "Off, each entry brings its own Skinned Mesh Settings, or its collection's globals when the entry's Descriptor Source says Global or the collection's Global Descriptor Mode is Overrule, with the collection's tags appended on the globals branch. On, every component is built from this descriptor and the entry contributes only its skinned asset and its tags. Either way the entry's asset replaces whatever asset the descriptor names, Force Disable Collisions is applied afterwards, and Mobility is overwritten by the target actor's root.",
+          "trap": "The transform provider is part of the descriptor, so with the override on every entry animates through the provider set here, and an entry whose collection authored its own provider loses it.",
+          "interacts_with": [
+            "bForceDisableCollisions",
+            "AnimationIndex",
+            "TargetActor"
+          ]
+        },
+        "bForceDisableCollisions": {
+          "display": "Force Disable Collisions",
+          "type": "bool",
+          "tooltip": "Spawns every component with collision disabled, whatever its descriptor says.",
+          "default": "false",
+          "overridable": true
+        },
+        "AnimationIndex": {
+          "display": "Animation Index",
+          "type": "FPCGExInputShorthandNameInteger32",
+          "tooltip": "Per-instance animation index: which of the descriptor's Transform Provider animations the instance plays (the sequence index on an Anim Sequence provider). An index past the provider's count plays animation 0.",
+          "default": "FPCGExInputShorthandNameInteger32(FName(\"AnimationIndex\"), 0)",
+          "overridable": true,
+          "fields": [
+            {
+              "name": "Input",
+              "display": "Input",
+              "type": "EPCGExInputValueType",
+              "tooltip": "Whether to use the constant value or read from an attribute.",
+              "default": "EPCGExInputValueType::Constant",
+              "enum": "EPCGExInputValueType"
+            },
+            {
+              "name": "bCleanupAttribute",
+              "display": "Cleanup Attribute",
+              "type": "bool",
+              "tooltip": "Allow this attribute to be registered as consumable, i.e. deleted from the consuming node's outputs when its 'Cleanup Consumable Attributes' toggle is enabled. Disable to always preserve the attribute.",
+              "default": "true"
+            },
+            {
+              "name": "Attribute",
+              "display": "Attribute",
+              "type": "FName",
+              "tooltip": "Attribute name to read from when Input is set to Attribute.",
+              "default": "NAME_None"
+            },
+            {
+              "name": "Constant",
+              "display": "Constant",
+              "type": "int32",
+              "default": "0"
+            }
+          ],
+          "semantics": "Read per point, so points sharing an entry still share one component and each instance plays its own sequence. The index addresses the animation list of whichever transform provider the resolved descriptor carries, the entry's or the override's. The engine's own Instanced Skinned Mesh Spawner gives its instances no animation index on this engine version, so this setting is the one place a PCG graph picks one.",
+          "trap": "In Attribute mode an input that lacks the attribute is skipped whole, with an invalid-attribute error, and spawns nothing.",
+          "interacts_with": [
+            "TemplateDescriptor"
+          ]
+        },
+        "bApplyMaterialOverrides": {
+          "display": "Apply Material Overrides",
+          "type": "bool",
+          "tooltip": "Applies the entry's picked material variant on the component. Off by default: Nanite skinning may not honour per-component material overrides on this engine version.",
+          "default": "false",
+          "overridable": true,
+          "semantics": "Applied with the component's own material slots, from the entry's picked variant, after the component is created or taken back from the previous run, so a reused component gets them again. The pick records the variant whether this is on or off, so turning it on later changes materials without re-staging; the variant's material assets are only loaded while it is on. It is off because Nanite skinning honouring per-component material overrides has not been verified on this engine version."
+        },
+        "InstanceDataPackerType": {
+          "display": "Instance Data Packer",
+          "type": "TSubclassOf<UPCGSkinnedMeshInstanceDataPackerBase>",
+          "tooltip": "Packs per-point attributes into each instance's custom data floats. Rotators pack as 3 floats, quaternions as 4. The built-in packers read the points directly; a Blueprint packer receives point indices as metadata entry keys.",
+          "semantics": "Nothing is packed without a packer. With one, the per-instance float count is part of what identifies a component, so changing what the packer reads rebuilds the components. By Attribute and By Regex are driven by the node itself against the input points, so property selectors such as $Position work and the packing runs off the game thread; any other packer class runs its own Pack Instances on the game thread, once per component, with the point indices standing in as metadata entry keys.",
+          "interacts_with": [
+            "CustomPrimitiveDataLayout"
+          ]
+        },
+        "CustomPrimitiveDataLayout": {
+          "display": "Custom Primitive Data Layout",
+          "type": "FPCGExPackedFloatLayout",
+          "tooltip": "No ShowOnlyInnerProperties: it re-categorizes promoted members under THEIR own Category.",
+          "fields": [
+            {
+              "name": "Slots",
+              "display": "Slots",
+              "type": "TArray<FPCGExPackedFloatSlot>"
+            },
+            {
+              "name": "bQuietMissingPropertyWarnings",
+              "display": "Quiet Missing Property Warnings",
+              "type": "bool",
+              "tooltip": "Silences the not-declared warning -- expected when one layout spans differing collection schemas.",
+              "default": "false"
+            },
+            {
+              "name": "PopulateFromSchema",
+              "display": "Populate From",
+              "type": "TObjectPtr<UPCGExPropertySchemaAsset>",
+              "tooltip": "Assign to append its properties as rows; cleared on use, so it never becomes a live dependency."
+            }
+          ],
+          "semantics": "Per entry, on the component: every instance of the entry reads the same floats, written from index 0 of the component's custom primitive data, and one layout serves every entry of the selection so a slot always means the same property. Independent of the instance packer, which writes per-instance custom data.",
+          "interacts_with": [
+            "InstanceDataPackerType",
+            "bDebugCustomPrimitiveData"
+          ]
+        },
+        "bDebugCustomPrimitiveData": {
+          "display": "Debug Layout",
+          "type": "bool",
+          "tooltip": "Logs the resolved layout and each entry's floats. PCGNoHash: hashing diagnostics would rebuild every component on toggle.",
+          "default": "false"
+        },
+        "PostProcessFunctionNames": {
+          "display": "Post Process Function Names",
+          "type": "TArray<FName>",
+          "tooltip": "Functions called on the target actor once every component is spawned. Functions need to be parameter-less and with \"CallInEditor\" flag enabled.",
+          "advanced": true,
+          "semantics": "Called on the target actor once, after every input has spawned, never per component, with the functions resolved against the target actor's class. A name that resolves to nothing does not stop the others."
+        },
+        "bQuietInvalidEntryWarnings": {
+          "display": "Quiet Invalid Entry Warnings",
+          "type": "bool",
+          "tooltip": "Suppress warnings for picks that are not skinned mesh entries, or whose asset cannot be loaded.",
+          "default": "true",
+          "semantics": "On by default, and it covers two failures: picks that resolved to an entry of another type, reported once per input with their count, and a skinned asset that failed to load. A pick whose entry names no asset is skipped silently in either state, and a component that could not be created warns regardless."
+        },
+        "bWarnOnIdenticalSpawn": {
+          "display": "Warn on Identical Spawn",
+          "type": "bool",
+          "tooltip": "Warns when a component this node would spawn already exists from an identical spawn this generation (same entries at the same points), which usually means duplicated graph logic.",
+          "default": "true",
+          "semantics": "The check runs on the reuse path: the components a previous run left for this input are found still in use rather than released for cleanup, which is what two nodes spawning the same picks at the same points on the same actor produce. The components are taken over either way."
+        }
+      },
+      "inherits": [
+        "UPCGExPointsProcessorSettings",
+        "UPCGExSettings"
+      ],
+      "hints": [
+        {
+          "style": "info",
+          "text": "Unreal 5.8 only: the Skinned Mesh Collection and the instanced skinned mesh component this node spawns have no counterpart in the 5.7 build of the plugin.",
+          "anchor": "whats_it_for"
+        },
+        {
+          "style": "info",
+          "text": "While the PCG component is in preview mode the components are transient and never reach the level package. An ordinary editor generation writes them into the target actor's level and dirties it.",
+          "anchor": "mechanism"
+        },
+        {
+          "style": "warning",
+          "text": "A run interrupted part way leaves its components without a reuse key and marked for cleanup, so the next generation respawns them rather than taking them over.",
+          "anchor": "mechanism"
+        }
+      ],
+      "related": [
+        {
+          "path": "working-with-pcgex/asset-staging/staging-spawning.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/staging-spawning"
+        },
+        {
+          "path": "working-with-pcgex/asset-staging/the-collection-map.md",
+          "url": "https://pcgex.gitbook.io/pcgex/working-with-pcgex/asset-staging/the-collection-map"
+        },
+        {
+          "path": "node-library/staging/collections/skinned-mesh-collection.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/collections/skinned-mesh-collection"
+        },
+        {
+          "path": "node-library/staging/staging-spawn-actors.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-actors"
+        },
+        {
+          "path": "node-library/staging/staging-type-filter.md",
+          "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-type-filter"
+        }
+      ],
+      "url": "https://pcgex.gitbook.io/pcgex/node-library/staging/staging-spawn-skinned-meshes",
+      "source": {
+        "file": "PCGExCollections/Public/Elements/PCGExStagingSpawnSkinnedMeshes.h",
+        "hash": "f63f6a83050ad97236df337c0da97d3f84a87216"
       }
     },
     "UPCGExStagingSwapSettings": {
@@ -83377,6 +83978,12 @@
           "default": "\"LookupWeight\"",
           "overridable": true,
           "edit_condition": "bOutputWeight"
+        },
+        "bQuietMissingKeyWarning": {
+          "display": "Quiet Missing Key Warning",
+          "type": "bool",
+          "tooltip": "Suppress the error emitted when a key attribute (Map Key, Weights Key, Point Key) is missing. The affected data is still skipped.",
+          "default": "false"
         }
       },
       "inherits": [
@@ -83411,7 +84018,8 @@
       "url": "https://pcgex.gitbook.io/pcgex/node-library/metadata/keys/weighted-lookup",
       "source": {
         "file": "PCGExElementsMeta/Public/Elements/PCGExWeightedLookup.h",
-        "hash": "b13acac7410cb10c253af0ea4e4dc47c38c78c62"
+        "hash": "b13acac7410cb10c253af0ea4e4dc47c38c78c62",
+        "stale": true
       }
     },
     "UPCGExWithinRangeFilterProviderSettings": {
